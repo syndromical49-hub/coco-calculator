@@ -3,209 +3,216 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>코코바스켓 계산기</title>
-
 <style>
 :root{
---bg:#f6f6f6;
---panel:#ffffff;
---line:#e5e7eb;
---soft:#f3f4f6;
---minus:#fef2f2;
---okbg:#ecfdf5;
---oktx:#065f46;
---warnbg:#fff7ed;
---warntx:#9a3412;
+  --bg:#f6f6f6;
+  --panel:#ffffff;
+  --line:#e5e7eb;
+  --soft:#f3f4f6;
+  --minus:#fef2f2;
+  --okbg:#ecfdf5;
+  --oktx:#065f46;
+  --warnbg:#fff7ed;
+  --warntx:#9a3412;
+  --text:#111111;
+  --muted:#666666;
 }
-
 *{box-sizing:border-box}
-
+html,body{height:100%}
 body{
-margin:0;
-font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
-background:var(--bg);
-display:flex;
-justify-content:center;
-padding:16px;
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:10px;
 }
-
-.wrap{width:100%;max-width:440px}
-
+.wrap{
+  width:100%;
+  max-width:430px;
+}
 .card{
-background:var(--panel);
-border:1px solid var(--line);
-border-radius:22px;
-padding:18px;
-box-shadow:0 8px 24px rgba(0,0,0,.06);
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.05);
 }
-
-h1{margin:0 0 8px;font-size:24px}
-.sub{font-size:14px;color:#666;margin-bottom:14px}
-
+h1{
+  margin:0 0 6px;
+  font-size:22px;
+  text-align:center;
+}
 .display-wrap{
-border:1px solid var(--line);
-border-radius:18px;
-padding:14px;
-background:#fff;
-margin-bottom:12px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fff;
+  padding:10px 12px;
+  margin-bottom:8px;
 }
-
+.label{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:4px;
+}
 .display{
-font-size:38px;
-font-weight:800;
-text-align:right;
+  font-size:34px;
+  font-weight:800;
+  text-align:right;
+  line-height:1.1;
 }
-
 .status{
-margin:12px 0 16px;
-border-radius:14px;
-padding:12px;
-text-align:center;
-font-weight:700;
+  border-radius:12px;
+  padding:9px 10px;
+  text-align:center;
+  font-size:14px;
+  font-weight:800;
+  margin-bottom:8px;
 }
-
 .status.ok{background:var(--okbg);color:var(--oktx)}
 .status.warn{background:var(--warnbg);color:var(--warntx)}
-
-.section{
-margin:14px 0 6px;
-font-size:13px;
-font-weight:700;
-color:#666;
+.remain{
+  text-align:center;
+  font-size:14px;
+  font-weight:800;
+  margin:0 0 10px;
+  color:var(--warntx);
 }
-
+.remain.ok{color:var(--oktx)}
 .grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
-margin-bottom:12px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-bottom:8px;
 }
-
 button{
-border:none;
-border-radius:16px;
-min-height:56px;
-font-size:18px;
-font-weight:800;
-background:var(--soft);
-cursor:pointer;
+  border:none;
+  border-radius:14px;
+  min-height:50px;
+  font-size:17px;
+  font-weight:800;
+  background:var(--soft);
+  color:var(--text);
+  cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
 }
-
 button:active{transform:scale(.98)}
-.base{background:#111;color:#fff}
-.minus{background:var(--minus)}
-.wide{grid-column:span 3}
-.reset{background:#e5e7eb}
-
-.help{
-font-size:13px;
-color:#666;
-text-align:center;
+.base{
+  background:#111111;
+  color:#fff;
+}
+.minus{
+  background:var(--minus);
+}
+.wide{
+  grid-column:span 3;
+}
+.reset{
+  background:#e5e7eb;
 }
 </style>
 </head>
-
 <body>
-
 <div class="wrap">
-<div class="card">
+  <div class="card">
+    <h1>🧮 코코바스켓 계산기</h1>
 
-<h1>🧮 코코바스켓 계산기</h1>
-<p class="sub">기본구성 20,000원 기준으로 금액을 계산하세요</p>
+    <div class="display-wrap">
+      <div class="label">현재 금액</div>
+      <div id="display" class="display">20,000원</div>
+    </div>
 
-<div class="display-wrap">
-<div id="display" class="display">20,000원</div>
-</div>
+    <div id="status" class="status warn">⚠ 아직 30,000원 미만입니다</div>
+    <div id="remain" class="remain">3만원까지 10,000원</div>
 
-<div id="status" class="status warn">⚠ 아직 30,000원 미만입니다</div>
+    <div class="grid">
+      <button class="base wide" onclick="setBase()">기본구성 20,000</button>
+    </div>
 
-<div class="section">기본 시작</div>
-<div class="grid">
-<button class="base wide" onclick="setBase()">기본구성 20,000</button>
-</div>
+    <div class="grid">
+      <button onclick="add(500)">+500</button>
+      <button onclick="add(1000)">+1,000</button>
+      <button onclick="add(1500)">+1,500</button>
 
-<div class="section">추가 금액</div>
-<div class="grid">
-<button onclick="add(500)">+500</button>
-<button onclick="add(1000)">+1,000</button>
-<button onclick="add(1500)">+1,500</button>
+      <button onclick="add(2000)">+2,000</button>
+      <button onclick="add(2500)">+2,500</button>
+      <button onclick="add(3000)">+3,000</button>
 
-<button onclick="add(2000)">+2,000</button>
-<button onclick="add(2500)">+2,500</button>
-<button onclick="add(3000)">+3,000</button>
+      <button onclick="add(5000)">+5,000</button>
+      <button onclick="add(6000)">+6,000</button>
+      <button onclick="add(8000)">+8,000</button>
 
-<button onclick="add(5000)">+5,000</button>
-<button onclick="add(6000)">+6,000</button>
-<button onclick="add(8000)">+8,000</button>
+      <button class="wide" onclick="add(10000)">+10,000</button>
+    </div>
 
-<button class="wide" onclick="add(10000)">+10,000</button>
-</div>
+    <div class="grid">
+      <button class="minus" onclick="add(-500)">-500</button>
+      <button class="minus" onclick="add(-1000)">-1,000</button>
+      <button class="minus" onclick="add(-1500)">-1,500</button>
 
-<div class="section">제외 금액</div>
-<div class="grid">
-<button class="minus" onclick="add(-500)">-500</button>
-<button class="minus" onclick="add(-1000)">-1,000</button>
-<button class="minus" onclick="add(-1500)">-1,500</button>
+      <button class="minus" onclick="add(-2000)">-2,000</button>
+      <button class="minus" onclick="add(-2500)">-2,500</button>
+      <button class="minus" onclick="add(-3000)">-3,000</button>
 
-<button class="minus" onclick="add(-2000)">-2,000</button>
-<button class="minus" onclick="add(-2500)">-2,500</button>
-<button class="minus" onclick="add(-3000)">-3,000</button>
+      <button class="minus" onclick="add(-5000)">-5,000</button>
+      <button class="minus" onclick="add(-6000)">-6,000</button>
+      <button class="minus" onclick="add(-8000)">-8,000</button>
+    </div>
 
-<button class="minus" onclick="add(-5000)">-5,000</button>
-<button class="minus" onclick="add(-6000)">-6,000</button>
-<button class="minus" onclick="add(-8000)">-8,000</button>
-</div>
-
-<div class="grid">
-<button class="wide reset" onclick="resetAll()">처음부터 다시</button>
-</div>
-
-<div class="help">
-30,000원 이상이면 주문 기준 충족에 가까워집니다.
-</div>
-
-</div>
+    <div class="grid">
+      <button class="reset wide" onclick="resetAll()">처음부터 다시</button>
+    </div>
+  </div>
 </div>
 
 <script>
 let total = 20000;
 
 function formatWon(n){
-return n.toLocaleString('ko-KR') + '원';
+  return n.toLocaleString('ko-KR') + '원';
 }
 
 function render(){
-document.getElementById('display').textContent = formatWon(total);
-const status = document.getElementById('status');
+  document.getElementById('display').textContent = formatWon(total);
 
-if(total >= 30000){
-status.className='status ok';
-status.textContent='✅ 30,000원 이상입니다';
-}else{
-status.className='status warn';
-status.textContent='⚠ 아직 30,000원 미만입니다';
-}
+  const status = document.getElementById('status');
+  const remain = document.getElementById('remain');
+
+  if(total >= 30000){
+    status.className = 'status ok';
+    status.textContent = '✅ 30,000원 이상입니다';
+    remain.className = 'remain ok';
+    remain.textContent = '주문 기준 금액을 넘었습니다';
+  } else {
+    const need = 30000 - total;
+    status.className = 'status warn';
+    status.textContent = '⚠ 아직 30,000원 미만입니다';
+    remain.className = 'remain';
+    remain.textContent = `3만원까지 ${need.toLocaleString('ko-KR')}원`;
+  }
 }
 
 function add(n){
-total += n;
-if(total < 0) total = 0;
-render();
+  total += n;
+  if(total < 0) total = 0;
+  render();
 }
 
 function setBase(){
-total = 20000;
-render();
+  total = 20000;
+  render();
 }
 
 function resetAll(){
-total = 0;
-render();
+  total = 0;
+  render();
 }
 
 render();
 </script>
-
 </body>
 </html>
