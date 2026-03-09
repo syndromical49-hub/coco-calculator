@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>코코바스켓 계산기</title>
+
+<style>
+:root{
+--bg:#f6f6f6;
+--panel:#ffffff;
+--line:#e5e7eb;
+--soft:#f3f4f6;
+--minus:#fef2f2;
+--okbg:#ecfdf5;
+--oktx:#065f46;
+--warnbg:#fff7ed;
+--warntx:#9a3412;
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+background:var(--bg);
+display:flex;
+justify-content:center;
+padding:16px;
+}
+
+.wrap{width:100%;max-width:440px}
+
+.card{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:22px;
+padding:18px;
+box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+
+h1{margin:0 0 8px;font-size:24px}
+.sub{font-size:14px;color:#666;margin-bottom:14px}
+
+.display-wrap{
+border:1px solid var(--line);
+border-radius:18px;
+padding:14px;
+background:#fff;
+margin-bottom:12px;
+}
+
+.display{
+font-size:38px;
+font-weight:800;
+text-align:right;
+}
+
+.status{
+margin:12px 0 16px;
+border-radius:14px;
+padding:12px;
+text-align:center;
+font-weight:700;
+}
+
+.status.ok{background:var(--okbg);color:var(--oktx)}
+.status.warn{background:var(--warnbg);color:var(--warntx)}
+
+.section{
+margin:14px 0 6px;
+font-size:13px;
+font-weight:700;
+color:#666;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-bottom:12px;
+}
+
+button{
+border:none;
+border-radius:16px;
+min-height:56px;
+font-size:18px;
+font-weight:800;
+background:var(--soft);
+cursor:pointer;
+}
+
+button:active{transform:scale(.98)}
+.base{background:#111;color:#fff}
+.minus{background:var(--minus)}
+.wide{grid-column:span 3}
+.reset{background:#e5e7eb}
+
+.help{
+font-size:13px;
+color:#666;
+text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+<div class="card">
+
+<h1>🧮 코코바스켓 계산기</h1>
+<p class="sub">기본구성 20,000원 기준으로 금액을 계산하세요</p>
+
+<div class="display-wrap">
+<div id="display" class="display">20,000원</div>
+</div>
+
+<div id="status" class="status warn">⚠ 아직 30,000원 미만입니다</div>
+
+<div class="section">기본 시작</div>
+<div class="grid">
+<button class="base wide" onclick="setBase()">기본구성 20,000</button>
+</div>
+
+<div class="section">추가 금액</div>
+<div class="grid">
+<button onclick="add(500)">+500</button>
+<button onclick="add(1000)">+1,000</button>
+<button onclick="add(1500)">+1,500</button>
+
+<button onclick="add(2000)">+2,000</button>
+<button onclick="add(2500)">+2,500</button>
+<button onclick="add(3000)">+3,000</button>
+
+<button onclick="add(5000)">+5,000</button>
+<button onclick="add(6000)">+6,000</button>
+<button onclick="add(8000)">+8,000</button>
+
+<button class="wide" onclick="add(10000)">+10,000</button>
+</div>
+
+<div class="section">제외 금액</div>
+<div class="grid">
+<button class="minus" onclick="add(-500)">-500</button>
+<button class="minus" onclick="add(-1000)">-1,000</button>
+<button class="minus" onclick="add(-1500)">-1,500</button>
+
+<button class="minus" onclick="add(-2000)">-2,000</button>
+<button class="minus" onclick="add(-2500)">-2,500</button>
+<button class="minus" onclick="add(-3000)">-3,000</button>
+
+<button class="minus" onclick="add(-5000)">-5,000</button>
+<button class="minus" onclick="add(-6000)">-6,000</button>
+<button class="minus" onclick="add(-8000)">-8,000</button>
+</div>
+
+<div class="grid">
+<button class="wide reset" onclick="resetAll()">처음부터 다시</button>
+</div>
+
+<div class="help">
+30,000원 이상이면 주문 기준 충족에 가까워집니다.
+</div>
+
+</div>
+</div>
+
+<script>
+let total = 20000;
+
+function formatWon(n){
+return n.toLocaleString('ko-KR') + '원';
+}
+
+function render(){
+document.getElementById('display').textContent = formatWon(total);
+const status = document.getElementById('status');
+
+if(total >= 30000){
+status.className='status ok';
+status.textContent='✅ 30,000원 이상입니다';
+}else{
+status.className='status warn';
+status.textContent='⚠ 아직 30,000원 미만입니다';
+}
+}
+
+function add(n){
+total += n;
+if(total < 0) total = 0;
+render();
+}
+
+function setBase(){
+total = 20000;
+render();
+}
+
+function resetAll(){
+total = 0;
+render();
+}
+
+render();
+</script>
+
+</body>
+</html>
