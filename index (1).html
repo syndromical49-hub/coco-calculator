@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>코코바스켓 계산기</title>
+
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;background:#f5f1e8;margin:0;padding:20px}
+.container{max-width:480px;margin:auto;background:white;padding:22px;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.08)}
+h1{margin:0 0 10px;font-size:28px}
+.sub{color:#666;margin-bottom:18px;line-height:1.4}
+.total{background:#faf7ef;padding:16px;border-radius:12px;margin-bottom:14px}
+.amount{font-size:38px;font-weight:bold}
+.msg{background:#efe9dc;padding:12px;border-radius:10px;margin-bottom:18px;line-height:1.4}
+.section{margin-top:18px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+button{padding:14px;border-radius:12px;border:0;font-weight:bold;cursor:pointer;font-size:15px}
+.add{background:#e6dcc6}
+.subbtn{background:#f1f1f1}
+.cta{width:100%;margin-top:18px;background:#3f6b3d;color:white;font-size:16px}
+.cta:disabled{background:#a9b7a8;cursor:not-allowed}
+.reset{width:100%;margin-top:10px;border:1px solid #ddd;background:white}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>코코바스켓 장바구니</h1>
+
+<div class="sub">
+담고 싶은 품목을 편하게 골라보세요.<br>
+금액은 자동으로 계산됩니다.
+</div>
+
+<div class="total">
+<div>지금 담은 금액</div>
+<div class="amount" id="amount">20,000원</div>
+<div style="margin-top:6px;color:#666;font-size:14px">
+당일 픽업 주문은 30,000원부터 가능해요
+</div>
+</div>
+
+<div class="msg" id="message">몇 가지만 더 담으면 주문 가능해요 🙂</div>
+
+<div class="section">
+<strong>추가</strong>
+
+<div class="btns">
+<button class="add" onclick="changeAmount(500)">+500</button>
+<button class="add" onclick="changeAmount(1000)">+1000</button>
+<button class="add" onclick="changeAmount(2000)">+2000</button>
+<button class="add" onclick="changeAmount(3000)">+3000</button>
+<button class="add" onclick="changeAmount(5000)">+5000</button>
+<button class="add" onclick="changeAmount(10000)">+10000</button>
+</div>
+
+</div>
+
+<div class="section">
+<strong>빼기</strong>
+
+<div class="btns">
+<button class="subbtn" onclick="changeAmount(-500)">-500</button>
+<button class="subbtn" onclick="changeAmount(-1000)">-1000</button>
+<button class="subbtn" onclick="changeAmount(-2000)">-2000</button>
+<button class="subbtn" onclick="changeAmount(-3000)">-3000</button>
+<button class="subbtn" onclick="changeAmount(-5000)">-5000</button>
+<button class="subbtn" onclick="changeAmount(-10000)">-10000</button>
+</div>
+
+</div>
+
+<button class="cta" id="orderBtn" disabled>주문서 작성하기</button>
+<button class="reset" onclick="resetCart()">장바구니 비우기</button>
+
+</div>
+
+<script>
+
+const BASE = 20000;
+const MIN = 30000;
+let extra = 0;
+
+function format(n){
+return n.toLocaleString("ko-KR")+"원";
+}
+
+function changeAmount(v){
+extra += v;
+if(BASE + extra < 0){extra = -BASE;}
+update();
+}
+
+function resetCart(){
+extra = 0;
+update();
+}
+
+function update(){
+
+const total = BASE + extra;
+const remain = MIN - total;
+
+document.getElementById("amount").textContent = format(total);
+
+const msg = document.getElementById("message");
+const btn = document.getElementById("orderBtn");
+
+if(total >= MIN){
+msg.innerHTML = "주문 가능한 금액입니다 🙂";
+btn.disabled = false;
+}else{
+msg.innerHTML = remain.toLocaleString("ko-KR")+"원 더 담으면 주문 가능해요";
+btn.disabled = true;
+}
+
+}
+
+update();
+
+</script>
+
+</body>
+</html>
