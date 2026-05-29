@@ -18,18 +18,18 @@
 
 ## 기술 스택
 
-- Frontend: HTML / JavaScript
-- Backend: Netlify Functions (서버리스)
-- Database: Supabase (PostgreSQL)
-- 배포: Netlify
+Frontend: HTML / JavaScript (모바일 주문 플랫폼)
+Backend: Supabase (고객 관리, 주문 처리)
+Database: Supabase (PostgreSQL)
+배포: Vercel
 
 ## 운영 중인 시스템
 
-- 고객 주문: https://cocobasket-coco.netlify.app
-- 운영자 관리: https://cocobasket-danji.netlify.app
+- 고객 주문: www.cocobasket.kr
+- 운영자 관리:https://cocobasket-danji.vercel.app
 
 ## 운영 현황
 
-- 운영 지역: 경기도 고양,운 일대
+- 운영 지역: 경기도 고양,운정,덕양구일대
 - 배송 방식: 지역별 요일배송
 - 주문 채널: 카카오 오픈채팅 + 자체 주문 시스템
