@@ -3693,7 +3693,8 @@ window.orderDirect = async function() {
         const price = (fi&&fi.flashPrice) ? fi.flashPrice : (itemMeta[id]?itemMeta[id].price:0);
         const sub = flashQtys[id] * price;
         const label = fi ? fi.label : (itemMeta[id]?itemMeta[id].name:id);
-        setLines.push('  [세트] ' + label + '  ' + sub.toLocaleString() + '원');
+        const qtyStr = flashQtys[id] > 1 ? " x" + flashQtys[id] + " = " : "  ";
+        setLines.push("  [세트] " + label + qtyStr + sub.toLocaleString() + "원");
       }
     }
   }
