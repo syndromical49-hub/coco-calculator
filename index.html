@@ -791,6 +791,7 @@
       <div><label class="fl">이름</label><input class="fi" id="inp-name" placeholder="홍길동" maxlength="10" oninput="checkFormReady()"></div>
       <div><label class="fl">닉네임 (선택)</label><input class="fi" id="inp-nick" placeholder="없으면 '없음' 입력" oninput="checkFormReady()" maxlength="15"></div>
       <div><label class="fl">연락처</label><input class="fi" type="tel" id="inp-phone" placeholder="010-0000-0000" maxlength="13" oninput="checkFormReady()"></div>
+      <div><label class="fl">소개인 닉네임 <span style="font-size:0.8em;color:#888;">(선택 · 이벤트 참여 시 입력)</span></label><input class="fi" id="inp-referrer" placeholder="예: 코코맘" maxlength="20"></div>
 
 
       <div id="form-warn" style="display:none;text-align:center;color:#c1121f;font-size:0.88rem;font-weight:700;padding:6px 0;">공란을 다 기입하셔야 합니다</div>
@@ -3738,7 +3739,7 @@ window.orderDirect = async function() {
     const ordRes = await fetch(SB_URL + '/rest/v1/orders', {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'},
-      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY })
+      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null })
     });
 
     // 중복(409/23505)이면 이미 접수된 주문 → 완료 화면만 표시
