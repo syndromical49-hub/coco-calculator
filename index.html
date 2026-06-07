@@ -3793,6 +3793,8 @@ window.orderDirect = async function() {
     const D = '━━━━━━━━━━';
     const nameStr = _tgBase + (u.nick ? ' (' + u.nick + ')' : '');
     const allItemLines = itemLines.concat(setLines);
+    const referrerVal = (document.getElementById('inp-referrer') && document.getElementById('inp-referrer').value.trim()) || '';
+    const referrerLine = referrerVal ? ('\n' + D + '\n🎁 소개인: ' + referrerVal) : '';
     const tgMsg = D + '\n'
       + '[주문] #' + orderNum + '\n'
       + D + '\n'
@@ -3803,7 +3805,8 @@ window.orderDirect = async function() {
       + D + '\n'
       + allItemLines.join('\n') + '\n'
       + D + '\n'
-      + '합계: ' + total.toLocaleString() + '원\n'
+      + '합계: ' + total.toLocaleString() + '원'
+      + referrerLine + '\n'
       + D;
     await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
       method:'POST', headers:{'Content-Type':'application/json'},
