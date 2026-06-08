@@ -2520,7 +2520,7 @@ async function orderDirect() {
   } catch(e) { console.warn('텔레그램 전송 실패', e); }
 
   // Supabase 저장
-  try {
+  try { // try-start
     const today = new Date().toISOString().slice(0,10);
     const orderRes = await fetch(SB_URL + '/rest/v1/orders', {
       method: 'POST',
@@ -3727,7 +3727,7 @@ window.orderDirect = async function() {
   // 텔레그램은 Supabase 저장 후 orderId 포함해서 전송
 
   // Supabase 저장
-  try {
+  try { // try-start
     const today = new Date().toISOString().slice(0,10);
     const phone = (u.phone||'').replace(/\D/g,'');
 
@@ -3782,7 +3782,14 @@ window.orderDirect = async function() {
     }
   } catch(e) {
     console.warn('Supabase 실패', e);
-    // Supabase 실패해도 완료 처리 (텔레그램은 계속 시도)
+  } finally {
+    // Supabase 성공/실패 무관하게 항상 완료 처리
+    if (submitBtn) { submitBtn.disabled=true; submitBtn.textContent='✅ 주문 접수 완료'; }
+    if (doneEl) {
+      const doneTotalEl2 = document.getElementById('done-total');
+      if (doneTotalEl2) doneTotalEl2.textContent = total.toLocaleString() + '원';
+      doneEl.style.display='flex'; doneEl.style.flexDirection='column';
+    }
   }
 
   // 텔레그램 새 형식 전송
@@ -3812,14 +3819,6 @@ window.orderDirect = async function() {
       body: JSON.stringify({ chat_id: TG_CHAT, text: tgMsg })
     });
   } catch(e) { console.warn('텔레그램 실패', e); }
-
-  // 완료 처리 (항상 실행)
-  if (submitBtn) { submitBtn.disabled=true; submitBtn.textContent='✅ 주문 접수 완료'; }
-  if (doneEl) {
-    const doneTotalEl = document.getElementById('done-total');
-    if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
-    doneEl.style.display='flex'; doneEl.style.flexDirection='column';
-  }
   showToast('✅ 주문이 접수됐어요!');
 };
 
