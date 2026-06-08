@@ -3780,7 +3780,10 @@ window.orderDirect = async function() {
         }).catch(function(e){ console.warn('item 저장 실패',e); });
       }
     }
-  } catch(e) { console.warn('Supabase 실패', e); }
+  } catch(e) {
+    console.warn('Supabase 실패', e);
+    // Supabase 실패해도 완료 처리 (텔레그램은 계속 시도)
+  }
 
   // 텔레그램 새 형식 전송
   try {
@@ -3810,12 +3813,11 @@ window.orderDirect = async function() {
     });
   } catch(e) { console.warn('텔레그램 실패', e); }
 
+  // 완료 처리 (항상 실행)
   if (submitBtn) { submitBtn.disabled=true; submitBtn.textContent='✅ 주문 접수 완료'; }
   if (doneEl) {
-    // 합계 금액 주입
-    const totalEl = document.getElementById('delivery-total');
     const doneTotalEl = document.getElementById('done-total');
-    if (doneTotalEl && totalEl) doneTotalEl.textContent = totalEl.textContent;
+    if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
     doneEl.style.display='flex'; doneEl.style.flexDirection='column';
   }
   showToast('✅ 주문이 접수됐어요!');
