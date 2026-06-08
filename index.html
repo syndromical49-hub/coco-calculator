@@ -348,9 +348,9 @@
           <div style="background:linear-gradient(135deg,rgba(255,160,0,0.85),rgba(220,100,0,0.75));border:2px solid #ffd166;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(4px);" onclick="heroAddItem('f_mango_small')">
             <span style="font-size:20px;flex-shrink:0;">🍉</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:14px;font-weight:900;color:#fff;line-height:1.3;word-break:keep-all;">망고수박 1통<br><span style="font-size:11px;color:#fff3b0;">2kg 전후(1.7~2kg) · 당도보장</span></div>
+              <div style="font-size:14px;font-weight:900;color:#fff;line-height:1.3;word-break:keep-all;">망고수박 1통<br><span style="font-size:11px;color:#fff3b0;">2.5kg 전후 · 당도완전보장</span></div>
             </div>
-            <div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px;white-space:nowrap;">12,900<span style="font-size:11px;">원</span></div>
+            <div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px;white-space:nowrap;">13,900<span style="font-size:11px;">원</span></div>
           </div>
           <!-- 델라웨어 2송이 -->
           <div style="background:linear-gradient(135deg,rgba(255,160,0,0.85),rgba(220,100,0,0.75));border:2px solid #ffd166;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(4px);">
@@ -473,12 +473,13 @@
             </div>
             <div style="font-size:18px;font-weight:900;color:#86efac;white-space:nowrap;letter-spacing:-0.5px;">1,500<span style="font-size:10px;">원</span></div>
           </div>
-          <div style="background:rgba(55,185,85,0.2);border:1px solid rgba(75,200,105,0.5);border-radius:10px;padding:7px 10px;display:flex;align-items:center;gap:7px;backdrop-filter:blur(4px);">
+          <div style="background:linear-gradient(135deg,rgba(255,200,0,0.25),rgba(255,140,0,0.2));border:2px solid #ffd700;border-radius:10px;padding:7px 10px;display:flex;align-items:center;gap:7px;backdrop-filter:blur(4px);position:relative;">
+            <span style="position:absolute;top:-8px;left:8px;background:#ffd700;color:#1a0f00;font-size:9px;font-weight:900;padding:1px 6px;border-radius:8px;letter-spacing:0.5px;">🔥 특가</span>
             <span style="font-size:19px;flex-shrink:0;">🥒</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">진노각<br>1개</div>
+              <div style="font-size:12px;font-weight:900;color:#fff;line-height:1.3;">진노각(토종노각)<br><span style="font-size:10px;color:#ffd700;">3개 묶음</span></div>
             </div>
-            <div style="font-size:18px;font-weight:900;color:#86efac;white-space:nowrap;letter-spacing:-0.5px;">3,000<span style="font-size:10px;">원</span></div>
+            <div style="font-size:18px;font-weight:900;color:#ffd700;white-space:nowrap;letter-spacing:-0.5px;">8,000<span style="font-size:10px;">원</span></div>
           </div>
         </div>
 
@@ -1509,8 +1510,7 @@ const fruitItems = [
   { id:'f55', num:'#55', name:'🍅 방울토마토 1팩',   desc:'오감·세도, 아삭하고 달아요',            orig:null,  price:4900  },
   { id:'v36', num:'36', name:'🍅 찰토마토 1봉',          desc:'달고 아삭한 찰토마토',  price:4000 },
   { id:'f_berry', num:'🍓', name:'🍓 산딸기 500g 1박스', desc:'채팅주문 · 신선도', price:12000, chatOrder:true },
-  { id:'f_odi',   num:'🫐', name:'🫐 오디 500g 1박스',   desc:'채팅주문 · 신선도', price:7000, chatOrder:true },
-  { id:'f_mango_small', todaySpecial:true, num:'🍉', name:'🍉 망고수박(블랙) 1통 2kg전후(1.7~2kg)', desc:'겉바속노 · 당도보장', price:12900 },
+  { id:'f_mango_small', todaySpecial:true, num:'🍉', name:'🍉 망고수박(블랙) 1통 2.5kg전후', desc:'당도완전보장', price:13900 },
 
 ];
 
@@ -1529,18 +1529,17 @@ const vegItems = [
   { id:'v2b', num:'묶음', name:'🧅 양파 2봉',          price:3500, orig:4000, todaySpecial:true, badge:'묶음특가', badgeColor:'#c1121f' },
   { id:'v3',  num:'3',  name:'고구마 1봉',             price:4000 },
   { id:'v4',  num:'4',  name:'당근 1봉',              price:2000 },
-  { id:'v4p', num:'4',  name:'대파 1단',              price:1500 },
+  { id:'v4p', num:'4',  name:'대파 1단',              price:2000 },
   { id:'v5',  num:'5',  name:'햇무 1개',             price:2000 },
-  { id:'v5b', num:'5',  name:'햇무 2개',             price:3000, badge:'묶음특가', badgeColor:'#c1121f' },
   { id:'v6',  num:'🥬', name:'🥬 알배기배추 1통',          price:1000, todaySpecial:true, badge:'특가' },
-    { id:'v_jinonkak', num:'진', name:'진노각 1개',          price:3000 },
+    { id:'v_jinonkak', num:'진', name:'진노각(토종노각) 3개',          price:8000, todaySpecial:true, badge:'특가' },
+    { id:'v_jinonkak1', num:'진', name:'진노각(토종노각) 1개',          price:3000, todaySpecial:false },
   { id:'v7',  num:'7',  name:'양배추 1/2',             price:2000 },
   { id:'v8',  num:'8',  name:'청양고추 1봉',            price:2000 },
   { id:'v9',  num:'9',  name:'꽈리고추 1봉',            price:2000 },
   { id:'v10', num:'10', name:'아삭이고추 1봉',          price:2000 },
 
   { id:'v13', num:'13', name:'애호박 1개',              price:1000 },
-  { id:'v13b',num:'13', name:'애호박 2개',              price:1500, badge:'묶음특가', badgeColor:'#c1121f' },
   { id:'v14', num:'14', name:'브로콜리 1개',             price:2000 },
   { id:'v15', num:'16', name:'양상추 1봉',              price:2500 },
   { id:'v16', num:'17', name:'미나리 1봉',              price:2000 },
@@ -3375,12 +3374,11 @@ function renderFlashSection() {
 const FLASH_ITEMS = [
 
 
-  { id:'f_mango_small', label:'망고수박(블랙) 1통 2kg전후(당도보장)', max:9999, flashPrice:12900, badge:'🍉 겉바속노 · 당도보장' },
+  { id:'f_mango_small', label:'망고수박(블랙) 1통 2.5kg전후', max:9999, flashPrice:13900, badge:'🍉 당도완전보장' },
   { id:'f_big',       label:'대소수박 9kg(복불복제로)+망고스틴 2망', max:9999, flashPrice:43000 },
   { id:'f_black',     label:'대소수박(복불복제로) 8kg+망고스틴 2망',       max:9999, flashPrice:41900 },
   { id:'f_mangosteen1', label:'망고스틴 1망(5입)', max:9999, flashPrice:7900, badge:'🍈 생망고스틴 · 한정수량' },
   { id:'f_mangosteen2', label:'망고스틴 2망(10입) 특가', max:9999, flashPrice:14900, origPrice:15800, badge:'🍈 생망고스틴 · 2망 특가' },
-  { id:'f_berry_set', label:'🍓🫐 산딸기 500g + 오디 500g 세트 (채팅주문 · 신선도)', max:9999, flashPrice:18000, origPrice:19000, badge:'💬 채팅주문 · 신선도', chatOrder:true },
   { id:'f_grape2',    label:'델라웨어 포도(고당도) 2송이 (400g)',               max:9999, flashPrice:9000 },
   { id:'v36b',        label:'찰토마토 2봉',                                max:9999, flashPrice:6000,  origPrice:8000 },
   { id:'f61',         label:'흑토마토(까메오) 2봉',                         max:9999, flashPrice:7900,  origPrice:10000 },
