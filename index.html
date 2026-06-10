@@ -379,56 +379,38 @@
             <div style="font-size:20px;font-weight:900;color:#ffd166;letter-spacing:-0.5px;white-space:nowrap;">41,900<span style="font-size:11px;">원</span></div>
           </div>
 
-          <!-- 망고스틴 -->
-          <div style="position:relative;background:linear-gradient(135deg,#8b005a,#4a0040);border:2.5px solid #ff4db8;border-radius:14px;padding:5px 8px;backdrop-filter:blur(6px);box-shadow:0 0 20px rgba(255,60,180,0.6),0 0 40px rgba(255,60,180,0.2);overflow:hidden;">
-            <div style="position:absolute;top:-10px;right:-10px;font-size:40px;opacity:0.12;pointer-events:none;">🍈</div>
-            <div style="display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:4px;">
-              <span style="font-size:13px;">🍈</span>
-              <span style="font-size:12px;font-weight:900;color:#ff80cc;letter-spacing:1px;">생망고스틴</span>
-              <span style="background:#ff4db8;color:#fff;font-size:9px;font-weight:900;padding:1px 6px;border-radius:20px;">한정수량</span>
+          <!-- 망고스틴 + 블루베리+델라웨어 2열 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+            <!-- 망고스틴 2망 -->
+            <div style="position:relative;background:linear-gradient(135deg,#8b005a,#4a0040);border:2px solid #ff4db8;border-radius:7px;padding:7px 3px 4px;overflow:hidden;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0px;" onclick="heroAddItem('f_mangosteen2')">
+              <div style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);background:#ffd700;color:#7a4000;font-size:7px;font-weight:900;padding:1px 5px;border-radius:20px;white-space:nowrap;">🔥 BEST</div>
+              <div style="font-size:12px;font-weight:900;color:#ff80cc;">🍈 생망고스틴</div>
+              <div style="font-size:10px;font-weight:700;color:#ffe066;">2망 (10입)</div>
+              <div style="font-size:8px;color:rgba(255,200,150,0.6);text-decoration:line-through;">15,800원</div>
+              <div style="font-size:13px;font-weight:900;color:#ffd166;line-height:1.2;">14,900<span style="font-size:8px;">원</span></div>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
-              <div style="background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,180,220,0.5);border-radius:8px;padding:4px 4px;text-align:center;cursor:pointer;" onclick="heroAddItem('f_mangosteen1')">
-                <div style="font-size:11px;font-weight:700;color:#ffccee;margin-bottom:1px;">1망 (5입)</div>
-                <div style="font-size:28px;font-weight:900;color:#fff;line-height:1;">7,900</div>
-                <div style="font-size:11px;color:#ffccee;">원</div>
-              </div>
-              <div style="background:linear-gradient(135deg,rgba(255,200,0,0.3),rgba(255,130,0,0.25));border:2.5px solid #ffd700;border-radius:8px;padding:4px 4px;text-align:center;cursor:pointer;position:relative;" onclick="heroAddItem('f_mangosteen2')">
-                <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#ffd700;color:#7a4000;font-size:9px;font-weight:900;padding:1px 7px;border-radius:20px;white-space:nowrap;">🔥 BEST</div>
-                <div style="font-size:11px;font-weight:700;color:#ffe066;margin-bottom:1px;">2망 (10입)</div>
-                <div style="font-size:9px;color:rgba(255,200,150,0.6);text-decoration:line-through;">15,800원</div>
-                <div style="font-size:28px;font-weight:900;color:#ffd166;line-height:1;">14,900</div>
-                <div style="font-size:11px;color:#ffe066;">원</div>
-              </div>
+            <!-- 블루베리+델라웨어 -->
+            <div style="background:linear-gradient(135deg,rgba(200,40,0,0.55),rgba(140,15,0,0.45));border:1px solid rgba(255,90,40,0.6);border-radius:7px;padding:4px 3px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0px;cursor:pointer;text-align:center;" onclick="heroAddItem('f_blue_grape')">
+              <span style="font-size:11px;">🫐🍇</span>
+              <div style="font-size:10px;font-weight:900;color:#fff;line-height:1.2;word-break:keep-all;">블루베리 왕특 2팩<br>+ 델라웨어 2송이</div>
+              <div style="font-size:8px;color:rgba(255,200,180,0.6);text-decoration:line-through;">17,800원</div>
+              <div style="font-size:13px;font-weight:900;color:#ffd166;letter-spacing:-0.5px;">16,500<span style="font-size:8px;">원</span></div>
             </div>
-          </div>
-
-
-
-
-          <!-- 블루베리+델라웨어 -->
-          <div style="background:linear-gradient(135deg,rgba(200,40,0,0.55),rgba(140,15,0,0.45));border:1px solid rgba(255,90,40,0.6);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(4px);" onclick="heroAddItem('f_blue_grape')" style="cursor:pointer;">
-            <span style="font-size:19px;flex-shrink:0;">🫐🍇</span>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;word-break:keep-all;">블루베리 왕특 2팩<br>+ 델라웨어 2송이</div>
-              <div style="font-size:11px;color:rgba(255,200,180,0.6);text-decoration:line-through;margin-top:1px;">17,800원</div>
-            </div>
-            <div style="font-size:22px;font-weight:900;color:#ffd166;letter-spacing:-0.5px;white-space:nowrap;">16,500<span style="font-size:12px;">원</span></div>
           </div>
 
 
           <!-- 토마토 2열 -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
-            <div style="background:linear-gradient(135deg,rgba(200,40,0,0.55),rgba(140,15,0,0.45));border:1px solid rgba(255,90,40,0.6);border-radius:8px;padding:3px 5px;display:flex;flex-direction:column;gap:0px;backdrop-filter:blur(4px);">
-              <span style="font-size:13px;">🍅</span>
+            <div style="background:linear-gradient(135deg,rgba(200,40,0,0.55),rgba(140,15,0,0.45));border:1px solid rgba(255,90,40,0.6);border-radius:7px;padding:2px 4px;display:flex;flex-direction:column;gap:0px;">
+              <span style="font-size:10px;">🍅</span>
               <div style="font-size:12px;font-weight:900;color:#fff;line-height:1.2;word-break:keep-all;">찰토마토 2봉</div>
-              <div style="font-size:10px;color:rgba(255,200,180,0.6);text-decoration:line-through;">8,000원</div>
+              <div style="font-size:9px;color:rgba(255,200,180,0.6);text-decoration:line-through;">8,000원</div>
               <div style="font-size:15px;font-weight:900;color:#ffd166;white-space:nowrap;">6,000<span style="font-size:9px;">원</span></div>
             </div>
-            <div style="background:linear-gradient(135deg,rgba(200,40,0,0.55),rgba(140,15,0,0.45));border:1px solid rgba(255,90,40,0.6);border-radius:8px;padding:3px 5px;display:flex;flex-direction:column;gap:0px;backdrop-filter:blur(4px);">
-              <span style="font-size:13px;">🍅</span>
+            <div style="background:linear-gradient(135deg,rgba(200,40,0,0.55),rgba(140,15,0,0.45));border:1px solid rgba(255,90,40,0.6);border-radius:7px;padding:2px 4px;display:flex;flex-direction:column;gap:0px;">
+              <span style="font-size:10px;">🍅</span>
               <div style="font-size:12px;font-weight:900;color:#fff;line-height:1.2;word-break:keep-all;">흑토마토(까메오) 2봉</div>
-              <div style="font-size:10px;color:rgba(255,200,180,0.6);text-decoration:line-through;">10,000원</div>
+              <div style="font-size:9px;color:rgba(255,200,180,0.6);text-decoration:line-through;">10,000원</div>
               <div style="font-size:15px;font-weight:900;color:#ffd166;white-space:nowrap;">7,900<span style="font-size:9px;">원</span></div>
             </div>
           </div>
@@ -465,6 +447,16 @@
 
         <!-- 채소 -->
         <div style="font-size:11px;font-weight:900;color:rgba(140,245,165,0.95);letter-spacing:1px;padding:0 2px;margin-top:2px;">🥬 채소</div>
+        <!-- 베니하루카 -->
+        <div style="position:relative;background:linear-gradient(135deg,rgba(140,80,0,0.55),rgba(90,40,0,0.5));border:2px solid #c1121f;border-radius:10px;padding:7px 10px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(4px);margin-bottom:3px;cursor:pointer;" onclick="heroAddItem('ts_goguma3kg')">
+          <span style="position:absolute;top:-8px;left:8px;background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:1px 6px;border-radius:8px;letter-spacing:0.5px;">🔥 초특가</span>
+          <span style="font-size:19px;flex-shrink:0;">🍠</span>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">베니하루카 고구마<br><span style="font-size:10px;color:#ffd700;">(당도최고조) 3kg</span></div>
+            <div style="font-size:9px;color:rgba(255,200,150,0.6);text-decoration:line-through;">15,000원</div>
+          </div>
+          <div style="font-size:20px;font-weight:900;color:#c1121f;white-space:nowrap;letter-spacing:-0.5px;">13,500<span style="font-size:10px;">원</span></div>
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
           <div style="background:rgba(55,185,85,0.2);border:1px solid rgba(75,200,105,0.5);border-radius:10px;padding:7px 10px;display:flex;align-items:center;gap:7px;backdrop-filter:blur(4px);">
             <span style="font-size:19px;flex-shrink:0;">🥒</span>
@@ -1521,12 +1513,13 @@ const vegItems = [
 
     { id:'ts_radish',  todaySpecial:true, num:'🌿', name:'🌿 햇무 2개',     price:3000 },
   // ── 기존 품목 ──
+  { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카 고구마(당도최고조) 3kg', desc:'베니하루카 고구마(당도 최고조) 3kg', orig:15000, price:13500, badge:'초특가', badgeColor:'#c1121f' },
+  { id:'ts_goguma1', todaySpecial:false, num:'🍠', name:'🍠 고당도 베니하루카 고구마 1봉', desc:'고당도 베니하루카(당도 최고조)', price:5000 },
   { id:'ts_oigaji', num:'교차', todaySpecial:true, name:'🥒🍆 오이·가지 6개(교차가능)', desc:'오이·가지 교차 선택 가능', price:2900, types:['오이','가지'], maxPick:6, typeUnit:'개' },
   { id:'v1',  num:'1',  name:'감자 1봉',              price:4000 },
-  { id:'ts_gamguma', todaySpecial:true, num:'🥔🍠', name:'🥔🍠 감자·고구마 2봉', desc:'햇감자(수미)·고당도(토율)고구마 섞기 가능 2봉', orig: 8000, price: 6900, badge:'교차', badgeColor:'#2d6a9f', types:['햇감자(수미)','고당도(토율)고구마'], maxPick:2 },
+  { id:'ts_gamja2', todaySpecial:true, num:'🥔', name:'🥔 감자 2봉', desc:'햇감자(수미) 2봉', orig:8000, price:6900, badge:'특가', badgeColor:'#2d6a9f' },
   { id:'v2',  num:'2',  name:'양파 1봉',              price:2000 },
   { id:'v2b', num:'묶음', name:'🧅 양파 2봉',          price:3500, orig:4000, todaySpecial:true, badge:'묶음특가', badgeColor:'#c1121f' },
-  { id:'v3',  num:'3',  name:'고구마 1봉',             price:4000 },
   { id:'v4',  num:'4',  name:'당근 1봉',              price:2000 },
   { id:'v4p', num:'4',  name:'대파 1단',              price:2000 },
   { id:'v5',  num:'5',  name:'햇무 1개',             price:2000 },
@@ -3376,7 +3369,6 @@ const FLASH_ITEMS = [
   { id:'f_mango_small', label:'망고수박(블랙) 1통 2.5kg전후', max:9999, flashPrice:13900, badge:'🍉 당도완전보장' },
   { id:'f_big',       label:'대소수박 9kg(복불복제로)+망고스틴 2망', max:9999, flashPrice:43000 },
   { id:'f_black',     label:'대소수박(복불복제로) 8kg+망고스틴 2망',       max:9999, flashPrice:41900 },
-  { id:'f_mangosteen1', label:'망고스틴 1망(5입)', max:9999, flashPrice:7900, badge:'🍈 생망고스틴 · 한정수량' },
   { id:'f_mangosteen2', label:'망고스틴 2망(10입) 특가', max:9999, flashPrice:14900, origPrice:15800, badge:'🍈 생망고스틴 · 2망 특가' },
   { id:'f_grape2',    label:'델라웨어 포도(고당도) 2송이 (400g)',               max:9999, flashPrice:9000 },
   { id:'v36b',        label:'찰토마토 2봉',                                max:9999, flashPrice:6000,  origPrice:8000 },
