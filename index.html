@@ -2501,12 +2501,13 @@ async function orderDirect() {
   // 텔레그램 알림 (직접 호출)
   const tgMsg = '🧺 코코바스켓 새 주문!\n\n' + text;
   try {
-    await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
+    const tgRes = await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: TG_CHAT, text: tgMsg })
     });
-  } catch(e) { console.warn('텔레그램 전송 실패', e); }
+    if (!tgRes.ok) { window._tgFailed = true; }
+  } catch(e) { console.warn('텔레그램 전송 실패', e); window._tgFailed = true; }
 
   // Supabase 저장
   try { // try-start
@@ -3802,11 +3803,23 @@ window.orderDirect = async function() {
       + '합계: ' + total.toLocaleString() + '원'
       + referrerLine + '\n'
       + D;
-    await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
+    const tgRes2 = await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ chat_id: TG_CHAT, text: tgMsg })
     });
-  } catch(e) { console.warn('텔레그램 실패', e); }
+    if (!tgRes2.ok) { window._tgFailed = true; }
+  } catch(e) { console.warn('텔레그램 실패', e); window._tgFailed = true; }
+  // tg 실패시 tg_sent=false 업데이트
+  if (window._tgFailed && window._lastOrderId) {
+    try {
+      await fetch(SB_URL + '/rest/v1/orders?id=eq.' + window._lastOrderId, {
+        method: 'PATCH',
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tg_sent: false })
+      });
+    } catch(e) { console.warn('tg_sent 업데이트 실패', e); }
+    window._tgFailed = false;
+  }
   showToast('✅ 주문이 접수됐어요!');
 };
 
