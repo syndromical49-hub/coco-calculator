@@ -309,6 +309,7 @@
 .set-card .set-stepper { display:flex;align-items:center;gap:6px;margin-top:4px;justify-content:flex-end; }
 
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 <!-- 마감 오버레이 -->
@@ -323,6 +324,10 @@
     const o = document.getElementById('closed-overlay');
     o.style.display='flex';
     o.style.flexDirection='column';
+  }
+  if(new URLSearchParams(location.search).get('admin')==='1'){
+    const b = document.getElementById('hero-save-btn');
+    if (b) b.style.display='block';
   }
 </script>
 
@@ -340,7 +345,7 @@
 
 <!-- ① 지역 선택 -->
 <div class="screen active" id="s1">
-  <div style="position:relative;flex:1;display:flex;flex-direction:column;min-height:100svh;">
+  <div id="hero-capture" style="position:relative;flex:1;display:flex;flex-direction:column;min-height:100svh;">
     <div id="s0-bg" style="position:absolute;inset:0;background-size:cover;background-position:center 35%;filter:brightness(0.55) saturate(1.15) blur(3px);z-index:0;"></div>
     <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(10,6,0,0.08) 0%,rgba(10,6,0,0.08) 30%,rgba(10,6,0,0.7) 60%,rgba(10,6,0,0.97) 100%);"></div>
     <div style="position:relative;z-index:10;padding:8px 20px 0;display:flex;justify-content:center;align-items:center;">
@@ -348,6 +353,7 @@
         <div style="font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:16px;color:#fff;letter-spacing:-0.3px;line-height:1.1;">코코바스켓 현관장보기</div>
         <div style="font-size:10px;color:rgba(255,255,255,0.65);letter-spacing:0.12em;font-weight:700;margin-top:1px;">SINCE 2026.03</div>
       </div>
+      <button id="hero-save-btn" onclick="saveHeroImage()" style="display:none;position:absolute;right:14px;top:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:8px;cursor:pointer;z-index:20;">📷 이미지 저장</button>
     </div>
     <!-- ── 스크롤 가능 콘텐츠 영역 ── -->
     <div style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;padding:6px 16px 40px;overflow-y:auto;flex:1;">
@@ -563,6 +569,14 @@
           </div>
         </div>
         <div id="hero-schedule-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;"></div>
+      </div>
+
+      <!-- 카카오 오픈채팅 -->
+      <div style="margin-top:14px;text-align:center;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);font-weight:600;margin-bottom:6px;">💬 주문이 어렵다면?</div>
+        <a href="https://open.kakao.com/o/gJmCsqoi" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#FEE500;color:#3c1e1e;font-size:13px;font-weight:800;padding:8px 18px;border-radius:100px;text-decoration:none;">
+          🟡 카카오 오픈채팅 상담하기
+        </a>
       </div>
 
     </div>
@@ -1069,6 +1083,33 @@
 </div>
 <div class="toast" id="toast"></div>
 
+<script>
+// ===== 첫화면 이미지 저장 =====
+function saveHeroImage() {
+  const target = document.getElementById('hero-capture');
+  const btn = document.getElementById('hero-save-btn');
+  if (!target || !window.html2canvas) return;
+  if (btn) btn.style.visibility = 'hidden';
+  html2canvas(target, {
+    useCORS: true,
+    backgroundColor: '#0d0700',
+    scale: 2,
+    windowWidth: target.scrollWidth,
+    windowHeight: target.scrollHeight,
+    height: target.scrollHeight,
+    scrollY: 0
+  }).then(canvas => {
+    if (btn) btn.style.visibility = 'visible';
+    const link = document.createElement('a');
+    link.download = '코코바스켓_오늘의특가_' + new Date().toISOString().slice(0,10) + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }).catch(err => {
+    if (btn) btn.style.visibility = 'visible';
+    alert('이미지 저장에 실패했어요: ' + err.message);
+  });
+}
+</script>
 <script>
 // ===== 고객 DB (재주문 자동기입용) =====
 const CUSTOMER_DB = [
