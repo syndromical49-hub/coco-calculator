@@ -505,8 +505,8 @@
         <!-- 애호박 / 진노각 -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
           <div style="background:rgba(75,200,105,0.18);border:1px solid rgba(75,200,105,0.45);border-radius:8px;padding:4px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;">
-            <div style="font-size:10px;font-weight:700;color:#fff;">🥒 애호박 2개</div>
-            <div style="font-size:14px;font-weight:900;color:#86efac;">1,000<span style="font-size:8px;">원</span></div>
+            <div style="font-size:10px;font-weight:700;color:#fff;">🥒 애호박 1개</div>
+            <div style="font-size:14px;font-weight:900;color:#86efac;">900<span style="font-size:8px;">원</span></div>
           </div>
           <div style="position:relative;background:rgba(255,205,65,0.18);border:1px solid rgba(255,205,65,0.5);border-radius:8px;padding:4px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;">
             <span style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);background:#ffd700;color:#1a0f00;font-size:7px;font-weight:900;padding:1px 5px;border-radius:8px;white-space:nowrap;">🔥 특가</span>
@@ -1623,7 +1623,7 @@ const fruitItems = [
 const vegItems = [
   // ── 🔥 오늘의 채소 특가 ──
 
-  { id:'ts_zucchini',todaySpecial:true, num:'🥒', name:'🥒 애호박 2개',     price: 1000 },
+  { id:'ts_zucchini',todaySpecial:true, num:'🥒', name:'🥒 애호박 1개',     price: 900 },
 
   // ── 기존 품목 ──
   { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 3kg', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 3kg', orig:15000, price:13500, badge:'초특가', badgeColor:'#c1121f' },
@@ -1639,7 +1639,8 @@ const vegItems = [
   { id:'v4',  num:'4',  name:'당근 1봉',              price:3000 },
   { id:'v4p', num:'4',  name:'대파 1단',              price:2000 },
   { id:'v5',  num:'5',  name:'햇무 1개',             price:2000 },
-  { id:'v6',  num:'🥬', name:'🥬 알배기배추 2개',          price:2000, todaySpecial:true, badge:'특가' },
+  { id:'v6',  num:'🥬', name:'🥬 알배기배추 1개',          price:2000, todaySpecial:true, badge:'특가' },
+  { id:'v6b', num:'🥬', name:'🥬 알배기배추 2개',          price:3000, todaySpecial:true, badge:'특가' },
     { id:'v_jinonkak', num:'진', name:'진노각(토종노각) 3개',          price:8000, todaySpecial:true, badge:'특가' },
     { id:'v_jinonkak1', num:'진', name:'진노각(토종노각) 1개',          price:3000, todaySpecial:false },
   { id:'v7',  num:'7',  name:'양배추 1/2',             price:2000 },
@@ -1647,7 +1648,7 @@ const vegItems = [
   { id:'v9',  num:'9',  name:'꽈리고추 1봉',            price:2000 },
   { id:'v10', num:'10', name:'아삭이고추 1봉',          price:2000 },
 
-  { id:'v13', num:'13', name:'애호박 1개',              price:1000 },
+  { id:'v13', num:'13', name:'애호박 1개',              price:900 },
   { id:'v14', num:'14', name:'브로콜리 1개',             price:2000 },
   { id:'v15', num:'16', name:'양상추 1봉',              price:2500 },
   { id:'v16', num:'17', name:'미나리 1봉',              price:2000 },
