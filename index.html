@@ -2539,6 +2539,29 @@ function heroAddItem(id) {
 }
 
 function changeQty(id, delta, price, max) {
+  // 16강기원 세트 ↔ 특란 5,900원 중복 방지 (모든 진입경로 공통)
+  if (delta > 0 && typeof WORLDCUP_IDS !== 'undefined') {
+    const isWc = WORLDCUP_IDS.indexOf(id) !== -1;
+    if (isWc && (qtys['v34'] || 0) > 0) {
+      qtys['v34'] = 0;
+      const elv34 = document.getElementById('qty-v34');
+      if (elv34) elv34.textContent = '0';
+      showToast('특란 30구는 16강기원 할인과 중복 적용되지 않아 제외했어요');
+    }
+    if (id === 'v34' && WORLDCUP_IDS.some(function(wid){ return (qtys[wid]||0) > 0; })) {
+      showToast('16강기원 할인과 특란 특가는 중복 적용되지 않아요');
+      return;
+    }
+    if (isWc) {
+      WORLDCUP_IDS.forEach(function(wid) {
+        if (wid !== id && (qtys[wid] || 0) > 0) {
+          qtys[wid] = 0;
+          const elwc = document.getElementById('qty-' + wid);
+          if (elwc) elwc.textContent = '0';
+        }
+      });
+    }
+  }
   // 타입피커 품목 (오이·가지, 감자·고구마, 잎채소 등) - 수량 미선택 시 안내
   if (delta > 0 && typePickPerQty[id]) {
     const picked = typeChoices[id] ? Object.values(typeChoices[id]).reduce((a,b)=>a+b,0) : 0;
