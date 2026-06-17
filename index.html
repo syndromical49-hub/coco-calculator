@@ -359,70 +359,8 @@
     <!-- ── 스크롤 가능 콘텐츠 영역 ── -->
     <div style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;padding:6px 16px 40px;overflow-y:auto;flex:1;">
 
-      <!-- ── 🇰🇷 월드컵 16강기원 이벤트 화면 (6/17 09:00까지만) ── -->
-      <div id="worldcup-page" style="width:100%;max-width:440px;margin-bottom:8px;">
-        <div style="background:linear-gradient(135deg,#0c2340,#001a3d);border:2px solid #c1121f;border-radius:14px;padding:18px 14px;text-align:center;position:relative;overflow:hidden;">
-          <div style="font-size:11px;font-weight:900;color:#ffd166;letter-spacing:1px;margin-bottom:4px;">🔥 단 하루 · 6월 17일 오전 9시까지</div>
-          <div style="font-size:18px;font-weight:900;color:#fff;line-height:1.4;">🇰🇷 대한민국 16강 기원!</div>
-          <div style="font-size:13px;font-weight:700;color:#fff;margin-top:8px;line-height:1.5;">🍒🍉🍑 체리 + 수박 + 신비복숭아<br>3종 함께 구매 시</div>
-          <div style="font-size:25px;font-weight:900;color:#ffd166;margin-top:10px;letter-spacing:-0.5px;">💥 10,000원 즉시 할인 💥</div>
-          <div style="font-size:9px;color:rgba(255,255,255,0.5);margin-top:4px;">* 계란 특가와는 중복 적용되지 않습니다</div>
-          <div style="margin-top:14px;background:rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;cursor:pointer;" onclick="heroAddItem('set_worldcup')">
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,0.85);font-weight:700;">
-              <span>워싱턴체리 500g 14,900원</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,0.85);font-weight:700;margin-top:4px;">
-              <span>대소수박(9kg) 26,900원</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,0.85);font-weight:700;margin-top:4px;">
-              <span>신비복숭아 800g 9,900원</span>
-            </div>
-            <div style="border-top:1px solid rgba(255,255,255,0.2);margin:10px 0;"></div>
-            <div style="text-align:center;">
-              <span style="font-size:13px;font-weight:900;color:#fff;">👆 탭하면 장바구니에 담겨요</span>
-              <div style="margin-top:8px;">
-                <span style="font-size:18px;color:rgba(255,255,255,0.65);text-decoration:line-through;">51,700원</span>
-              </div>
-              <div style="font-size:32px;font-weight:900;color:#ffd166;letter-spacing:-0.5px;margin-top:2px;">41,700원</div>
-            </div>
-          </div>
-
-          <div style="margin-top:10px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);">🎉 2종만 담아도 할인돼요 · 👆 탭하면 장바구니에 담겨요</div>
-          <div style="margin-top:6px;display:flex;flex-direction:column;gap:6px;">
-            <div style="background:rgba(255,255,255,0.08);border-radius:9px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="heroAddItem('wc_cherry_sw')">
-              <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.9);">🍒체리+🍉수박</span>
-              <span style="font-size:14px;font-weight:900;color:#ffd166;">-4,000원 → 37,800원</span>
-            </div>
-            <div style="background:rgba(255,255,255,0.08);border-radius:9px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="heroAddItem('wc_cherry_sinbi')">
-              <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.9);">🍒체리+🍑신비복숭아</span>
-              <span style="font-size:14px;font-weight:900;color:#ffd166;">-4,000원 → 20,800원</span>
-            </div>
-            <div style="background:rgba(255,255,255,0.08);border-radius:9px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="heroAddItem('wc_sw_sinbi')">
-              <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.9);">🍉수박+🍑신비복숭아</span>
-              <span style="font-size:14px;font-weight:900;color:#ffd166;">-4,000원 → 32,800원</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 특란 30구 (3만원 이상 구매시 5,900원) -->
-        <div style="background:linear-gradient(135deg,rgba(255,210,65,0.25),rgba(255,180,30,0.18));border:2px solid #ffd700;border-radius:12px;padding:12px 14px;margin-top:10px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="heroAddItem('v34')">
-          <span style="font-size:24px;flex-shrink:0;">🥚</span>
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">특란 30구 1판</div>
-            <div style="font-size:10px;color:#ffd700;font-weight:700;margin-top:1px;">3만원 이상 구매시 · 선착순</div>
-          </div>
-          <div style="text-align:right;white-space:nowrap;">
-            <div style="font-size:14px;color:rgba(255,255,255,0.65);text-decoration:line-through;">8,500원</div>
-            <div style="font-size:28px;font-weight:900;color:#ffd700;letter-spacing:-0.5px;">5,900<span style="font-size:12px;">원</span></div>
-          </div>
-        </div>
-        <div style="text-align:center;font-size:10px;color:rgba(255,255,255,0.55);margin-top:10px;">👆 클릭하면 장바구니에 담겨요</div>
-
-        <button onclick="document.getElementById('worldcup-page').style.display='none';document.getElementById('normal-page').style.display='flex';" style="width:100%;margin-top:18px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.85);font-size:13px;font-weight:700;padding:12px;border-radius:12px;cursor:pointer;">전체 메뉴 보기 →</button>
-      </div>
-
-      <!-- ── 품목 가격 그리드 (평상시 화면) ── -->
-      <div id="normal-page" style="width:100%;max-width:440px;margin-bottom:8px;display:none;flex-direction:column;gap:4px;">
+      <!-- ── 품목 가격 그리드 ── -->
+      <div style="width:100%;max-width:440px;margin-bottom:8px;display:flex;flex-direction:column;gap:4px;">
 
         <!-- 선착순 특가 -->
         <div style="font-size:11px;font-weight:900;color:#FFB060;letter-spacing:1px;padding:0 2px;">⏱ 선착순 특가</div>
@@ -948,65 +886,6 @@
   </div>
   <div class="tab-panel active" id="panel-sp">
     <div style="height:8px;"></div>
-
-    <!-- 🇰🇷 스페셜 행사 (특가세트 맨위) -->
-    <div style="font-size:11px;font-weight:900;color:#ffd166;letter-spacing:1px;padding:0 2px;margin-bottom:6px;">🎉 스페셜 행사</div>
-    <div style="background:linear-gradient(135deg,#0c2340,#001a3d);border:2px solid #c1121f;border-radius:14px;padding:16px 14px;margin-bottom:10px;text-align:center;position:relative;overflow:hidden;">
-      <div style="font-size:11px;font-weight:900;color:#ffd166;letter-spacing:1px;margin-bottom:4px;">🔥 단 하루 · 6월 17일 오전 9시까지</div>
-      <div style="font-size:17px;font-weight:900;color:#fff;line-height:1.4;">🇰🇷 대한민국 16강 기원!</div>
-      <div style="font-size:13px;font-weight:700;color:#fff;margin-top:6px;line-height:1.5;">🍒🍉🍑 체리 + 수박 + 신비복숭아<br>3종 함께 구매 시</div>
-      <div style="font-size:24px;font-weight:900;color:#ffd166;margin-top:8px;letter-spacing:-0.5px;">💥 10,000원 즉시 할인 💥</div>
-      <div style="margin-top:12px;background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 12px;cursor:pointer;" onclick="heroAddItem('set_worldcup')">
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,0.85);font-weight:700;">
-          <span>워싱턴체리 500g 14,900원</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,0.85);font-weight:700;margin-top:3px;">
-          <span>대소수박(9kg) 26,900원</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,0.85);font-weight:700;margin-top:3px;">
-          <span>신비복숭아 800g 9,900원</span>
-        </div>
-        <div style="border-top:1px solid rgba(255,255,255,0.2);margin:8px 0;"></div>
-        <div style="text-align:center;">
-          <span style="font-size:12px;font-weight:900;color:#fff;">👆 탭하면 장바구니에 담겨요</span>
-          <div style="margin-top:6px;">
-            <span style="font-size:18px;color:rgba(255,255,255,0.65);text-decoration:line-through;">51,700원</span>
-          </div>
-          <div style="font-size:30px;font-weight:900;color:#ffd166;letter-spacing:-0.5px;margin-top:2px;">41,700원</div>
-        </div>
-      </div>
-
-      <div style="margin-top:10px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);">🎉 2종만 담아도 할인돼요 · 👆 탭하면 장바구니에 담겨요</div>
-      <div style="margin-top:6px;display:flex;flex-direction:column;gap:6px;">
-        <div style="background:rgba(255,255,255,0.08);border-radius:9px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="heroAddItem('wc_cherry_sw')">
-          <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.9);">🍒체리+🍉수박</span>
-          <span style="font-size:14px;font-weight:900;color:#ffd166;">-4,000원 → 37,800원</span>
-        </div>
-        <div style="background:rgba(255,255,255,0.08);border-radius:9px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="heroAddItem('wc_cherry_sinbi')">
-          <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.9);">🍒체리+🍑신비복숭아</span>
-          <span style="font-size:14px;font-weight:900;color:#ffd166;">-4,000원 → 20,800원</span>
-        </div>
-        <div style="background:rgba(255,255,255,0.08);border-radius:9px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="heroAddItem('wc_sw_sinbi')">
-          <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.9);">🍉수박+🍑신비복숭아</span>
-          <span style="font-size:14px;font-weight:900;color:#ffd166;">-4,000원 → 32,800원</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 특란 30구 초특가 (3만원 이상 구매시) -->
-    <div style="background:linear-gradient(135deg,rgba(255,210,65,0.25),rgba(255,180,30,0.18));border:2px solid #ffd700;border-radius:12px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="heroAddItem('v34')">
-      <span style="font-size:22px;flex-shrink:0;">🥚</span>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:12.5px;font-weight:900;color:#fff;line-height:1.3;">특란 30구 1판</div>
-        <div style="font-size:10px;color:#ffd700;font-weight:700;margin-top:1px;">3만원 이상 구매시 · 선착순</div>
-      </div>
-      <div style="text-align:right;white-space:nowrap;">
-        <div style="font-size:14px;color:rgba(255,255,255,0.65);text-decoration:line-through;">8,500원</div>
-        <div style="font-size:28px;font-weight:900;color:#ffd700;letter-spacing:-0.5px;">5,900<span style="font-size:12px;">원</span></div>
-      </div>
-    </div>
-    <div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.4);margin-top:-10px;margin-bottom:14px;">* 16강기원 3종세트와 중복 적용되지 않습니다</div>
-
     <!-- 🔥 선착순 특가 -->
     <div style="margin-bottom:14px;">
       <div class="flash-section-hdr">
@@ -1712,10 +1591,6 @@ const fruitItems = [
 
   { id:'ts_hwangdo', todaySpecial:true, num:'🍑', name:'🍑 초극황도(프리미엄황도 5,6과 랜덤 1팩)', desc:'초극황도 프리미엄황도 5,6과 랜덤 1팩', price:21900 },
   { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 대소수박(복불복제로) 9kg', desc:'복불복없는 수박 대소 9kg 초특가', orig:28900, price:26900, badge:'선착순초특가', badgeColor:'#c1121f' },
-  { id:'set_worldcup', todaySpecial:false, num:'🇰🇷', name:'🇰🇷 16강기원 체리+수박+신비복숭아 3종세트', desc:'워싱턴체리500g+대소수박9kg+신비복숭아800g, 16강 기원 즉시할인', orig:51700, price:41700 },
-  { id:'wc_cherry_sw', todaySpecial:false, num:'🇰🇷', name:'🇰🇷 16강기원 체리+수박 2종', desc:'워싱턴체리500g+대소수박9kg, 16강 기원 할인', orig:41800, price:37800 },
-  { id:'wc_cherry_sinbi', todaySpecial:false, num:'🇰🇷', name:'🇰🇷 16강기원 체리+신비복숭아 2종', desc:'워싱턴체리500g+신비복숭아800g, 16강 기원 할인', orig:24800, price:20800 },
-  { id:'wc_sw_sinbi', todaySpecial:false, num:'🇰🇷', name:'🇰🇷 16강기원 수박+신비복숭아 2종', desc:'대소수박9kg+신비복숭아800g, 16강 기원 할인', orig:36800, price:32800 },
   { id:'f_mangosteen2', num:'🍈', name:'🍈 생망고스틴 2망(10입)', desc:'생망고스틴 2망 10입', orig:15800, price:14900 },
   { id:'set_hwangdo_cherry', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 초극황도(프리미엄황도 5,6과 랜덤 1팩)+워싱턴체리(9.5row-특대과) 500g 세트', desc:'초극황도(프리미엄황도 5,6과 랜덤 1팩) + 워싱턴체리(9.5row-특대과) 500g', orig:38800, price:34900 },
   { id:'set_sinbi_cherry', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 신비복숭아(로열과)800g+워싱턴체리(9.5row-특대과) 250g 세트', desc:'신비복숭아(로열과) 800g + 워싱턴체리(9.5row-특대과) 250g', orig:16800, price:16000 },
@@ -2502,66 +2377,15 @@ function updateTypeCounter(id, pickPerQty) {
   }
 }
 
-const WORLDCUP_IDS = ['set_worldcup', 'wc_cherry_sw', 'wc_cherry_sinbi', 'wc_sw_sinbi'];
-
 function heroAddItem(id) {
   const setItem = (typeof FLASH_SETS !== 'undefined') && FLASH_SETS.find(s => s.id === id);
   if (setItem) { addBundle(id); return; }
-
-  const isWorldcup = WORLDCUP_IDS.indexOf(id) !== -1;
-
-  // 16강기원 조합 ↔ 특란 5,900원 중복 방지
-  if (isWorldcup && (qtys['v34'] || 0) > 0) {
-    qtys['v34'] = 0;
-    const el = document.getElementById('qty-v34');
-    if (el) el.textContent = '0';
-    showToast('특란 30구는 16강기원 할인과 중복 적용되지 않아 제외했어요');
-  }
-  if (id === 'v34' && WORLDCUP_IDS.some(function(wid){ return (qtys[wid]||0) > 0; })) {
-    showToast('16강기원 할인과 특란 특가는 중복 적용되지 않아요');
-    return;
-  }
-
-  // 16강기원 조합끼리는 한 번에 하나만
-  if (isWorldcup) {
-    WORLDCUP_IDS.forEach(function(wid) {
-      if (wid !== id && (qtys[wid] || 0) > 0) {
-        qtys[wid] = 0;
-        const el2 = document.getElementById('qty-' + wid);
-        if (el2) el2.textContent = '0';
-      }
-    });
-  }
-
   if (itemMeta[id]) changeQty(id, 1, itemMeta[id].price, 9999);
   const tabEl = document.querySelector('[data-tab="fruit"]');
   if (tabEl) tabEl.click();
 }
 
 function changeQty(id, delta, price, max) {
-  // 16강기원 세트 ↔ 특란 5,900원 중복 방지 (모든 진입경로 공통)
-  if (delta > 0 && typeof WORLDCUP_IDS !== 'undefined') {
-    const isWc = WORLDCUP_IDS.indexOf(id) !== -1;
-    if (isWc && (qtys['v34'] || 0) > 0) {
-      qtys['v34'] = 0;
-      const elv34 = document.getElementById('qty-v34');
-      if (elv34) elv34.textContent = '0';
-      showToast('특란 30구는 16강기원 할인과 중복 적용되지 않아 제외했어요');
-    }
-    if (id === 'v34' && WORLDCUP_IDS.some(function(wid){ return (qtys[wid]||0) > 0; })) {
-      showToast('16강기원 할인과 특란 특가는 중복 적용되지 않아요');
-      return;
-    }
-    if (isWc) {
-      WORLDCUP_IDS.forEach(function(wid) {
-        if (wid !== id && (qtys[wid] || 0) > 0) {
-          qtys[wid] = 0;
-          const elwc = document.getElementById('qty-' + wid);
-          if (elwc) elwc.textContent = '0';
-        }
-      });
-    }
-  }
   // 타입피커 품목 (오이·가지, 감자·고구마, 잎채소 등) - 수량 미선택 시 안내
   if (delta > 0 && typePickPerQty[id]) {
     const picked = typeChoices[id] ? Object.values(typeChoices[id]).reduce((a,b)=>a+b,0) : 0;
@@ -2646,15 +2470,7 @@ function changeQty(id, delta, price, max) {
 function updateTotal() {
   let total = 0;
   for (const id in qtys) {
-    if (qtys[id] > 0 && itemMeta[id] && id !== 'v34') total += qtys[id] * itemMeta[id].price;
-  }
-  // 특란 30구: 3만원 이상 구매시 5,900원 특가 적용 (월드컵 이벤트)
-  if (qtys['v34'] > 0) {
-    const baseTotalForEgg = total
-      + (function(){ let t=0; for (const id in flashQtys){ if(flashQtys[id]>0){ const fi=FLASH_ITEMS.find(f=>f.id===id); const p=(fi&&fi.flashPrice)?fi.flashPrice:(itemMeta[id]?itemMeta[id].price:0); t+=flashQtys[id]*p; } } return t; })()
-      + (function(){ let t=0; for (const bid in bundleState){ if(bundleState[bid].done) t+=bundleState[bid].price; } return t; })();
-    const eggPrice = (baseTotalForEgg >= 30000) ? 5900 : itemMeta['v34'].price;
-    total += qtys['v34'] * eggPrice;
+    if (qtys[id] > 0 && itemMeta[id]) total += qtys[id] * itemMeta[id].price;
   }
   // 선착순 특가 수량 별도 계산
   for (const id in flashQtys) {
@@ -3249,33 +3065,13 @@ function goToCart() {
   let total = 0;
   const cartLines = [];
 
-  // 특란(v34) 3만원이상 특가 적용 여부 계산용 사전합계
-  let preEggTotal = 0;
-  for (const id in qtys) {
-    if (qtys[id] > 0 && itemMeta[id] && id !== 'v34') preEggTotal += qtys[id] * itemMeta[id].price;
-  }
-  if (typeof flashQtys !== 'undefined') {
-    for (const id in flashQtys) {
-      if (flashQtys[id] > 0) {
-        const fi = typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.find(function(f){ return f.id===id; }) : null;
-        const p = (fi && fi.flashPrice) ? fi.flashPrice : (itemMeta[id] ? itemMeta[id].price : 0);
-        preEggTotal += flashQtys[id] * p;
-      }
-    }
-  }
-
   // 일반 품목
   for (const id in qtys) {
     if (qtys[id] > 0 && itemMeta[id]) {
-      let price = itemMeta[id].price;
-      let nameLabel = itemMeta[id].name;
-      if (id === 'v34' && preEggTotal >= 30000) {
-        price = 5900;
-        nameLabel = nameLabel + ' [3만원이상 특가 5,900원]';
-      }
+      const price = itemMeta[id].price;
       const subtotal = qtys[id] * price;
       total += subtotal;
-      cartLines.push({ name: nameLabel, qty: qtys[id], subtotal });
+      cartLines.push({ name: itemMeta[id].name, qty: qtys[id], subtotal });
     }
   }
   // 선착순 특가 품목
@@ -3543,32 +3339,12 @@ function renderDeliveryScreen() {
   let total = 0;
   const cartLines = [];
 
-  // 특란(v34) 3만원이상 특가 적용 여부 계산용 사전합계
-  let preEggTotal2 = 0;
-  for (const id in qtys) {
-    if (qtys[id] > 0 && itemMeta[id] && id !== 'v34') preEggTotal2 += qtys[id] * itemMeta[id].price;
-  }
-  if (typeof flashQtys !== 'undefined') {
-    for (const id in flashQtys) {
-      if (flashQtys[id] > 0) {
-        const fi = typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.find(function(f){ return f.id===id; }) : null;
-        const p = (fi && fi.flashPrice) ? fi.flashPrice : (itemMeta[id] ? itemMeta[id].price : 0);
-        preEggTotal2 += flashQtys[id] * p;
-      }
-    }
-  }
-
   for (const id in qtys) {
     if (qtys[id] > 0 && itemMeta[id]) {
-      let price = itemMeta[id].price;
-      let nameLabel = itemMeta[id].name;
-      if (id === 'v34' && preEggTotal2 >= 30000) {
-        price = 5900;
-        nameLabel = nameLabel + ' [3만원이상 특가 5,900원]';
-      }
+      const price = itemMeta[id].price;
       const sub = qtys[id] * price;
       total += sub;
-      cartLines.push({ name: nameLabel, qty: qtys[id], sub });
+      cartLines.push({ name: itemMeta[id].name, qty: qtys[id], sub });
     }
   }
   if (typeof flashQtys !== 'undefined') {
@@ -4034,37 +3810,14 @@ window.orderDirect = async function() {
   // ── 주문 내역 텍스트 직접 구성 ──
   let total = 0;
   const lines = [];
-
-  // 특란(v34) 3만원이상 특가 적용 여부 계산용 사전합계
-  let preEggTotal3 = 0;
-  for (const id in qtys) {
-    if (qtys[id] > 0 && itemMeta[id] && id !== 'v34') preEggTotal3 += qtys[id] * itemMeta[id].price;
-  }
-  if (typeof flashQtys !== 'undefined') {
-    for (const id in flashQtys) {
-      if (flashQtys[id] > 0) {
-        const fi = FLASH_ITEMS.find(function(f){ return f.id===id; });
-        const p = (fi&&fi.flashPrice) ? fi.flashPrice : (itemMeta[id]?itemMeta[id].price:0);
-        preEggTotal3 += flashQtys[id] * p;
-      }
-    }
-  }
-  const eggGetsDiscount = preEggTotal3 >= 30000;
-
   for (const id in qtys) {
     if (qtys[id] > 0 && itemMeta[id]) {
-      let price = itemMeta[id].price;
-      let nameForLine = itemMeta[id].name;
-      if (id === 'v34' && eggGetsDiscount) {
-        price = 5900;
-        nameForLine = nameForLine + ' [3만원이상특가]';
-      }
-      const sub = qtys[id] * price;
+      const sub = qtys[id] * itemMeta[id].price;
       total += sub;
       const tcObj = typeChoices[id] || {};
       const tcParts = Object.entries(tcObj).filter(([,v])=>v>0).map(([k,v])=>k+(v>1?'×'+v:''));
       const tc = tcParts.length ? ' (' + tcParts.join('+') + ')' : '';
-      lines.push(nameForLine + tc + ' x' + qtys[id] + ' = ' + sub.toLocaleString() + '원');
+      lines.push(itemMeta[id].name + tc + ' x' + qtys[id] + ' = ' + sub.toLocaleString() + '원');
     }
   }
   if (typeof flashQtys !== 'undefined') {
@@ -4100,17 +3853,11 @@ window.orderDirect = async function() {
   const itemLines = [];
   for (const id in qtys) {
     if (qtys[id] > 0 && itemMeta[id]) {
-      let priceForLine = itemMeta[id].price;
-      let nameBase = itemMeta[id].name;
-      if (id === 'v34' && eggGetsDiscount) {
-        priceForLine = 5900;
-        nameBase = nameBase + ' [3만원이상특가]';
-      }
-      const sub = qtys[id] * priceForLine;
+      const sub = qtys[id] * itemMeta[id].price;
       const tcObj = typeChoices[id] || {};
       const tcParts = Object.entries(tcObj).filter(([,v])=>v>0).map(([k,v])=>k+(v>1?'×'+v:''));
       const tc = tcParts.length ? ' (' + tcParts.join('+') + ')' : '';
-      const mergedName = mergeQty(nameBase + tc, qtys[id]);
+      const mergedName = mergeQty(itemMeta[id].name + tc, qtys[id]);
       itemLines.push('  ' + mergedName + '  ' + sub.toLocaleString() + '원');
     }
   }
