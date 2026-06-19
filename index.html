@@ -379,16 +379,20 @@
             </div>
           </div>
 
-          <!-- 신비복숭아 2kg(봉) 초초특가 -->
-          <div style="position:relative;background:linear-gradient(135deg,rgba(150,30,60,0.6),rgba(90,10,35,0.55));border:1.5px solid #c1121f;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="heroAddItem('ts_sinbi')">
-            <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:1px 7px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 초초특가</span>
-            <span style="font-size:20px;flex-shrink:0;">🍑</span>
+          <!-- 신비복숭아 2kg(팩) 파격특가 -->
+          <style>
+            @keyframes sinbiPulse { 0%,100%{ box-shadow:0 0 0px 0px rgba(255,209,102,0.6),0 0 14px 2px rgba(255,209,102,0.45); } 50%{ box-shadow:0 0 0px 6px rgba(255,209,102,0),0 0 22px 6px rgba(255,209,102,0.75); } }
+            @keyframes sinbiBadgeBlink { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.08); } }
+          </style>
+          <div style="position:relative;background:linear-gradient(135deg,#c1121f,#7a0b14);border:2.5px solid #ffd166;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;animation:sinbiPulse 1.6s ease-in-out infinite;" onclick="heroAddItem('ts_sinbi')">
+            <span style="position:absolute;top:-10px;left:12px;background:#ffd166;color:#7a0b14;font-size:11px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:0.3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);animation:sinbiBadgeBlink 1.6s ease-in-out infinite;">🔥 파격특가</span>
+            <span style="font-size:30px;flex-shrink:0;">🍑</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">신비복숭아(로열~특대과랜덤) 2kg(봉)</div>
+              <div style="font-size:15px;font-weight:900;color:#fff;line-height:1.3;">신비복숭아(로열~특대과랜덤) 2kg(팩)</div>
             </div>
             <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;">23,900원</div>
-              <div style="font-size:19px;font-weight:900;color:#ffd166;">18,000<span style="font-size:9px;">원</span></div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.55);text-decoration:line-through;">23,900원</div>
+              <div style="font-size:25px;font-weight:900;color:#ffd166;text-shadow:0 0 8px rgba(255,209,102,0.5);">15,900<span style="font-size:11px;">원</span></div>
             </div>
           </div>
 
@@ -397,11 +401,11 @@
             <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:1px 7px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 특가</span>
             <span style="font-size:20px;flex-shrink:0;">🍑</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">신비복숭아(로열~특대과랜덤)2kg(봉)+워싱턴체리(특대과) 500g이상</div>
+              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">신비복숭아(로열~특대과랜덤)2kg(팩)+워싱턴체리(특대과) 500g이상</div>
             </div>
             <div style="text-align:right;white-space:nowrap;">
               <div style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;">32,900원</div>
-              <div style="font-size:19px;font-weight:900;color:#ffd166;">29,900<span style="font-size:9px;">원</span></div>
+              <div style="font-size:19px;font-weight:900;color:#ffd166;">27,900<span style="font-size:9px;">원</span></div>
             </div>
           </div>
 
@@ -1611,19 +1615,18 @@ const specialItems = [
 const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
 
-  { id:'ts_hwangdo', todaySpecial:true, num:'🍑', name:'🍑 초극황도(프리미엄황도 5,6과 랜덤 1팩)', desc:'초극황도 프리미엄황도 5,6과 랜덤 1팩', price:23900 },
   { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 대소수박(복불복제로) 9kg', desc:'복불복없는 수박 대소 9kg 초초특가', orig:28900, price:25900, badge:'선착순초초특가', badgeColor:'#c1121f' },
   { id:'f_mangosteen2', num:'🍈', name:'🍈 생망고스틴 2망(10입)', desc:'생망고스틴 2망 10입', orig:15800, price:14900 },
-  { id:'f_jeju_gamgyul1', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 1봉(1kg이상)', desc:'제주하우스감귤 1봉 1kg이상', price:13000 },
-  { id:'f_jeju_gamgyul3', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 3kg 1박스', desc:'제주하우스감귤 3kg 1박스', price:35000 },
-  { id:'f_wachon_jaju1', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천(특)자두(아삭,새콤달콤최고봉) 1kg', desc:'와촌,김천(특)자두 아삭 새콤달콤최고봉 1kg', price:15000 },
+  { id:'f_jeju_gamgyul1', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 1봉(1kg이상)', desc:'제주하우스감귤 1봉 1kg이상', price:10900 },
+  { id:'f_jeju_gamgyul3', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 3kg 1박스', desc:'제주하우스감귤 3kg 1박스', price:31000 },
+  { id:'f_wachon_jaju1', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천(특)자두(아삭,새콤달콤최고봉) 1kg', desc:'와촌,김천(특)자두 아삭 새콤달콤최고봉 1kg', price:12900 },
   { id:'set_wachon_sinbi', todaySpecial:false, num:'🟣🍑', name:'🟣 와촌,김천(특)자두1kg+신비복숭아(로열~특대과랜덤) 800g', desc:'와촌,김천(특)자두 1kg + 신비복숭아(로열~특대과랜덤) 800g', price:22900 },
   { id:'set_wachon_cherry_blue', todaySpecial:false, num:'🟣🍒', name:'🟣 와촌,김천(특)자두1kg+워싱턴체리(특대과) 500g이상', desc:'와촌,김천(특)자두 1kg + 워싱턴체리(특대과) 500g이상', orig:29900, price:24900 },
   { id:'set_sw_wachon', todaySpecial:false, num:'🍉🟣', name:'🍉 대소수박(특)9kg+와촌,김천(특)자두1kg', desc:'대소수박(특) 9kg + 와촌,김천(특)자두 1kg', orig:41900, price:37900 },
   { id:'set_sw_blue', todaySpecial:false, num:'🍉🫐', name:'🍉 대소수박(특)9kg+블루베리2팩', desc:'대소수박(특) 9kg + 블루베리 2팩', orig:35700, price:31000 },
   { id:'set_sw_sinbi', todaySpecial:false, num:'🍉🍑', name:'🍉 대소수박(특)9kg+신비복숭아(로열~특대과랜덤) 800g', desc:'대소수박(특) 9kg + 신비복숭아(로열~특대과랜덤) 800g', orig:36900, price:30900 },
-  { id:'f_wachon_jaju2', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천(특)자두(아삭,새콤달콤최고봉) 2kg', desc:'와촌,김천(특)자두 아삭 새콤달콤최고봉 2kg', price:29000 },
-  { id:'set_sinbi2_cherry500', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 신비복숭아(로열~특대과랜덤)2kg(봉)+워싱턴체리(특대과) 500g이상 세트', desc:'신비복숭아(로열~특대과랜덤) 2kg(봉) + 워싱턴체리(특대과) 500g이상', orig:32900, price:29900 },
+  { id:'f_wachon_jaju2', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천(특)자두(아삭,새콤달콤최고봉) 2kg', desc:'와촌,김천(특)자두 아삭 새콤달콤최고봉 2kg', price:24900 },
+  { id:'set_sinbi2_cherry500', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 신비복숭아(로열~특대과랜덤)2kg(팩)+워싱턴체리(특대과) 500g이상 세트', desc:'신비복숭아(로열~특대과랜덤) 2kg(팩) + 워싱턴체리(특대과) 500g이상', orig:32900, price:27900 },
   { id:'set_sinbi_cherry', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 신비복숭아(로열~특대과랜덤)800g+워싱턴체리(9.5row-특대과) 250g 세트', desc:'신비복숭아(로열~특대과랜덤) 800g + 워싱턴체리(9.5row-특대과) 250g', orig:16800, price:15800 },
   { id:'f51', num:'#51', todaySpecial:true, name:'🍉 대소수박 9kg(복불복제로)', desc:'복불복없는 수박 · 대소 9kg', orig:32900, price:28900, sold:true },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:9900 },
@@ -1640,7 +1643,7 @@ const fruitItems = [
   { id:'f_blue_box', num:'🫐', name:'🫐 블루베리(왕) 1박스(10팩-1kg)', desc:'블루베리 왕 1박스 10팩 1kg', price:39900 },
   { id:'f_berry', num:'🍓', name:'🍓 산딸기 500g 1박스', desc:'채팅주문 · 신선도', price:12000, chatOrder:true },
   { id:'ts_sinbi800', todaySpecial:false, num:'🍑', name:'🍑 신비복숭아(로열~특대과랜덤) 800g', desc:'신비복숭아(로열~특대과랜덤) 800g', price:9900 },
-  { id:'ts_sinbi', todaySpecial:true, num:'🍑', name:'🍑 신비복숭아(로열~특대과랜덤) 2kg(봉)', desc:'신비복숭아(로열~특대과랜덤) 2kg 봉', orig:23900, price:18000, badge:'선착순초초특가', badgeColor:'#c1121f' },
+  { id:'ts_sinbi', todaySpecial:true, num:'🍑', name:'🍑 신비복숭아(로열~특대과랜덤) 2kg(팩)', desc:'신비복숭아(로열~특대과랜덤) 2kg 팩', orig:23900, price:15900, badge:'파격특가', badgeColor:'#c1121f' },
   { id:'ts_cherry250', todaySpecial:false, num:'🍒', name:'🍒 체리(워싱턴체리(9.5row-특대과) 250g', desc:'워싱턴체리(9.5row-특대과) 250g', price:6900 },
   { id:'ts_cherry', todaySpecial:false, num:'🍒', name:'🍒 체리(워싱턴체리(9.5row-특대과) 500g', desc:'워싱턴체리(9.5row-특대과) 500g', price:14900 },
   { id:'f_melon', todaySpecial:true, num:'🍈', name:'🍈 멜론 1통(2~2.5kg)', desc:'멜론 1통 2~2.5kg', price:12000 },
@@ -1652,6 +1655,8 @@ const vegItems = [
   // ── 🔥 오늘의 채소 특가 ──
 
   { id:'ts_zucchini',todaySpecial:true, num:'🥒', name:'🥒 애호박 1개',     price: 900 },
+  { id:'ts_oiji_top', todaySpecial:true, num:'🥒', name:'🥒 오이지반접(특)', desc:'오이지반접(특)', price:9500 },
+  { id:'ts_oiji_sang', todaySpecial:true, num:'🥒', name:'🥒 오이지반접(상)', desc:'오이지반접(상)', price:7900 },
   { id:'v_corn10', todaySpecial:true, num:'🌽', name:'🌽 초당옥수수 10개', desc:'초당옥수수 10개', price:13000 },
   { id:'v_corn1', todaySpecial:false, num:'🌽', name:'🌽 초당옥수수 1개', desc:'초당옥수수 1개', price:1500 },
 
@@ -2237,7 +2242,7 @@ function renderFruit() {
       card.className = 'item-card';
       card.id = 'card-' + item.id;
       card.style.cssText = 'border-color:#ccc;background:#f5f5f5;opacity:0.45;pointer-events:none;';
-      card.innerHTML = `<div class="item-name" style="color:#aaa;">${item.name}</div><div class="item-price" style="color:#bbb;font-size:13px;">품절</div>`;
+      card.innerHTML = `<div class="item-name" style="color:#aaa;">${item.name}</div><div class="item-price" style="color:#bbb;font-size:13px;">${item.soldLabel || '품절'}</div>`;
       grid.appendChild(card);
     });
   }
@@ -3616,10 +3621,10 @@ const FLASH_ITEMS = [
   { id:'set_sw_wachon', label:'대소수박(특)9kg+와촌,김천(특)자두1kg',     max:9999, flashPrice:37900, origPrice:41900, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
   { id:'set_sw_blue', label:'대소수박(특)9kg+블루베리2팩',     max:9999, flashPrice:31000, origPrice:35700, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
   { id:'set_sw_sinbi', label:'대소수박(특)9kg+신비복숭아(로열~특대과랜덤) 800g',     max:9999, flashPrice:30900, origPrice:36900, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
-  { id:'set_sinbi2_cherry500', label:'신비복숭아(로열~특대과랜덤)2kg(봉)+워싱턴체리(특대과) 500g이상 세트',     max:9999, flashPrice:29900, origPrice:32900, badge:'🔥 선착순 초특가', group:'복숭아 · 체리 세트' },
+  { id:'set_sinbi2_cherry500', label:'신비복숭아(로열~특대과랜덤)2kg(팩)+워싱턴체리(특대과) 500g이상 세트',     max:9999, flashPrice:27900, origPrice:32900, badge:'🔥 선착순 초특가', group:'복숭아 · 체리 세트' },
   { id:'set_sinbi_cherry',   label:'신비복숭아(로열~특대과랜덤)800g+워싱턴체리(9.5row-특대과) 250g 세트',     max:9999, flashPrice:15800, origPrice:16800, badge:'🔥 선착순 초특가', group:'복숭아 · 체리 세트' },
   { id:'ts_sinbi800', label:'신비복숭아(로열~특대과랜덤) 800g',                              max:9999, flashPrice:9900 },
-  { id:'ts_sinbi',    label:'신비복숭아(로열~특대과랜덤) 2kg(봉)',                          max:9999, flashPrice:18000, origPrice:23900, badge:'🔥 선착순 초초특가' },
+  { id:'ts_sinbi',    label:'신비복숭아(로열~특대과랜덤) 2kg(팩)',                          max:9999, flashPrice:15900, origPrice:23900, badge:'🔥 파격특가' },
   { id:'ts_cherry250',label:'체리(워싱턴체리(9.5row-특대과) 250g',          max:9999, flashPrice:6900 },
   { id:'ts_cherry',   label:'체리(워싱턴체리(9.5row-특대과) 500g',          max:9999, flashPrice:14900 },
   { id:'f_grape2',    label:'델라웨어 포도(고당도) 2송이 (400g)',               max:9999, flashPrice:6500, origPrice:9000 },
