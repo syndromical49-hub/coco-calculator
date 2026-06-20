@@ -258,56 +258,56 @@
 .flash-section-hdr .fsh-sub { font-size:0.7rem;color:rgba(255,120,120,0.85);font-weight:600;margin-top:2px; }
 .flash-section-hdr .fsh-badge { background:#ff3b3b;color:#fff;font-size:0.62rem;font-weight:900;padding:3px 9px;border-radius:100px;letter-spacing:0.5px;white-space:nowrap; }
 
-#flash-sale-wrap { display:flex;flex-direction:column;gap:8px; }
+#flash-sale-wrap { display:flex;flex-direction:column;gap:12px; }
 
 .flash-card {
   background:linear-gradient(135deg,rgba(255,220,220,0.5),rgba(255,200,200,0.35));
   border:1.5px solid rgba(255,80,80,0.35);
-  border-radius:12px;padding:12px 14px;
+  border-radius:12px;padding:14px 16px;
   transition:opacity 0.3s;
 }
 .flash-card.sold { opacity:0.5; }
 .flash-card.flash-highlight { background:linear-gradient(135deg,rgba(255,200,200,0.7),rgba(255,170,170,0.55)); border:2px solid #c1121f; }
 
-.flash-name { font-size:0.95rem;font-weight:900;color:#2d1010;letter-spacing:-0.3px;margin-bottom:2px; }
-.flash-desc { font-size:0.72rem;color:rgba(80,30,30,0.75);margin-bottom:8px; }
+.flash-name { font-size:1.08rem;font-weight:900;color:#2d1010;letter-spacing:-0.3px;margin-bottom:3px; }
+.flash-desc { font-size:0.8rem;color:rgba(80,30,30,0.75);margin-bottom:10px; }
 
 .flash-price-row { display:flex;align-items:baseline;gap:8px;margin-bottom:8px; }
-.flash-orig { font-size:0.8rem;color:rgba(100,50,50,0.55);text-decoration:line-through; }
-.flash-price { font-size:1.5rem;font-weight:900;color:#c1121f;letter-spacing:-0.5px; }
+.flash-orig { font-size:0.88rem;color:rgba(100,50,50,0.55);text-decoration:line-through; }
+.flash-price { font-size:1.65rem;font-weight:900;color:#c1121f;letter-spacing:-0.5px; }
 
 .flash-counter { display:flex;align-items:center;justify-content:space-between; }
-.flash-remain { font-size:0.75rem;font-weight:700;color:#c1121f; }
-.flash-sold { font-size:0.78rem;font-weight:900;color:rgba(150,30,30,0.6); }
+.flash-remain { font-size:0.82rem;font-weight:700;color:#c1121f; }
+.flash-sold { font-size:0.85rem;font-weight:900;color:rgba(150,30,30,0.6); }
 
 .flash-stepper { display:flex;align-items:center;gap:8px; }
 .flash-btn-sub,.flash-btn-add {
-  width:32px;height:32px;border-radius:50%;border:2px solid #c1121f;
-  background:#fff;color:#c1121f;font-size:1.1rem;font-weight:900;
+  width:34px;height:34px;border-radius:50%;border:2px solid #c1121f;
+  background:#fff;color:#c1121f;font-size:1.2rem;font-weight:900;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
 }
 .flash-btn-add { background:#c1121f;color:#fff;border-color:#c1121f; }
-.flash-qty { font-size:1rem;font-weight:900;color:#1a0f00;min-width:20px;text-align:center; }
+.flash-qty { font-size:1.1rem;font-weight:900;color:#1a0f00;min-width:22px;text-align:center; }
 
 /* 세트 상품 컴팩트 카드 */
 .set-section-hdr {
-  font-size:0.78rem;font-weight:900;color:#c1121f;letter-spacing:0.5px;
-  padding:0 2px;margin-bottom:6px;
+  font-size:0.95rem;font-weight:900;color:#c1121f;letter-spacing:0.5px;
+  padding:0 2px;margin-bottom:10px;
 }
 .set-card {
   background:linear-gradient(135deg,rgba(255,235,235,0.9),rgba(255,220,220,0.7));
   border:1.5px solid rgba(255,80,80,0.35);
-  border-radius:12px;padding:10px 12px;
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:6px;
+  border-radius:12px;padding:13px 14px;
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:10px;
 }
-.set-card .set-icon { font-size:1.4rem;flex-shrink:0; }
+.set-card .set-icon { font-size:1.6rem;flex-shrink:0; }
 .set-card .set-info { flex:1;min-width:0; }
-.set-card .set-name { font-size:0.85rem;font-weight:900;color:#2d1010;line-height:1.3; }
-.set-card .set-orig { font-size:0.75rem;color:rgba(100,50,50,0.5);text-decoration:line-through;margin-top:1px; }
+.set-card .set-name { font-size:1rem;font-weight:900;color:#2d1010;line-height:1.35; }
+.set-card .set-orig { font-size:0.82rem;color:rgba(100,50,50,0.5);text-decoration:line-through;margin-top:2px; }
 .set-card .set-price-area { text-align:right;white-space:nowrap; }
-.set-card .set-price { font-size:1.25rem;font-weight:900;color:#c1121f;letter-spacing:-0.5px; }
-.set-card .set-stepper { display:flex;align-items:center;gap:6px;margin-top:4px;justify-content:flex-end; }
+.set-card .set-price { font-size:1.4rem;font-weight:900;color:#c1121f;letter-spacing:-0.5px; }
+.set-card .set-stepper { display:flex;align-items:center;gap:7px;margin-top:6px;justify-content:flex-end; }
 
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -360,22 +360,22 @@
     <div style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;padding:6px 16px 40px;overflow-y:auto;flex:1;">
 
       <!-- ── 품목 가격 그리드 ── -->
-      <div style="width:100%;max-width:440px;margin-bottom:8px;display:flex;flex-direction:column;gap:4px;">
+      <div style="width:100%;max-width:440px;margin-bottom:8px;display:flex;flex-direction:column;gap:9px;">
 
         <!-- 선착순 특가 -->
-        <div style="font-size:11px;font-weight:900;color:#FFB060;letter-spacing:1px;padding:0 2px;">⏱ 선착순 특가</div>
-        <div style="display:flex;flex-direction:column;gap:3px;">
+        <div style="font-size:12.5px;font-weight:900;color:#FFB060;letter-spacing:1px;padding:0 2px;">⏱ 선착순 특가</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
 
           <!-- 대소수박 단품 초특가 -->
-          <div style="position:relative;background:linear-gradient(135deg,rgba(0,110,45,0.6),rgba(0,65,25,0.55));border:1.5px solid #c1121f;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="heroAddItem('f51_super')">
-            <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:1px 7px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 초초특가</span>
-            <span style="font-size:20px;flex-shrink:0;">🍉</span>
+          <div style="position:relative;background:linear-gradient(135deg,rgba(0,110,45,0.6),rgba(0,65,25,0.55));border:1.5px solid #c1121f;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;" onclick="heroAddItem('f51_super')">
+            <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:10px;font-weight:900;padding:2px 8px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 초초특가</span>
+            <span style="font-size:22px;flex-shrink:0;">🍉</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">대소수박(복불복제로) 9kg</div>
+              <div style="font-size:14.5px;font-weight:900;color:#fff;line-height:1.3;">대소수박(복불복제로) 9kg</div>
             </div>
             <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;">28,900원</div>
-              <div style="font-size:19px;font-weight:900;color:#ffd166;">25,900<span style="font-size:9px;">원</span></div>
+              <div style="font-size:15px;font-weight:800;color:rgba(255,255,255,0.78);text-decoration:line-through;">28,900원</div>
+              <div style="font-size:21px;font-weight:900;color:#ffd166;">26,900<span style="font-size:10px;">원</span></div>
             </div>
           </div>
 
@@ -385,115 +385,75 @@
             @keyframes sinbiBadgeBlink { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.08); } }
           </style>
           <div style="position:relative;background:linear-gradient(135deg,#c1121f,#7a0b14);border:2.5px solid #ffd166;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;animation:sinbiPulse 1.6s ease-in-out infinite;" onclick="heroAddItem('ts_sinbi')">
-            <span style="position:absolute;top:-10px;left:12px;background:#ffd166;color:#7a0b14;font-size:11px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:0.3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);animation:sinbiBadgeBlink 1.6s ease-in-out infinite;">🔥 파격특가</span>
-            <span style="font-size:30px;flex-shrink:0;">🍑</span>
+            <span style="position:absolute;top:-10px;left:12px;background:#ffd166;color:#7a0b14;font-size:12px;font-weight:900;padding:4px 11px;border-radius:10px;letter-spacing:0.3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);animation:sinbiBadgeBlink 1.6s ease-in-out infinite;">🔥 파격특가</span>
+            <span style="font-size:32px;flex-shrink:0;">🍑</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:15px;font-weight:900;color:#fff;line-height:1.3;">신비복숭아(로열~특대과랜덤) 2kg(팩)</div>
+              <div style="font-size:16.5px;font-weight:900;color:#fff;line-height:1.3;">신비복숭아(로열~특대과랜덤) 2kg(팩)</div>
             </div>
             <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:11px;color:rgba(255,255,255,0.55);text-decoration:line-through;">23,900원</div>
-              <div style="font-size:25px;font-weight:900;color:#ffd166;text-shadow:0 0 8px rgba(255,209,102,0.5);">18,000<span style="font-size:11px;">원</span></div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.6);text-decoration:line-through;">23,900원</div>
+              <div style="font-size:27px;font-weight:900;color:#ffd166;text-shadow:0 0 8px rgba(255,209,102,0.5);">18,000<span style="font-size:12px;">원</span></div>
             </div>
           </div>
 
-          <!-- 신비복숭아2kg+체리500g이상 세트 -->
-          <div style="position:relative;background:linear-gradient(135deg,rgba(150,30,60,0.6),rgba(90,10,35,0.55));border:1.5px solid #c1121f;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="heroAddItem('set_sinbi2_cherry500')">
-            <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:1px 7px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 특가</span>
-            <span style="font-size:20px;flex-shrink:0;">🍑</span>
+          <!-- 블루베리 왕 4팩 득템특가 -->
+          <div style="position:relative;background:linear-gradient(135deg,rgba(130,90,255,0.55),rgba(75,40,200,0.5));border:1.5px solid #a78bff;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;" onclick="heroAddItem('f53d')">
+            <span style="position:absolute;top:-7px;left:10px;background:#a78bff;color:#fff;font-size:10px;font-weight:900;padding:2px 8px;border-radius:8px;letter-spacing:0.3px;">🔥 득템특가</span>
+            <span style="font-size:22px;flex-shrink:0;">🫐</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">신비복숭아(로열~특대과랜덤)2kg(팩)+워싱턴체리(9row-왕특) 500g이상</div>
+              <div style="font-size:14.5px;font-weight:900;color:#fff;line-height:1.3;">블루베리 왕 4팩</div>
             </div>
             <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;">30,900원</div>
-              <div style="font-size:19px;font-weight:900;color:#ffd166;">28,900<span style="font-size:9px;">원</span></div>
-            </div>
-          </div>
-
-          <!-- 와촌,김천(특)자두1kg+체리500g이상 -->
-          <div style="position:relative;background:linear-gradient(135deg,rgba(110,40,140,0.6),rgba(60,20,80,0.55));border:1.5px solid #c1121f;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="heroAddItem('set_wachon_cherry_blue')">
-            <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:1px 7px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 특가</span>
-            <span style="font-size:20px;flex-shrink:0;">🟣</span>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">와촌,김천(특)자두1kg+워싱턴체리(9row-왕특) 500g이상</div>
-            </div>
-            <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;">29,900원</div>
-              <div style="font-size:19px;font-weight:900;color:#ffd166;">24,900<span style="font-size:9px;">원</span></div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.5);text-decoration:line-through;">17,600원</div>
+              <div style="font-size:21px;font-weight:900;color:#ffd166;">16,500<span style="font-size:10px;">원</span></div>
             </div>
           </div>
 
           <!-- 게르마늄참외 5kg(특-선물용 12수) -->
-          <div style="position:relative;background:linear-gradient(135deg,rgba(190,160,0,0.55),rgba(130,105,0,0.5));border:1.5px solid #c1121f;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="heroAddItem('f_germanium5')">
-            <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:1px 7px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 특가</span>
-            <span style="font-size:20px;flex-shrink:0;">🍈</span>
+          <div style="position:relative;background:linear-gradient(135deg,rgba(190,160,0,0.55),rgba(130,105,0,0.5));border:1.5px solid #c1121f;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;" onclick="heroAddItem('f_germanium5')">
+            <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:10px;font-weight:900;padding:2px 8px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 특가</span>
+            <span style="font-size:22px;flex-shrink:0;">🍈</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">게르마늄참외 5kg(특-선물용 12수)</div>
+              <div style="font-size:14.5px;font-weight:900;color:#fff;line-height:1.3;">게르마늄참외 5kg(특-선물용 12수)</div>
             </div>
             <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:19px;font-weight:900;color:#ffd166;">19,900<span style="font-size:9px;">원</span></div>
+              <div style="font-size:21px;font-weight:900;color:#ffd166;">19,900<span style="font-size:10px;">원</span></div>
             </div>
           </div>
 
           <!-- 초당옥수수 10개 -->
-          <div style="position:relative;background:linear-gradient(135deg,rgba(190,160,0,0.55),rgba(130,105,0,0.5));border:1.5px solid #c1121f;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="heroAddItem('v_corn10')">
-            <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:1px 7px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 특가</span>
-            <span style="font-size:20px;flex-shrink:0;">🌽</span>
+          <div style="position:relative;background:linear-gradient(135deg,rgba(190,160,0,0.55),rgba(130,105,0,0.5));border:1.5px solid #c1121f;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;" onclick="heroAddItem('v_corn10')">
+            <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:10px;font-weight:900;padding:2px 8px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 특가</span>
+            <span style="font-size:22px;flex-shrink:0;">🌽</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">초당옥수수 10개</div>
+              <div style="font-size:14.5px;font-weight:900;color:#fff;line-height:1.3;">초당옥수수 10개</div>
             </div>
             <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:19px;font-weight:900;color:#ffd166;">13,000<span style="font-size:9px;">원</span></div>
+              <div style="font-size:21px;font-weight:900;color:#ffd166;">13,000<span style="font-size:10px;">원</span></div>
             </div>
           </div>
 
-          <!-- 대소수박(특) 9kg 세트 2종 -->
-          <div style="background:linear-gradient(135deg,rgba(0,90,40,0.55),rgba(0,50,20,0.5));border:1.5px solid #c1121f;border-radius:10px;padding:8px 10px;">
-            <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px;">
-              <span style="background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:6px;letter-spacing:0.3px;">🔥 선착순 초특가</span>
-              <span style="font-size:11px;font-weight:900;color:#fff;">대소수박(특) 9kg 세트</span>
+          <!-- 신비복숭아1kg + 체리500g -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+            <div style="background:linear-gradient(135deg,rgba(230,90,130,0.45),rgba(170,40,80,0.4));border:1px solid rgba(255,140,170,0.5);border-radius:8px;padding:5px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;text-align:center;" onclick="heroAddItem('ts_sinbi800')">
+              <div style="font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap;">🍑 신비복숭아(로열~특대과랜덤) 1kg</div>
+              <div style="font-size:15.5px;font-weight:900;color:#ffd166;">9,900<span style="font-size:9px;">원</span></div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:5px;">
-              <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="heroAddItem('set_sw_wachon')">
-                <span style="font-size:16px;flex-shrink:0;">🍉</span>
-                <div style="flex:1;min-width:0;font-size:11px;font-weight:700;color:rgba(255,255,255,0.92);line-height:1.3;">대소수박(특) 9kg+와촌,김천(특)자두 1kg</div>
-                <div style="text-align:right;white-space:nowrap;">
-                  <div style="font-size:9px;color:#ff9999;font-weight:900;">-4,000원↓</div>
-                  <span style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;margin-right:3px;">41,900</span>
-                  <span style="font-size:18px;font-weight:900;color:#ffd166;">37,900<span style="font-size:9px;">원</span></span>
-                </div>
-              </div>
-              <div style="border-top:1px solid rgba(255,255,255,0.1);"></div>
-              <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="heroAddItem('set_sw_blue')">
-                <span style="font-size:16px;flex-shrink:0;">🍉</span>
-                <div style="flex:1;min-width:0;font-size:11px;font-weight:700;color:rgba(255,255,255,0.92);line-height:1.3;">대소수박(특) 9kg+블루베리 2팩</div>
-                <div style="text-align:right;white-space:nowrap;">
-                  <div style="font-size:9px;color:#ff9999;font-weight:900;">-4,700원↓</div>
-                  <span style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;margin-right:3px;">35,700</span>
-                  <span style="font-size:18px;font-weight:900;color:#ffd166;">31,000<span style="font-size:9px;">원</span></span>
-                </div>
-              </div>
-              <div style="border-top:1px solid rgba(255,255,255,0.1);"></div>
-              <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="heroAddItem('set_sw_sinbi')">
-                <span style="font-size:16px;flex-shrink:0;">🍉</span>
-                <div style="flex:1;min-width:0;font-size:11px;font-weight:700;color:rgba(255,255,255,0.92);line-height:1.3;">대소수박(특) 9kg+신비복숭아(로열~특대과랜덤) 800g</div>
-                <div style="text-align:right;white-space:nowrap;">
-                  <div style="font-size:9px;color:#ff9999;font-weight:900;">-6,000원↓</div>
-                  <span style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;margin-right:3px;">36,900</span>
-                  <span style="font-size:18px;font-weight:900;color:#ffd166;">30,900<span style="font-size:9px;">원</span></span>
-                </div>
-              </div>
+            <div style="background:linear-gradient(135deg,rgba(160,0,50,0.55),rgba(100,0,25,0.5));border:1px solid #ff6b6b;border-radius:8px;padding:5px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;text-align:center;" onclick="heroAddItem('ts_cherry')">
+              <div style="font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap;">🍒 체리(9row-최대사이즈) 500g</div>
+              <div style="font-size:15.5px;font-weight:900;color:#ffd166;">12,000<span style="font-size:9px;">원</span></div>
             </div>
           </div>
 
-          <!-- 신비복숭아800g + 체리250g -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
-            <div style="background:linear-gradient(135deg,rgba(230,90,130,0.45),rgba(170,40,80,0.4));border:1px solid rgba(255,140,170,0.5);border-radius:8px;padding:4px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;" onclick="heroAddItem('ts_sinbi800')">
-              <div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;">🍑 신비복숭아(로열~특대과랜덤) 800g</div>
-              <div style="font-size:14px;font-weight:900;color:#ffd166;">9,900<span style="font-size:8px;">원</span></div>
+          <!-- 와촌,김천(특)자두 1kg / 2kg -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+            <div style="background:rgba(150,90,200,0.2);border:1px solid rgba(180,130,220,0.5);border-radius:8px;padding:5px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;text-align:center;" onclick="heroAddItem('f_wachon_jaju1')">
+              <div style="font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap;">🟣 와촌,김천(특)자두 1kg</div>
+              <div style="font-size:15.5px;font-weight:900;color:#ffd166;">12,900<span style="font-size:9px;">원</span></div>
             </div>
-            <div style="background:linear-gradient(135deg,rgba(160,0,50,0.55),rgba(100,0,25,0.5));border:1px solid #ff6b6b;border-radius:8px;padding:4px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;" onclick="heroAddItem('ts_cherry250')">
-              <div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;">🍒 체리(9row-왕특) 250g</div>
-              <div style="font-size:14px;font-weight:900;color:#ffd166;">6,900<span style="font-size:8px;">원</span></div>
+            <div style="background:rgba(150,90,200,0.2);border:1px solid rgba(180,130,220,0.5);border-radius:8px;padding:5px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;text-align:center;" onclick="heroAddItem('f_wachon_jaju2')">
+              <div style="font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap;">🟣 와촌,김천(특)자두 2kg</div>
+              <div style="font-size:15.5px;font-weight:900;color:#ffd166;">24,900<span style="font-size:9px;">원</span></div>
             </div>
           </div>
 
@@ -501,65 +461,64 @@
         </div>
 
         <!-- 채소 -->
-        <div style="font-size:11px;font-weight:900;color:rgba(140,245,165,0.95);letter-spacing:1px;padding:0 2px;margin-top:2px;">🥬 채소</div>
+        <div style="font-size:12.5px;font-weight:900;color:rgba(140,245,165,0.95);letter-spacing:1px;padding:0 2px;margin-top:2px;">🥬 채소</div>
         <!-- 베니하루카 -->
-        <div style="position:relative;background:linear-gradient(135deg,rgba(140,80,0,0.55),rgba(90,40,0,0.5));border:1.5px solid #c1121f;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="heroAddItem('ts_goguma3kg')">
-          <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:1px 7px;border-radius:8px;letter-spacing:0.3px;">⏰ 15분 한정 초초특가</span>
-          <span style="font-size:20px;flex-shrink:0;">🍠</span>
+        <div style="position:relative;background:linear-gradient(135deg,rgba(140,80,0,0.55),rgba(90,40,0,0.5));border:1.5px solid #c1121f;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;" onclick="heroAddItem('ts_goguma3kg')">
+          <span style="font-size:22px;flex-shrink:0;">🍠</span>
           <div style="flex:1;min-width:0;">
-            <div style="font-size:12.5px;font-weight:900;color:#fff;line-height:1.3;">베니하루카(밤+호박) 꿀 고구마 3kg<br><span style="font-size:10px;color:#ffd700;font-weight:700;">당도최고조</span></div>
+            <div style="font-size:14px;font-weight:900;color:#fff;line-height:1.3;">베니하루카(밤+호박) 꿀 고구마 3kg<br><span style="font-size:11px;color:#ffd700;font-weight:700;">당도최고조</span></div>
           </div>
           <div style="text-align:right;white-space:nowrap;">
-            <div style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;">15,000원</div>
-            <div style="font-size:19px;font-weight:900;color:#ffd166;">9,900<span style="font-size:9px;">원</span></div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);text-decoration:line-through;">15,000원</div>
+            <div style="font-size:21px;font-weight:900;color:#ffd166;">12,900<span style="font-size:10px;">원</span></div>
           </div>
         </div>
 
         <!-- 감자 2봉 -->
-        <div style="position:relative;background:linear-gradient(135deg,rgba(180,60,0,0.5),rgba(120,30,0,0.45));border:1.5px solid #c1121f;border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="heroAddItem('ts_gamja2')">
-          <span style="font-size:20px;flex-shrink:0;">🥔</span>
+        <div style="position:relative;background:linear-gradient(135deg,rgba(180,60,0,0.5),rgba(120,30,0,0.45));border:1.5px solid #c1121f;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;" onclick="heroAddItem('ts_gamja2')">
+          <span style="font-size:22px;flex-shrink:0;">🥔</span>
           <div style="flex:1;min-width:0;">
-            <div style="font-size:12.5px;font-weight:900;color:#fff;line-height:1.3;">수미햇감자 2봉(2kg이상)</div>
+            <div style="font-size:14px;font-weight:900;color:#fff;line-height:1.3;">수미햇감자 2봉(2kg이상)</div>
           </div>
           <div style="text-align:right;white-space:nowrap;">
-            <div style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;">8,000원</div>
-            <div style="font-size:19px;font-weight:900;color:#ffd166;">6,000<span style="font-size:9px;">원</span></div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);text-decoration:line-through;">8,000원</div>
+            <div style="font-size:21px;font-weight:900;color:#ffd166;">6,000<span style="font-size:10px;">원</span></div>
           </div>
         </div>
 
         <!-- 애호박 / 진노각 -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
-          <div style="background:rgba(75,200,105,0.18);border:1px solid rgba(75,200,105,0.45);border-radius:8px;padding:4px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;">
-            <div style="font-size:12px;font-weight:700;color:#fff;">🥒 애호박 1개</div>
-            <div style="font-size:14px;font-weight:900;color:#86efac;">900<span style="font-size:8px;">원</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+          <div style="background:rgba(75,200,105,0.18);border:1px solid rgba(75,200,105,0.45);border-radius:8px;padding:5px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;text-align:center;">
+            <div style="font-size:13.5px;font-weight:700;color:#fff;">🥒 애호박 1개</div>
+            <div style="font-size:15.5px;font-weight:900;color:#86efac;">900<span style="font-size:9px;">원</span></div>
           </div>
-          <div style="position:relative;background:rgba(255,205,65,0.18);border:1px solid rgba(255,205,65,0.5);border-radius:8px;padding:4px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;">
-            <span style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);background:#ffd700;color:#1a0f00;font-size:7px;font-weight:900;padding:1px 5px;border-radius:8px;white-space:nowrap;">🔥 특가</span>
-            <div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;">🥒 진노각(토종노각) 3개</div>
-            <div style="font-size:14px;font-weight:900;color:#ffd700;">8,000<span style="font-size:8px;">원</span></div>
+          <div style="position:relative;background:rgba(255,205,65,0.18);border:1px solid rgba(255,205,65,0.5);border-radius:8px;padding:5px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;text-align:center;">
+            <span style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);background:#ffd700;color:#1a0f00;font-size:9px;font-weight:900;padding:2px 6px;border-radius:8px;white-space:nowrap;">🔥 특가</span>
+            <div style="font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap;">🥒 진노각(토종노각) 3개</div>
+            <div style="font-size:15.5px;font-weight:900;color:#ffd700;">8,000<span style="font-size:9px;">원</span></div>
           </div>
         </div>
 
         <!-- 과일·계란 -->
-        <div style="font-size:11px;font-weight:900;color:rgba(255,210,90,0.95);letter-spacing:1px;padding:0 2px;margin-top:6px;">🍊 과일 · 🥚 계란</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
-          <div style="background:rgba(255,150,50,0.18);border:1px solid rgba(255,158,52,0.45);border-radius:8px;padding:4px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;">
-            <div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;">🫐 블루베리 왕 2팩</div>
-            <div style="font-size:14px;font-weight:900;color:#ffd166;">8,800<span style="font-size:8px;">원</span></div>
+        <div style="font-size:12.5px;font-weight:900;color:rgba(255,210,90,0.95);letter-spacing:1px;padding:0 2px;margin-top:6px;">🍊 과일 · 🥚 계란</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+          <div style="background:rgba(255,150,50,0.18);border:1px solid rgba(255,158,52,0.45);border-radius:8px;padding:5px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;text-align:center;" onclick="heroAddItem('f53b')">
+            <div style="font-size:12.5px;font-weight:700;color:#fff;white-space:nowrap;">🫐 블루베리 2팩</div>
+            <div style="font-size:14.5px;font-weight:900;color:#ffd166;">8,800<span style="font-size:9px;">원</span></div>
           </div>
-          <div style="background:rgba(255,210,65,0.18);border:1px solid rgba(255,205,65,0.45);border-radius:8px;padding:4px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;">
-            <div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;">🥚 유정란 20구</div>
-            <div style="font-size:14px;font-weight:900;color:#ffd166;">10,900<span style="font-size:8px;">원</span></div>
+          <div style="background:rgba(255,210,65,0.18);border:1px solid rgba(255,205,65,0.45);border-radius:8px;padding:5px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;text-align:center;" onclick="heroAddItem('v34u')">
+            <div style="font-size:12.5px;font-weight:700;color:#fff;white-space:nowrap;">🥚 유정란 20구</div>
+            <div style="font-size:14.5px;font-weight:900;color:#ffd166;">10,900<span style="font-size:9px;">원</span></div>
           </div>
         </div>
-        <div style="background:rgba(255,210,65,0.18);border:1px solid rgba(255,205,65,0.45);border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
-          <span style="font-size:20px;flex-shrink:0;">🥚</span>
+        <div style="background:rgba(255,210,65,0.18);border:1px solid rgba(255,205,65,0.45);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;">
+          <span style="font-size:22px;flex-shrink:0;">🥚</span>
           <div style="flex:1;min-width:0;">
-            <div style="font-size:12.5px;font-weight:900;color:#fff;">특란 30구 1판</div>
+            <div style="font-size:14px;font-weight:900;color:#fff;">특란 30구 1판</div>
           </div>
           <div style="text-align:right;white-space:nowrap;">
-            <div style="font-size:10px;color:rgba(255,255,255,0.4);text-decoration:line-through;">8,500원</div>
-            <div style="font-size:19px;font-weight:900;color:#ffd166;">7,200<span style="font-size:9px;">원</span></div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);text-decoration:line-through;">8,500원</div>
+            <div style="font-size:21px;font-weight:900;color:#ffd166;">7,200<span style="font-size:10px;">원</span></div>
           </div>
         </div>
 
@@ -1613,19 +1572,18 @@ const specialItems = [
 const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
 
-  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 대소수박(복불복제로) 9kg', desc:'복불복없는 수박 대소 9kg 초초특가', orig:28900, price:25900, badge:'선착순초초특가', badgeColor:'#c1121f' },
-  { id:'f_mangosteen2', num:'🍈', name:'🍈 생망고스틴 2망(10입)', desc:'생망고스틴 2망 10입', orig:15800, price:14900 },
+  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 대소수박(복불복제로) 9kg', desc:'복불복없는 수박 대소 9kg 초초특가', orig:28900, price:26900, badge:'선착순초초특가', badgeColor:'#c1121f' },
   { id:'f_jeju_gamgyul1', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 1봉(1kg이상)', desc:'제주하우스감귤 1봉 1kg이상', price:10900 },
-  { id:'f_jeju_gamgyul3', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 3kg 1박스', desc:'제주하우스감귤 3kg 1박스', price:31000 },
   { id:'f_wachon_jaju1', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천(특)자두(아삭,새콤달콤최고봉) 1kg', desc:'와촌,김천(특)자두 아삭 새콤달콤최고봉 1kg', price:12900 },
-  { id:'set_wachon_sinbi', todaySpecial:false, num:'🟣🍑', name:'🟣 와촌,김천(특)자두1kg+신비복숭아(로열~특대과랜덤) 800g', desc:'와촌,김천(특)자두 1kg + 신비복숭아(로열~특대과랜덤) 800g', price:22900 },
-  { id:'set_wachon_cherry_blue', todaySpecial:false, num:'🟣🍒', name:'🟣 와촌,김천(특)자두1kg+워싱턴체리(9row-왕특) 500g이상', desc:'와촌,김천(특)자두 1kg + 워싱턴체리(9row-왕특) 500g이상', orig:29900, price:24900 },
-  { id:'set_sw_wachon', todaySpecial:false, num:'🍉🟣', name:'🍉 대소수박(특)9kg+와촌,김천(특)자두1kg', desc:'대소수박(특) 9kg + 와촌,김천(특)자두 1kg', orig:41900, price:37900 },
-  { id:'set_sw_blue', todaySpecial:false, num:'🍉🫐', name:'🍉 대소수박(특)9kg+블루베리2팩', desc:'대소수박(특) 9kg + 블루베리 2팩', orig:35700, price:31000 },
-  { id:'set_sw_sinbi', todaySpecial:false, num:'🍉🍑', name:'🍉 대소수박(특)9kg+신비복숭아(로열~특대과랜덤) 800g', desc:'대소수박(특) 9kg + 신비복숭아(로열~특대과랜덤) 800g', orig:36900, price:30900 },
   { id:'f_wachon_jaju2', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천(특)자두(아삭,새콤달콤최고봉) 2kg', desc:'와촌,김천(특)자두 아삭 새콤달콤최고봉 2kg', price:24900 },
-  { id:'set_sinbi2_cherry500', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 신비복숭아(로열~특대과랜덤)2kg(팩)+워싱턴체리(9row-왕특) 500g이상 세트', desc:'신비복숭아(로열~특대과랜덤) 2kg(팩) + 워싱턴체리(9row-왕특) 500g이상', orig:30900, price:28900 },
-  { id:'set_sinbi_cherry', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 신비복숭아(로열~특대과랜덤)800g+워싱턴체리(9row-특대과) 250g 세트', desc:'신비복숭아(로열~특대과랜덤) 800g + 워싱턴체리(9row-특대과) 250g', orig:16800, price:15800 },
+  { id:'f_jeju_gamgyul3', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 3kg 1박스', desc:'제주하우스감귤 3kg 1박스', price:31000 },
+  { id:'set_wachon_sinbi', todaySpecial:false, num:'🟣🍑', name:'🟣 +신비복숭아(로열~특대과랜덤) 1kg', desc:'와촌,김천(특)자두 1kg + 신비복숭아(로열~특대과랜덤) 1kg', orig:22800, price:21900 },
+  { id:'set_wachon_cherry_blue', todaySpecial:false, num:'🟣🍒', name:'🟣 +워싱턴체리(9row-최대사이즈) 500g이상', desc:'와촌,김천(특)자두 1kg + 워싱턴체리(9row-최대사이즈) 500g이상', orig:29900, price:24900 },
+  { id:'set_sw_wachon', todaySpecial:false, num:'🍉🟣', name:'🍉 +와촌,김천(특)자두 1kg', desc:'대소수박(특) 9kg + 와촌,김천(특)자두 1kg', orig:40800, price:37900 },
+  { id:'set_sw_blue', todaySpecial:false, num:'🍉🫐', name:'🍉 +블루베리 2팩', desc:'대소수박(특) 9kg + 블루베리 2팩', orig:36700, price:32900 },
+  { id:'set_sw_sinbi', todaySpecial:false, num:'🍉🍑', name:'🍉 +신비복숭아(로열~특대과랜덤) 1kg', desc:'대소수박(특) 9kg + 신비복숭아(로열~특대과랜덤) 1kg', orig:37800, price:36900 },
+  { id:'set_sinbi2_cherry500', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 신비복숭아(로열~특대과랜덤)2kg(팩)+워싱턴체리(9row-최대사이즈) 500g이상 세트', desc:'신비복숭아(로열~특대과랜덤) 2kg(팩) + 워싱턴체리(9row-최대사이즈) 500g이상', orig:30900, price:28900 },
+  { id:'set_sinbi_cherry', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 신비복숭아(로열~특대과랜덤)1kg+워싱턴체리(9row-최대사이즈) 500g 세트', desc:'신비복숭아(로열~특대과랜덤) 1kg + 워싱턴체리(9row-최대사이즈) 500g', orig:21900, price:19900 },
   { id:'f51', num:'#51', todaySpecial:true, name:'🍉 대소수박 9kg(복불복제로)', desc:'복불복없는 수박 · 대소 9kg', orig:32900, price:28900, sold:true },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:9900 },
   { id:'f_germanium5', todaySpecial:true, num:'🍈', name:'🍈 게르마늄참외 5kg(특-선물용 12수)', desc:'성주 게르마늄 재배 참외 5kg 특급 선물용', price:19900 },
@@ -1633,19 +1591,19 @@ const fruitItems = [
   { id:'f60', num:'#60', todaySpecial:true, name:'🥝 골드키위 왕왕특 4개', desc:'골드키위(왕왕특)입', orig:10000, price:8800 },
   // ── 단품 ──
   { id:'f53b',num:'#53', todaySpecial:true, name:'🫐 블루베리 왕 2팩', desc:'왕특 블루베리 2팩 묶음', orig:10000, price:8800 },
+  { id:'f53d',num:'#53', todaySpecial:true, name:'🫐 블루베리 왕 4팩', desc:'왕특 블루베리 4팩 묶음', orig:17600, price:16500 },
   { id:'f53c',num:'#53', name:'🫐 블루베리 1팩',           desc:'',                             orig:null,  price:8800  },
   { id:'f54', num:'#54', name:'🍈 참외(소과·게르마늄) 1봉', desc:'성주 게르마늄 재배 참외 1봉 (소과)',             orig:null,  price:5000 },
   { id:'f55', num:'#55', name:'🍅 방울토마토 1팩',   desc:'오감·세도, 아삭하고 달아요',            orig:null,  price:4900  },
   { id:'v36', num:'36', name:'🍅 찰토마토 1봉',          desc:'달고 아삭한 찰토마토',  price:4000 },
   { id:'f_blue_box', num:'🫐', name:'🫐 블루베리(왕) 1박스(10팩-1kg)', desc:'블루베리 왕 1박스 10팩 1kg', price:39900 },
-  { id:'f_berry', num:'🍓', name:'🍓 산딸기 500g 1박스', desc:'채팅주문 · 신선도', price:12000, chatOrder:true },
-  { id:'ts_sinbi800', todaySpecial:false, num:'🍑', name:'🍑 신비복숭아(로열~특대과랜덤) 800g', desc:'신비복숭아(로열~특대과랜덤) 800g', price:9900 },
+  { id:'ts_sinbi800', todaySpecial:false, num:'🍑', name:'🍑 신비복숭아(로열~특대과랜덤) 1kg', desc:'신비복숭아(로열~특대과랜덤) 1kg', price:9900 },
   { id:'ts_sinbi', todaySpecial:true, num:'🍑', name:'🍑 신비복숭아(로열~특대과랜덤) 2kg(팩)', desc:'신비복숭아(로열~특대과랜덤) 2kg 팩', orig:23900, price:18000, badge:'파격특가', badgeColor:'#c1121f' },
-  { id:'ts_cherry250', todaySpecial:false, num:'🍒', name:'🍒 체리(워싱턴체리(9row-특대과) 250g', desc:'워싱턴체리(9row-특대과) 250g', price:6900 },
-  { id:'ts_cherry', todaySpecial:false, num:'🍒', name:'🍒 워싱턴체리(9row-왕특) 500g', desc:'워싱턴체리(9row-왕특) 500g', price:12900 },
-  { id:'ts_cherry1kg', todaySpecial:false, num:'🍒', name:'🍒 워싱턴체리(9row-왕특) 1kg', desc:'워싱턴체리(9row-왕특) 1kg', price:23900 },
+  { id:'ts_cherry250', todaySpecial:false, num:'🍒', name:'🍒 체리(워싱턴체리(9row-최대사이즈) 250g', desc:'워싱턴체리(9row-최대사이즈) 250g', price:6900 },
+  { id:'ts_cherry', todaySpecial:false, num:'🍒', name:'🍒 워싱턴체리(9row-최대사이즈) 500g', desc:'워싱턴체리(9row-최대사이즈) 500g', price:12000 },
+  { id:'ts_cherry1kg', todaySpecial:false, num:'🍒', name:'🍒 워싱턴체리(9row-최대사이즈) 1kg', desc:'워싱턴체리(9row-최대사이즈) 1kg', price:22900 },
   { id:'f_melon', todaySpecial:true, num:'🍈', name:'🍈 멜론 1통(2~2.5kg)', desc:'멜론 1통 2~2.5kg', price:12000 },
-  { id:'f_avocado', todaySpecial:true, num:'🥑', name:'🥑 아보카도 5개', desc:'아보카도 5개', price:8000 },
+  { id:'f_avocado', todaySpecial:true, num:'🥑', name:'🥑 아보카도 5개', desc:'아보카도 5개', price:10000 },
 
 ];
 
@@ -1653,13 +1611,11 @@ const vegItems = [
   // ── 🔥 오늘의 채소 특가 ──
 
   { id:'ts_zucchini',todaySpecial:true, num:'🥒', name:'🥒 애호박 1개',     price: 900 },
-  { id:'ts_oiji_top', todaySpecial:true, num:'🥒', name:'🥒 오이지반접(특)', desc:'오이지반접(특)', price:9500 },
-  { id:'ts_oiji_sang', todaySpecial:true, num:'🥒', name:'🥒 오이지반접(상)', desc:'오이지반접(상)', price:7900 },
   { id:'v_corn10', todaySpecial:true, num:'🌽', name:'🌽 초당옥수수 10개', desc:'초당옥수수 10개', price:13000 },
   { id:'v_corn1', todaySpecial:false, num:'🌽', name:'🌽 초당옥수수 1개', desc:'초당옥수수 1개', price:1500 },
 
   // ── 기존 품목 ──
-  { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 3kg', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 3kg', orig:15000, price:9900 },
+  { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 3kg', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 3kg', orig:15000, price:12900 },
   { id:'ts_goguma1', todaySpecial:false, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 1봉', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조)', price:5000 },
   { id:'ts_oigaji', num:'교차', todaySpecial:true, name:'🥒🍆 오이·가지 5개(교차가능)', desc:'오이·가지 교차 선택 가능 (오이는 쓰지않아요 품종)', price:2000, types:['오이(쓰지않아요)','가지'], maxPick:5, typeUnit:'개' },
   { id:'ts_oigaji10', num:'교차', todaySpecial:true, name:'🥒🍆 오이·가지 10개(교차가능)', desc:'오이·가지 교차 선택 가능 (오이는 쓰지않아요 품종)', price:3800, types:['오이(쓰지않아요)','가지'], maxPick:10, typeUnit:'개' },
@@ -1705,7 +1661,6 @@ const vegItems = [
   { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888', maxQty:1 },
   { id:'v34u',num:'34', name:'🥚 유정란 20구 (난각1번·무항생제)', price:10900, origPrice:12900, badge:'유정란 10,900원', badgeColor:'#4caf50' },
 
-  { id:'v11c', num:'11', name:'🥒 오이지오이 반접(50개)', desc:'오이지용 · 채팅주문', price:0, chatOrder:true },
 ];
 
 // ══ 상태 ══════════════════════════════════════
@@ -1757,14 +1712,13 @@ const BUNDLE_UNLOCK = new URLSearchParams(location.search).get('bundle') === 'on
 // 예: https://cocobasket.netlify.app?sold=찰토마토
 const SOLDOUT_MAP = {
   '찰토마토': ['v36', 'v36b'],
-  '블루베리': ['f53b'],
+  '블루베리': ['f53b', 'f53d'],
   '참외':    ['f54b', 'f54'],
   '부사':    [],
   '수박':    ['f51'],
   '정수박':  ['f51'],
   '대소수박8kg':['f_okpo'],
   '대소수박':['f_okpo'],
-  '망고스틴':['f_mangosteen1','f_mangosteen2'],
   '흑토마토': ['v36c'],
 };
 
@@ -3447,20 +3401,20 @@ function renderFlashSection() {
       qtys[fi.id] = qtys[fi.id] || 0;
       const qty = qtys[fi.id];
       const fid = fi.id;
-      const origHtml = (fi.origPrice || meta.orig) ? '<span style="font-size:14px;color:rgba(255,255,255,0.55);text-decoration:line-through;margin-right:5px;">' + (fi.origPrice || meta.orig).toLocaleString() + '</span>' : '';
+      const origHtml = (fi.origPrice || meta.orig) ? '<span style="font-size:15px;color:rgba(255,255,255,0.55);text-decoration:line-through;margin-right:5px;">' + (fi.origPrice || meta.orig).toLocaleString() + '</span>' : '';
       const nameOnly = meta.name.replace(/^\S+\s*/, '');
       const stepperHtml = sold
         ? '<span style="font-size:0.85rem;color:#c1121f;font-weight:900;">⛔ 마감</span>'
-        : '<button class="flash-btn-sub" style="width:28px;height:28px;font-size:1rem;" onclick="flashAdj(\'' + fid + '\',-1)">－</button>' +
-          '<span class="flash-qty" id="fqty-' + fid + '" style="min-width:18px;font-size:1rem;">' + qty + '</span>' +
-          '<button class="flash-btn-add" style="width:28px;height:28px;font-size:1rem;" onclick="flashAdj(\'' + fid + '\',1)">＋</button>';
+        : '<button class="flash-btn-sub" style="width:30px;height:30px;font-size:1.05rem;" onclick="flashAdj(\'' + fid + '\',-1)">－</button>' +
+          '<span class="flash-qty" id="fqty-' + fid + '" style="min-width:18px;font-size:1.05rem;">' + qty + '</span>' +
+          '<button class="flash-btn-add" style="width:30px;height:30px;font-size:1.05rem;" onclick="flashAdj(\'' + fid + '\',1)">＋</button>';
       const line = document.createElement('div');
-      line.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;' + (sold ? 'opacity:0.5;' : '');
+      line.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;' + (sold ? 'opacity:0.5;' : '');
       line.innerHTML =
-        '<div style="flex:1;min-width:0;font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);line-height:1.35;">' + nameOnly + '</div>' +
+        '<div style="flex:1;min-width:0;font-size:14.5px;font-weight:800;color:rgba(255,255,255,0.95);line-height:1.4;">' + nameOnly + '</div>' +
         '<div style="text-align:right;white-space:nowrap;">' +
-          '<div>' + origHtml + '<span style="font-size:19px;font-weight:900;color:#ffd166;">' + (fi.flashPrice || meta.price).toLocaleString() + '원</span></div>' +
-          '<div style="display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-top:3px;">' + stepperHtml + '</div>' +
+          '<div>' + origHtml + '<span style="font-size:21px;font-weight:900;color:#ffd166;">' + (fi.flashPrice || meta.price).toLocaleString() + '원</span></div>' +
+          '<div style="display:flex;align-items:center;gap:5px;justify-content:flex-end;margin-top:4px;">' + stepperHtml + '</div>' +
         '</div>';
       return line;
     }
@@ -3468,10 +3422,10 @@ function renderFlashSection() {
     for (const groupName in grouped) {
       const items = grouped[groupName];
       const groupBox = document.createElement('div');
-      groupBox.style.cssText = 'background:linear-gradient(135deg,rgba(150,30,60,0.5),rgba(90,10,35,0.45));border:1.5px solid #ff6b6b;border-radius:10px;padding:8px 10px;margin-bottom:8px;';
+      groupBox.style.cssText = 'background:linear-gradient(135deg,rgba(150,30,60,0.5),rgba(90,10,35,0.45));border:1.5px solid #ff6b6b;border-radius:10px;padding:11px 13px;margin-bottom:11px;';
       const hdr = document.createElement('div');
-      hdr.style.cssText = 'display:flex;align-items:center;gap:5px;margin-bottom:4px;';
-      hdr.innerHTML = '<span style="background:#c1121f;color:#fff;font-size:10px;font-weight:900;padding:3px 8px;border-radius:6px;letter-spacing:0.3px;">🔥 선착순 초특가</span><span style="font-size:13px;font-weight:900;color:#fff;">' + groupName + '</span>';
+      hdr.style.cssText = 'display:flex;align-items:center;gap:6px;margin-bottom:6px;';
+      hdr.innerHTML = '<span style="background:#c1121f;color:#fff;font-size:11px;font-weight:900;padding:4px 9px;border-radius:6px;letter-spacing:0.3px;">🔥 선착순 초특가</span><span style="font-size:14.5px;font-weight:900;color:#fff;">' + groupName + '</span>';
       groupBox.appendChild(hdr);
       const linesWrap = document.createElement('div');
       items.forEach((fi, idx) => {
@@ -3498,12 +3452,27 @@ function renderFlashSection() {
       const icon = (meta.name.match(/^\S+/) || [''])[0];
       const nameOnly = meta.name.replace(/^\S+\s*/, '');
       const stepperHtml = sold
-        ? '<span style="font-size:0.72rem;color:#c1121f;font-weight:900;">⛔ 마감</span>'
-        : '<button class="flash-btn-sub" style="width:26px;height:26px;font-size:0.95rem;" onclick="flashAdj(\'' + fid + '\',-1)">－</button>' +
-          '<span class="flash-qty" id="fqty-' + fid + '" style="min-width:16px;">' + qty + '</span>' +
-          '<button class="flash-btn-add" style="width:26px;height:26px;font-size:0.95rem;" onclick="flashAdj(\'' + fid + '\',1)">＋</button>';
+        ? '<span style="font-size:0.78rem;color:#c1121f;font-weight:900;">⛔ 마감</span>'
+        : '<button class="flash-btn-sub" style="width:29px;height:29px;font-size:1.05rem;" onclick="flashAdj(\'' + fid + '\',-1)">－</button>' +
+          '<span class="flash-qty" id="fqty-' + fid + '" style="min-width:18px;">' + qty + '</span>' +
+          '<button class="flash-btn-add" style="width:29px;height:29px;font-size:1.05rem;" onclick="flashAdj(\'' + fid + '\',1)">＋</button>';
       const card = document.createElement('div');
       card.className = 'set-card' + (sold ? ' sold' : '');
+      if (fi.highlight && !sold) {
+        card.style.cssText = 'background:linear-gradient(135deg,rgba(160,10,40,0.95),rgba(90,5,20,0.92));border:1.5px solid #ff8fa3;';
+        card.innerHTML =
+          '<div class="set-icon">' + icon + '</div>' +
+          '<div class="set-info">' +
+            '<div class="set-name" style="color:#fff;">' + nameOnly + '</div>' +
+            (origHtml ? origHtml.replace('class="set-orig"', 'class="set-orig" style="color:rgba(255,255,255,0.6);"') : '') +
+          '</div>' +
+          '<div class="set-price-area">' +
+            '<div class="set-price" style="color:#ffd166;">' + (fi.flashPrice || meta.price).toLocaleString() + '원</div>' +
+            '<div class="set-stepper">' + stepperHtml + '</div>' +
+          '</div>';
+        setWrap.appendChild(card);
+        continue;
+      }
       card.innerHTML =
         '<div class="set-icon">' + icon + '</div>' +
         '<div class="set-info">' +
@@ -3584,21 +3553,22 @@ function renderFlashSection() {
 const FLASH_ITEMS = [
 
 
-  { id:'set_wachon_sinbi',  label:'와촌,김천(특)자두1kg+신비복숭아(로열~특대과랜덤)800g',     max:9999, flashPrice:22900, badge:'🔥 선착순 초특가', group:'와촌,김천(특)자두 세트' },
-  { id:'set_wachon_cherry_blue', label:'와촌,김천(특)자두1kg+워싱턴체리(9row-왕특) 500g이상',     max:9999, flashPrice:24900, origPrice:29900, badge:'🔥 선착순 초특가', group:'와촌,김천(특)자두 세트' },
-  { id:'set_sw_wachon', label:'대소수박(특)9kg+와촌,김천(특)자두1kg',     max:9999, flashPrice:37900, origPrice:41900, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
-  { id:'set_sw_blue', label:'대소수박(특)9kg+블루베리2팩',     max:9999, flashPrice:31000, origPrice:35700, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
-  { id:'set_sw_sinbi', label:'대소수박(특)9kg+신비복숭아(로열~특대과랜덤) 800g',     max:9999, flashPrice:30900, origPrice:36900, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
-  { id:'set_sinbi2_cherry500', label:'신비복숭아(로열~특대과랜덤)2kg(팩)+워싱턴체리(9row-왕특) 500g이상 세트',     max:9999, flashPrice:28900, origPrice:30900, badge:'🔥 선착순 초특가', group:'복숭아 · 체리 세트' },
-  { id:'set_sinbi_cherry',   label:'신비복숭아(로열~특대과랜덤)800g+워싱턴체리(9row-특대과) 250g 세트',     max:9999, flashPrice:15800, origPrice:16800, badge:'🔥 선착순 초특가', group:'복숭아 · 체리 세트' },
-  { id:'ts_sinbi800', label:'신비복숭아(로열~특대과랜덤) 800g',                              max:9999, flashPrice:9900 },
+  { id:'set_wachon_sinbi',  label:'+신비복숭아(로열~특대과랜덤) 1kg',     max:9999, flashPrice:21900, origPrice:22800, badge:'🔥 선착순 초특가', group:'와촌,김천(특)자두 세트' },
+  { id:'set_wachon_cherry_blue', label:'+워싱턴체리(9row-최대사이즈) 500g이상',     max:9999, flashPrice:24900, origPrice:29900, badge:'🔥 선착순 초특가', group:'와촌,김천(특)자두 세트' },
+  { id:'set_sw_wachon', label:'+와촌,김천(특)자두 1kg',     max:9999, flashPrice:37900, origPrice:40800, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
+  { id:'set_sw_blue', label:'+블루베리 2팩',     max:9999, flashPrice:32900, origPrice:36700, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
+  { id:'set_sw_sinbi', label:'+신비복숭아(로열~특대과랜덤) 1kg',     max:9999, flashPrice:36900, origPrice:37800, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
+  { id:'set_sinbi2_cherry500', label:'신비복숭아(로열~특대과랜덤)2kg(팩)+워싱턴체리(9row-최대사이즈) 500g이상 세트',     max:9999, flashPrice:28900, origPrice:30900, badge:'🔥 선착순 초특가', group:'복숭아 · 체리 세트' },
+  { id:'set_sinbi_cherry',   label:'신비복숭아(로열~특대과랜덤)1kg+워싱턴체리(9row-최대사이즈) 500g 세트',     max:9999, flashPrice:19900, origPrice:21900, badge:'🔥 선착순 초특가', group:'복숭아 · 체리 세트' },
   { id:'ts_sinbi',    label:'신비복숭아(로열~특대과랜덤) 2kg(팩)',                          max:9999, flashPrice:18000, origPrice:23900, badge:'🔥 파격특가' },
-  { id:'ts_cherry250',label:'체리(워싱턴체리(9row-특대과) 250g',          max:9999, flashPrice:6900 },
-  { id:'ts_cherry',   label:'워싱턴체리(9row-왕특) 500g',          max:9999, flashPrice:12900 },
-  { id:'ts_cherry1kg',label:'워싱턴체리(9row-왕특) 1kg',          max:9999, flashPrice:23900 },
+  { id:'f53d',         label:'블루베리 왕 4팩',                              max:9999, flashPrice:16500, origPrice:17600, badge:'🔥 4팩 득템특가' },
+  { id:'f_germanium5', label:'게르마늄참외 5kg(특-선물용 12수)',             max:9999, flashPrice:19900, badge:'🔥 선착순 특가' },
+  { id:'ts_cherry',   label:'워싱턴체리(9row-최대사이즈) 500g',          max:9999, flashPrice:12000, highlight:true },
+  { id:'ts_sinbi800', label:'신비복숭아(로열~특대과랜덤) 1kg',                              max:9999, flashPrice:9900 },
+  { id:'ts_cherry250',label:'체리(워싱턴체리(9row-최대사이즈) 250g',          max:9999, flashPrice:6900 },
+  { id:'ts_cherry1kg',label:'워싱턴체리(9row-최대사이즈) 1kg',          max:9999, flashPrice:22900 },
   { id:'v36b',        label:'찰토마토 2봉',                                max:9999, flashPrice:6000,  origPrice:8000 },
   { id:'f_blue_box',   label:'블루베리(왕) 1박스(10팩-1kg)',                 max:9999, flashPrice:39900, badge:'🫐 블루베리 박스특가' },
-  { id:'f_germanium5', label:'게르마늄참외 5kg(특-선물용 12수)',             max:9999, flashPrice:19900, badge:'🔥 선착순 특가' },
 
 ];
 const flashCounts = {};
