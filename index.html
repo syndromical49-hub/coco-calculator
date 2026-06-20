@@ -1223,7 +1223,7 @@ async function goReorder() {
 
   // 1순위: Supabase 실시간 조회
   try {
-    const res = await fetch(`https://cocobasket-danji.netlify.app/.netlify/functions/lookup?phone=${inputClean}`);
+    const res = await fetch(`https://cocobasket-danji.vercel.app/api/lookup?phone=${inputClean}`);
     if (res.ok) {
       const data = await res.json();
       if (data && data.name) found = data;
@@ -1285,8 +1285,8 @@ const SCHEDULE = {
        nextRegions:{ 운정:'수요일', 일산동구:'화요일', 일산서구:'화요일', 덕양구:'금요일' } },
   2: { label:'화요일',
        unjeong:[],
-       ilsandong:['정발산','주엽','대화','식사동'],
-       ilsanseo:['일산동','중산'],
+       ilsandong:['정발산','중산','식사동'],
+       ilsanseo:['일산동','주엽','대화'],
        deogyang:[],
        nextRegions:{ 운정:'수요일', 일산동구:'토요일', 일산서구:'금요일', 덕양구:'금요일' } },
   3: { label:'수요일',
@@ -1327,8 +1327,8 @@ const GOYANG_AREA_KEYWORDS = {
 const GOYANG_ALL_AREAS = ['주엽','대화','정발산','일산동','중산','마두','백석','풍동','풍산동','식사동','장항동','가좌','덕이','탄현','행신','화정','삼송','원흥','향동','덕은'];
 
 const REGION_AREAS = {
-  ilsandong: ['주엽','대화','정발산','중산','마두','백석','풍동','풍산동','식사동','장항동'],
-  ilsanseo:  ['일산동','가좌','덕이','탄현'],
+  ilsandong: ['정발산','중산','마두','백석','풍동','풍산동','식사동','장항동'],
+  ilsanseo:  ['주엽','대화','일산동','가좌','덕이','탄현'],
   deogyang:  ['행신','화정','삼송','원흥','향동','덕은'],
 };
 
