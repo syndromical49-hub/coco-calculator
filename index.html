@@ -1739,41 +1739,13 @@ function reg(id, name, price) {
   qtys[id] = 0;
 }
 
-// 배송일 계산 (KST 기준)
+// 배송일 계산 (KST 기준) — 시간 컷오프 없음. "오늘 주문 = 무조건 다음 배송일" (일요일은 배송 없어서 건너뜀)
 function getDeliveryDate() {
   const now = new Date();
   const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-  const day = kst.getUTCDay(); // 0=일,1=월,...,6=토
-  const h = kst.getUTCHours();
-  const m = kst.getUTCMinutes();
-  const totalMin = h * 60 + m;
-  const yyyy = kst.getUTCFullYear();
-  const mm = kst.getUTCMonth();
-  const dd = kst.getUTCDate();
-  const base = new Date(Date.UTC(yyyy, mm, dd));
-
-  if (day === 6) {
-    // 토: 08:00 이후 → 월(+2), 이전 → 당일
-    if (totalMin >= 8*60) base.setUTCDate(dd + 2);
-  } else if (day === 0) {
-    // 일: 항상 월(+1)
-    base.setUTCDate(dd + 1);
-  } else {
-    // 월~금: 09:00 이후 → 다음날(+1), 이전 → 당일
-    if (totalMin >= 9*60) base.setUTCDate(dd + 1);
-  }
-  return base.toISOString().slice(0,10);
-}
-
-// 배송일 계산 (KST 기준)
-function getDeliveryDate() {
-  const kst = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
-  const day = kst.getUTCDay();
-  const totalMin = kst.getUTCHours() * 60 + kst.getUTCMinutes();
   const base = new Date(Date.UTC(kst.getUTCFullYear(), kst.getUTCMonth(), kst.getUTCDate()));
-  if (day === 6) { if (totalMin >= 480) base.setUTCDate(base.getUTCDate() + 2); }
-  else if (day === 0) { base.setUTCDate(base.getUTCDate() + 1); }
-  else { if (totalMin >= 540) base.setUTCDate(base.getUTCDate() + 1); }
+  base.setUTCDate(base.getUTCDate() + 1);
+  while (base.getUTCDay() === 0) base.setUTCDate(base.getUTCDate() + 1); // 일요일 건너뛰기
   return base.toISOString().slice(0,10);
 }
 // ══ 번들 잠금 해제: URL에 ?bundle=on 붙이면 활성화 ══════
