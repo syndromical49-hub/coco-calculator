@@ -3954,6 +3954,21 @@ window.orderDirect = async function() {
     const today = new Date().toISOString().slice(0,10);
     const phone = (u.phone||'').replace(/\D/g,'');
 
+    // ── 오늘 동일 전화번호 주문 존재 여부 확인 → 추가주문 여부 물어보기 ──
+    try {
+      const chkRes = await fetch(SB_URL + '/rest/v1/orders?customer_phone=eq.' + phone + '&order_date=eq.' + getDeliveryDate() + '&select=id&limit=1', {
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+      });
+      const chkData = await chkRes.json();
+      if (Array.isArray(chkData) && chkData.length > 0) {
+        const goAhead = confirm('이미 오늘 주문이 있어요 😊\n추가 주문이신가요?');
+        if (!goAhead) {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
+          return;
+        }
+      }
+    } catch(e) { /* 확인 실패 시 그냥 진행 */ }
+
     // ── 중복 방지: idempotency_key로 DB 레벨에서 처리 ──
     const ordRes = await fetch(SB_URL + '/rest/v1/orders', {
       method:'POST',
