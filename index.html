@@ -415,35 +415,6 @@
             </div>
           </div>
 
-          <!-- 10분 한정 깜짝특가 -->
-          <style>
-            @keyframes tenMinPulse { 0%,100%{ box-shadow:0 0 0px 0px rgba(255,143,163,0.6),0 0 14px 2px rgba(255,143,163,0.4); } 50%{ box-shadow:0 0 0px 5px rgba(255,143,163,0),0 0 20px 5px rgba(255,143,163,0.65); } }
-          </style>
-          <div style="position:relative;background:linear-gradient(135deg,rgba(160,10,40,0.95),rgba(90,5,20,0.92));border:1.5px solid #ff8fa3;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;animation:tenMinPulse 1.6s ease-in-out infinite;" onclick="heroAddItem('set_sinbi2_cherry500')">
-            <span style="position:absolute;top:-9px;left:10px;background:#ffd166;color:#7a0b14;font-size:10px;font-weight:900;padding:2px 9px;border-radius:9px;letter-spacing:0.3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);">⏰ 10분 한정</span>
-            <span style="font-size:22px;flex-shrink:0;">🍑🍒</span>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:14.5px;font-weight:900;color:#fff;line-height:1.3;">신비복숭아 2kg+워싱턴체리 500g이상</div>
-              <div style="font-size:10.5px;font-weight:700;color:rgba(255,209,102,0.85);margin-top:2px;">세트구매시 신비2kg 12,900원에 드려요</div>
-            </div>
-            <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:11px;color:rgba(255,255,255,0.6);text-decoration:line-through;">30,000원</div>
-              <div style="font-size:21px;font-weight:900;color:#ffd166;">26,900<span style="font-size:10px;">원</span></div>
-            </div>
-          </div>
-
-          <div style="position:relative;background:linear-gradient(135deg,rgba(160,10,40,0.95),rgba(90,5,20,0.92));border:1.5px solid #ff8fa3;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;animation:tenMinPulse 1.6s ease-in-out infinite;" onclick="heroAddItem('set_goguma_gamja')">
-            <span style="position:absolute;top:-9px;left:10px;background:#ffd166;color:#7a0b14;font-size:10px;font-weight:900;padding:2px 9px;border-radius:9px;letter-spacing:0.3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);">⏰ 10분 한정</span>
-            <span style="font-size:22px;flex-shrink:0;">🍠🥔</span>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:14.5px;font-weight:900;color:#fff;line-height:1.3;">베니하루카 꿀고구마3kg+수미햇감자 2kg</div>
-            </div>
-            <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:11px;color:rgba(255,255,255,0.6);text-decoration:line-through;">18,900원</div>
-              <div style="font-size:21px;font-weight:900;color:#ffd166;">14,900<span style="font-size:10px;">원</span></div>
-            </div>
-          </div>
-
           <!-- 대소수박 단품 초특가 -->
           <div style="position:relative;background:linear-gradient(135deg,rgba(0,110,45,0.6),rgba(0,65,25,0.55));border:1.5px solid #c1121f;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;" onclick="heroAddItem('f51_super')">
             <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:10px;font-weight:900;padding:2px 8px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 초초특가</span>
@@ -1647,14 +1618,7 @@ const fruitItems = [
   { id:'f_wachon_jaju1', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천(특)자두(아삭,새콤달콤최고봉) 1kg', desc:'와촌,김천(특)자두 아삭 새콤달콤최고봉 1kg', price:10900 },
   { id:'f_wachon_jaju2', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천(특)자두(아삭,새콤달콤최고봉) 2kg', desc:'와촌,김천(특)자두 아삭 새콤달콤최고봉 2kg', price:24900 },
   { id:'f_jeju_gamgyul3', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 3kg 1박스', desc:'제주하우스감귤 3kg 1박스', price:31000 },
-  { id:'set_wachon_sinbi', todaySpecial:false, num:'🟣🍑', name:'🟣 와촌,김천(특)자두1kg+신비복숭아(로열~특대과랜덤) 1kg', desc:'와촌,김천(특)자두 1kg + 신비복숭아(로열~특대과랜덤) 1kg', orig:22800, price:21900 },
-  { id:'set_wachon_cherry_blue', todaySpecial:false, num:'🟣🍒', name:'🟣 와촌,김천(특)자두1kg+워싱턴체리(9row-최대사이즈) 500g이상', desc:'와촌,김천(특)자두 1kg + 워싱턴체리(9row-최대사이즈) 500g이상', orig:29900, price:24900 },
-  { id:'set_sw_wachon', todaySpecial:false, num:'🍉🟣', name:'🍉 대소수박(특)9kg+와촌,김천(특)자두 1kg', desc:'대소수박(특) 9kg + 와촌,김천(특)자두 1kg', orig:39800, price:37900 },
-  { id:'set_sw_blue', todaySpecial:false, num:'🍉🫐', name:'🍉 대소수박(특)9kg+블루베리 2팩', desc:'대소수박(특) 9kg + 블루베리 2팩', orig:35700, price:32900 },
-  { id:'set_sw_sinbi', todaySpecial:false, num:'🍉🍑', name:'🍉 대소수박(특)9kg+신비복숭아(로열~특대과랜덤) 1kg', desc:'대소수박(특) 9kg + 신비복숭아(로열~특대과랜덤) 1kg', orig:36800, price:34900 },
-  { id:'set_sinbi2_cherry500', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 신비복숭아(로열~특대과랜덤)2kg(팩)+워싱턴체리(9row-최대사이즈) 500g이상 세트', desc:'신비복숭아(로열~특대과랜덤) 2kg(팩) + 워싱턴체리(9row-최대사이즈) 500g이상', orig:30000, price:24900 },
-  { id:'set_goguma_gamja', todaySpecial:false, num:'🍠🥔', name:'🍠🥔 베니하루카(밤+호박)꿀고구마 3kg+수미햇감자 2kg 세트', desc:'베니하루카(밤+호박) 꿀 고구마 3kg + 수미햇감자 2봉(2kg이상)', orig:18900, price:14900 },
-  { id:'set_sinbi_cherry', todaySpecial:false, num:'🍑🍒', name:'🍑🍒 신비복숭아(로열~특대과랜덤)1kg+워싱턴체리(9row-최대사이즈) 500g 세트', desc:'신비복숭아(로열~특대과랜덤) 1kg + 워싱턴체리(9row-최대사이즈) 500g', orig:21900, price:19900 },
+
   { id:'f51', num:'#51', todaySpecial:true, name:'🍉 대소수박 9kg(복불복제로)', desc:'복불복없는 수박 · 대소 9kg', orig:32900, price:28900, sold:true },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:9900 },
   { id:'f55b',num:'#55', name:'🍅 방울토마토 2팩',   desc:'오감·세도, 아삭하고 달아요',            orig:9000,  price:8000  },
@@ -2672,6 +2636,7 @@ async function orderDirect() {
         customer_name: u.name || '',
         customer_phone: (u.phone || '').replace(/\D/g,''),
         customer_address: address,
+        door_password: (document.getElementById('s3-inp-pw') && document.getElementById('s3-inp-pw').value.trim()) || '',
         order_date: getDeliveryDate(),
         total: total
       })
@@ -3633,14 +3598,7 @@ const FLASH_ITEMS = [
   { id:'ts_greenhwangdo1', label:'그린황도(특 5,6과 랜덤) 1팩', max:9999, flashPrice:18900, badge:'🔥 초초특가', highlight:true },
   { id:'ts_greenhwangdo_box', label:'그린황도 1박스(10과,12과랜덤)', max:9999, flashPrice:35900, badge:'🍑 그린황도', highlight:true },
 
-  { id:'set_wachon_sinbi',  label:'와촌,김천(특)자두1kg+신비복숭아(로열~특대과랜덤) 1kg',     max:9999, flashPrice:21900, origPrice:22800, badge:'🔥 선착순 초특가', group:'와촌,김천(특)자두 세트' },
-  { id:'set_wachon_cherry_blue', label:'와촌,김천(특)자두1kg+워싱턴체리(9row-최대사이즈) 500g이상',     max:9999, flashPrice:24900, origPrice:29900, badge:'🔥 선착순 초특가', group:'와촌,김천(특)자두 세트' },
-  { id:'set_sw_wachon', label:'대소수박(특)9kg+와촌,김천(특)자두 1kg',     max:9999, flashPrice:37900, origPrice:39800, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
-  { id:'set_sw_blue', label:'대소수박(특)9kg+블루베리 2팩',     max:9999, flashPrice:32900, origPrice:35700, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
-  { id:'set_sw_sinbi', label:'대소수박(특)9kg+신비복숭아(로열~특대과랜덤) 1kg',     max:9999, flashPrice:34900, origPrice:36800, badge:'🔥 선착순 초특가', group:'대소수박(특) 9kg 세트' },
-  { id:'set_sinbi2_cherry500', label:'신비복숭아(로열~특대과랜덤)2kg(팩)+워싱턴체리(9row-최대사이즈) 500g이상 세트',     max:9999, flashPrice:24900, origPrice:30000, badge:'⏰ 10분 한정', highlight:true },
-  { id:'set_goguma_gamja', label:'베니하루카(밤+호박)꿀고구마 3kg+수미햇감자 2kg 세트', max:9999, flashPrice:14900, origPrice:18900, badge:'⏰ 10분 한정', highlight:true },
-  { id:'set_sinbi_cherry',   label:'신비복숭아(로열~특대과랜덤)1kg+워싱턴체리(9row-최대사이즈) 500g 세트',     max:9999, flashPrice:19900, origPrice:21900, badge:'🔥 선착순 초특가', group:'복숭아 · 체리 세트' },
+
   { id:'ts_sinbi',    label:'신비복숭아(로열~특대과랜덤) 2kg(팩)',                          max:9999, flashPrice:14900, origPrice:23900, badge:'🔥 파격특가' },
   { id:'f53d',         label:'블루베리 왕 4팩',                              max:9999, flashPrice:16500, origPrice:17600, badge:'🔥 4팩 득템특가' },
   { id:'ts_cherry',   label:'워싱턴체리(9row-최대사이즈) 500g',          max:9999, flashPrice:12000, highlight:true },
@@ -4001,7 +3959,7 @@ window.orderDirect = async function() {
     const ordRes = await fetch(SB_URL + '/rest/v1/orders', {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'},
-      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null })
+      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(document.getElementById('s3-inp-pw')&&document.getElementById('s3-inp-pw').value.trim())||'', order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null })
     });
 
     // 중복(409/23505)이면 이미 접수된 주문 → 완료 화면만 표시
