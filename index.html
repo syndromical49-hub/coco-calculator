@@ -366,6 +366,19 @@
         <div style="font-size:12.5px;font-weight:900;color:#FFB060;letter-spacing:1px;padding:0 2px;">⏱ 선착순 특가</div>
         <div style="display:flex;flex-direction:column;gap:9px;">
 
+          <!-- 대소수박 단품 초특가 -->
+          <div style="position:relative;background:linear-gradient(135deg,rgba(0,110,45,0.6),rgba(0,65,25,0.55));border:1.5px solid #c1121f;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;" onclick="heroAddItem('f51_super')">
+            <span style="position:absolute;top:-9px;left:10px;background:#c1121f;color:#fff;font-size:10px;font-weight:900;padding:2px 9px;border-radius:9px;letter-spacing:0.3px;">🍉 장마전 수박행사 딱한번!</span>
+            <span style="font-size:22px;flex-shrink:0;">🍉</span>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:14.5px;font-weight:900;color:#fff;line-height:1.3;">대소수박(특) 복불복제로 9kg</div>
+            </div>
+            <div style="text-align:right;white-space:nowrap;">
+              <div style="font-size:15px;font-weight:800;color:rgba(255,255,255,0.78);text-decoration:line-through;">28,900원</div>
+              <div style="font-size:21px;font-weight:900;color:#ffd166;">21,900<span style="font-size:10px;">원</span></div>
+            </div>
+          </div>
+
           <!-- 그린황도+신비2kg 선착순초초특가 -->
           <div style="position:relative;background:linear-gradient(135deg,rgba(160,10,40,0.95),rgba(90,5,20,0.92));border:1.5px solid #ffd166;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;" onclick="heroAddItem('set_hwangdo_sinbi2')">
             <span style="position:absolute;top:-9px;left:10px;background:#ffd166;color:#7a0b14;font-size:10px;font-weight:900;padding:2px 9px;border-radius:9px;letter-spacing:0.3px;box-shadow:0 2px 6px rgba(0,0,0,0.3);">🔥 선착순 초초특가</span>
@@ -412,19 +425,6 @@
             </div>
             <div style="text-align:right;white-space:nowrap;">
               <div style="font-size:21px;font-weight:900;color:#ffd166;">35,900<span style="font-size:10px;">원</span></div>
-            </div>
-          </div>
-
-          <!-- 대소수박 단품 초특가 -->
-          <div style="position:relative;background:linear-gradient(135deg,rgba(0,110,45,0.6),rgba(0,65,25,0.55));border:1.5px solid #c1121f;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;" onclick="heroAddItem('f51_super')">
-            <span style="position:absolute;top:-7px;left:10px;background:#c1121f;color:#fff;font-size:10px;font-weight:900;padding:2px 8px;border-radius:8px;letter-spacing:0.3px;">🔥 선착순 초초특가</span>
-            <span style="font-size:22px;flex-shrink:0;">🍉</span>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:14.5px;font-weight:900;color:#fff;line-height:1.3;">대소수박(특) 복불복제로 9kg</div>
-            </div>
-            <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:15px;font-weight:800;color:rgba(255,255,255,0.78);text-decoration:line-through;">28,900원</div>
-              <div style="font-size:21px;font-weight:900;color:#ffd166;">26,900<span style="font-size:10px;">원</span></div>
             </div>
           </div>
 
@@ -1613,7 +1613,7 @@ const specialItems = [
 const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
 
-  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 대소수박(특) 복불복제로 9kg', desc:'복불복없는 수박 대소 9kg 초초특가', orig:28900, price:26900, badge:'선착순초초특가', badgeColor:'#c1121f' },
+  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 대소수박(특) 복불복제로 9kg', desc:'복불복없는 수박 대소 9kg 초초특가', orig:26900, price:21900, badge:'선착순초초특가', badgeColor:'#c1121f' },
   { id:'f_jeju_gamgyul1', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 1봉(1kg이상)', desc:'제주하우스감귤 1봉 1kg이상', price:10900 },
   { id:'f_wachon_jaju1', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천(특)자두(아삭,새콤달콤최고봉) 1kg', desc:'와촌,김천(특)자두 아삭 새콤달콤최고봉 1kg', price:10900 },
   { id:'f_wachon_jaju2', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천(특)자두(아삭,새콤달콤최고봉) 2kg', desc:'와촌,김천(특)자두 아삭 새콤달콤최고봉 2kg', price:24900 },
