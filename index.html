@@ -1240,14 +1240,29 @@ async function goReorder() {
 
   let found = null;
 
-  // 1순위: Supabase 실시간 조회
+  // 1순위: customers 테이블 직접 조회
   try {
-    const res = await fetch(`https://cocobasket-danji.vercel.app/api/lookup?phone=${inputClean}`);
+    const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + inputClean + '&select=name,address,door_password&limit=1', {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
     if (res.ok) {
       const data = await res.json();
-      if (data && data.name) found = data;
+      if (data.length && data[0].name) found = { name: data[0].name, address: data[0].address, entry: data[0].door_password };
     }
   } catch(e) {}
+
+  // 1.5순위: orders 최근 주문에서 조회
+  if (!found) {
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/orders?customer_phone=eq.' + inputClean + '&select=customer_name,customer_address,door_password&order=order_date.desc&limit=1', {
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.length && data[0].customer_name) found = { name: data[0].customer_name, address: data[0].customer_address, entry: data[0].door_password };
+      }
+    } catch(e) {}
+  }
 
   // 2순위: 내장 DB
   if (!found) found = CUSTOMER_DB.find(c => c.phone === inputClean);
