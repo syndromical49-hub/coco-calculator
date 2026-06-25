@@ -4024,15 +4024,24 @@ window.orderDirect = async function() {
       }
     }
   } catch(e) {
-    console.warn('Supabase 실패', e);
-  } finally {
-    // Supabase 성공/실패 무관하게 항상 완료 처리
-    if (submitBtn) { submitBtn.disabled=true; submitBtn.textContent='✅ 주문 접수 완료'; }
-    if (doneEl) {
-      const doneTotalEl2 = document.getElementById('done-total');
-      if (doneTotalEl2) doneTotalEl2.textContent = total.toLocaleString() + '원';
-      doneEl.style.display='flex'; doneEl.style.flexDirection='column';
-    }
+    console.error('Supabase 실패', e);
+    // DB 저장 실패 시 텔레그램으로 에러 알림
+    try {
+      await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ chat_id: TG_CHAT, text: '🚨 주문 DB저장 실패!\n고객: ' + (u.name||'') + ' ' + (u.phone||'') + '\n금액: ' + total.toLocaleString() + '원\n에러: ' + String(e).slice(0,100) })
+      });
+    } catch(te) { console.warn('에러 알림 실패', te); }
+    if (submitBtn) { submitBtn.disabled=false; submitBtn.textContent='주문하기'; }
+    alert('주문 접수 중 오류가 발생했어요.\n다시 시도해주세요.');
+    return;
+  }
+  // Supabase 성공 시 완료 처리
+  if (submitBtn) { submitBtn.disabled=true; submitBtn.textContent='✅ 주문 접수 완료'; }
+  if (doneEl) {
+    const doneTotalEl2 = document.getElementById('done-total');
+    if (doneTotalEl2) doneTotalEl2.textContent = total.toLocaleString() + '원';
+    doneEl.style.display='flex'; doneEl.style.flexDirection='column';
   }
 
   // 텔레그램 새 형식 전송
