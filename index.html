@@ -392,7 +392,7 @@
 
           <!-- 황도 프리미엄 -->
           <div style="background:linear-gradient(135deg,rgba(220,80,0,0.85),rgba(150,40,0,0.8));border:2px solid #ffb74d;border-radius:8px;padding:8px 10px;box-shadow:0 0 10px rgba(255,180,60,0.35);cursor:pointer;" onclick="heroAddItem('ts_sabina1')">
-            <div style="background:#ffb74d;color:#7a2800;font-size:11px;font-weight:900;padding:3px 8px;border-radius:4px;margin-bottom:7px;text-align:center;">사비나·조황·미황·그린샵·제일·그린 — 선별후입고</div>
+            <div style="background:#ffb74d;color:#7a2800;font-size:11px;font-weight:900;padding:3px 8px;border-radius:4px;margin-bottom:7px;text-align:center;">사비나·조황·수황·미황·그린샵·제일·그린 — 선별후입고</div>
             <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">
               <span style="font-size:22px;">🍑</span>
               <div>
@@ -648,7 +648,7 @@
     <!-- 하단 고정 버튼 -->
     <div style="position:fixed;bottom:0;left:0;right:0;background:white;border-top:1.5px solid var(--border);padding:14px 16px 24px;z-index:200;display:flex;flex-direction:column;gap:8px;">
       <button id="cart-next-btn" onclick="goToInfo()" style="width:100%;padding:16px;background:#2d6a4f;color:white;border:none;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;">👤 주문자 정보 입력하기</button>
-      <button onclick="goScreen('s4')" style="width:100%;padding:12px;background:#f5f5f2;color:#666;border:1.5px solid var(--border);border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;">← 더 담으러 가기</button>
+      <button onclick="goScreen('s4')" style="width:100%;padding:12px;background:#f5f5f2;color:#666;border:1.5px solid var(--border);border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;">✏️ 품목 변경 및 추가하기</button>
     </div>
   </div>
 </div>
@@ -3550,13 +3550,22 @@ function renderFlashSection() {
     if (fi.sabinaSub) continue; // sabinaDual 카드에서 처리
     // sabinaDual: 블러처리 + 27일 공개 예정
     if (fi.sabinaDual) {
+      // ts_sabina2 itemMeta 등록
+      if (!itemMeta['ts_sabina2']) {
+        itemMeta['ts_sabina2'] = { name:'🍑 7월 인생황도(프리미엄고당도) 1박스(2팩)', price:33000 };
+        reg('ts_sabina2', '🍑 7월 인생황도(프리미엄고당도) 1박스(2팩)', 33000);
+      }
+      if (!itemMeta['ts_sabina1']) {
+        itemMeta['ts_sabina1'] = { name:'🍑 7월 인생황도(프리미엄고당도) 1팩', price:17000 };
+        reg('ts_sabina1', '🍑 7월 인생황도(프리미엄고당도) 1팩', 17000);
+      }
       const sabinaWrap = document.createElement('div');
       sabinaWrap.style.cssText = 'position:relative;';
       const sabinaCard = document.createElement('div');
       sabinaCard.className = 'flash-card flash-highlight';
       sabinaCard.style.cssText = '';
       sabinaCard.innerHTML =
-        '<div style="background:#c1121f;color:#fff;font-size:0.62rem;font-weight:900;padding:2px 7px;margin:-5px -7px 4px;border-radius:6px 6px 0 0;text-align:center;">사비나·조황·미황·그린샵·제일·그린 — 선별후입고</div>' +
+        '<div style="background:#c1121f;color:#fff;font-size:0.62rem;font-weight:900;padding:2px 7px;margin:-5px -7px 4px;border-radius:6px 6px 0 0;text-align:center;">사비나·조황·수황·미황·그린샵·제일·그린 — 선별후입고</div>' +
         '<div class="flash-name">🍑 7월 인생황도(프리미엄고당도) 5,6과랜덤</div>' +
         '<div style="margin-top:4px;">' +
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">' +
@@ -4147,7 +4156,7 @@ function copyPaymentInfo() {
   통신판매업신고번호: 제2026-고양일산서-0717호
 </footer>
   <!-- 플로팅 장바구니 버튼 -->
-  <div id="float-cart-btn" onclick="toggleFloatCart()" style="display:none;position:fixed;bottom:70px;right:16px;z-index:999;background:#2e7d32;color:#fff;border-radius:50px;padding:10px 16px;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.35);display:flex;align-items:center;gap:6px;">
+  <div id="float-cart-btn" onclick="toggleFloatCart()" style="display:none;position:fixed;bottom:80px;right:16px;z-index:9999;background:#2e7d32;color:#fff;border-radius:50px;padding:10px 16px;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.35);display:flex;align-items:center;gap:6px;">
     🛒 <span id="float-cart-label">담은 목록</span> <span id="float-cart-count" style="background:#ffd166;color:#1a0f00;border-radius:20px;padding:1px 8px;font-size:12px;font-weight:900;">0</span>
   </div>
 
