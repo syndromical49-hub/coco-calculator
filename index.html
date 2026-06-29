@@ -4184,7 +4184,11 @@ function updateFloatCart() {
   const countEl = document.getElementById('float-cart-count');
   if (!btn) return;
 
-  const items = window.cartItems || [];
+  // qtys, itemMeta 기반으로 장바구니 읽기
+  const items = Object.keys(window.qtys || {})
+    .filter(id => (window.qtys[id] || 0) > 0 && window.itemMeta[id])
+    .map(id => ({ id, name: window.itemMeta[id].name, price: window.itemMeta[id].price, qty: window.qtys[id] }));
+
   const total = items.reduce((s, i) => s + i.price * i.qty, 0);
   const count = items.reduce((s, i) => s + i.qty, 0);
 
