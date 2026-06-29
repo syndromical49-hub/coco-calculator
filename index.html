@@ -4146,5 +4146,81 @@ function copyPaymentInfo() {
   사업장 주소: 경기도 고양시 일산서구 현중로64, 608동1305호(탄현동, 탄현마을6단지) &nbsp;|&nbsp; 전화: 010-7679-4994<br>
   통신판매업신고번호: 제2026-고양일산서-0717호
 </footer>
+  <!-- 플로팅 장바구니 버튼 -->
+  <div id="float-cart-btn" onclick="toggleFloatCart()" style="display:none;position:fixed;bottom:70px;right:16px;z-index:999;background:#2e7d32;color:#fff;border-radius:50px;padding:10px 16px;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.35);display:flex;align-items:center;gap:6px;">
+    🛒 <span id="float-cart-label">담은 목록</span> <span id="float-cart-count" style="background:#ffd166;color:#1a0f00;border-radius:20px;padding:1px 8px;font-size:12px;font-weight:900;">0</span>
+  </div>
+
+  <!-- 미니 장바구니 패널 -->
+  <div id="float-cart-panel" style="display:none;position:fixed;bottom:120px;right:16px;z-index:998;background:#1a2e1a;border:1.5px solid #2e7d32;border-radius:12px;width:280px;max-height:60vh;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+    <div style="padding:10px 14px;border-bottom:1px solid #2e4a2e;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:14px;font-weight:900;color:#a5d6a7;">🛒 담은 목록</span>
+      <div style="display:flex;gap:8px;">
+        <button onclick="goFloatCart()" style="background:#2e7d32;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:12px;font-weight:900;cursor:pointer;">수정하기</button>
+        <button onclick="toggleFloatCart()" style="background:transparent;color:#a5d6a7;border:none;font-size:16px;cursor:pointer;">✕</button>
+      </div>
+    </div>
+    <div id="float-cart-items" style="padding:8px 14px;"></div>
+    <div style="padding:8px 14px;border-top:1px solid #2e4a2e;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:12px;color:#81c784;">합계</span>
+      <span id="float-cart-total" style="font-size:15px;font-weight:900;color:#ffd166;">0원</span>
+    </div>
+  </div>
+
+<script>
+function updateFloatCart() {
+  const btn = document.getElementById('float-cart-btn');
+  const panel = document.getElementById('float-cart-items');
+  const totalEl = document.getElementById('float-cart-total');
+  const countEl = document.getElementById('float-cart-count');
+  if (!btn) return;
+
+  const items = window.cartItems || [];
+  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const count = items.reduce((s, i) => s + i.qty, 0);
+
+  countEl.textContent = count;
+
+  if (count > 0) {
+    btn.style.display = 'flex';
+  } else {
+    btn.style.display = 'none';
+    document.getElementById('float-cart-panel').style.display = 'none';
+  }
+
+  if (panel) {
+    panel.innerHTML = items.length
+      ? items.map(i => `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #2e4a2e;font-size:12px;color:#c8e6c9;">
+          <span>${i.name}</span>
+          <span style="color:#ffd166;font-weight:700;">${i.qty}개 · ${(i.price*i.qty).toLocaleString()}원</span>
+        </div>`).join('')
+      : '<div style="color:#4a7a4a;font-size:12px;padding:8px 0;">담은 상품이 없어요</div>';
+  }
+  if (totalEl) totalEl.textContent = total.toLocaleString() + '원';
+}
+
+function toggleFloatCart() {
+  const panel = document.getElementById('float-cart-panel');
+  if (!panel) return;
+  updateFloatCart();
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function goFloatCart() {
+  document.getElementById('float-cart-panel').style.display = 'none';
+  goScreen('s-cart');
+}
+
+// 장바구니 변경 시 자동 업데이트
+const _origChangeQty = window.changeQty;
+if (typeof changeQty === 'function') {
+  const origCQ = changeQty;
+  window.changeQty = function() {
+    origCQ.apply(this, arguments);
+    setTimeout(updateFloatCart, 100);
+  };
+}
+setInterval(updateFloatCart, 500);
+</script>
 </body>
 </html>
