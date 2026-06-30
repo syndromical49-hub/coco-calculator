@@ -366,26 +366,15 @@
         <div style="font-size:12.5px;font-weight:900;color:#FFB060;letter-spacing:1px;padding:0 2px;">⏱ 선착순 특가</div>
         <div style="display:flex;flex-direction:column;gap:9px;">
 
-          <!-- 수박 7kg/10kg -->
-          <div style="background:linear-gradient(135deg,rgba(0,100,40,0.85),rgba(0,55,20,0.8));border:2px solid #c1121f;border-radius:8px;padding:8px 10px;box-shadow:0 0 10px rgba(0,200,80,0.25);">
+          <!-- 수박 8kg -->
+          <div style="background:linear-gradient(135deg,rgba(0,100,40,0.85),rgba(0,55,20,0.8));border:2px solid #c1121f;border-radius:8px;padding:8px 10px;box-shadow:0 0 10px rgba(0,200,80,0.25);cursor:pointer;" onclick="heroAddItem('f51_super')">
             <div style="background:#c1121f;color:#fff;font-size:11px;font-weight:900;padding:3px 8px;border-radius:4px;margin-bottom:7px;text-align:center;">🍉 7월수박 — 양평·고창·맹동 복불복제로 선별후입고</div>
-            <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px;">
-              <span style="font-size:22px;">🍉</span>
-              <div style="font-size:13px;font-weight:900;color:#fff;">양평수박(특)</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.2);border-radius:5px;padding:4px 7px;margin-bottom:3px;">
-              <span style="font-size:12px;font-weight:900;color:rgba(200,255,200,0.95);">7kg</span>
-              <div style="display:flex;align-items:baseline;gap:4px;">
-                <span style="font-size:12px;text-decoration:line-through;color:rgba(255,120,120,1);font-weight:800;">26,000원</span><span style="font-size:11px;color:rgba(255,180,180,0.9);font-weight:700;">→</span>
-                <span style="font-size:15px;font-weight:900;color:#ffd166;">24,900원</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:5px;">
+              <div style="display:flex;align-items:center;gap:5px;">
+                <span style="font-size:22px;">🍉</span>
+                <div style="font-size:13px;font-weight:900;color:#fff;">양평수박(특) 8kg</div>
               </div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.2);border-radius:5px;padding:4px 7px;">
-              <span style="font-size:12px;font-weight:900;color:rgba(200,255,200,0.95);">10kg</span>
-              <div style="display:flex;align-items:baseline;gap:4px;">
-                <span style="font-size:12px;text-decoration:line-through;color:rgba(255,120,120,1);font-weight:800;">36,000원</span><span style="font-size:11px;color:rgba(255,180,180,0.9);font-weight:700;">→</span>
-                <span style="font-size:15px;font-weight:900;color:#ffd166;">32,900원</span>
-              </div>
+              <span style="font-size:18px;font-weight:900;color:#ffd166;">26,900<span style="font-size:10px;">원</span></span>
             </div>
           </div>
 
@@ -505,17 +494,7 @@
 
         <!-- 과일·계란 -->
         <div style="font-size:11px;font-weight:900;color:rgba(255,210,90,0.95);letter-spacing:1px;padding:0 2px;margin-top:4px;">🍊 과일 · 🥚 계란</div>
-        <!-- 블루베리 2팩 + 4팩 가로 한줄 -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;">
-          <div style="background:rgba(130,90,255,0.18);border:1px solid rgba(130,90,255,0.45);border-radius:5px;padding:1px 4px;display:flex;align-items:center;justify-content:space-between;gap:3px;cursor:pointer;" onclick="heroAddItem('f53b')">
-            <div style="font-size:11px;font-weight:700;color:#fff;white-space:nowrap;">🫐 블루베리 2팩</div>
-            <div style="font-size:12px;font-weight:900;color:#ffd166;white-space:nowrap;">8,800<span style="font-size:8px;">원</span></div>
-          </div>
-          <div style="background:rgba(130,90,255,0.25);border:1px solid rgba(130,90,255,0.6);border-radius:5px;padding:1px 4px;display:flex;align-items:center;justify-content:space-between;gap:3px;cursor:pointer;" onclick="heroAddItem('f53d')">
-            <div style="font-size:11px;font-weight:700;color:#fff;white-space:nowrap;">🫐 블루베리 4팩</div>
-            <div style="font-size:12px;font-weight:900;color:#ffd166;white-space:nowrap;">16,500<span style="font-size:8px;">원</span></div>
-          </div>
-        </div>
+
         <!-- 유정란 + 특란 가로 한줄 -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px;">
           <div style="background:rgba(255,210,65,0.18);border:1px solid rgba(255,205,65,0.45);border-radius:5px;padding:1px 4px;display:flex;align-items:center;justify-content:space-between;gap:3px;cursor:pointer;" onclick="heroAddItem('v34u')">
@@ -1583,8 +1562,7 @@ const specialItems = [
 const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
 
-  { id:'f51_7kg', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특) 7kg', desc:'양평,고창,맹동수박(복불복제로) 7kg', orig:26000, price:24900 },
-  { id:'f51_10kg', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특) 10kg', desc:'양평,고창,맹동수박(복불복제로) 10kg', orig:33000, price:29900 },
+  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특) 8kg', desc:'양평,고창,맹동수박(선별후입고)', price:26900 },
   { id:'f_jeju_gamgyul1', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 1봉(1kg↑)', desc:'제주하우스감귤 1봉 1kg이상', price:9900 },
   { id:'f_wachon_jaju1', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천,정상자두(아삭,새콤달콤최고봉) 1kg', desc:'와촌,김천,정상자두 아삭 새콤달콤최고봉 1kg', price:9900 },
   { id:'f_wachon_jaju2', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천자두(특.왕특랜덤) 2kg', desc:'와촌,김천자두(특.왕특랜덤) 2kg', price:18900 },
@@ -1597,13 +1575,10 @@ const fruitItems = [
   { id:'f54', num:'#54', name:'🍈 참외(소과·게르마늄) 1봉', desc:'성주 게르마늄 재배 참외 1봉 (소과)',             orig:null,  price:5000 },
   { id:'f55', num:'#55', name:'🍅 방울토마토 1팩',   desc:'오감·세도, 아삭하고 달아요',            orig:null,  price:4900  },
   { id:'f60', num:'#60', todaySpecial:true, name:'🥝 골드키위 왕왕특 4개', desc:'골드키위(왕왕특)입', orig:10000, price:8800 },
-  { id:'f53b',num:'#53', todaySpecial:true, name:'🫐 블루베리 왕 2팩', desc:'왕특 블루베리 2팩 묶음', orig:10000, price:8800 },
-  { id:'f53d',num:'#53', todaySpecial:true, name:'🫐 블루베리 왕 4팩', desc:'왕특 블루베리 4팩 묶음', orig:17600, price:16500 },
   { id:'v36', num:'36', name:'🍅 찰토마토 1봉',          desc:'달고 아삭한 찰토마토',  price:4000 },
 
   { id:'f51', num:'#51', todaySpecial:true, name:'🍉 대소수박 9kg(복불복제로)', desc:'복불복없는 수박 · 대소 9kg', orig:32900, price:26900 },
   // ── 단품 ──
-  { id:'f_blue_box', num:'🫐', name:'🫐 블루베리(왕) 1박스(10팩-1kg)', desc:'블루베리 왕 1박스 10팩 1kg', price:38900 },
 
 
 ];
@@ -1715,7 +1690,6 @@ const BUNDLE_UNLOCK = new URLSearchParams(location.search).get('bundle') === 'on
 // 예: https://cocobasket.netlify.app?sold=찰토마토
 const SOLDOUT_MAP = {
   '찰토마토': ['v36', 'v36b'],
-  '블루베리': ['f53b', 'f53d'],
   '참외':    ['f54b', 'f54'],
   '부사':    [],
   '수박':    ['f51'],
@@ -3649,8 +3623,7 @@ function renderFlashSection() {
 }
 
 const FLASH_ITEMS = [
-  { id:'f51_10kg', label:'양평수박(특) 10kg', max:9999, flashPrice:32900, origPrice:36000, badge:'🍉 7월수박 — 양평·고창·맹동 복불복제로', section:'🍉 수박 특가' },
-  { id:'f51_7kg',  label:'양평수박(특) 7kg',  max:9999, flashPrice:24900, origPrice:26000,  badge:'🍉 7월수박 — 양평·고창·맹동 복불복제로', section:'🍉 수박 특가' },
+  { id:'f51_super', label:'양평수박(특) 8kg', max:9999, flashPrice:26900, badge:'🍉 7월수박 — 양평·고창·맹동 복불복제로', section:'🍉 수박 특가' },
   { id:'ts_sabina1',     label:'사비나황도(5,6과랜덤) 1팩',               max:9999, flashPrice:17000,                  section:'🍑 복숭아 특가', sabinaDual:true },
   { id:'ts_sabina2',     label:'사비나황도(5,6과랜덤) 1박스(2팩)',          max:9999, flashPrice:33000,                  section:'🍑 복숭아 특가', sabinaSub:true },
   { id:'ts_daekuk1kg',   label:'대극천(딱복) 1kg',                          max:9999, flashPrice:12900, badge:'🍑 올해 첫 딱딱이복숭아', section:'🍑 복숭아 특가' },
@@ -3660,9 +3633,6 @@ const FLASH_ITEMS = [
   { id:'f_jeju_gamgyul2kg',label:'제주감귤(감미월등) 2kg',                  max:9999, flashPrice:18900,                  section:'🍊 귤 특가' },
   { id:'ts_cherry250',   label:'워싱턴체리(9row-최대사이즈) 250g',           max:9999, flashPrice:6900,                   section:'🍒 체리 특가' },
   { id:'ts_cherry',      label:'워싱턴체리(9row-최대사이즈) 500g',           max:9999, flashPrice:10900,                  section:'🍒 체리 특가' },
-  { id:'f53b',           label:'블루베리 왕 2팩',                            max:9999, flashPrice:8800,                   section:'🫐 블루베리·찰토마토' },
-  { id:'f53d',           label:'블루베리 왕 4팩',                            max:9999, flashPrice:16500, origPrice:17600, section:'🫐 블루베리·찰토마토' },
-  { id:'f_blue_box',     label:'블루베리(왕) 1박스(10팩-1kg)',               max:9999, flashPrice:38900,                  section:'🫐 블루베리·찰토마토' },
   { id:'v36b',           label:'찰토마토 2봉',                               max:9999, flashPrice:6000,  origPrice:8000,  section:'🫐 블루베리·찰토마토' },
 ];
 const flashCounts = {};
