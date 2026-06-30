@@ -372,9 +372,9 @@
             <div style="display:flex;align-items:center;justify-content:space-between;gap:5px;">
               <div style="display:flex;align-items:center;gap:5px;">
                 <span style="font-size:22px;">🍉</span>
-                <div style="font-size:13px;font-weight:900;color:#fff;">양평수박(특) 8kg</div>
+                <div style="font-size:13px;font-weight:900;color:#fff;">양평수박(특품) 8kg</div>
               </div>
-              <span style="font-size:18px;font-weight:900;color:#ffd166;">26,900<span style="font-size:10px;">원</span></span>
+              <span style="text-align:right;"><span style="font-size:11px;text-decoration:line-through;color:rgba(255,120,120,1);font-weight:800;display:block;">29,000원</span><span style="font-size:18px;font-weight:900;color:#ffd166;">26,900<span style="font-size:10px;">원</span></span></span>
             </div>
           </div>
 
@@ -1562,7 +1562,7 @@ const specialItems = [
 const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
 
-  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특) 8kg', desc:'양평,고창,맹동수박(선별후입고)', price:26900 },
+  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특품) 8kg', desc:'양평,고창,맹동수박(선별후입고)', orig:29000, price:26900 },
   { id:'f_jeju_gamgyul1', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 1봉(1kg↑)', desc:'제주하우스감귤 1봉 1kg이상', price:9900 },
   { id:'f_wachon_jaju1', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천,정상자두(아삭,새콤달콤최고봉) 1kg', desc:'와촌,김천,정상자두 아삭 새콤달콤최고봉 1kg', price:9900 },
   { id:'f_wachon_jaju2', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천자두(특.왕특랜덤) 2kg', desc:'와촌,김천자두(특.왕특랜덤) 2kg', price:18900 },
@@ -3623,7 +3623,7 @@ function renderFlashSection() {
 }
 
 const FLASH_ITEMS = [
-  { id:'f51_super', label:'양평수박(특) 8kg', max:9999, flashPrice:26900, badge:'🍉 7월수박 — 양평·고창·맹동 복불복제로', section:'🍉 수박 특가' },
+  { id:'f51_super', label:'양평수박(특품) 8kg', max:9999, flashPrice:26900, origPrice:29000, badge:'🍉 7월수박 — 양평·고창·맹동 복불복제로', section:'🍉 수박 특가' },
   { id:'ts_sabina1',     label:'사비나황도(5,6과랜덤) 1팩',               max:9999, flashPrice:17000,                  section:'🍑 복숭아 특가', sabinaDual:true },
   { id:'ts_sabina2',     label:'사비나황도(5,6과랜덤) 1박스(2팩)',          max:9999, flashPrice:33000,                  section:'🍑 복숭아 특가', sabinaSub:true },
   { id:'ts_daekuk1kg',   label:'대극천(딱복) 1kg',                          max:9999, flashPrice:12900, badge:'🍑 올해 첫 딱딱이복숭아', section:'🍑 복숭아 특가' },
