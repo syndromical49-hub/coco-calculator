@@ -368,13 +368,13 @@
 
           <!-- 수박 8kg -->
           <div style="background:linear-gradient(135deg,rgba(0,100,40,0.85),rgba(0,55,20,0.8));border:2px solid #c1121f;border-radius:7px;padding:5px 8px;box-shadow:0 0 8px rgba(0,200,80,0.2);cursor:pointer;" onclick="heroAddItem('f51_super')">
-            <div style="background:#c1121f;color:#fff;font-size:11px;font-weight:900;padding:2px 6px;border-radius:4px;margin-bottom:3px;text-align:center;">🍉 행사특가 — 소진시마감</div>
+            <div style="background:#c1121f;color:#fff;font-size:11px;font-weight:900;padding:2px 6px;border-radius:4px;margin-bottom:3px;text-align:center;">🍉 7월수박 — 양평(특)·고창(특)·맹동(특) 선별후 랜덤 입고</div>
             <div style="display:flex;align-items:center;justify-content:space-between;gap:5px;">
               <div style="display:flex;align-items:center;gap:4px;">
                 <span style="font-size:18px;">🍉</span>
                 <div>
                   <div style="font-size:14px;font-weight:900;color:#fff;">양평수박(특품) 8kg</div>
-                  <div style="font-size:10px;color:rgba(200,255,200,0.8);">출하기념 특가 · 소진시마감</div>
+
                 </div>
               </div>
               <span style="text-align:right;white-space:nowrap;">
@@ -3607,7 +3607,7 @@ function renderFlashSection() {
     card.innerHTML =
       (fi.badge ? '<div style="background:#c1121f;color:#fff;font-size:0.68rem;font-weight:900;padding:3px 6px;margin:-4px -6px 5px;border-radius:6px 6px 0 0;text-align:center;letter-spacing:-0.3px;">' + fi.badge + '</div>' : '') +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;margin-bottom:2px;">' +
-        '<div class="flash-name" style="flex:1;">' + meta.name + (fi.id === 'f51_super' ? '<div style="font-size:0.65rem;color:rgba(160,220,170,0.85);font-weight:600;margin-top:1px;">출하기념 특가행사 · 소진시 마감</div>' : '') + '</div>' +
+        '<div class="flash-name" style="flex:1;">' + meta.name + '</div>' +
         '<div style="text-align:right;white-space:nowrap;flex-shrink:0;">' + origHtml + '<span class="flash-price">' + (fi.flashPrice || meta.price).toLocaleString() + '원</span></div>' +
       '</div>' +
       (fi.regularPrice ? '<div style="font-size:0.72rem;color:rgba(80,30,30,0.6);margin-bottom:2px;">일반가 ' + fi.regularPrice.toLocaleString() + '원</div>' : '') +
