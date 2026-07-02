@@ -162,6 +162,7 @@
   .summary-body{display:none;padding:0 16px 22px;}
   .summary-body.open{display:block;}
   .delivery-notice{background:#fff0f0;border:2px solid var(--red);border-radius:8px;padding:7px 10px;margin-bottom:8px;text-align:center;font-size:0.8rem;font-weight:900;color:var(--red);animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes twinkle{from{color:#ffd166;text-shadow:none;}to{color:#fff;text-shadow:0 0 8px #ffd166,0 0 16px #ff9900;}}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(193,18,31,0.3);}50%{box-shadow:0 0 0 5px rgba(193,18,31,0);}}
   .order-guide{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;}
   .order-guide-box{background:#f9f7f2;border:1px solid var(--border);border-radius:8px;padding:7px 8px;font-size:0.67rem;line-height:1.75;}
@@ -375,7 +376,7 @@
                 <div style="font-size:11.5px;font-weight:900;color:#fff;line-height:1.3;">🍉 양평수박(특품) 8kg</div>
                 <div>
                   <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">29,000원</div>
-                  <div style="font-size:15px;font-weight:900;color:#ffd166;">26,900<span style="font-size:8px;">원</span></div>
+                  <div style="font-size:15px;font-weight:900;color:#ffd166;animation:twinkle 0.8s infinite alternate;">23,900<span style="font-size:8px;">원</span></div>
                 </div>
               </div>
               <!-- 세트1: 참외 -->
@@ -435,15 +436,12 @@
 
 
 
-          <!-- 초당옥수수 10개 -->
-          <div style="background:linear-gradient(135deg,rgba(190,160,0,0.55),rgba(130,105,0,0.5));border:1px solid #c1121f;border-radius:7px;padding:4px 8px;display:flex;align-items:center;gap:7px;cursor:pointer;" onclick="heroAddItem('v_corn10')">
-            <span style="background:#c1121f;color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:5px;white-space:nowrap;flex-shrink:0;">🔥 특가</span>
+          <!-- 옥수수 -->
+          <div style="background:linear-gradient(135deg,rgba(190,160,0,0.55),rgba(130,105,0,0.5));border:1px solid #c1121f;border-radius:7px;padding:4px 8px;display:flex;align-items:center;gap:7px;">
+            <span style="background:#888;color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:5px;white-space:nowrap;flex-shrink:0;">⏳ 입고예정</span>
             <span style="font-size:16px;flex-shrink:0;">🌽</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:14.5px;font-weight:900;color:#fff;line-height:1.3;">초당옥수수 10개</div>
-            </div>
-            <div style="text-align:right;white-space:nowrap;">
-              <div style="font-size:15px;font-weight:900;color:#ffd166;">13,000<span style="font-size:9px;">원</span></div>
+              <div style="font-size:13px;font-weight:900;color:#fff;line-height:1.3;">괴산 대학찰옥수수 입고예정</div>
             </div>
           </div>
 
@@ -458,12 +456,12 @@
           <!-- 와촌,김천,정상자두 1kg / 2kg -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
             <div style="background:rgba(150,90,200,0.2);border:1px solid rgba(180,130,220,0.5);border-radius:8px;padding:3px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;" onclick="heroAddItem('f_wachon_jaju1')">
-              <div style="font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap;">🟣 와촌,김천,정상자두 1kg</div>
-              <div style="font-size:15.5px;font-weight:900;color:#ffd166;">9,900<span style="font-size:9px;">원</span></div>
+              <div style="font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap;">🟣 정상자두(왕특,특 중랜덤) 1kg</div>
+              <div style="font-size:15.5px;font-weight:900;color:#ffd166;">11,900<span style="font-size:9px;">원</span></div>
             </div>
             <div style="background:rgba(150,90,200,0.2);border:1px solid rgba(180,130,220,0.5);border-radius:8px;padding:3px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;" onclick="heroAddItem('f_wachon_jaju2')">
-              <div style="font-size:12.5px;font-weight:700;color:#fff;white-space:nowrap;">🟣 와촌,김천자두(특.왕특) 2kg</div>
-              <div style="font-size:15.5px;font-weight:900;color:#ffd166;">15,900<span style="font-size:9px;">원</span></div>
+              <div style="font-size:12.5px;font-weight:700;color:#fff;white-space:nowrap;">🟣 정상자두(왕특,특 중랜덤) 2kg</div>
+              <div style="font-size:15.5px;font-weight:900;color:#ffd166;">23,000<span style="font-size:9px;">원</span></div>
             </div>
           </div>
 
@@ -1580,13 +1578,13 @@ const specialItems = [
 const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
 
-  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특품) 8kg', desc:'양평,고창,맹동수박(선별후입고)', orig:29000, price:26900 },
+  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특품) 8kg', desc:'양평,고창,맹동수박(선별후입고)', orig:29000, price:23900 },
   { id:'set_wmelon_chamoe', todaySpecial:true, num:'🍉', name:'🍉🍈 7월첫주수박특가세트 — 수박8kg+게르마늄참외2봉', desc:'양평수박(특품)8kg+게르마늄참외2봉', orig:35800, price:31900 },
   { id:'set_wmelon_tomato', todaySpecial:true, num:'🍉', name:'🍉🍅 7월첫주수박특가세트 — 수박8kg+방울토마토2팩', desc:'양평수박(특품)8kg+방울토마토2팩', orig:34800, price:29900 },
   { id:'set_wmelon_cherry', todaySpecial:true, num:'🍉', name:'🍉🍒 7월첫주수박특가세트 — 수박8kg+워싱턴체리(9row)250g', desc:'양평수박(특품)8kg+워싱턴체리(9row-최대사이즈)250g', orig:33800, price:29900 },
   { id:'f_jeju_gamgyul1', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 1봉(1kg↑)', desc:'제주하우스감귤 1봉 1kg이상', price:9900 },
-  { id:'f_wachon_jaju1', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천,정상자두(아삭,새콤달콤최고봉) 1kg', desc:'와촌,김천,정상자두 아삭 새콤달콤최고봉 1kg', price:9900 },
-  { id:'f_wachon_jaju2', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천자두(특.왕특랜덤) 2kg', desc:'와촌,김천자두(특.왕특랜덤) 2kg', price:15900 },
+  { id:'f_wachon_jaju1', todaySpecial:true, num:'🟣', name:'🟣 정상자두(왕특,특 중랜덤) 1kg', desc:'정상자두(왕특,특 중랜덤) 1kg', price:11900 },
+  { id:'f_wachon_jaju2', todaySpecial:true, num:'🟣', name:'🟣 정상자두(왕특,특 중랜덤) 2kg', desc:'정상자두(왕특,특 중랜덤) 2kg', price:23000 },
   { id:'f_jeju_gamgyul3', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 3kg 1박스', desc:'제주하우스감귤 3kg 1박스', price:31000 },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
   { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'오감·세도, 아삭하고 달아요', orig:9800, price:7900 },
@@ -3633,14 +3631,14 @@ function renderFlashSection() {
 }
 
 const FLASH_ITEMS = [
-  { id:'f51_super',          label:'양평수박(특품) 8kg',                                    max:9999, flashPrice:26900, origPrice:29000, section:'🍉 수박 특가' },
+  { id:'f51_super',          label:'양평수박(특품) 8kg',                                    max:9999, flashPrice:23900, origPrice:29000, section:'🍉 수박 특가' },
   { id:'set_wmelon_chamoe',  label:'수박8kg + 게르마늄참외2봉',                              max:9999, flashPrice:31900, origPrice:35800, section:'🍉 수박 특가' },
   { id:'set_wmelon_tomato',  label:'수박8kg + 방울토마토2팩',                                max:9999, flashPrice:29900, origPrice:34800, section:'🍉 수박 특가' },
   { id:'set_wmelon_cherry',  label:'수박8kg + 워싱턴체리(9row) 250g',                        max:9999, flashPrice:29900, origPrice:33800, section:'🍉 수박 특가' },
   { id:'ts_sabina2',     label:'7월인생황도(사비나,미황) 1박스(미황9,10입랜덤·사비나12입)', max:9999, flashPrice:29900, section:'🍑 복숭아 특가', sabinaDual:true },
   { id:'ts_daekuk1kg',   label:'대극천(딱복) 1kg',                          max:9999, flashPrice:12900, badge:'🍑 올해 첫 딱딱이복숭아', section:'🍑 복숭아 특가' },
-  { id:'f_wachon_jaju1', label:'와촌,김천,정상자두 1kg',                     max:9999, flashPrice:9900,                   section:'🟣 자두 특가' },
-  { id:'f_wachon_jaju2', label:'와촌,김천,정상자두(특.왕특랜덤) 2kg',        max:9999, flashPrice:15900,                  section:'🟣 자두 특가' },
+  { id:'f_wachon_jaju1', label:'정상자두(왕특,특 중랜덤) 1kg',          max:9999, flashPrice:11900, section:'🟣 자두 특가' },
+  { id:'f_wachon_jaju2', label:'정상자두(왕특,특 중랜덤) 2kg',          max:9999, flashPrice:23000, section:'🟣 자두 특가' },
   { id:'f_jeju_gamgyul1',label:'제주감귤(감미월등) 1봉(1kg↑)',            max:9999, flashPrice:9900,                   section:'🍊 귤 특가' },
   { id:'f_jeju_gamgyul2kg',label:'제주감귤(감미월등) 2kg',                  max:9999, flashPrice:18900,                  section:'🍊 귤 특가' },
   { id:'ts_cherry250',   label:'워싱턴체리(9row-최대사이즈) 250g',           max:9999, flashPrice:6900,                   section:'🍒 체리 특가' },
