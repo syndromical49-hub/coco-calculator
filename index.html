@@ -366,45 +366,57 @@
         <div style="font-size:12.5px;font-weight:900;color:#FFB060;letter-spacing:1px;padding:0 2px;">⏱ 선착순 특가</div>
         <div style="display:flex;flex-direction:column;gap:9px;">
 
-          <!-- 수박 8kg -->
-          <div style="background:linear-gradient(135deg,rgba(0,100,40,0.85),rgba(0,55,20,0.8));border:2px solid #c1121f;border-radius:7px;padding:5px 8px;box-shadow:0 0 8px rgba(0,200,80,0.2);cursor:pointer;" onclick="heroAddItem('f51_super')">
-            <div style="background:#c1121f;color:#fff;font-size:11px;font-weight:900;padding:2px 6px;border-radius:4px;margin-bottom:3px;text-align:center;">🍉 7월수박 — 양평(특)·고창(특)·맹동(특) 선별후 랜덤 입고</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:5px;">
-              <div style="display:flex;align-items:center;gap:4px;">
-                <span style="font-size:18px;">🍉</span>
+          <!-- 수박 단품 + 세트 -->
+          <div style="background:linear-gradient(135deg,rgba(0,80,30,0.9),rgba(0,45,15,0.85));border:2px solid #c1121f;border-radius:8px;padding:6px 8px;box-shadow:0 0 8px rgba(0,200,80,0.2);">
+            <div style="background:#c1121f;color:#fff;font-size:10.5px;font-weight:900;padding:2px 6px;border-radius:4px;margin-bottom:6px;text-align:center;">🍉 7월수박 — 양평(특)·고창(특)·맹동(특) 선별후 랜덤 입고</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+              <!-- 단품 -->
+              <div style="background:rgba(0,0,0,0.25);border-radius:6px;padding:5px 6px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:3px;" onclick="heroAddItem('f51_super')">
+                <div style="font-size:11.5px;font-weight:900;color:#fff;line-height:1.3;">🍉 양평수박(특품) 8kg</div>
                 <div>
-                  <div style="font-size:14px;font-weight:900;color:#fff;">양평수박(특품) 8kg</div>
-
+                  <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">29,000원</div>
+                  <div style="font-size:15px;font-weight:900;color:#ffd166;">26,900<span style="font-size:8px;">원</span></div>
                 </div>
               </div>
-              <span style="text-align:right;white-space:nowrap;">
-                <span style="font-size:11px;text-decoration:line-through;color:rgba(255,120,120,1);font-weight:800;display:block;">29,000원</span>
-                <span style="font-size:17px;font-weight:900;color:#ffd166;">26,900<span style="font-size:9px;">원</span></span>
-              </span>
+              <!-- 세트1: 참외 -->
+              <div style="background:rgba(0,0,0,0.25);border-radius:6px;padding:5px 6px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:3px;" onclick="heroAddItem('set_wmelon_chamoe')">
+                <div style="font-size:10px;font-weight:900;color:#a5d6a7;line-height:1.3;">🍉+🍈 수박+게르마늄참외2봉</div>
+                <div>
+                  <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">35,800원</div>
+                  <div style="font-size:15px;font-weight:900;color:#ffd166;">31,900<span style="font-size:8px;">원</span></div>
+                </div>
+              </div>
+              <!-- 세트2: 방울토마토 -->
+              <div style="background:rgba(0,0,0,0.25);border-radius:6px;padding:5px 6px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:3px;" onclick="heroAddItem('set_wmelon_tomato')">
+                <div style="font-size:10px;font-weight:900;color:#a5d6a7;line-height:1.3;">🍉+🍅 수박+방울토마토2팩</div>
+                <div>
+                  <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">34,800원</div>
+                  <div style="font-size:15px;font-weight:900;color:#ffd166;">29,900<span style="font-size:8px;">원</span></div>
+                </div>
+              </div>
+              <!-- 세트3: 체리 -->
+              <div style="background:rgba(0,0,0,0.25);border-radius:6px;padding:5px 6px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:3px;" onclick="heroAddItem('set_wmelon_cherry')">
+                <div style="font-size:10px;font-weight:900;color:#a5d6a7;line-height:1.3;">🍉+🍒 수박+워싱턴체리250g</div>
+                <div>
+                  <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">33,800원</div>
+                  <div style="font-size:15px;font-weight:900;color:#ffd166;">29,900<span style="font-size:8px;">원</span></div>
+                </div>
+              </div>
             </div>
           </div>
 
-
-          <!-- 황도 프리미엄 -->
-          <div style="background:linear-gradient(135deg,rgba(220,80,0,0.85),rgba(150,40,0,0.8));border:2px solid #ffb74d;border-radius:8px;padding:8px 10px;box-shadow:0 0 10px rgba(255,180,60,0.35);cursor:pointer;" onclick="heroAddItem('ts_sabina1')">
-            <div style="background:#ffb74d;color:#7a2800;font-size:11px;font-weight:900;padding:3px 8px;border-radius:4px;margin-bottom:7px;text-align:center;">사비나·조황·수황·미황·그린샵·제일·그린 — 선별후입고</div>
-            <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">
-              <span style="font-size:22px;">🍑</span>
-              <div>
-                <div style="font-size:13px;font-weight:900;color:#fff;">7월 인생황도(미황)</div>
-                <div style="font-size:11px;color:rgba(255,220,150,0.9);font-weight:700;">5,6과랜덤 — 당일경매 가장맛있는황도만</div>
+          <!-- 황도 프리미엄 (축소) -->
+          <div style="background:linear-gradient(135deg,rgba(220,80,0,0.75),rgba(150,40,0,0.7));border:1px solid #ffb74d;border-radius:7px;padding:4px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer;" onclick="heroAddItem('ts_sabina2')">
+            <div style="display:flex;align-items:center;gap:5px;flex:1;min-width:0;">
+              <span style="font-size:16px;flex-shrink:0;">🍑</span>
+              <div style="min-width:0;">
+                <div style="font-size:11.5px;font-weight:900;color:#fff;white-space:nowrap;">7월인생황도(사비나,미황) 1박스</div>
+                <div style="font-size:9.5px;color:rgba(255,220,150,0.85);font-weight:700;">미황9,10입랜덤·사비나12입 · 사비나·조황·수황·미황 선별후입고</div>
               </div>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.2);border-radius:5px;padding:4px 7px;margin-bottom:3px;filter:blur(3px);pointer-events:none;user-select:none;">
-              <span style="font-size:12px;font-weight:900;color:rgba(255,230,180,0.95);">1팩</span>
-              <span style="font-size:15px;font-weight:900;color:#ffd166;">17,000원</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.2);border-radius:5px;padding:4px 7px;">
-              <span style="font-size:12px;font-weight:900;color:rgba(255,230,180,0.95);">1박스(9입·2팩)</span>
-              <div style="display:flex;align-items:baseline;gap:4px;">
-                <span style="font-size:12px;text-decoration:line-through;color:rgba(255,120,120,1);font-weight:800;">35,900원</span><span style="font-size:11px;color:rgba(255,180,180,0.9);font-weight:700;">→</span>
-                <span style="font-size:15px;font-weight:900;color:#ffd166;">29,900원</span>
-              </div>
+            <div style="text-align:right;white-space:nowrap;flex-shrink:0;">
+              <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">35,900원</div>
+              <div style="font-size:14px;font-weight:900;color:#ffd166;">29,900<span style="font-size:8px;">원</span></div>
             </div>
           </div>
 
@@ -1569,6 +1581,9 @@ const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
 
   { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특품) 8kg', desc:'양평,고창,맹동수박(선별후입고)', orig:29000, price:26900 },
+  { id:'set_wmelon_chamoe', todaySpecial:true, num:'🍉', name:'🍉🍈 7월첫주수박특가세트 — 수박8kg+게르마늄참외2봉', desc:'양평수박(특품)8kg+게르마늄참외2봉', orig:35800, price:31900 },
+  { id:'set_wmelon_tomato', todaySpecial:true, num:'🍉', name:'🍉🍅 7월첫주수박특가세트 — 수박8kg+방울토마토2팩', desc:'양평수박(특품)8kg+방울토마토2팩', orig:34800, price:29900 },
+  { id:'set_wmelon_cherry', todaySpecial:true, num:'🍉', name:'🍉🍒 7월첫주수박특가세트 — 수박8kg+워싱턴체리(9row)250g', desc:'양평수박(특품)8kg+워싱턴체리(9row-최대사이즈)250g', orig:33800, price:29900 },
   { id:'f_jeju_gamgyul1', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 1봉(1kg↑)', desc:'제주하우스감귤 1봉 1kg이상', price:9900 },
   { id:'f_wachon_jaju1', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천,정상자두(아삭,새콤달콤최고봉) 1kg', desc:'와촌,김천,정상자두 아삭 새콤달콤최고봉 1kg', price:9900 },
   { id:'f_wachon_jaju2', todaySpecial:true, num:'🟣', name:'🟣 와촌,김천자두(특.왕특랜덤) 2kg', desc:'와촌,김천자두(특.왕특랜덤) 2kg', price:15900 },
@@ -2821,6 +2836,10 @@ function showToast(msg) {
 }
 
 initDayLock();
+// 수박 특가세트 itemMeta 등록 (heroAddItem 에서 사용)
+reg('set_wmelon_chamoe', '🍉🍈 7월첫주수박특가세트 — 수박8kg+게르마늄참외2봉', 31900);
+reg('set_wmelon_tomato', '🍉🍅 7월첫주수박특가세트 — 수박8kg+방울토마토2팩', 29900);
+reg('set_wmelon_cherry', '🍉🍒 7월첫주수박특가세트 — 수박8kg+워싱턴체리(9row)250g', 29900);
 renderSpecial();
 renderFruit();
 renderVeg();
@@ -3534,12 +3553,8 @@ function renderFlashSection() {
     if (fi.sabinaDual) {
       // ts_sabina2 itemMeta 등록
       if (!itemMeta['ts_sabina2']) {
-        itemMeta['ts_sabina2'] = { name:'🍑 7월 인생황도(미황) 1박스(9입·2팩)', price:29900 };
-        reg('ts_sabina2', '🍑 7월 인생황도(미황) 1박스(9입·2팩)', 29900);
-      }
-      if (!itemMeta['ts_sabina1']) {
-        itemMeta['ts_sabina1'] = { name:'🍑 7월 인생황도(미황) 1팩', price:17000 };
-        reg('ts_sabina1', '🍑 7월 인생황도(미황) 1팩', 17000);
+        itemMeta['ts_sabina2'] = { name:'🍑 7월인생황도(사비나,미황) 1박스(미황9,10입랜덤·사비나12입)', price:29900 };
+        reg('ts_sabina2', '🍑 7월인생황도(사비나,미황) 1박스(미황9,10입랜덤·사비나12입)', 29900);
       }
       const sabinaWrap = document.createElement('div');
       sabinaWrap.style.cssText = 'position:relative;';
@@ -3548,19 +3563,8 @@ function renderFlashSection() {
       sabinaCard.style.cssText = '';
       sabinaCard.innerHTML =
         '<div style="background:#c1121f;color:#fff;font-size:0.62rem;font-weight:900;padding:2px 7px;margin:-5px -7px 4px;border-radius:6px 6px 0 0;text-align:center;">사비나·조황·수황·미황·그린샵·제일·그린 — 선별후입고</div>' +
-        '<div class="flash-name">🍑 7월 인생황도(미황) 5,6과랜덤</div>' +
+        '<div class="flash-name">🍑 7월인생황도(사비나,미황) 1박스(미황 9,10입랜덤·사비나 12입)</div>' +
         '<div style="margin-top:4px;">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;filter:blur(2.5px);pointer-events:none;user-select:none;">' +
-            '<span style="font-size:0.85rem;font-weight:900;color:#a5d6a7;">1팩</span>' +
-            '<div style="display:flex;align-items:center;gap:6px;">' +
-            '<span style="font-size:0.95rem;font-weight:900;color:#ffd166;">17,000원</span>' +
-            '<div class="flash-stepper">' +
-            '<button class="flash-btn-sub">－</button>' +
-            '<span class="flash-qty">0</span>' +
-            '<button class="flash-btn-add">＋</button>' +
-            '</div>' +
-            '</div>' +
-          '</div>' +
           '<div style="display:flex;justify-content:space-between;align-items:center;">' +
             '<span style="font-size:0.85rem;font-weight:900;color:#a5d6a7;">1박스(9입·2팩)</span>' +
             '<div style="display:flex;align-items:center;gap:6px;">' +
@@ -3629,9 +3633,11 @@ function renderFlashSection() {
 }
 
 const FLASH_ITEMS = [
-  { id:'f51_super', label:'양평수박(특품) 8kg', max:9999, flashPrice:26900, origPrice:29000, badge:'🍉 7월수박 — 양평·고창·맹동 복불복제로', desc:'출하기념 특가행사 · 소진시 마감', section:'🍉 수박 특가' },
-  { id:'ts_sabina1',     label:'사비나황도(5,6과랜덤) 1팩',               max:9999, flashPrice:17000,                  section:'🍑 복숭아 특가', sabinaDual:true },
-  { id:'ts_sabina2',     label:'7월 인생황도(미황) 1박스(9입·2팩)',          max:9999, flashPrice:29900,                  section:'🍑 복숭아 특가', sabinaSub:true },
+  { id:'f51_super',          label:'양평수박(특품) 8kg',                                    max:9999, flashPrice:26900, origPrice:29000, section:'🍉 수박 특가' },
+  { id:'set_wmelon_chamoe',  label:'수박8kg + 게르마늄참외2봉',                              max:9999, flashPrice:31900, origPrice:35800, section:'🍉 수박 특가' },
+  { id:'set_wmelon_tomato',  label:'수박8kg + 방울토마토2팩',                                max:9999, flashPrice:29900, origPrice:34800, section:'🍉 수박 특가' },
+  { id:'set_wmelon_cherry',  label:'수박8kg + 워싱턴체리(9row) 250g',                        max:9999, flashPrice:29900, origPrice:33800, section:'🍉 수박 특가' },
+  { id:'ts_sabina2',     label:'7월인생황도(사비나,미황) 1박스(미황9,10입랜덤·사비나12입)', max:9999, flashPrice:29900, section:'🍑 복숭아 특가', sabinaDual:true },
   { id:'ts_daekuk1kg',   label:'대극천(딱복) 1kg',                          max:9999, flashPrice:12900, badge:'🍑 올해 첫 딱딱이복숭아', section:'🍑 복숭아 특가' },
   { id:'f_wachon_jaju1', label:'와촌,김천,정상자두 1kg',                     max:9999, flashPrice:9900,                   section:'🟣 자두 특가' },
   { id:'f_wachon_jaju2', label:'와촌,김천,정상자두(특.왕특랜덤) 2kg',        max:9999, flashPrice:15900,                  section:'🟣 자두 특가' },
