@@ -412,7 +412,7 @@
             <div style="display:flex;align-items:center;gap:5px;flex:1;min-width:0;">
               <span style="font-size:16px;flex-shrink:0;">🍑</span>
               <div style="min-width:0;">
-                <div style="font-size:11.5px;font-weight:900;color:#fff;white-space:nowrap;">7월인생황도(사비나,미황) 1박스</div>
+                <div style="font-size:11.5px;font-weight:900;color:#fff;white-space:nowrap;">7월인생황도 1박스</div>
                 <div style="font-size:9.5px;color:rgba(255,220,150,0.85);font-weight:700;">미황9,10입랜덤·사비나12입 · 사비나·조황·수황·미황 선별후입고</div>
               </div>
             </div>
@@ -478,7 +478,7 @@
             <div style="font-size:14px;font-weight:900;color:#fff;line-height:1.3;">베니하루카(밤+호박) 꿀 고구마 2kg<br><span style="font-size:11px;color:#ffd700;font-weight:700;">당도최고조</span></div>
           </div>
           <div style="text-align:right;white-space:nowrap;">
-            <div style="font-size:21px;font-weight:900;color:#ffd166;">9,000<span style="font-size:10px;">원</span></div>
+            <div style="font-size:21px;font-weight:900;color:#ffd166;">7,900<span style="font-size:10px;">원</span></div>
           </div>
         </div>
 
@@ -490,7 +490,7 @@
           </div>
           <div style="text-align:right;white-space:nowrap;">
             <div style="font-size:9px;color:rgba(255,255,255,0.5);text-decoration:line-through;">8,000원</div>
-            <div style="font-size:13px;font-weight:900;color:#ffd166;">5,500<span style="font-size:8px;">원</span></div>
+            <div style="font-size:13px;font-weight:900;color:#ffd166;">4,900<span style="font-size:8px;">원</span></div>
           </div>
         </div>
 
@@ -1607,42 +1607,38 @@ const vegItems = [
   // ── 🔥 오늘의 채소 특가 ──
 
   { id:'ts_zucchini',todaySpecial:true, num:'🥒', name:'🥒 애호박 1개',     price: 900 },
-  { id:'v_corn10', todaySpecial:true, num:'🌽', name:'🌽 초당옥수수 10개', desc:'초당옥수수 10개', price:13000 },
-  { id:'v_corn1', todaySpecial:false, num:'🌽', name:'🌽 초당옥수수 1개', desc:'초당옥수수 1개', price:1500 },
+  { id:'v21', num:'21', name:'콩나물(500g↑)',         price:900, todaySpecial:true },
+  { id:'v9',  num:'9',  name:'꽈리고추 1봉', price:1000, todaySpecial:true },
+  { id:'v7',  num:'7',  name:'양배추 1통',             price:1000 },
+  { id:'ts_oigaji10', num:'교차', todaySpecial:true, name:'🥒🍆 오이(특)·가지(특) 10개(교차가능)', desc:'오이·가지 교차 선택 가능 (오이는 쓰지않아요 품종)', price:2900, types:['오이(쓰지않아요)','가지'], maxPick:10, typeUnit:'개' },
+  { id:'v2b', num:'묶음', name:'🧅 양파 2봉(2kg↑)', price:2900, orig:4000, todaySpecial:true, badge:'묶음특가', badgeColor:'#c1121f' },
+  { id:'v6b', num:'🥬', name:'🥬 알배기배추 2개',          price:3000, todaySpecial:true, badge:'특가' },
+  { id:'ts_gamja2', todaySpecial:true, num:'🥔', name:'🥔 수미햇감자 2봉(2kg↑)', desc:'수미햇감자 2봉(2kg↑)', orig:8000, price:4900 },
+  { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg', price:7900 },
+    { id:'v_jinonkak', num:'진', name:'진노각(토종노각) 3개',          price:8000, todaySpecial:true, badge:'특가' },
+  { id:'v_corn10', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 입고예정', desc:'괴산 대학찰옥수수 입고예정', price:13000, tba:'입고예정' },
 
   // ── 기존 품목 ──
-  { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg', price:9000 },
   { id:'ts_goguma1', todaySpecial:false, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 1봉', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조)', price:5000 },
-  { id:'ts_oigaji', num:'교차', todaySpecial:true, name:'🥒🍆 오이·가지 5개(교차가능)', desc:'오이·가지 교차 선택 가능 (오이는 쓰지않아요 품종)', price:2000, types:['오이(쓰지않아요)','가지'], maxPick:5, typeUnit:'개' },
-  { id:'ts_oigaji10', num:'교차', todaySpecial:true, name:'🥒🍆 오이·가지 10개(교차가능)', desc:'오이·가지 교차 선택 가능 (오이는 쓰지않아요 품종)', price:3800, types:['오이(쓰지않아요)','가지'], maxPick:10, typeUnit:'개' },
   { id:'v1',  num:'1',  name:'감자 1봉',              price:4000 },
-  { id:'ts_gamja2', todaySpecial:true, num:'🥔', name:'🥔 수미햇감자 2봉(2kg↑)', desc:'수미햇감자 2봉(2kg↑)', orig:8000, price:5500 },
-  { id:'ts_honggamja2', todaySpecial:true, num:'🥔', name:'🥔 홍감자(태안빨간감자) 2봉', desc:'홍감자(태안빨간감자) 2봉', price:6900 },
-  { id:'v_honggamja1', todaySpecial:false, num:'🥔', name:'🥔 홍감자(태안빨간감자) 1봉', desc:'홍감자(태안빨간감자) 1봉', price:4500 },
   { id:'v2',  num:'2',  name:'양파 1봉',              price:2000 },
-  { id:'v2b', num:'묶음', name:'🧅 양파 2봉',          price:3500, orig:4000, todaySpecial:true, badge:'묶음특가', badgeColor:'#c1121f' },
   { id:'v4',  num:'4',  name:'당근 1봉',              price:3000 },
   { id:'v4p', num:'4',  name:'대파 1단',              price:2000 },
   { id:'v5',  num:'5',  name:'햇무 1개',             price:2000 },
   { id:'v6',  num:'🥬', name:'🥬 알배기배추 1개',          price:2000 },
-  { id:'v6b', num:'🥬', name:'🥬 알배기배추 2개',          price:3000, todaySpecial:true, badge:'특가' },
-    { id:'v_jinonkak', num:'진', name:'진노각(토종노각) 3개',          price:8000, todaySpecial:true, badge:'특가' },
     { id:'v_jinonkak1', num:'진', name:'진노각(토종노각) 1개',          price:3000, todaySpecial:false },
-  { id:'v7',  num:'7',  name:'양배추 1통',             price:2000 },
   { id:'v8',  num:'8',  name:'청양고추 1봉',            price:2000 },
-  { id:'v9',  num:'9',  name:'꽈리고추 1봉',            price:2000 },
   { id:'v10', num:'10', name:'아삭이고추 1봉',          price:2000 },
 
   { id:'v13', num:'13', name:'애호박 1개',              price:900 },
   { id:'v14', num:'14', name:'브로콜리 1개',             price:2000 },
   { id:'v15', num:'16', name:'양상추 1봉',              price:2500 },
-  { id:'v16', num:'17', name:'미나리 1봉',              price:2000 },
+  { id:'v16', num:'17', name:'미나리 1봉',              price:3000 },
   { id:'v18b',num:'18', name:'청국장 2팩',              price:3000 },
   { id:'v20', num:'20', name:'숙주 1봉',               price:2000 },
-  { id:'v21', num:'21', name:'콩나물(500g↑)',         price:1000 },
   { id:'v22', num:'22', name:'표고버섯 1봉',            price:3500 },
   { id:'v23', num:'23', name:'새송이버섯 1봉',           price:1500 },
-  { id:'v24', num:'24', name:'느타리버섯 1봉',           price:1000 },
+  { id:'v24', num:'24', name:'느타리버섯 1봉',           price:900 },
   { id:'v25', num:'25', name:'팽이버섯 1봉(3입)',        price:1000 },
   { id:'v26', num:'26', name:'깐마늘 1봉',              price:2000 },
 
@@ -2075,21 +2071,16 @@ function renderFruit() {
       card.style.cssText = 'border-color:#e57373;background:#fff5f5;';
     }
     if (item.tba) {
+      card.style.filter = 'blur(3px)';
+      card.style.pointerEvents = 'none';
+      card.style.userSelect = 'none';
+      card.style.opacity = '0.6';
       card.innerHTML = `
         <div class="num">${item.num}</div>
         <div class="name">${item.name}</div>
-        <div class="desc">${item.desc}</div>
         <div class="price-row">
           <span class="reg-price" style="font-size:0.78rem;color:#e89b00;font-weight:900;">⏰ ${item.tba}</span>
-        </div>
-        <div class="qty-row">
-          <div class="qty-stepper" style="opacity:0.3;pointer-events:none;">
-            <button class="qty-btn">−</button>
-            <div class="qty-val">-</div>
-            <button class="qty-btn">+</button>
-          </div>
-        </div>
-      `;
+        </div>`;
     } else if (item.chatOrder) {
       card.innerHTML = `
         <div class="num">${item.num}</div>
@@ -3552,8 +3543,8 @@ function renderFlashSection() {
     if (fi.sabinaDual) {
       // ts_sabina2 itemMeta 등록
       if (!itemMeta['ts_sabina2']) {
-        itemMeta['ts_sabina2'] = { name:'🍑 7월인생황도(사비나,미황) 1박스(미황9,10입랜덤·사비나12입)', price:29900 };
-        reg('ts_sabina2', '🍑 7월인생황도(사비나,미황) 1박스(미황9,10입랜덤·사비나12입)', 29900);
+        itemMeta['ts_sabina2'] = { name:'🍑 7월인생황도 1박스(미황9,10입랜덤·사비나12입)', price:29900 };
+        reg('ts_sabina2', '🍑 7월인생황도 1박스(미황9,10입랜덤·사비나12입)', 29900);
       }
       const sabinaWrap = document.createElement('div');
       sabinaWrap.style.cssText = 'position:relative;';
@@ -3562,7 +3553,7 @@ function renderFlashSection() {
       sabinaCard.style.cssText = '';
       sabinaCard.innerHTML =
         '<div style="background:#c1121f;color:#fff;font-size:0.62rem;font-weight:900;padding:2px 7px;margin:-5px -7px 4px;border-radius:6px 6px 0 0;text-align:center;">사비나·조황·수황·미황·그린샵·제일·그린 — 선별후입고</div>' +
-        '<div class="flash-name">🍑 7월인생황도(사비나,미황) 1박스(미황 9,10입랜덤·사비나 12입)</div>' +
+        '<div class="flash-name">🍑 7월인생황도 1박스(미황 9,10입랜덤·사비나 12입)</div>' +
         '<div style="margin-top:4px;">' +
           '<div style="display:flex;justify-content:space-between;align-items:center;">' +
             '<span style="font-size:0.85rem;font-weight:900;color:#a5d6a7;">1박스(9입·2팩)</span>' +
@@ -3636,7 +3627,7 @@ const FLASH_ITEMS = [
   { id:'set_wmelon_chamoe',  label:'수박8kg + 게르마늄참외2봉',                              max:9999, flashPrice:31900, origPrice:35800, section:'🍉 수박 특가' },
   { id:'set_wmelon_tomato',  label:'수박8kg + 방울토마토2팩',                                max:9999, flashPrice:29900, origPrice:34800, section:'🍉 수박 특가' },
   { id:'set_wmelon_cherry',  label:'수박8kg + 워싱턴체리(9row) 250g',                        max:9999, flashPrice:29900, origPrice:33800, section:'🍉 수박 특가' },
-  { id:'ts_sabina2',     label:'7월인생황도(사비나,미황) 1박스(미황9,10입랜덤·사비나12입)', max:9999, flashPrice:29900, section:'🍑 복숭아 특가', sabinaDual:true },
+  { id:'ts_sabina2',     label:'7월인생황도 1박스(미황9,10입랜덤·사비나12입)', max:9999, flashPrice:29900, section:'🍑 복숭아 특가', sabinaDual:true },
   { id:'ts_daekuk1kg',   label:'대극천(딱복) 1kg',                          max:9999, flashPrice:12900, badge:'🍑 올해 첫 딱딱이복숭아', section:'🍑 복숭아 특가' },
   { id:'f_wachon_jaju1', label:'정상자두(왕특,특 중랜덤) 1kg',          max:9999, flashPrice:11900, section:'🟣 자두 특가' },
   { id:'f_wachon_jaju2', label:'정상자두(왕특,특 중랜덤) 2kg',          max:9999, flashPrice:23000, section:'🟣 자두 특가' },
