@@ -1619,7 +1619,6 @@ const fruitItems = [
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
   { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'오감·세도, 아삭하고 달아요', orig:9800, price:7900 },
   { id:'f_avocado', todaySpecial:false, num:'🥑', name:'🥑 아보카도 4개', desc:'아보카도 4개', price:8000 },
-  { id:'f_melon', todaySpecial:false, num:'🍈', name:'🍈 고당도멜론(지금이 당도 최고조) 1통(2.5kg전후)', desc:'고당도멜론(지금이 당도 최고조) 1통 2.5kg전후', price:10900 },
   { id:'ts_cherry1kg', todaySpecial:false, num:'🍒', name:'🍒 워싱턴체리(9row-최대사이즈) 1kg', desc:'워싱턴체리(9row-최대사이즈) 1kg', price:20900 },
   { id:'f54', num:'#54', name:'🍈 참외(소과·게르마늄) 1봉', desc:'성주 게르마늄 재배 참외 1봉 (소과)',             orig:null,  price:5000 },
   { id:'f55', num:'#55', name:'🍅 방울토마토 1팩',   desc:'오감·세도, 아삭하고 달아요',            orig:null,  price:4900  },
@@ -3572,7 +3571,10 @@ function renderFlashSection() {
 
   for (const secName of sections) {
     const hdr = document.createElement('div');
-    hdr.style.cssText = 'font-size:0.88rem;font-weight:900;color:#b0bec5;letter-spacing:0.3px;padding:5px 4px 3px;border-bottom:1px solid rgba(176,190,197,0.3);margin-bottom:3px;';
+    const isWatermelonMelon = secName.includes('수박');
+    hdr.style.cssText = isWatermelonMelon
+      ? 'font-size:0.92rem;font-weight:900;color:#fff;letter-spacing:0.3px;padding:6px 10px;border-radius:6px;margin-bottom:5px;background:linear-gradient(90deg,#c1121f,#e63946);box-shadow:0 2px 6px rgba(193,18,31,0.4);'
+      : 'font-size:0.88rem;font-weight:900;color:#b0bec5;letter-spacing:0.3px;padding:5px 4px 3px;border-bottom:1px solid rgba(176,190,197,0.3);margin-bottom:3px;';
     hdr.textContent = secName;
     wrap.appendChild(hdr);
     const grid = document.createElement('div');
@@ -3664,10 +3666,11 @@ function renderFlashSection() {
 }
 
 const FLASH_ITEMS = [
-  { id:'f51_super',          label:'양평수박(특품) 8kg',                                    max:9999, flashPrice:26900, origPrice:29000, section:'🍉 수박 특가' },
-  { id:'set_wmelon_chamoe',  label:'수박8kg + 게르마늄참외2봉',                              max:9999, flashPrice:33900, origPrice:35800, section:'🍉 수박 특가' },
-  { id:'set_wmelon_tomato',  label:'수박8kg + 방울토마토2팩',                                max:9999, flashPrice:32900, origPrice:34800, section:'🍉 수박 특가' },
-  { id:'set_wmelon_cherry',  label:'수박8kg + 워싱턴체리(9row) 250g',                        max:9999, flashPrice:31900, origPrice:33800, section:'🍉 수박 특가' },
+  { id:'f51_super',          label:'양평수박(특품) 8kg',                                    max:9999, flashPrice:26900, origPrice:29000, section:'🍉 수박,멜론 특가' },
+  { id:'set_wmelon_chamoe',  label:'수박8kg + 게르마늄참외2봉',                              max:9999, flashPrice:33900, origPrice:35800, section:'🍉 수박,멜론 특가' },
+  { id:'set_wmelon_tomato',  label:'수박8kg + 방울토마토2팩',                                max:9999, flashPrice:32900, origPrice:34800, section:'🍉 수박,멜론 특가' },
+  { id:'set_wmelon_cherry',  label:'수박8kg + 워싱턴체리(9row) 250g',                        max:9999, flashPrice:31900, origPrice:33800, section:'🍉 수박,멜론 특가' },
+  { id:'f_melon',            label:'고당도멜론(지금이 당도 최고조) 1통(2.5kg전후)',           max:9999, flashPrice:10900, origPrice:12000, section:'🍉 수박,멜론 특가' },
   { id:'ts_sabina2',     label:'7월인생황도 1박스 (9~12입)', max:9999, flashPrice:29900, section:'🍑 복숭아 특가', sabinaDual:true },
   { id:'ts_daekuk1kg',   label:'대극천(딱복) 1kg',                          max:9999, flashPrice:11900, badge:'🍑 올해 첫 딱딱이복숭아', section:'🍑 복숭아 특가' },
   { id:'ts_daekuk2kg',   label:'대극천(딱복) 2kg',                          max:9999, flashPrice:22900, section:'🍑 복숭아 특가' },
