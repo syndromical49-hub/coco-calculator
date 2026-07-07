@@ -878,6 +878,10 @@
       <div><label class="fl">이름</label><input class="fi" id="inp-name" placeholder="홍길동" maxlength="10" oninput="checkFormReady()"></div>
       <div><label class="fl">닉네임 (선택)</label><input class="fi" id="inp-nick" placeholder="없으면 '없음' 입력" oninput="checkFormReady()" maxlength="15"></div>
       <div><label class="fl">연락처</label><input class="fi" type="tel" id="inp-phone" placeholder="010-0000-0000" maxlength="13" oninput="checkFormReady()"></div>
+      <div style="background:#fff8e1;border:2px solid #ffd166;border-radius:10px;padding:10px 12px;margin:6px 0;">
+        <label class="fl" style="font-size:1rem;font-weight:900;color:#7a5c00;">🔑 주문조회 비밀번호 <span style="font-size:0.75em;font-weight:700;color:#a67c00;">(선택 · 나중에 주문내역 확인용)</span></label>
+        <input class="fi" id="inp-lookup-pw" placeholder="예: 1234 (전화번호와 함께 조회할 때 사용)" maxlength="20" style="font-size:1.05rem;font-weight:700;padding:12px;">
+      </div>
       <div><label class="fl">소개인 닉네임 <span style="font-size:0.8em;color:#888;">(선택 · 이벤트 참여 시 입력)</span></label><input class="fi" id="inp-referrer" placeholder="예: 코코맘" maxlength="20"></div>
 
 
@@ -891,10 +895,31 @@
 
 <!-- ④ 가격표+주문 -->
 <div class="screen" id="s4">
-  <div class="app-hd">
+  <div class="app-hd" style="position:relative;">
+    <button onclick="openOrderLookup()" style="position:absolute;top:12px;right:14px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.45);color:#fff;font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px;cursor:pointer;">📋 주문조회</button>
     <h1>🧺 코코바스켓 주문계산기</h1>
     <div class="app-hd-sub" id="app-sub">담고 싶은 상품을 골라주세요</div>
   </div>
+
+  <!-- 주문조회 모달 -->
+  <div id="order-lookup-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;padding:16px;">
+    <div style="background:#fff;border-radius:16px;padding:20px 18px;width:100%;max-width:380px;max-height:85vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-size:1rem;font-weight:900;color:#1a0f00;">📋 주문내역 조회</div>
+        <button onclick="closeOrderLookup()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#888;">✕</button>
+      </div>
+      <div style="font-size:0.78rem;color:#777;margin-bottom:10px;">주문하신 전화번호와 주문 시 입력하신<br>주문조회 비밀번호를 입력해주세요.</div>
+      <div style="margin-bottom:8px;">
+        <input type="tel" id="lookup-phone" placeholder="전화번호 (- 없이 입력)" style="width:100%;border:1.5px solid #ddd;border-radius:8px;padding:10px 12px;font-size:0.9rem;box-sizing:border-box;">
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <input type="text" id="lookup-pw" placeholder="주문조회 비밀번호" style="flex:1;border:1.5px solid #ddd;border-radius:8px;padding:10px 12px;font-size:0.9rem;">
+        <button onclick="searchMyOrders()" style="background:#2d6a4f;color:#fff;border:none;border-radius:8px;padding:0 16px;font-weight:900;font-size:0.85rem;cursor:pointer;white-space:nowrap;">조회</button>
+      </div>
+      <div id="lookup-result"></div>
+    </div>
+  </div>
+
   <div class="jump-bar">
     <button class="jbtn active" id="tab-sp" onclick="switchTab('sp')">🔥 특가세트</button>
     <button class="jbtn" id="tab-fr" onclick="switchTab('fr')">🍊 과일</button>
@@ -1038,6 +1063,12 @@
         <div style="font-size:0.88rem;font-weight:900;color:#1a0f00;letter-spacing:0.3px;">KB국민 072701-04-291077</div>
         <div style="font-size:0.75rem;color:#555;margin-top:2px;">예금주 · 코코바스켓</div>
       </div>
+    </div>
+
+    <!-- 주문내역 -->
+    <div style="width:100%;max-width:360px;margin-bottom:12px;background:#fff;border:1.5px solid #e0e0e0;border-radius:10px;padding:12px 14px;">
+      <div style="font-size:0.75rem;font-weight:900;color:#555;margin-bottom:6px;">🧾 주문내역 확인</div>
+      <div id="done-items"></div>
     </div>
 
     <!-- 합계 + 복사 버튼 -->
@@ -2559,6 +2590,77 @@ const SB_KEY   = 'sb_publishable_nayRjlhkekbf4-BB_yJk5g_DtEgKZ6g';
 // 페이지 로드마다 고유 주문 키 생성 (중복 방지)
 const ORDER_KEY = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2);
 
+// ── 주문조회 (전화번호 기반) ──
+function openOrderLookup() {
+  const modal = document.getElementById('order-lookup-modal');
+  if (modal) { modal.style.display = 'flex'; }
+  const resEl = document.getElementById('lookup-result');
+  if (resEl) resEl.innerHTML = '';
+  const inp = document.getElementById('lookup-phone');
+  const pwInp = document.getElementById('lookup-pw');
+  if (pwInp) pwInp.value = '';
+  if (inp) { inp.value=''; setTimeout(function(){ inp.focus(); }, 100); }
+}
+function closeOrderLookup() {
+  const modal = document.getElementById('order-lookup-modal');
+  if (modal) modal.style.display = 'none';
+}
+async function searchMyOrders() {
+  const resEl = document.getElementById('lookup-result');
+  const phoneRaw = document.getElementById('lookup-phone').value || '';
+  const phone = phoneRaw.replace(/\D/g,'');
+  const pwInput = (document.getElementById('lookup-pw').value || '').trim();
+  if (!phone || phone.length < 8) {
+    resEl.innerHTML = '<div style="color:#e63946;font-size:0.8rem;margin-top:8px;">전화번호를 정확히 입력해주세요.</div>';
+    return;
+  }
+  if (!pwInput) {
+    resEl.innerHTML = '<div style="color:#e63946;font-size:0.8rem;margin-top:8px;">주문조회 비밀번호를 입력해주세요.</div>';
+    return;
+  }
+  resEl.innerHTML = '<div style="text-align:center;padding:16px;color:#888;font-size:0.85rem;">조회 중...</div>';
+  try {
+    const ordRes = await fetch(SB_URL + '/rest/v1/orders?customer_phone=eq.' + phone + '&select=id,order_date,total,created_at,lookup_password&order=order_date.desc,created_at.desc&limit=50', {
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    });
+    const allOrders = await ordRes.json();
+    // 비밀번호가 일치하는 주문만 (비밀번호를 설정 안 한 옛날 주문은 제외 - 보호 안 된 주문이므로)
+    const orders = Array.isArray(allOrders) ? allOrders.filter(function(o){ return o.lookup_password && o.lookup_password === pwInput; }) : [];
+    if (orders.length === 0) {
+      resEl.innerHTML = '<div style="text-align:center;padding:16px;color:#888;font-size:0.85rem;">전화번호 또는 비밀번호가 일치하는 주문이 없어요.<br><span style="font-size:0.72rem;color:#aaa;">※ 비밀번호를 설정하기 전에 주문한 건은 조회되지 않아요.</span></div>';
+      return;
+    }
+    let html = '';
+    for (const ord of orders) {
+      let itemsHtml = '<div style="color:#aaa;font-size:0.75rem;">불러오는 중...</div>';
+      try {
+        const itRes = await fetch(SB_URL + '/rest/v1/order_items?order_id=eq.' + ord.id + '&select=item_name,qty,price', {
+          headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+        });
+        const items = await itRes.json();
+        itemsHtml = Array.isArray(items) && items.length
+          ? items.map(function(it){
+              const sub = (it.price||0) * (it.qty||1);
+              return '<div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#444;padding:2px 0;">' +
+                '<span>' + it.item_name + (it.qty>1 ? ' ×' + it.qty : '') + '</span>' +
+                '<span style="white-space:nowrap;">' + sub.toLocaleString() + '원</span></div>';
+            }).join('')
+          : '<div style="color:#aaa;font-size:0.75rem;">상세내역 없음</div>';
+      } catch(e) { itemsHtml = '<div style="color:#e63946;font-size:0.75rem;">내역 불러오기 실패</div>'; }
+      html += '<div style="border:1px solid #eee;border-radius:10px;padding:10px 12px;margin-bottom:8px;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+          '<span style="font-size:0.8rem;font-weight:900;color:#2d6a4f;">📅 ' + ord.order_date + '</span>' +
+          '<span style="font-size:0.9rem;font-weight:900;color:#c1121f;">' + (ord.total||0).toLocaleString() + '원</span>' +
+        '</div>' +
+        itemsHtml +
+      '</div>';
+    }
+    resEl.innerHTML = html;
+  } catch(e) {
+    resEl.innerHTML = '<div style="color:#e63946;font-size:0.8rem;margin-top:8px;">조회 중 오류가 발생했어요. 다시 시도해주세요.</div>';
+  }
+}
+
 // ══ 주문 접수하기 (텔레그램 + Supabase) ════
 function showOrderConfirm() {
   const u = window._cocoUser || {};
@@ -4042,6 +4144,18 @@ window.orderDirect = async function() {
     }
   }
 
+  const allItemLines = itemLines.concat(setLines);
+  const doneItemsHtml = allItemLines.map(function(line){
+    return '<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:0.78rem;color:#333;border-bottom:1px dashed #eee;">' +
+      '<span>' + line.replace(/^\s*/, '').replace(/\s+[\d,]+원$/, '') + '</span>' +
+      '<span style="font-weight:700;white-space:nowrap;">' + (line.match(/[\d,]+원$/) || [''])[0] + '</span>' +
+    '</div>';
+  }).join('');
+  function renderDoneItems() {
+    const el = document.getElementById('done-items');
+    if (el) el.innerHTML = doneItemsHtml;
+  }
+
   // 텔레그램은 Supabase 저장 후 orderId 포함해서 전송
 
   // Supabase 저장
@@ -4068,7 +4182,7 @@ window.orderDirect = async function() {
     const ordRes = await fetch(SB_URL + '/rest/v1/orders', {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'},
-      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null })
+      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null })
     });
 
     // 중복(409/23505)이면 이미 접수된 주문 → 완료 화면만 표시
@@ -4077,6 +4191,7 @@ window.orderDirect = async function() {
       if (doneEl) {
         const doneTotalEl = document.getElementById('done-total');
         if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
+        renderDoneItems();
         doneEl.style.display='flex'; doneEl.style.flexDirection='column';
       }
       return;
@@ -4131,6 +4246,7 @@ window.orderDirect = async function() {
   if (doneEl) {
     const doneTotalEl2 = document.getElementById('done-total');
     if (doneTotalEl2) doneTotalEl2.textContent = total.toLocaleString() + '원';
+    renderDoneItems();
     doneEl.style.display='flex'; doneEl.style.flexDirection='column';
   }
 
@@ -4140,7 +4256,6 @@ window.orderDirect = async function() {
     const orderNum = orderId ? orderId.slice(0,8).toUpperCase() : '--------';
     const D = '━━━━━━━━━━';
     const nameStr = _tgBase + (u.nick ? ' (' + u.nick + ')' : '');
-    const allItemLines = itemLines.concat(setLines);
     const referrerVal = (document.getElementById('inp-referrer') && document.getElementById('inp-referrer').value.trim()) || '';
     const referrerLine = referrerVal ? ('\n' + D + '\n🎁 소개인: ' + referrerVal) : '';
     const tgMsg = D + '\n'
