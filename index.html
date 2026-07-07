@@ -471,6 +471,24 @@
             </div>
           </div>
 
+          <!-- 미흑찰옥수수(얼룩이) 1개/10개/1망 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
+            <div style="background:linear-gradient(135deg,rgba(190,160,0,0.55),rgba(130,105,0,0.5));border:1px solid #ffd700;border-radius:8px;padding:3px 3px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;" onclick="heroAddItem('v_corn_eol1')">
+              <div style="font-size:10.5px;font-weight:700;color:#fff;white-space:nowrap;">🌽 미흑찰옥수수(얼룩이) 1개</div>
+              <div style="font-size:13.5px;font-weight:900;color:#ffd166;">1,300<span style="font-size:8px;">원</span></div>
+            </div>
+            <div style="position:relative;background:linear-gradient(135deg,#c1121f,#8a0000);border:1.5px solid #ffd700;border-radius:8px;padding:5px 3px 3px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;box-shadow:0 0 8px rgba(255,215,0,0.5);" onclick="heroAddItem('v_corn_eol10')">
+              <span style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#ffd700;color:#7a0000;font-size:8px;font-weight:900;padding:1px 6px;border-radius:5px;white-space:nowrap;">🔥 7일 단하루</span>
+              <div style="font-size:10.5px;font-weight:700;color:#fff;white-space:nowrap;margin-top:3px;">🌽 얼룩이 10개</div>
+              <div style="font-size:9px;text-decoration:line-through;color:rgba(255,200,200,0.85);font-weight:700;">11,900원</div>
+              <div style="font-size:14.5px;font-weight:900;color:#ffd166;animation:twinkle 0.8s infinite alternate;">10,000<span style="font-size:8px;">원</span></div>
+            </div>
+            <div style="background:linear-gradient(135deg,rgba(190,160,0,0.55),rgba(130,105,0,0.5));border:1px solid #ffd700;border-radius:8px;padding:3px 3px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;" onclick="heroAddItem('v_corn_eol30')">
+              <div style="font-size:10.5px;font-weight:700;color:#fff;white-space:nowrap;">🌽 얼룩이 1망(30입)</div>
+              <div style="font-size:13.5px;font-weight:900;color:#ffd166;">32,900<span style="font-size:8px;">원</span></div>
+            </div>
+          </div>
+
           <!-- 체리 500g/1kg -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
             <div style="background:linear-gradient(135deg,rgba(160,0,50,0.55),rgba(100,0,25,0.5));border:1px solid #ff6b6b;border-radius:8px;padding:3px 4px;display:flex;flex-direction:column;align-items:center;gap:0px;cursor:pointer;text-align:center;" onclick="heroAddItem('ts_cherry')">
@@ -1647,6 +1665,9 @@ const vegItems = [
   { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg', price:8800 },
     { id:'v_jinonkak', num:'진', name:'진노각(토종노각) 3개',          price:8000, todaySpecial:true, badge:'특가' },
   { id:'v_corn10', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 입고예정', desc:'괴산 대학찰옥수수 입고예정', price:13000, tba:'입고예정' },
+  { id:'v_corn_eol1',  todaySpecial:true, num:'🌽', name:'🌽 미흑찰옥수수(얼룩이) 1개',        desc:'미흑찰옥수수(얼룩이) 1개', price:1300 },
+  { id:'v_corn_eol10', todaySpecial:true, num:'🌽', name:'🌽 미흑찰옥수수(얼룩이) 10개',       desc:'미흑찰옥수수(얼룩이) 10개', orig:11900, price:10000, badge:'7일 단하루', badgeColor:'#c1121f' },
+  { id:'v_corn_eol30', todaySpecial:true, num:'🌽', name:'🌽 미흑찰옥수수(얼룩이) 1망(30입)',   desc:'미흑찰옥수수(얼룩이) 1망(30입)', price:32900 },
 
   // ── 기존 품목 ──
   { id:'ts_goguma1', todaySpecial:false, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 1봉', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조)', price:5000 },
