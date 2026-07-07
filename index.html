@@ -880,7 +880,7 @@
       <div><label class="fl">연락처</label><input class="fi" type="tel" id="inp-phone" placeholder="010-0000-0000" maxlength="13" oninput="checkFormReady()"></div>
       <div style="background:#fff8e1;border:2px solid #ffd166;border-radius:10px;padding:10px 12px;margin:6px 0;">
         <label class="fl" style="font-size:1rem;font-weight:900;color:#7a5c00;">🔑 주문조회 비밀번호 <span style="font-size:0.75em;font-weight:700;color:#a67c00;">(선택 · 나중에 주문내역 확인용)</span></label>
-        <input class="fi" id="inp-lookup-pw" placeholder="예: 1234 (전화번호와 함께 조회할 때 사용)" maxlength="20" style="font-size:1.05rem;font-weight:700;padding:12px;color:#1a0f00;background:#fff;">
+        <input class="fi" id="inp-lookup-pw" type="tel" inputmode="numeric" pattern="[0-9]*" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="예: 1234 (숫자만 입력)" maxlength="10" style="font-size:1.05rem;font-weight:700;padding:12px;color:#1a0f00;background:#fff;">
       </div>
       <div><label class="fl">소개인 닉네임 <span style="font-size:0.8em;color:#888;">(선택 · 이벤트 참여 시 입력)</span></label><input class="fi" id="inp-referrer" placeholder="예: 코코맘" maxlength="20"></div>
 
@@ -913,7 +913,7 @@
         <input type="tel" id="lookup-phone" placeholder="전화번호 (- 없이 입력)" style="width:100%;border:1.5px solid #ddd;border-radius:8px;padding:10px 12px;font-size:0.9rem;box-sizing:border-box;">
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px;">
-        <input type="text" id="lookup-pw" placeholder="주문조회 비밀번호" style="flex:1;border:1.5px solid #ddd;border-radius:8px;padding:10px 12px;font-size:0.9rem;">
+        <input type="tel" inputmode="numeric" pattern="[0-9]*" oninput="this.value=this.value.replace(/[^0-9]/g,'')" id="lookup-pw" placeholder="주문조회 비밀번호 (숫자)" maxlength="10" style="flex:1;border:1.5px solid #ddd;border-radius:8px;padding:10px 12px;font-size:0.9rem;">
         <button onclick="searchMyOrders()" style="background:#2d6a4f;color:#fff;border:none;border-radius:8px;padding:0 16px;font-weight:900;font-size:0.85rem;cursor:pointer;white-space:nowrap;">조회</button>
       </div>
       <div id="lookup-result"></div>
