@@ -249,65 +249,67 @@
 /* 선착순 특가 섹션 */
 .flash-section-hdr {
   display:flex;align-items:center;gap:8px;
-  background:linear-gradient(135deg,rgba(220,30,30,0.25),rgba(180,0,0,0.15));
-  border:1.5px solid rgba(255,60,60,0.4);
-  border-radius:10px;padding:10px 14px;margin-bottom:10px;
+  background:#fff;
+  border:1px solid var(--border);border-left:3px solid var(--red);
+  border-radius:8px;padding:9px 12px;margin-bottom:8px;
 }
-.flash-section-hdr .fsh-icon { font-size:1.3rem; }
+.flash-section-hdr .fsh-icon { font-size:1.1rem; }
 .flash-section-hdr .fsh-text { flex:1; }
-.flash-section-hdr .fsh-title { font-size:0.92rem;font-weight:900;color:#fff;letter-spacing:-0.3px; }
-.flash-section-hdr .fsh-sub { font-size:0.7rem;color:rgba(255,120,120,0.85);font-weight:600;margin-top:2px; }
-.flash-section-hdr .fsh-badge { background:#ff3b3b;color:#fff;font-size:0.62rem;font-weight:900;padding:3px 9px;border-radius:100px;letter-spacing:0.5px;white-space:nowrap; }
+.flash-section-hdr .fsh-title { font-size:0.88rem;font-weight:800;color:var(--text);letter-spacing:-0.2px; }
+.flash-section-hdr .fsh-sub { font-size:0.68rem;color:var(--red);font-weight:600;margin-top:2px; }
+.flash-section-hdr .fsh-badge { background:var(--red);color:#fff;font-size:0.6rem;font-weight:800;padding:3px 8px;border-radius:100px;letter-spacing:0.3px;white-space:nowrap; }
 
-#flash-sale-wrap { display:flex;flex-direction:column;gap:12px; }
+#flash-sale-wrap { display:flex;flex-direction:column;gap:10px; }
 
 .flash-card {
-  background:linear-gradient(135deg,rgba(10,50,25,0.75),rgba(5,35,15,0.65));
-  border:1.5px solid rgba(50,160,80,0.45);
-  border-radius:5px;padding:3px 5px;
-  transition:opacity 0.3s;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;padding:9px 11px;
+  box-shadow:0 1px 2px rgba(0,0,0,0.03);
+  transition:border-color 0.2s;
 }
 .flash-card.sold { opacity:0.5; }
-.flash-card.flash-highlight { background:linear-gradient(135deg,rgba(15,70,35,0.85),rgba(8,45,20,0.75)); border:2px solid #2e7d32; }
+.flash-card.flash-highlight { background:#f4faf6; border:1.5px solid var(--green); }
 
-.flash-name { font-size:0.85rem;font-weight:900;color:#e8f5e9;letter-spacing:-0.3px;margin-bottom:1px; }
-.flash-desc { font-size:0.72rem;color:rgba(160,220,170,0.8);margin-bottom:2px; }
+.flash-name { font-size:0.85rem;font-weight:800;color:var(--text);letter-spacing:-0.2px;margin-bottom:1px; }
+.flash-desc { font-size:0.7rem;color:var(--muted);margin-bottom:3px; }
 
-.flash-price-row { display:flex;align-items:baseline;justify-content:space-between;gap:4px;margin-bottom:1px; }
-.flash-orig { font-size:0.82rem;color:rgba(160,220,170,0.6);text-decoration:line-through;font-weight:700; }
-.flash-price { font-size:1.1rem;font-weight:900;color:#ffd166;letter-spacing:-0.5px; }
+.flash-price-row { display:flex;align-items:baseline;justify-content:space-between;gap:4px;margin-bottom:2px; }
+.flash-orig { font-size:0.76rem;color:#bbb;text-decoration:line-through;font-weight:600; }
+.flash-price { font-size:1.02rem;font-weight:800;color:var(--green);letter-spacing:-0.3px; }
 
 .flash-counter { display:flex;align-items:center;justify-content:flex-end;gap:8px; }
-.flash-remain { font-size:0.82rem;font-weight:700;color:#c1121f; }
-.flash-sold { font-size:0.85rem;font-weight:900;color:rgba(150,30,30,0.6); }
+.flash-remain { font-size:0.78rem;font-weight:700;color:#b5544c; }
+.flash-sold { font-size:0.82rem;font-weight:800;color:#aaa; }
 
 .flash-stepper { display:flex;align-items:center;gap:8px; }
 .flash-btn-sub,.flash-btn-add {
-  width:20px;height:20px;border-radius:50%;border:1.5px solid #2e7d32;
-  background:#0a2a10;color:#69f0ae;font-size:0.8rem;font-weight:900;
+  width:22px;height:22px;border-radius:6px;border:1px solid var(--border);
+  background:#f7f5f0;color:#666;font-size:0.8rem;font-weight:800;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
 }
-.flash-btn-add { background:#c1121f;color:#fff;border-color:#c1121f; }
-.flash-qty { font-size:0.88rem;font-weight:900;color:#e8f5e9;min-width:14px;text-align:center; }
+.flash-btn-add { background:var(--green);color:#fff;border-color:var(--green); }
+.flash-qty { font-size:0.86rem;font-weight:800;color:var(--text);min-width:14px;text-align:center; }
 
 /* 세트 상품 컴팩트 카드 */
 .set-section-hdr {
-  font-size:0.95rem;font-weight:900;color:#c1121f;letter-spacing:0.5px;
-  padding:0 2px;margin-bottom:10px;
+  font-size:0.8rem;font-weight:800;color:var(--muted);letter-spacing:0.3px;
+  padding:0 2px;margin-bottom:8px;
 }
 .set-card {
-  background:linear-gradient(135deg,rgba(255,235,235,0.9),rgba(255,220,220,0.7));
-  border:1.5px solid rgba(255,80,80,0.35);
-  border-radius:12px;padding:13px 14px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;
   display:flex;align-items:center;gap:12px;
-  margin-bottom:10px;
+  margin-bottom:8px;
+  box-shadow:0 1px 2px rgba(0,0,0,0.03);
 }
-.set-card .set-icon { font-size:1.6rem;flex-shrink:0; }
+.set-card .set-icon { font-size:1.35rem;flex-shrink:0;opacity:0.85; }
 .set-card .set-info { flex:1;min-width:0; }
-.set-card .set-name { font-size:1rem;font-weight:900;color:#2d1010;line-height:1.35; }
-.set-card .set-orig { font-size:0.82rem;color:rgba(100,50,50,0.5);text-decoration:line-through;margin-top:2px; }
+.set-card .set-name { font-size:0.92rem;font-weight:800;color:var(--text);line-height:1.35; }
+.set-card .set-orig { font-size:0.76rem;color:#bbb;text-decoration:line-through;margin-top:2px; }
 .set-card .set-price-area { text-align:right;white-space:nowrap; }
-.set-card .set-price { font-size:1.4rem;font-weight:900;color:#c1121f;letter-spacing:-0.5px; }
+.set-card .set-price { font-size:1.2rem;font-weight:800;color:var(--green);letter-spacing:-0.3px; }
 .set-card .set-stepper { display:flex;align-items:center;gap:7px;margin-top:6px;justify-content:flex-end; }
 
 </style>
@@ -2632,27 +2634,15 @@ async function searchMyOrders() {
     }
     let html = '';
     for (const ord of orders) {
-      let itemsHtml = '<div style="color:#aaa;font-size:0.75rem;">불러오는 중...</div>';
-      try {
-        const itRes = await fetch(SB_URL + '/rest/v1/order_items?order_id=eq.' + ord.id + '&select=item_name,qty,price', {
-          headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-        });
-        const items = await itRes.json();
-        itemsHtml = Array.isArray(items) && items.length
-          ? items.map(function(it){
-              const sub = (it.price||0) * (it.qty||1);
-              return '<div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#444;padding:2px 0;">' +
-                '<span>' + it.item_name + (it.qty>1 ? ' ×' + it.qty : '') + '</span>' +
-                '<span style="white-space:nowrap;">' + sub.toLocaleString() + '원</span></div>';
-            }).join('')
-          : '<div style="color:#aaa;font-size:0.75rem;">상세내역 없음</div>';
-      } catch(e) { itemsHtml = '<div style="color:#e63946;font-size:0.75rem;">내역 불러오기 실패</div>'; }
-      html += '<div style="border:1px solid #eee;border-radius:10px;padding:10px 12px;margin-bottom:8px;">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+      html += '<div style="border:1px solid #eee;border-radius:10px;margin-bottom:8px;overflow:hidden;">' +
+        '<div onclick="toggleLookupOrder(\'' + ord.id + '\')" id="lookup-hdr-' + ord.id + '" style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;cursor:pointer;background:#fafafa;">' +
           '<span style="font-size:0.8rem;font-weight:900;color:#2d6a4f;">📅 ' + ord.order_date + '</span>' +
-          '<span style="font-size:0.9rem;font-weight:900;color:#c1121f;">' + (ord.total||0).toLocaleString() + '원</span>' +
+          '<span style="display:flex;align-items:center;gap:8px;">' +
+            '<span style="font-size:0.9rem;font-weight:900;color:#c1121f;">' + (ord.total||0).toLocaleString() + '원</span>' +
+            '<span id="lookup-arrow-' + ord.id + '" style="font-size:0.7rem;color:#999;">▼</span>' +
+          '</span>' +
         '</div>' +
-        itemsHtml +
+        '<div id="lookup-items-' + ord.id + '" style="display:none;padding:8px 12px;border-top:1px solid #f0f0f0;"></div>' +
       '</div>';
     }
     resEl.innerHTML = html;
@@ -2660,6 +2650,40 @@ async function searchMyOrders() {
     resEl.innerHTML = '<div style="color:#e63946;font-size:0.8rem;margin-top:8px;">조회 중 오류가 발생했어요. 다시 시도해주세요.</div>';
   }
 }
+
+async function toggleLookupOrder(orderId) {
+  const box = document.getElementById('lookup-items-' + orderId);
+  const arrow = document.getElementById('lookup-arrow-' + orderId);
+  if (!box) return;
+  const isOpen = box.style.display === 'block';
+  if (isOpen) {
+    box.style.display = 'none';
+    if (arrow) arrow.textContent = '▼';
+    return;
+  }
+  box.style.display = 'block';
+  if (arrow) arrow.textContent = '▲';
+  if (box.dataset.loaded === '1') return;
+  box.innerHTML = '<div style="color:#aaa;font-size:0.75rem;">불러오는 중...</div>';
+  try {
+    const itRes = await fetch(SB_URL + '/rest/v1/order_items?order_id=eq.' + orderId + '&select=item_name,qty,price', {
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    });
+    const items = await itRes.json();
+    box.innerHTML = Array.isArray(items) && items.length
+      ? items.map(function(it){
+          const sub = (it.price||0) * (it.qty||1);
+          return '<div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#444;padding:2px 0;">' +
+            '<span>' + it.item_name + (it.qty>1 ? ' ×' + it.qty : '') + '</span>' +
+            '<span style="white-space:nowrap;">' + sub.toLocaleString() + '원</span></div>';
+        }).join('')
+      : '<div style="color:#aaa;font-size:0.75rem;">상세내역 없음</div>';
+    box.dataset.loaded = '1';
+  } catch(e) {
+    box.innerHTML = '<div style="color:#e63946;font-size:0.75rem;">내역 불러오기 실패</div>';
+  }
+}
+
 
 // ══ 주문 접수하기 (텔레그램 + Supabase) ════
 function showOrderConfirm() {
@@ -3676,23 +3700,50 @@ function renderFlashSection() {
 
   for (const secName of sections) {
     const isWatermelonMelon = secName.includes('수박');
-    const sectionBox = isWatermelonMelon ? document.createElement('div') : wrap;
-    if (isWatermelonMelon) {
-      sectionBox.style.cssText = 'border:2.5px solid #e63946;border-radius:12px;padding:8px;margin-bottom:8px;background:rgba(230,57,70,0.06);animation:pulse 1.8s infinite;';
-    }
     const hdr = document.createElement('div');
-    hdr.style.cssText = isWatermelonMelon
-      ? 'font-size:1.15rem;font-weight:900;color:#fff;letter-spacing:0.3px;padding:9px 12px;border-radius:8px;margin-bottom:7px;background:linear-gradient(90deg,#c1121f,#e63946);box-shadow:0 3px 10px rgba(193,18,31,0.55);text-align:center;'
-      : 'font-size:0.88rem;font-weight:900;color:#b0bec5;letter-spacing:0.3px;padding:5px 4px 3px;border-bottom:1px solid rgba(176,190,197,0.3);margin-bottom:3px;';
-    hdr.textContent = isWatermelonMelon ? '🔥 ' + secName + ' 🔥' : secName;
-    sectionBox.appendChild(hdr);
-    if (isWatermelonMelon) wrap.appendChild(sectionBox);
+    hdr.style.cssText = 'display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border);border-left:3px solid ' + (isWatermelonMelon ? '#b5544c' : '#c9c4b8') + ';border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:0.86rem;font-weight:800;color:var(--text);letter-spacing:-0.2px;';
+    hdr.textContent = (isWatermelonMelon ? '🔥 ' : '') + secName;
+    wrap.appendChild(hdr);
     const grid = document.createElement('div');
-    grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:4px;';
-    sectionBox.appendChild(grid);
+    grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;';
+    wrap.appendChild(grid);
 
     for (const fi of sectionMap[secName]) {
     if (fi.sabinaSub) continue; // sabinaDual 카드에서 처리
+    if (fi.daekukSub) continue; // daekukGroup 카드에서 처리
+    // daekukGroup: 대극천 1kg/2kg를 배지 하나로 묶어서 표시
+    if (fi.daekukGroup) {
+      const fi2 = FLASH_ITEMS.find(function(f){ return f.id === 'ts_daekuk2kg'; });
+      let m1 = itemMeta[fi.id]; if (!m1) { m1 = { name: fi.label, price: fi.flashPrice || 0 }; itemMeta[fi.id] = m1; }
+      let m2 = itemMeta[fi2.id]; if (!m2) { m2 = { name: fi2.label, price: fi2.flashPrice || 0 }; itemMeta[fi2.id] = m2; }
+      qtys[fi.id] = qtys[fi.id] || 0; qtys[fi2.id] = qtys[fi2.id] || 0;
+      function daekukMini(item, meta) {
+        const q = qtys[item.id];
+        return '<div style="flex:1;min-width:0;">' +
+          '<div style="font-size:0.8rem;font-weight:800;color:var(--text);margin-bottom:5px;">' + meta.name.replace('대극천(딱복) ','') + '</div>' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">' +
+            '<span style="font-size:0.92rem;font-weight:800;color:var(--green);">' + (item.flashPrice||meta.price).toLocaleString() + '원</span>' +
+            '<div class="flash-stepper">' +
+              '<button class="flash-btn-sub" onclick="flashAdj(\'' + item.id + '\',-1)">－</button>' +
+              '<span class="flash-qty" id="fqty-' + item.id + '">' + q + '</span>' +
+              '<button class="flash-btn-add" onclick="flashAdj(\'' + item.id + '\',1)">＋</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }
+      const daekukWrap = document.createElement('div');
+      daekukWrap.className = 'flash-card';
+      daekukWrap.style.cssText = 'grid-column:1 / -1;padding:0;overflow:hidden;';
+      daekukWrap.innerHTML =
+        '<div style="background:#b5544c;color:#fff;font-size:0.68rem;font-weight:800;padding:6px 10px;text-align:center;letter-spacing:-0.2px;">🍑 올해 첫 딱딱이복숭아</div>' +
+        '<div style="display:flex;gap:12px;padding:10px 12px;">' +
+          daekukMini(fi, m1) +
+          '<div style="width:1px;background:var(--border);"></div>' +
+          daekukMini(fi2, m2) +
+        '</div>';
+      grid.appendChild(daekukWrap);
+      continue;
+    }
     // sabinaDual: 블러처리 + 27일 공개 예정
     if (fi.sabinaDual) {
       // ts_sabina2 itemMeta 등록
@@ -3706,12 +3757,12 @@ function renderFlashSection() {
       sabinaCard.className = 'flash-card flash-highlight';
       sabinaCard.style.cssText = 'grid-column:1 / -1;';
       sabinaCard.innerHTML =
-        '<div style="background:#c1121f;color:#fff;font-size:0.62rem;font-weight:900;padding:2px 7px;margin:-5px -7px 4px;border-radius:6px 6px 0 0;text-align:center;">사비나·조황·수황·미황·그린샵·제일·그린 — 선별후입고</div>' +
+        '<div style="background:#b5544c;color:#fff;font-size:0.62rem;font-weight:900;padding:2px 7px;margin:-5px -7px 4px;border-radius:6px 6px 0 0;text-align:center;">사비나·조황·수황·미황·그린샵·제일·그린 — 선별후입고</div>' +
         '<div class="flash-name">🍑 7월인생황도 1박스 (9~12입)</div>' +
         '<div style="margin-top:4px;">' +
           '<div style="display:flex;justify-content:flex-end;align-items:center;">' +
             '<div style="display:flex;align-items:center;gap:6px;">' +
-            '<div style="text-align:right;"><span style="font-size:0.8rem;text-decoration:line-through;color:rgba(160,220,170,0.6);font-weight:700;">35,900원</span><span style="font-size:0.75rem;color:rgba(160,220,170,0.6);">→</span> <span style="font-size:0.95rem;font-weight:900;color:#ffd166;">29,900원</span></div>' +
+            '<div style="text-align:right;"><span style="font-size:0.8rem;text-decoration:line-through;color:#bbb;font-weight:600;">35,900원</span><span style="font-size:0.75rem;color:#999;">→</span> <span style="font-size:0.95rem;font-weight:800;color:var(--green);">29,900원</span></div>' +
             '<div class="flash-stepper">' +
             '<button class="flash-btn-sub" onclick="flashAdj(&apos;ts_sabina2&apos;,-1)">－</button>' +
             '<span class="flash-qty" id="fqty-ts_sabina2">0</span>' +
@@ -3760,12 +3811,11 @@ function renderFlashSection() {
           : '';
     const card = document.createElement('div');
     card.className = 'flash-card' + (sold ? ' sold' : '') + (fi.badge ? ' flash-highlight' : '');
-    if (isWatermelonMelon) card.style.cssText = 'border:1.5px solid #e63946;';
     if (fi.fullWidth) card.style.gridColumn = '1 / -1';
     if (fi.gridCol) card.style.gridColumn = fi.gridCol;
     if (fi.gridRow) card.style.gridRow = fi.gridRow;
     card.innerHTML =
-      (fi.badge ? '<div style="background:#c1121f;color:#fff;font-size:0.68rem;font-weight:900;padding:3px 6px;margin:-4px -6px 5px;border-radius:6px 6px 0 0;text-align:center;letter-spacing:-0.3px;">' + fi.badge + '</div>' : '') +
+      (fi.badge ? '<div style="background:#b5544c;color:#fff;font-size:0.68rem;font-weight:900;padding:3px 6px;margin:-4px -6px 5px;border-radius:6px 6px 0 0;text-align:center;letter-spacing:-0.3px;">' + fi.badge + '</div>' : '') +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;margin-bottom:2px;">' +
         '<div class="flash-name" style="flex:1;">' + meta.name + '</div>' +
         '<div style="text-align:right;white-space:nowrap;flex-shrink:0;">' + origHtml + '<span class="flash-price">' + (fi.flashPrice || meta.price).toLocaleString() + '원</span></div>' +
@@ -3795,8 +3845,8 @@ const FLASH_ITEMS = [
   { id:'set_wmelon_cherry',  label:'수박10kg + 워싱턴체리(9row) 250g',                        max:9999, flashPrice:32900, origPrice:34800, section:'🍉 수박,멜론 특가' },
   { id:'f_melon',            label:'고당도멜론(지금이 당도 최고조) 1통(2.5kg전후)',           max:9999, flashPrice:11900, section:'🍉 수박,멜론 특가' },
   { id:'ts_sabina2',     label:'7월인생황도 1박스 (9~12입)', max:9999, flashPrice:29900, section:'🍑 복숭아 특가', sabinaDual:true },
-  { id:'ts_daekuk1kg',   label:'대극천(딱복) 1kg',                          max:9999, flashPrice:11900, badge:'🍑 올해 첫 딱딱이복숭아', section:'🍑 복숭아 특가' },
-  { id:'ts_daekuk2kg',   label:'대극천(딱복) 2kg',                          max:9999, flashPrice:22900, section:'🍑 복숭아 특가' },
+  { id:'ts_daekuk1kg',   label:'대극천(딱복) 1kg',                          max:9999, flashPrice:11900, section:'🍑 복숭아 특가', daekukGroup:true },
+  { id:'ts_daekuk2kg',   label:'대극천(딱복) 2kg',                          max:9999, flashPrice:22900, section:'🍑 복숭아 특가', daekukSub:true },
   { id:'f_jeju_gamgyul1',label:'제주감귤(감미월등) 1봉(1kg↑)',            max:9999, flashPrice:9900,                   section:'🍊 귤 특가' },
   { id:'f_jeju_gamgyul2kg',label:'제주감귤(감미월등) 2kg',                  max:9999, flashPrice:18900,                  section:'🍊 귤 특가' },
   { id:'ts_jaju_tba',    label:'🟣 후무사, 도담(8월)',                        max:9999, tbaOnly:'입고예정', section:'🟣 자두 특가' },
