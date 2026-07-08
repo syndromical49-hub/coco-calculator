@@ -897,7 +897,7 @@
 
 
       <div id="form-warn" style="display:none;text-align:center;color:#c1121f;font-size:0.88rem;font-weight:700;padding:6px 0;">공란을 다 기입하셔야 합니다</div>
-      <button class="nbtn" id="btn-enter" onclick="enterDelivery()" disabled>🚚 배송 안내 확인하기</button>
+      <button class="nbtn" id="btn-enter" onclick="enterDelivery()">🚚 배송 안내 확인하기</button>
       <div class="saved-notice" id="saved-notice"></div>
       <button onclick="goScreen('s-cart')" style="width:100%;padding:14px;background:#2e7d32;color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:900;cursor:pointer;margin-top:8px;letter-spacing:-0.3px;">✏️ 장바구니 수정 (품목 추가·변경)</button>
     </div>
@@ -2407,6 +2407,22 @@ function changeTypeQty(id, type, delta, pickPerQty) {
   const el = document.getElementById('tqty-' + id + '-' + key);
   if (el) el.textContent = newVal;
   updateTypeCounter(id, pickPerQty);
+  // 종류 선택이 다 채워지면 자동으로 담기 (메인 +버튼 따로 안눌러도 됨)
+  const newTotal = Object.values(typeChoices[id]).reduce((a,b)=>a+b,0);
+  const maxQtyFromPicks = Math.floor(newTotal / pickPerQty);
+  if ((qtys[id] || 0) !== maxQtyFromPicks && (newTotal % pickPerQty === 0 || delta < 0)) {
+    const meta = itemMeta[id];
+    const price = meta ? meta.price : 0;
+    qtys[id] = maxQtyFromPicks;
+    const qEl = document.getElementById('qty-' + id);
+    if (qEl) qEl.textContent = qtys[id];
+    const sub = document.getElementById('sub-' + id);
+    if (sub) sub.textContent = qtys[id] > 0 ? (qtys[id] * price).toLocaleString() + '원' : '';
+    const card = document.getElementById('card-' + id);
+    if (card) { qtys[id] > 0 ? card.classList.add('selected') : card.classList.remove('selected'); }
+    updateTotal();
+    if (delta > 0 && maxQtyFromPicks > 0) showToast('✅ 장바구니에 담겼어요!');
+  }
 }
 
 function updateTypeCounter(id, pickPerQty) {
@@ -3461,8 +3477,6 @@ function checkFormReady() {
   }
 
   const allOk = !!(name && phone.length >= 10 && addrOk);
-  const btn = document.getElementById('btn-enter');
-  if (btn) btn.disabled = !allOk;
   const warn = document.getElementById('form-warn');
   if (warn) warn.style.display = 'none';
 }
