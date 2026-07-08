@@ -375,10 +375,10 @@
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
               <!-- 단품 -->
               <div style="background:rgba(0,0,0,0.25);border-radius:6px;padding:5px 8px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;grid-column:1 / -1;" onclick="heroAddItem('f51_super')">
-                <div style="font-size:12.5px;font-weight:900;color:#fff;white-space:nowrap;">🍉 양평수박(특품) 10kg</div>
+                <div style="font-size:12.5px;font-weight:900;color:#fff;white-space:nowrap;">🍉 양평수박(특품) 8kg</div>
                 <div style="text-align:right;white-space:nowrap;">
                   <span style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">31,000원</span>
-                  <span style="font-size:15px;font-weight:900;color:#ffd166;animation:twinkle 0.8s infinite alternate;">27,900<span style="font-size:8px;">원</span></span>
+                  <span style="font-size:15px;font-weight:900;color:#ffd166;animation:twinkle 0.8s infinite alternate;">26,900<span style="font-size:8px;">원</span></span>
                 </div>
               </div>
               <!-- 세트1: 참외 -->
@@ -560,8 +560,8 @@
             <div style="font-size:11px;font-weight:700;color:#fff;white-space:nowrap;">🥚 유정란 20구</div>
             <div style="font-size:12px;font-weight:900;color:#ffd166;white-space:nowrap;">11,900<span style="font-size:8px;">원</span></div>
           </div>
-          <div style="background:rgba(255,210,65,0.18);border:1px solid rgba(255,205,65,0.45);border-radius:5px;padding:1px 4px;display:flex;align-items:center;justify-content:space-between;gap:3px;opacity:0.4;pointer-events:none;">
-            <div style="font-size:11px;font-weight:700;color:#fff;white-space:nowrap;">🥚 특란 30구 <span style="font-size:0.6rem;background:#555;color:white;border-radius:4px;padding:1px 6px;font-weight:700;margin-left:2px;">소진</span></div>
+          <div style="background:rgba(255,210,65,0.18);border:1px solid rgba(255,205,65,0.45);border-radius:5px;padding:1px 4px;display:flex;align-items:center;justify-content:space-between;gap:3px;cursor:pointer;" onclick="heroAddItem('v34')">
+            <div style="font-size:11px;font-weight:700;color:#fff;white-space:nowrap;">🥚 특란 30구</div>
             <div style="font-size:12px;font-weight:900;color:#ffd166;white-space:nowrap;">7,200<span style="font-size:8px;">원</span></div>
           </div>
         </div>
@@ -1652,7 +1652,7 @@ const specialItems = [
 const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
 
-  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특품) 10kg', desc:'양평,고창,맹동수박(선별후입고)', orig:31000, price:27900 },
+  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특품) 8kg', desc:'양평,고창,맹동수박(선별후입고)', orig:31000, price:26900 },
   { id:'set_wmelon_chamoe', todaySpecial:true, num:'🍉', name:'🍉🍈 7월수박특가세트 — 수박10kg+게르마늄참외2봉', desc:'양평수박(특품)10kg+게르마늄참외2봉', orig:36800, price:34900 },
   { id:'set_wmelon_tomato', todaySpecial:true, num:'🍉', name:'🍉🍅 7월수박특가세트 — 수박10kg+방울토마토2팩', desc:'양평수박(특품)10kg+방울토마토2팩', orig:35800, price:33900 },
   { id:'f_jeju_gamgyul1', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 1봉(1kg↑)', desc:'제주하우스감귤 1봉 1kg이상', price:9900 },
@@ -3050,7 +3050,6 @@ renderSpecial();
 renderFruit();
 renderVeg();
 checkEggSoldout();
-applyEggSoldout();
 applySoldout();
 
 // ══ 관리자 패널 ════════════════════════════════════
@@ -3863,7 +3862,7 @@ function renderFlashSection() {
 }
 
 const FLASH_ITEMS = [
-  { id:'f51_super',          label:'양평수박(특품) 10kg',                                   max:9999, flashPrice:27900, origPrice:31000, section:'🍉 수박,멜론 특가' },
+  { id:'f51_super',          label:'양평수박(특품) 8kg',                                    max:9999, flashPrice:26900, origPrice:31000, section:'🍉 수박,멜론 특가' },
   { id:'set_wmelon_chamoe',  label:'수박10kg + 게르마늄참외2봉',                              max:9999, flashPrice:34900, origPrice:36800, section:'🍉 수박,멜론 특가' },
   { id:'set_wmelon_tomato',  label:'수박10kg + 방울토마토2팩',                                max:9999, flashPrice:33900, origPrice:35800, section:'🍉 수박,멜론 특가' },
   { id:'f_melon',            label:'고당도멜론(지금이 당도 최고조) 1통(2.5kg전후)',           max:9999, flashPrice:11900, section:'🍉 수박,멜론 특가' },
