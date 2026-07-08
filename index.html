@@ -3631,9 +3631,9 @@ function renderFlashSection() {
       const nameOnly = fullName.includes('+') ? '+' + fullName.split('+').slice(1).join('+') : fullName;
       const stepperHtml = sold
         ? '<span style="font-size:0.85rem;color:#c1121f;font-weight:900;">⛔ 마감</span>'
-        : '<button class="flash-btn-sub" style="width:30px;height:30px;font-size:1.05rem;" onclick="flashAdj(\'' + fid + '\',-1)">－</button>' +
-          '<span class="flash-qty" id="fqty-' + fid + '" style="min-width:18px;font-size:1.05rem;">' + qty + '</span>' +
-          '<button class="flash-btn-add" style="width:30px;height:30px;font-size:1.05rem;" onclick="flashAdj(\'' + fid + '\',1)">＋</button>';
+        : '<button class="flash-btn-sub" style="width:30px;height:30px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',9999)">－</button>' +
+          '<span class="flash-qty" id="qty-' + fid + '" style="min-width:18px;font-size:1.05rem;">' + qty + '</span>' +
+          '<button class="flash-btn-add" style="width:30px;height:30px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',9999)">＋</button>';
       const line = document.createElement('div');
       line.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;' + (sold ? 'opacity:0.5;' : '');
       line.innerHTML =
@@ -3679,9 +3679,9 @@ function renderFlashSection() {
       const nameOnly = meta.name.replace(/^\S+\s*/, '');
       const stepperHtml = sold
         ? '<span style="font-size:0.78rem;color:#c1121f;font-weight:900;">⛔ 마감</span>'
-        : '<button class="flash-btn-sub" style="width:29px;height:29px;font-size:1.05rem;" onclick="flashAdj(\'' + fid + '\',-1)">－</button>' +
-          '<span class="flash-qty" id="fqty-' + fid + '" style="min-width:18px;">' + qty + '</span>' +
-          '<button class="flash-btn-add" style="width:29px;height:29px;font-size:1.05rem;" onclick="flashAdj(\'' + fid + '\',1)">＋</button>';
+        : '<button class="flash-btn-sub" style="width:29px;height:29px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',9999)">－</button>' +
+          '<span class="flash-qty" id="qty-' + fid + '" style="min-width:18px;">' + qty + '</span>' +
+          '<button class="flash-btn-add" style="width:29px;height:29px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',9999)">＋</button>';
       const card = document.createElement('div');
       card.className = 'set-card' + (sold ? ' sold' : '');
       if (fi.highlight && !sold) {
@@ -3761,9 +3761,9 @@ function renderFlashSection() {
           '<div style="display:flex;align-items:center;gap:8px;">' +
             priceHtml +
             '<div class="flash-stepper">' +
-              '<button class="flash-btn-sub" onclick="flashAdj(\'' + id + '\',-1)">－</button>' +
-              '<span class="flash-qty" id="fqty-' + id + '">' + q + '</span>' +
-              '<button class="flash-btn-add" onclick="flashAdj(\'' + id + '\',1)">＋</button>' +
+              '<button class="flash-btn-sub" onclick="changeQty(\'' + id + '\',-1,' + price + ',9999)">－</button>' +
+              '<span class="flash-qty" id="qty-' + id + '">' + q + '</span>' +
+              '<button class="flash-btn-add" onclick="changeQty(\'' + id + '\',1,' + price + ',9999)">＋</button>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -3805,9 +3805,9 @@ function renderFlashSection() {
     const fid = fi.id;
     const stepperHtml = sold
       ? '<button class="flash-btn-add" disabled style="opacity:0.3;cursor:not-allowed;">마감</button>'
-      : '<button class="flash-btn-sub" onclick="flashAdj(\'' + fid + '\',-1)">－</button>' +
-        '<span class="flash-qty" id="fqty-' + fid + '">' + qty + '</span>' +
-        '<button class="flash-btn-add" onclick="flashAdj(\'' + fid + '\',1)">＋</button>';
+      : '<button class="flash-btn-sub" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',9999)">－</button>' +
+        '<span class="flash-qty" id="qty-' + fid + '">' + qty + '</span>' +
+        '<button class="flash-btn-add" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',9999)">＋</button>';
     const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'coco';
   const counterHtml = sold
       ? '<span class="flash-sold">⛔ 마감</span>'
