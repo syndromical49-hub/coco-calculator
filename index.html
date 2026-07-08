@@ -2834,7 +2834,7 @@ async function orderDirect() {
           const tcObj = typeChoices[id] || {};
           const tcParts = Object.entries(tcObj).filter(([,v])=>v>0).map(([k,v])=>k+(v>1?'×'+v:''));
           const tc = tcParts.length ? ' (' + tcParts.join('+') + ')' : '';
-          itemRows.push({ order_id: savedOrder.id, item_name: itemMeta[id].name + tc, qty: qtys[id], price: itemMeta[id].price });
+          itemRows.push({ order_id: savedOrder.id, item_name: itemMeta[id].name + tc, item_code: id, qty: qtys[id], price: itemMeta[id].price });
         }
       }
       const bundleLabels = { b777: '#777 1천원3개묶음', b666: '#666 2천원2개묶음' };
@@ -2842,7 +2842,7 @@ async function orderDirect() {
         const bs = bundleState[bid];
         if (bs.done) {
           const names = bs.selected.map(s => s.name).join('+');
-          itemRows.push({ order_id: savedOrder.id, item_name: bundleLabels[bid] + ' (' + names + ')', qty: 1, price: bs.price });
+          itemRows.push({ order_id: savedOrder.id, item_name: bundleLabels[bid] + ' (' + names + ')', item_code: bid, qty: 1, price: bs.price });
         }
       }
       for (const row of itemRows) {
@@ -4270,7 +4270,7 @@ window.orderDirect = async function() {
           const tcObj2 = typeChoices[id] || {};
           const tcP2 = Object.entries(tcObj2).filter(([,v])=>v>0).map(([k,v])=>k+(v>1?'×'+v:''));
           const tc2 = tcP2.length ? ' (' + tcP2.join('+') + ')' : '';
-          allItems.push({order_id:savedOrder.id, item_name:itemMeta[id].name+tc2, qty:qtys[id], price:itemMeta[id].price});
+          allItems.push({order_id:savedOrder.id, item_name:itemMeta[id].name+tc2, item_code:id, qty:qtys[id], price:itemMeta[id].price});
         }
       }
       if (typeof flashQtys!=='undefined') {
@@ -4281,7 +4281,7 @@ window.orderDirect = async function() {
             const tcObjF = typeChoices[id] || {};
             const tcPF = Object.entries(tcObjF).filter(([,v])=>v>0).map(([k,v])=>k+(v>1?'×'+v:''));
             const tcF = tcPF.length ? ' (' + tcPF.join('+') + ')' : '';
-            allItems.push({order_id:savedOrder.id, item_name:(itemMeta[id]?itemMeta[id].name:id)+tcF+' [선착순특가]', qty:flashQtys[id], price});
+            allItems.push({order_id:savedOrder.id, item_name:(itemMeta[id]?itemMeta[id].name:id)+tcF+' [선착순특가]', item_code:id, qty:flashQtys[id], price});
           }
         }
       }
