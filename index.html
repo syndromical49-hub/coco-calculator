@@ -2397,17 +2397,17 @@ function clearAllSpecial(exceptId, mode) {
 // ══ 종류 선택 (고추·잎채소) ══════════════════════
 function changeTypeQty(id, type, delta, pickPerQty) {
   if (!typeChoices[id]) typeChoices[id] = {};
-  const maxTotal = (qtys[id] || 1) * pickPerQty;
+  const maxTotal = 10 * pickPerQty; // 최대 10세트까지 여유있게 (한 세트 다 채워도 다음 세트 계속 고를 수 있게)
   const currentTotal = Object.values(typeChoices[id]).reduce((a,b)=>a+b,0);
   const cur = typeChoices[id][type] || 0;
-  if (delta > 0 && currentTotal >= maxTotal) { showToast('총 ' + maxTotal + '봉 다 골랐어요!'); return; }
+  if (delta > 0 && currentTotal >= maxTotal) { showToast('한 번에 담을 수 있는 최대치예요!'); return; }
   const newVal = Math.max(0, cur + delta);
   typeChoices[id][type] = newVal;
   const key = type.replace(/ /g,'_');
   const el = document.getElementById('tqty-' + id + '-' + key);
   if (el) el.textContent = newVal;
   updateTypeCounter(id, pickPerQty);
-  // 종류 선택이 다 채워지면 자동으로 담기 (메인 +버튼 따로 안눌러도 됨)
+  // 종류 선택이 다 채워지면 자동으로 담기 (메인 +버튼 따로 안눌러도 됨) — pickPerQty 배수마다 세트로 카운트
   const newTotal = Object.values(typeChoices[id]).reduce((a,b)=>a+b,0);
   const maxQtyFromPicks = Math.floor(newTotal / pickPerQty);
   if ((qtys[id] || 0) !== maxQtyFromPicks && (newTotal % pickPerQty === 0 || delta < 0)) {
@@ -2421,26 +2421,28 @@ function changeTypeQty(id, type, delta, pickPerQty) {
     const card = document.getElementById('card-' + id);
     if (card) { qtys[id] > 0 ? card.classList.add('selected') : card.classList.remove('selected'); }
     updateTotal();
-    if (delta > 0 && maxQtyFromPicks > 0) showToast('✅ 장바구니에 담겼어요!');
+    if (delta > 0 && maxQtyFromPicks > 0) showToast('✅ ' + (maxQtyFromPicks) + '세트(' + (maxQtyFromPicks*pickPerQty) + '개) 담겼어요!');
   }
 }
 
 function updateTypeCounter(id, pickPerQty) {
   if (!typeChoices[id]) return;
-  const maxTotal = (qtys[id] || 1) * pickPerQty;
   const total = Object.values(typeChoices[id]).reduce((a,b)=>a+b,0);
+  const setsDone = Math.floor(total / pickPerQty);
+  const remainder = total % pickPerQty;
   const counter = document.getElementById('tsel-counter-' + id);
   const chosen = document.getElementById('tsel-chosen-' + id);
   if (counter) {
     const unit = typeUnitMap[id] || '봉';
-    counter.textContent = total + '/' + maxTotal + unit;
-    counter.style.cssText = total === maxTotal
+    counter.textContent = (remainder === 0 ? (total > 0 ? pickPerQty : 0) : remainder) + '/' + pickPerQty + unit + (setsDone > 0 ? ' (' + setsDone + '세트 완료)' : '');
+    counter.style.cssText = remainder === 0 && total > 0
       ? 'font-size:0.68rem;font-weight:900;padding:1px 8px;border-radius:10px;background:#2d6a4f;color:#fff;'
       : 'font-size:0.68rem;font-weight:900;padding:1px 8px;border-radius:10px;background:#e63946;color:#fff;';
   }
   if (chosen) {
     const parts = Object.entries(typeChoices[id]).filter(([,v])=>v>0).map(([k,v])=>k+(v>1?'×'+v:''));
-    chosen.textContent = parts.length > 0 ? '✅ ' + parts.join(' · ') : (total < maxTotal ? '아직 ' + (maxTotal-total) + '봉 더 골라주세요!' : '');
+    const need = remainder === 0 ? 0 : pickPerQty - remainder;
+    chosen.textContent = parts.length > 0 ? '✅ ' + parts.join(' · ') + (need > 0 ? ` (다음 세트까지 ${need}${typeUnitMap[id]||'봉'} 더)` : '') : '';
   }
 }
 
