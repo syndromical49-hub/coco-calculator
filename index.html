@@ -884,6 +884,10 @@
       <div><label class="fl">이름</label><input class="fi" id="inp-name" placeholder="홍길동" maxlength="10" oninput="checkFormReady()"></div>
       <div><label class="fl">닉네임 (선택)</label><input class="fi" id="inp-nick" placeholder="없으면 '없음' 입력" oninput="checkFormReady()" maxlength="15"></div>
       <div><label class="fl">연락처</label><input class="fi" type="tel" id="inp-phone" placeholder="010-0000-0000" maxlength="13" oninput="checkFormReady();try{localStorage.setItem('ccb_phone',this.value)}catch(e){}"></div>
+      <div style="display:flex;align-items:center;gap:6px;margin:2px 0 6px 2px;">
+        <input type="checkbox" id="inp-cash-receipt" style="width:16px;height:16px;">
+        <label for="inp-cash-receipt" style="font-size:0.8rem;color:#555;cursor:pointer;">현금영수증 발급 받기 (소득공제용, 입력하신 전화번호로 자동발급)</label>
+      </div>
       <div style="background:#fff8e1;border:2px solid #ffd166;border-radius:10px;padding:10px 12px;margin:6px 0;">
         <label class="fl" style="font-size:1rem;font-weight:900;color:#7a5c00;">🔑 주문조회 비밀번호 <span style="font-size:0.75em;font-weight:700;color:#a67c00;">(선택 · 나중에 주문내역 확인용)</span></label>
         <input class="fi" id="inp-lookup-pw" type="tel" inputmode="numeric" pattern="[0-9]*" oninput="this.value=this.value.replace(/[^0-9]/g,'');try{localStorage.setItem('ccb_lookup_pw',this.value)}catch(e){}" placeholder="예: 1234 (숫자만 입력)" maxlength="10" style="font-size:1.05rem;font-weight:700;padding:12px;color:#1a0f00;background:#fff;">
@@ -4263,7 +4267,7 @@ window.orderDirect = async function() {
     const ordRes = await fetch(SB_URL + '/rest/v1/orders', {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'},
-      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null })
+      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked) })
     });
 
     // 중복(409/23505)이면 이미 접수된 주문 → 완료 화면만 표시
