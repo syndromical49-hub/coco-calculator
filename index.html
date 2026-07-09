@@ -385,16 +385,16 @@
               <div style="background:rgba(0,0,0,0.25);border-radius:6px;padding:5px 6px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:3px;" onclick="heroAddItem('set_wmelon_chamoe')">
                 <div style="font-size:10px;font-weight:900;color:#a5d6a7;line-height:1.3;">🍉+🍈 수박+게르마늄참외2봉</div>
                 <div>
-                  <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">36,800원</div>
-                  <div style="font-size:15px;font-weight:900;color:#ffd166;">34,900<span style="font-size:8px;">원</span></div>
+                  <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">35,800원</div>
+                  <div style="font-size:15px;font-weight:900;color:#ffd166;">33,900<span style="font-size:8px;">원</span></div>
                 </div>
               </div>
               <!-- 세트2: 방울토마토 -->
               <div style="background:rgba(0,0,0,0.25);border-radius:6px;padding:5px 6px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:3px;" onclick="heroAddItem('set_wmelon_tomato')">
                 <div style="font-size:10px;font-weight:900;color:#a5d6a7;line-height:1.3;">🍉+🍅 수박+방울토마토2팩</div>
                 <div>
-                  <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">35,800원</div>
-                  <div style="font-size:15px;font-weight:900;color:#ffd166;">33,900<span style="font-size:8px;">원</span></div>
+                  <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">34,800원</div>
+                  <div style="font-size:15px;font-weight:900;color:#ffd166;">32,900<span style="font-size:8px;">원</span></div>
                 </div>
               </div>
             </div>
@@ -1653,8 +1653,8 @@ const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
 
   { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특품) 8kg', desc:'양평,고창,맹동수박(선별후입고)', orig:31000, price:26900 },
-  { id:'set_wmelon_chamoe', todaySpecial:true, num:'🍉', name:'🍉🍈 7월수박특가세트 — 수박10kg+게르마늄참외2봉', desc:'양평수박(특품)10kg+게르마늄참외2봉', orig:36800, price:34900 },
-  { id:'set_wmelon_tomato', todaySpecial:true, num:'🍉', name:'🍉🍅 7월수박특가세트 — 수박10kg+방울토마토2팩', desc:'양평수박(특품)10kg+방울토마토2팩', orig:35800, price:33900 },
+  { id:'set_wmelon_chamoe', todaySpecial:true, num:'🍉', name:'🍉🍈 7월수박특가세트 — 수박8kg+게르마늄참외2봉', desc:'양평수박(특품)8kg+게르마늄참외2봉', orig:35800, price:33900 },
+  { id:'set_wmelon_tomato', todaySpecial:true, num:'🍉', name:'🍉🍅 7월수박특가세트 — 수박8kg+방울토마토2팩', desc:'양평수박(특품)8kg+방울토마토2팩', orig:34800, price:32900 },
   { id:'f_jeju_gamgyul1', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 1봉(1kg↑)', desc:'제주하우스감귤 1봉 1kg이상', price:9900 },
   { id:'f_jeju_gamgyul3', todaySpecial:true, num:'🍊', name:'🍊 제주하우스감귤 3kg 1박스', desc:'제주하우스감귤 3kg 1박스', price:31000 },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
@@ -1683,7 +1683,7 @@ const vegItems = [
   { id:'v9',  num:'9',  name:'꽈리고추 1봉', price:900, todaySpecial:true },
   { id:'v7_half', num:'7', name:'양배추 반통',            price:2000, todaySpecial:true },
   { id:'v7',  num:'7',  name:'양배추 1통',             price:3500, todaySpecial:true },
-  { id:'ts_oigaji10', num:'교차', todaySpecial:true, name:'🥒🍆 오이(특)·가지(특) 10개(교차가능)', desc:'오이·가지 교차 선택 가능 (오이는 쓰지않아요 품종)', price:2000, types:['오이(쓰지않아요)','가지'], maxPick:10, typeUnit:'개', badge:'9일 단하루', badgeColor:'#c1121f' },
+  { id:'ts_oigaji10', num:'교차', todaySpecial:true, name:'🥒🍆 오이(특)·가지(특) 10개(교차가능)', desc:'오이·가지 교차 선택 가능 (오이는 쓰지않아요 품종)', price:2000, types:['오이','가지'], maxPick:10, typeUnit:'개', badge:'9일 단하루', badgeColor:'#c1121f' },
   { id:'v2b', num:'묶음', name:'🧅 양파 2봉(2kg↑)', price:3900, orig:4000, todaySpecial:true, badge:'묶음특가', badgeColor:'#c1121f' },
   { id:'ts_gamja2', todaySpecial:true, num:'🥔', name:'🥔 수미햇감자 2봉(2kg↑)', desc:'수미햇감자 2봉(2kg↑)', orig:8000, price:4900 },
   { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg', price:7900, badge:'9일 단하루', badgeColor:'#c1121f' },
@@ -3046,8 +3046,8 @@ function showToast(msg) {
 
 initDayLock();
 // 수박 특가세트 itemMeta 등록 (heroAddItem 에서 사용)
-reg('set_wmelon_chamoe', '🍉🍈 7월수박특가세트 — 수박10kg+게르마늄참외2봉', 34900);
-reg('set_wmelon_tomato', '🍉🍅 7월수박특가세트 — 수박10kg+방울토마토2팩', 33900);
+reg('set_wmelon_chamoe', '🍉🍈 7월수박특가세트 — 수박8kg+게르마늄참외2봉', 33900);
+reg('set_wmelon_tomato', '🍉🍅 7월수박특가세트 — 수박8kg+방울토마토2팩', 32900);
 renderSpecial();
 renderFruit();
 renderVeg();
@@ -3865,8 +3865,8 @@ function renderFlashSection() {
 
 const FLASH_ITEMS = [
   { id:'f51_super',          label:'양평수박(특품) 8kg',                                    max:9999, flashPrice:26900, origPrice:31000, section:'🍉 수박,멜론 특가' },
-  { id:'set_wmelon_chamoe',  label:'수박10kg + 게르마늄참외2봉',                              max:9999, flashPrice:34900, origPrice:36800, section:'🍉 수박,멜론 특가' },
-  { id:'set_wmelon_tomato',  label:'수박10kg + 방울토마토2팩',                                max:9999, flashPrice:33900, origPrice:35800, section:'🍉 수박,멜론 특가' },
+  { id:'set_wmelon_chamoe',  label:'수박8kg + 게르마늄참외2봉',                              max:9999, flashPrice:33900, origPrice:35800, section:'🍉 수박,멜론 특가' },
+  { id:'set_wmelon_tomato',  label:'수박8kg + 방울토마토2팩',                                max:9999, flashPrice:32900, origPrice:34800, section:'🍉 수박,멜론 특가' },
   { id:'f_melon',            label:'고당도멜론(지금이 당도 최고조) 1통(2.5kg전후)',           max:9999, flashPrice:11900, section:'🍉 수박,멜론 특가' },
   { id:'melon_chal_bundle',   label:'🍈 고당도멜론 1통<br>+ 🍅 찰토마토 1봉 단돈 2,000원',     max:9999, flashPrice:13900, section:'🍉 수박,멜론 특가', badge:'🔥 9일 단하루(지역무관행사)' },
   { id:'melon_bangto_bundle', label:'🍈 고당도멜론 1통<br>+ 🍅 방울토마토 1팩 단돈 2,900원',   max:9999, flashPrice:14800, section:'🍉 수박,멜론 특가', badge:'🔥 9일 단하루(지역무관행사)' },
