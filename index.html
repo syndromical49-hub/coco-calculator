@@ -1677,12 +1677,12 @@ const fruitItems = [
 const vegItems = [
   // ── 🔥 오늘의 채소 특가 (900원 묶음 맨위 → 나머지 가격 내림차순) ──
 
-  { id:'ts_zucchini',todaySpecial:true, num:'🥒', name:'🥒 애호박 1개',     price: 500 },
-  { id:'v21', num:'21', name:'콩나물(500g↑)',         price:900, todaySpecial:true },
-  { id:'v9',  num:'9',  name:'꽈리고추 1봉', price:900, todaySpecial:true },
-  { id:'v10', num:'10', name:'아삭이고추 1봉',          price:900, todaySpecial:true },
-  { id:'v18b',num:'18', name:'청국장 1팩',              price:900, todaySpecial:true },
-  { id:'v20', num:'20', name:'숙주 1봉',               price:900, todaySpecial:true },
+  { id:'ts_zucchini',todaySpecial:true, num:'🥒', name:'🥒 애호박 1개',     price: 500, maxQty:2 },
+  { id:'v21', num:'21', name:'콩나물(500g↑)',         price:900, maxQty:2, todaySpecial:true },
+  { id:'v9',  num:'9',  name:'꽈리고추 1봉', price:900, maxQty:2, todaySpecial:true },
+  { id:'v10', num:'10', name:'아삭이고추 1봉',          price:900, maxQty:2, todaySpecial:true },
+  { id:'v18b',num:'18', name:'청국장 1팩',              price:900, maxQty:2, todaySpecial:true },
+  { id:'v20', num:'20', name:'숙주 1봉',               price:900, maxQty:2, todaySpecial:true },
 
   { id:'v_corn_eol10', todaySpecial:true, num:'🌽', name:'🌽 미흑찰옥수수(얼룩이) 10개',       desc:'미흑찰옥수수(얼룩이) 10개', orig:11900, price:8900, maxQty:1 },
   { id:'v_corn10', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 입고예정', desc:'괴산 대학찰옥수수 입고예정', price:13000, tba:'입고예정' },
@@ -1708,13 +1708,13 @@ const vegItems = [
     { id:'v_jinonkak1', num:'진', name:'진노각(토종노각) 1개',          price:3000, todaySpecial:false },
   { id:'v8',  num:'8',  name:'청양고추 1봉',            price:2000 },
 
-  { id:'v13', num:'13', name:'애호박 1개',              price:500 },
+  { id:'v13', num:'13', name:'애호박 1개',              price:500, maxQty:2 },
   { id:'v14', num:'14', name:'브로콜리 1개',             price:2000 },
   { id:'v15', num:'16', name:'양상추 1봉',              price:2500 },
   { id:'v16', num:'17', name:'미나리 1봉',              price:3000 },
   { id:'v22', num:'22', name:'표고버섯 1봉',            price:3500 },
   { id:'v23', num:'23', name:'새송이버섯 1봉',           price:1500 },
-  { id:'v24', num:'24', name:'느타리버섯 1봉',           price:900 },
+  { id:'v24', num:'24', name:'느타리버섯 1봉',           price:900, maxQty:2 },
   { id:'v25', num:'25', name:'팽이버섯 1봉(3입)',        price:1000 },
   { id:'v26', num:'26', name:'깐마늘 1봉',              price:2000 },
 
