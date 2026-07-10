@@ -422,7 +422,7 @@
           <!-- 멜론+황도 세트 -->
           <div style="background:linear-gradient(135deg,rgba(180,200,0,0.6),rgba(110,130,0,0.55));border:1px solid #d4e157;border-radius:7px;padding:4px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer;" onclick="heroAddItem('set_melon_hwangdo')">
             <div style="min-width:0;flex:1;">
-              <div style="font-size:10.5px;font-weight:900;color:#fff;line-height:1.4;">🍈 고당도 괴물멜론 1통(2kg전후)<br>🍑 7월인생황도1박스(랜덤-13~14브릭스이상선별입고)</div>
+              <div style="font-size:10.5px;font-weight:900;color:#fff;line-height:1.4;">🍈 고당도 괴물멜론 1통(2kg이상)<br>🍑 7월인생황도1박스(랜덤-13~14브릭스이상선별입고)</div>
             </div>
             <div style="text-align:right;white-space:nowrap;flex-shrink:0;">
               <div style="font-size:9.5px;text-decoration:line-through;color:rgba(255,120,120,0.9);font-weight:700;">39,900원</div>
@@ -436,7 +436,7 @@
               <div style="display:flex;align-items:center;gap:5px;flex:1;min-width:0;">
                 <span style="font-size:16px;flex-shrink:0;">🍈</span>
                 <div style="min-width:0;">
-                  <div style="font-size:11.5px;font-weight:900;color:#fff;white-space:nowrap;">고당도 괴물멜론 1통(2kg전후)</div>
+                  <div style="font-size:11.5px;font-weight:900;color:#fff;white-space:nowrap;">고당도 괴물멜론 1통(2kg이상)</div>
                 </div>
               </div>
               <div style="text-align:right;white-space:nowrap;flex-shrink:0;">
@@ -1679,7 +1679,7 @@ const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
 
   { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특품) 10kg', desc:'양평,고창,맹동수박(선별후입고)', orig:31000, price:24900 },
-  { id:'set_melon_hwangdo', todaySpecial:true, num:'🍈', name:'🍈🍑 고당도 괴물멜론 1통(2kg전후)<br>7월인생황도1박스(랜덤-13~14브릭스이상선별입고)', desc:'고당도 괴물멜론 1통(2kg전후) / 7월인생황도1박스(랜덤-13~14브릭스이상선별입고)', orig:39900, price:35900 },
+  { id:'set_melon_hwangdo', todaySpecial:true, num:'🍈', name:'🍈🍑 고당도 괴물멜론 1통(2kg이상)<br>7월인생황도1박스(랜덤-13~14브릭스이상선별입고)', desc:'고당도 괴물멜론 1통(2kg이상) / 7월인생황도1박스(랜덤-13~14브릭스이상선별입고)', orig:39900, price:35900 },
   { id:'set_wmelon_avocado', todaySpecial:true, num:'🍉', name:'🍉🥑 수박10kg+아보카도5개 세트', desc:'양평수박(특품)10kg+아보카도5개', orig:33800, price:30000 },
   { id:'set_wmelon_cherry500', todaySpecial:true, num:'🍉', name:'🍉🍒 수박10kg+워싱턴체리500g 세트', desc:'양평수박(특품)10kg+워싱턴체리(9row-최대사이즈)500g', orig:38800, price:34000 },
   { id:'set_wmelon_chamoe', todaySpecial:true, num:'🍉', name:'🍉🍈 7월수박특가세트 — 수박10kg+게르마늄참외2봉', desc:'양평수박(특품)10kg+게르마늄참외2봉', orig:35800, price:33900 },
@@ -3075,7 +3075,7 @@ function showToast(msg) {
 
 initDayLock();
 // 수박 특가세트 itemMeta 등록 (heroAddItem 에서 사용)
-reg('set_melon_hwangdo', '🍈🍑 고당도 괴물멜론 1통(2kg전후)<br>7월인생황도1박스(랜덤-13~14브릭스이상선별입고)', 35900);
+reg('set_melon_hwangdo', '🍈🍑 고당도 괴물멜론 1통(2kg이상)<br>7월인생황도1박스(랜덤-13~14브릭스이상선별입고)', 35900);
 reg('set_wmelon_avocado', '🍉🥑 수박10kg+아보카도5개 세트', 30000);
 reg('set_wmelon_cherry500', '🍉🍒 수박10kg+워싱턴체리500g 세트', 34000);
 reg('set_wmelon_chamoe', '🍉🍈 7월수박특가세트 — 수박10kg+게르마늄참외2봉', 33900);
@@ -3897,12 +3897,12 @@ function renderFlashSection() {
 
 const FLASH_ITEMS = [
   { id:'f51_super',          label:'양평수박(특품) 10kg',                                   max:9999, flashPrice:24900, origPrice:31000, section:'🍉 수박,멜론 특가', badge:'🔥 초특가' },
-  { id:'set_melon_hwangdo',  label:'고당도 괴물멜론 1통(2kg전후)<br>7월인생황도1박스(랜덤-13~14브릭스이상선별입고)', max:9999, flashPrice:35900, origPrice:39900, section:'🍉 수박,멜론 특가' },
+  { id:'set_melon_hwangdo',  label:'고당도 괴물멜론 1통(2kg이상)<br>7월인생황도1박스(랜덤-13~14브릭스이상선별입고)', max:9999, flashPrice:35900, origPrice:39900, section:'🍉 수박,멜론 특가' },
   { id:'set_wmelon_avocado', label:'수박10kg + 아보카도5개',                                   max:9999, flashPrice:30000, origPrice:33800, section:'🍉 수박,멜론 특가' },
   { id:'set_wmelon_cherry500', label:'수박10kg + 워싱턴체리500g',                             max:9999, flashPrice:34000, origPrice:38800, section:'🍉 수박,멜론 특가' },
   { id:'set_wmelon_chamoe',  label:'수박10kg + 게르마늄참외2봉',                              max:9999, flashPrice:33900, origPrice:35800, section:'🍉 수박,멜론 특가' },
   { id:'set_wmelon_tomato',  label:'수박10kg + 방울토마토2팩',                                max:9999, flashPrice:32900, origPrice:34800, section:'🍉 수박,멜론 특가' },
-  { id:'f_melon',            label:'고당도 괴물멜론 1통(2kg전후)',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가' },
+  { id:'f_melon',            label:'고당도 괴물멜론 1통(2kg이상)',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가' },
   { id:'ts_sabina2',     label:'7월인생황도 1박스 (9~12입)', max:9999, flashPrice:29900, section:'🍑 복숭아 특가', sabinaDual:true },
   { id:'ts_daekuk2kg',   label:'대극천(딱복) 2kg',                          max:9999, flashPrice:18900, badge:'✨ 🍑 올해 첫 딱딱이 선봉장-초특가행사 ✨', section:'🍑 복숭아 특가' },
   { id:'f_jeju_gamgyul1',label:'제주감귤(감미월등) 1봉(1kg↑)',            max:9999, flashPrice:9900,                   section:'🍊 귤 특가' },
