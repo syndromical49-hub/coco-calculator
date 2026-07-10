@@ -369,6 +369,19 @@
         <div style="font-size:12.5px;font-weight:900;color:#FFB060;letter-spacing:1px;padding:0 2px;">⏱ 선착순 특가</div>
         <div style="display:flex;flex-direction:column;gap:9px;">
 
+          <!-- 아보카도 10개 -->
+          <div style="background:linear-gradient(135deg,rgba(85,139,47,0.75),rgba(50,90,20,0.7));border:1px solid #9ccc65;border-radius:7px;padding:4px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer;" onclick="heroAddItem('f_avocado10')">
+            <div style="display:flex;align-items:center;gap:5px;flex:1;min-width:0;">
+              <span style="font-size:16px;flex-shrink:0;">🥑</span>
+              <div style="min-width:0;">
+                <div style="font-size:11.5px;font-weight:900;color:#fff;white-space:nowrap;">아보카도 10개</div>
+              </div>
+            </div>
+            <div style="text-align:right;white-space:nowrap;flex-shrink:0;">
+              <div style="font-size:14px;font-weight:900;color:#ffd166;">10,900<span style="font-size:8px;">원</span></div>
+            </div>
+          </div>
+
           <!-- 수박 단품 + 세트 -->
           <div style="background:linear-gradient(135deg,rgba(0,80,30,0.9),rgba(0,45,15,0.85));border:2px solid #c1121f;border-radius:8px;padding:6px 8px;box-shadow:0 0 8px rgba(0,200,80,0.2);">
             <div style="background:#c1121f;color:#fff;font-size:10.5px;font-weight:900;padding:2px 6px;border-radius:4px;margin-bottom:6px;text-align:center;">🍉 7월수박 — 양평(특)·고창(특)·맹동(특) 선별후 랜덤 입고</div>
@@ -1664,6 +1677,7 @@ const specialItems = [
 
 const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
+  { id:'f_avocado10', todaySpecial:false, num:'🥑', name:'🥑 아보카도 10개', desc:'아보카도 10개', price:10900 },
 
   { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특품) 8kg', desc:'양평,고창,맹동수박(선별후입고)', orig:31000, price:26900 },
   { id:'set_melon_hwangdo', todaySpecial:true, num:'🍈', name:'🍈🍑 고당도 괴물멜론 1통(2kg전후)<br>7월인생황도1박스(랜덤-13~14브릭스이상선별입고)', desc:'고당도 괴물멜론 1통(2kg전후) / 7월인생황도1박스(랜덤-13~14브릭스이상선별입고)', orig:39900, price:35900 },
@@ -2149,8 +2163,8 @@ function renderFruit() {
   }
 
   // ② 일반 품목 (밝게)
-  const redCards = ['f54b','f55b','f_melon','f_avocado'];
-  const redPriceCards = ['f_melon','f_avocado'];
+  const redCards = ['f54b','f55b','f_melon','f_avocado','f_avocado10'];
+  const redPriceCards = ['f_melon','f_avocado','f_avocado10'];
   normalItems.forEach(item => {
     if (!item.tba) reg(item.id, item.name, item.price);
     const isRedPrice = redPriceCards.includes(item.id);
