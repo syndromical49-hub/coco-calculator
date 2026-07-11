@@ -2540,6 +2540,20 @@ function changeQty(id, delta, price, max) {
       showToast(`3만원 이상 주문시 담을 수 있어요! (현재 ${curTotal.toLocaleString()}원)`);
       return;
     }
+    // 일반 특란(7,200원) 담겨있으면 초복특가로 교체
+    if (qtys['v34'] > 0) {
+      qtys['v34'] = 0;
+      const elv34 = document.getElementById('qty-v34');
+      if (elv34) elv34.textContent = '0';
+      const cardv34 = document.getElementById('card-v34');
+      if (cardv34) cardv34.classList.remove('selected');
+      showToast('특란 7,200원을 초복특가 5,900원으로 교체했어요 😊');
+    }
+  }
+  // 초복특가 특란(5,900원) 담겨있으면 일반 특란(7,200원) 중복 담기 방지
+  if (id === 'v34' && delta > 0 && qtys['v_boknal_egg'] > 0) {
+    showToast('이미 초복특가 특란(5,900원)이 담겨있어요! 😊');
+    return;
   }
   // 특가세트 담을 때 다른 특가세트 전부 해제
   if (specialItems.some(s => s.id === id) && delta > 0) {
@@ -2554,11 +2568,27 @@ function changeQty(id, delta, price, max) {
       if (vc) vc.classList.remove('selected');
       showToast('세트에 특란 포함! 7,200원 취소됐어요 😊');
     }
+    if (selItem && selItem.hasEgg !== false && qtys['v_boknal_egg'] > 0) {
+      qtys['v_boknal_egg'] = 0;
+      const elb = document.getElementById('qty-v_boknal_egg');
+      if (elb) elb.textContent = '0';
+      const cardb = document.getElementById('card-v_boknal_egg');
+      if (cardb) cardb.classList.remove('selected');
+      showToast('세트에 특란 포함! 초복특가 5,900원 취소됐어요 😊');
+    }
   }
   // 특가세트 담은 상태에서 특란 7200원 막기 + 8500원 안내
   if (id === 'v34' && delta > 0) {
     const eggSet = specialItems.find(s => (qtys[s.id] || 0) > 0 && s.hasEgg !== false);
     if (eggSet) {
+      showToast('세트에 특란이 포함돼 있어요! 😊');
+      return;
+    }
+  }
+  // 특가세트 담은 상태에서 초복특란도 막기
+  if (id === 'v_boknal_egg' && delta > 0) {
+    const eggSet2 = specialItems.find(s => (qtys[s.id] || 0) > 0 && s.hasEgg !== false);
+    if (eggSet2) {
       showToast('세트에 특란이 포함돼 있어요! 😊');
       return;
     }
