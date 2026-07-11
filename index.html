@@ -553,6 +553,15 @@
         <!-- 🍊 과일 · 🥚 계란 -->
         <div class="hsec">
           <div class="hsec-title">🍊 과일 · 🥚 계란</div>
+          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('v_boknal_egg')">
+            <span class="hbadge" style="width:fit-content;">삼계탕은 못 드려도 특란만은...</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div class="hitem-name">🥚 특란 30구 1판 (3만원 이상 주문시)</div>
+              <div class="hitem-price-wrap">
+                <span class="hitem-price">5,900<small>원</small></span>
+              </div>
+            </div>
+          </div>
           <div class="hgrid2">
             <div class="hcombo" onclick="heroAddItem('v34u')">
               <div class="hcombo-label">🥚 유정란 20구</div>
@@ -1744,6 +1753,7 @@ const vegItems = [
   { id:'v31', num:'31', name:'청경채 1봉',              price:1000 },
   { id:'v32', num:'32', name:'두부 1팩',               price:2000 },
   { id:'v33', num:'33', name:'순두부 2개',              price:1000 },
+  { id:'v_boknal_egg', num:'36', name:'🥚 초복맞이 특란행사 1판(3만원 이상 주문시)', price:5900, badge:'초복특가 5,900원', badgeColor:'#c1121f', maxQty:1, minOrderAmt:30000 },
   { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7200, origPrice:8500, badge:'특란 7,200원', badgeColor:'#c1121f', maxQty:1 },
   { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888', maxQty:1 },
   { id:'v34u',num:'34', name:'🥚 유정란 20구 (난각1번·무항생제)', price:11900, origPrice:12900, badge:'유정란 11,900원', badgeColor:'#4caf50' },
@@ -2511,6 +2521,23 @@ function changeQty(id, delta, price, max) {
     }
     if (picked < needed) {
       showToast(`${picked}/${needed}${typeUnitMap[id]||'봉'} 선택됨\n수량을 ${needed}${typeUnitMap[id]||'봉'}까지 채워주세요!`);
+      return;
+    }
+  }
+  // 초복맞이 특란행사 - 2만원 이상 주문시만 담기 허용
+  if (id === 'v_boknal_egg' && delta > 0) {
+    let curTotal = 0;
+    for (const _id in qtys) { if (qtys[_id] > 0 && itemMeta[_id]) curTotal += qtys[_id] * itemMeta[_id].price; }
+    for (const _id in flashQtys) {
+      if (flashQtys[_id] > 0) {
+        const fi = FLASH_ITEMS.find(function(f){ return f.id===_id; });
+        const p = (fi && fi.flashPrice) ? fi.flashPrice : (itemMeta[_id] ? itemMeta[_id].price : 0);
+        curTotal += flashQtys[_id] * p;
+      }
+    }
+    for (const bid in bundleState) { if (bundleState[bid].done) curTotal += bundleState[bid].price; }
+    if (curTotal < 30000) {
+      showToast(`3만원 이상 주문시 담을 수 있어요! (현재 ${curTotal.toLocaleString()}원)`);
       return;
     }
   }
