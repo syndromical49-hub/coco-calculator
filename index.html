@@ -4504,7 +4504,7 @@ window.orderDirect = async function() {
   // 수량 합산 함수 (양파 1봉 ×2 → 양파 2봉)
   function mergeQty(name, qty) {
     if (qty <= 1) return name;
-    const m = name.match(/^(.+?)\s*(\d+\.?\d*)\s*(개|봉|팩|판|장|kg|g|L|ml|매|접|송이|구|입|근|박스|줄|인분|포|캔|병|마리)(.*)$/);
+    const m = name.match(/^(.+?)\s*(\d+\.?\d*)\s*(개|봉|팩|판|장|통|kg|g|L|ml|매|접|송이|구|입|근|박스|줄|인분|포|캔|병|마리)(.*)$/);
     if (m) {
       const tot = Math.round(parseFloat(m[2]) * qty * 10) / 10;
       return m[1].trim() + ' ' + tot + m[3] + (m[4] || '');
