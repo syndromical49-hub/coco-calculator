@@ -42,7 +42,7 @@
   .hitem-orig{font-size:10px;color:rgba(255,255,255,0.35);text-decoration:line-through;margin-right:5px;}
   .hitem-price{font-size:16px;font-weight:900;color:#ffd166;}
   .hitem-price small{font-size:9px;font-weight:700;}
-  .hitem.featured, .hcombo.featured, .hset.featured{border-color:rgba(193,18,31,0.55);background:rgba(193,18,31,0.14);}
+  .hitem.featured, .hcombo.featured, .hset.featured, .hcard.featured{border-color:rgba(193,18,31,0.55);background:rgba(193,18,31,0.14);}
   .hitem.tba{cursor:default;opacity:0.85;}
   .hbadge{display:inline-block;background:linear-gradient(90deg,#c1121f,#e63946);color:#fff;font-size:9.5px;font-weight:900;padding:2px 8px;border-radius:5px;margin-bottom:4px;letter-spacing:-0.1px;}
   .hbadge.soft{background:rgba(255,255,255,0.15);}
@@ -397,107 +397,28 @@
 
         <div class="hsec-title">⏱ 선착순 특가</div>
 
-        <!-- 🍉 수박·멜론 -->
-        <div class="hsec">
-          <div class="hbadge" style="width:100%;text-align:center;box-sizing:border-box;">🍉 7월수박 — 양평(특)·고창(특)·양구(특) 선별후 랜덤입고</div>
-          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('f51_super')">
-            <span class="hbadge" style="width:fit-content;">🔥 초특가</span>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-              <div class="hitem-name">🍉 양평수박(특품) 11kg</div>
-              <div class="hitem-price-wrap">
-                <span class="hitem-orig">34,900원</span>
-                <span class="hitem-price">28,900<small>원</small></span>
-              </div>
-            </div>
-          </div>
-
-          <div class="hgrid2">
-            <div class="hset" onclick="heroAddItem('set_wmelon_avocado')">
-              <div class="hset-name">🍉+🥑 양평수박(특품) 11kg+아보카도 5개</div>
-              <div><span class="hset-price">32,900원</span></div>
-            </div>
-            <div class="hset" onclick="heroAddItem('set_wmelon_cherry500')">
-              <div class="hset-name">🍉+🍒 양평수박(특품) 11kg+체리 500g</div>
-              <div><span class="hset-price">36,900원</span></div>
-            </div>
-            <div class="hset" onclick="heroAddItem('set_wmelon_chamoe')">
-              <div class="hset-name">🍉+🍈 양평수박(특품) 11kg+게르마늄참외 2봉</div>
-              <div><span class="hset-price">35,900원</span></div>
-            </div>
-            <div class="hset" onclick="heroAddItem('set_wmelon_tomato')">
-              <div class="hset-name">🍉+🍅 양평수박(특품) 11kg+방울토마토 2팩</div>
-              <div><span class="hset-price">34,900원</span></div>
-            </div>
-          </div>
-
-          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('f_melon')">
-            <span class="hbadge" style="width:fit-content;">🔥 초특가</span>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-              <div class="hitem-name">🍈 고당도 괴물멜론(머스크) 1통(2kg이상)</div>
-              <div class="hitem-price-wrap"><span class="hitem-price">9,900<small>원</small></span></div>
-            </div>
-          </div>
-          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('f_melon_honeydew')">
-            <span class="hbadge" style="width:fit-content;">🔥 초특가</span>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-              <div class="hitem-name">🍈 고당도 괴물멜론(허니듀) 1통(1.5kg±)</div>
-              <div class="hitem-price-wrap"><span class="hitem-price">9,000<small>원</small></span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 🍈 델몬트 특가 -->
-        <div class="hsec">
-          <div class="hbadge" style="width:100%;text-align:center;box-sizing:border-box;">✨ 델몬트 골드파인 허니스틱(14브릭스이상)-초특가 ✨</div>
-          <div class="hgrid3">
-            <div class="hcombo featured" onclick="heroAddItem('honeystick_1')">
-              <div class="hcombo-label">1개</div>
-              <div class="hcombo-price">1,800원</div>
-            </div>
-            <div class="hcombo featured" onclick="heroAddItem('honeystick_6')">
-              <div class="hcombo-label">6개</div>
-              <div class="hcombo-price">9,900원</div>
-            </div>
-            <div class="hcombo featured" onclick="heroAddItem('honeystick_10')">
-              <div class="hcombo-label">10개(1팩)</div>
-              <div class="hcombo-price">15,500원</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 🟣 자두 -->
-        <div class="hsec">
-          <div class="hsec-title">🟣 자두</div>
-          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('f_jaju_5kg')">
-            <span class="hbadge" style="width:fit-content;">🟣 후무사</span>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-              <div class="hitem-name">🟣 자두(후무사) 5kg 1박스</div>
-              <div class="hitem-price-wrap"><span class="hitem-price">56,900<small>원</small></span></div>
-            </div>
-          </div>
-          <div class="hitem" onclick="heroAddItem('f_jaju_2kg')">
-            <div class="hitem-left">
-              <span class="hitem-icon">🟣</span>
-              <div class="hitem-name">자두(후무사) 2kg</div>
-            </div>
-            <div class="hitem-price-wrap"><span class="hitem-price">23,900<small>원</small></span></div>
-          </div>
-        </div>
-
         <!-- 🍑 복숭아 -->
         <div class="hsec">
           <div class="hsec-title">🍑 복숭아</div>
 
-          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('ts_daekuk2kg')">
+          <div class="hcard featured">
             <span class="hbadge" style="width:fit-content;">✨ 올해 첫 딱복 초특가</span>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-              <div class="hitem-name">🍑 대극천(딱복) 2kg</div>
-              <div class="hitem-price-wrap"><span class="hitem-price">18,900<small>원</small></span></div>
+            <span class="hbadge soft" style="width:fit-content;margin-left:4px;">13~14브릭스</span>
+            <div class="hitem-name" style="margin:6px 0;">🍑 대극천(딱복)</div>
+            <div class="hgrid2">
+              <div class="hcombo featured" onclick="heroAddItem('ts_daekuk2kg')">
+                <div class="hcombo-label">2kg</div>
+                <div class="hcombo-price">18,900원</div>
+              </div>
+              <div class="hcombo featured" onclick="heroAddItem('ts_daekuk_7ip')">
+                <div class="hcombo-label">7입 1.3kg이상(특가)</div>
+                <div class="hcombo-price">10,900원</div>
+              </div>
             </div>
           </div>
 
           <div class="hcard">
-            <div class="hitem-name" style="margin-bottom:6px;">🍑 황도(수황) <span class="hbadge soft" style="margin:0 0 0 2px;">13브릭스이상</span></div>
+            <div class="hitem-name" style="margin-bottom:6px;">🍑 황도 <span class="hbadge soft" style="margin:0 0 0 2px;">13브릭스이상 당일선별후 입고</span></div>
             <div class="hgrid2">
               <div class="hcombo" onclick="heroAddItem('f_hwangdo_4kg')">
                 <div class="hcombo-label">4kg 1박스</div>
@@ -523,23 +444,122 @@
               </div>
             </div>
           </div>
+          <div class="hitem" onclick="heroAddItem('f_baekdo_cheonbong')">
+            <div class="hitem-left">
+              <span class="hitem-icon">🍑</span>
+              <div class="hitem-name">백도(천봉) 10입 1박스(2.5kg)</div>
+            </div>
+            <div class="hitem-price-wrap"><span class="hitem-price">33,900<small>원</small></span></div>
+          </div>
+        </div>
+
+        <!-- 🍉 수박·멜론 -->
+        <div class="hsec">
+          <div class="hbadge" style="width:100%;text-align:center;box-sizing:border-box;">🍉 7월수박 — 양평(특)·고창(특)·양구(특) 선별후 랜덤입고</div>
+          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('f51_super')">
+            <span class="hbadge" style="width:fit-content;">🔥 초특가</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div class="hitem-name">🍉 양평수박(특품) 11kg</div>
+              <div class="hitem-price-wrap">
+                <span class="hitem-orig">34,900원</span>
+                <span class="hitem-price">28,900<small>원</small></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('f_melon')">
+            <span class="hbadge" style="width:fit-content;">🔥 초특가</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div class="hitem-name">🍈 고당도 괴물멜론(머스크) 1통(2kg이상)</div>
+              <div class="hitem-price-wrap"><span class="hitem-price">9,900<small>원</small></span></div>
+            </div>
+          </div>
+          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('f_melon_honeydew')">
+            <span class="hbadge" style="width:fit-content;">🔥 초특가</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div class="hitem-name">🍈 고당도 괴물멜론(허니듀) 1통(1.5kg±)</div>
+              <div class="hitem-price-wrap"><span class="hitem-price">9,000<small>원</small></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🍈 델몬트 특가 -->
+        <div class="hsec">
+          <div class="hsec-title">🍈 델몬트 특가</div>
+          <div class="hitem-name" style="margin-bottom:6px;">🍈 골드파인 허니스틱 <span class="hbadge soft" style="margin:0 0 0 2px;">14브릭스이상</span></div>
+          <div class="hgrid3">
+            <div class="hcombo featured" onclick="heroAddItem('honeystick_1')">
+              <div class="hcombo-label">1개</div>
+              <div class="hcombo-price">1,800원</div>
+            </div>
+            <div class="hcombo featured" onclick="heroAddItem('honeystick_6')">
+              <div class="hcombo-label">6개</div>
+              <div class="hcombo-price">9,900원</div>
+            </div>
+            <div class="hcombo featured" onclick="heroAddItem('honeystick_10')">
+              <div class="hcombo-label">10개(1팩)</div>
+              <div class="hcombo-price">15,500원</div>
+            </div>
+          </div>
+          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('f_delmonte_banana')">
+            <span class="hbadge" style="width:fit-content;">🍌 델몬트 하이랜드</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div>
+                <div class="hitem-name">🍌 하이랜드 허니바나나 1송이</div>
+                <div class="hitem-sub">쫀쫀한 바나나 - 무를수록 찰기 강해져요</div>
+              </div>
+              <div class="hitem-price-wrap"><span class="hitem-price">3,800<small>원</small></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🟣 자두 -->
+        <div class="hsec">
+          <div class="hsec-title">🟣 자두</div>
+          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('f_jaju_5kg')">
+            <span class="hbadge" style="width:fit-content;">🟣 후무사</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div class="hitem-name">🟣 자두(후무사) 5kg 1박스</div>
+              <div class="hitem-price-wrap"><span class="hitem-price">56,900<small>원</small></span></div>
+            </div>
+          </div>
+          <div class="hitem" onclick="heroAddItem('f_jaju_2kg')">
+            <div class="hitem-left">
+              <span class="hitem-icon">🟣</span>
+              <div class="hitem-name">자두(후무사) 2kg</div>
+            </div>
+            <div class="hitem-price-wrap"><span class="hitem-price">23,900<small>원</small></span></div>
+          </div>
         </div>
 
         <!-- 🌽 옥수수 -->
         <div class="hsec">
           <div class="hsec-title">🌽 옥수수</div>
 
-          <div class="hcard tba" style="display:flex;align-items:center;gap:8px;">
-            <span class="hbadge soft" style="margin:0;flex-shrink:0;">⏳ 입고예정</span>
-            <div class="hitem-name">🌽 괴산 대학찰옥수수</div>
+          <div class="hcard">
+            <div class="hitem-name" style="margin-bottom:6px;">🌽 괴산 대학찰옥수수 <span class="hbadge soft" style="margin:0 0 0 2px;">입고기념행사</span></div>
+            <div class="hgrid3">
+              <div class="hcombo" onclick="heroAddItem('v_corn10_5')">
+                <div class="hcombo-label">5개</div>
+                <div class="hcombo-price">6,900원</div>
+              </div>
+              <div class="hcombo featured" onclick="heroAddItem('v_corn10')">
+                <div class="hcombo-label">10개</div>
+                <div class="hcombo-price">10,900원</div>
+              </div>
+              <div class="hcombo" onclick="heroAddItem('v_corn10_30')">
+                <div class="hcombo-label">1망(30입)</div>
+                <div class="hcombo-price">27,900원</div>
+              </div>
+            </div>
           </div>
 
           <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('v_corn_eol10')">
             <span class="hbadge" style="width:fit-content;">🔥 초특가</span>
             <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-              <div class="hitem-name">🌽 미흑찰옥수수(얼룩이) 5개</div>
+              <div class="hitem-name">🌽 찰옥수수(미백 또는 미흑찰 랜덤입고) 10개</div>
               <div class="hitem-price-wrap">
-                <span class="hitem-price">5,900<small>원</small></span>
+                <span class="hitem-price">9,000<small>원</small></span>
               </div>
             </div>
           </div>
@@ -990,7 +1010,7 @@
   </div>
 
   <div class="jump-bar">
-    <button class="jbtn active" id="tab-sp" onclick="switchTab('sp')">🔥 특가세트</button>
+    <button class="jbtn active" id="tab-sp" onclick="switchTab('sp')">🔥 제철특가</button>
     <button class="jbtn" id="tab-fr" onclick="switchTab('fr')">🍊 과일</button>
     <button class="jbtn" id="tab-vg" onclick="switchTab('vg')">🥦 채소·기타</button>
   </div>
@@ -1724,10 +1744,6 @@ const fruitItems = [
   { id:'honeystick_6', todaySpecial:false, num:'🍈', name:'🍈 델몬트 골드파인 허니스틱(14브릭스이상) 6개', desc:'델몬트 골드파인 허니스틱(14브릭스이상) 6개', price:9900 },
 
   { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 양평수박(특품) 11kg', desc:'양평,고창,맹동수박(선별후입고)', orig:34900, price:28900 },
-  { id:'set_wmelon_avocado', todaySpecial:true, num:'🍉', name:'🍉🥑 양평수박(특품) 11kg+아보카도 5개 세트', desc:'양평수박(특품) 11kg+아보카도 5개', price:32900 },
-  { id:'set_wmelon_cherry500', todaySpecial:true, num:'🍉', name:'🍉🍒 양평수박(특품) 11kg+워싱턴체리 500g 세트', desc:'양평수박(특품) 11kg+워싱턴체리(9row-최대사이즈)500g', price:36900 },
-  { id:'set_wmelon_chamoe', todaySpecial:true, num:'🍉', name:'🍉🍈 7월수박특가세트 — 양평수박(특품) 11kg+게르마늄참외 2봉', desc:'양평수박(특품) 11kg+게르마늄참외 2봉', price:35900 },
-  { id:'set_wmelon_tomato', todaySpecial:true, num:'🍉', name:'🍉🍅 7월수박특가세트 — 양평수박(특품) 11kg+방울토마토 2팩', desc:'양평수박(특품) 11kg+방울토마토 2팩', price:34900 },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
   { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'', orig:9800, price:7900 },
   { id:'f_avocado', todaySpecial:false, num:'🥑', name:'🥑 아보카도 5개 [주말초특가]', desc:'아보카도 5개', price:5900 },
@@ -1749,8 +1765,10 @@ const vegItems = [
   // ── 🔥 오늘의 채소 특가 (900원 묶음 맨위 → 나머지 가격 내림차순) ──
 
 
-  { id:'v_corn_eol10', todaySpecial:true, num:'🌽', name:'🌽 미흑찰옥수수(얼룩이) 5개',       desc:'미흑찰옥수수(얼룩이) 5개', price:5900, maxQty:1 },
-  { id:'v_corn10', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 입고예정', desc:'괴산 대학찰옥수수 입고예정', price:13000, tba:'입고예정' },
+  { id:'v_corn_eol10', todaySpecial:true, num:'🌽', name:'🌽 찰옥수수(미백 또는 미흑찰 랜덤입고) 10개',       desc:'찰옥수수(미백 또는 미흑찰 랜덤입고) 10개', price:9000, maxQty:1 },
+  { id:'v_corn10_5', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 5개', desc:'괴산 대학찰옥수수 5개', price:6900 },
+  { id:'v_corn10', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 10개(입고기념행사)', desc:'괴산 대학찰옥수수 10개(입고기념행사)', price:10900 },
+  { id:'v_corn10_30', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 1망(30입)', desc:'괴산 대학찰옥수수 1망(30입)', price:27900 },
   { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg이상', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg이상', price:8900 },
   { id:'ts_gamja2', todaySpecial:true, num:'🥔', name:'🥔 수미햇감자 2봉(2kg↑)', desc:'수미햇감자 2봉(2kg↑)', orig:8000, price:4900 },
   { id:'v2b', num:'묶음', name:'🧅 양파 2kg이상', price:3900, orig:4000, todaySpecial:true, badge:'묶음특가', badgeColor:'#c1121f' },
@@ -1786,8 +1804,8 @@ const vegItems = [
   { id:'v25', num:'25', name:'팽이버섯 1봉(3입)',        price:1000 },
   { id:'v26', num:'26', name:'깐마늘 1봉',              price:2000 },
 
-  { id:'v27', num:'27', name:'상추',                   price:1500 },
-  { id:'v28', num:'28', name:'깻잎',                   price:2000 },
+  { id:'v27', num:'27', name:'상추 1봉',                price:2500 },
+  { id:'v28', num:'28', name:'깻잎 1봉',                price:3000 },
   { id:'v29', num:'29', name:'치커리 1봉',              price:1000 },
   { id:'v30', num:'30', name:'케일 1봉',               price:1000 },
   { id:'v31', num:'31', name:'청경채 1봉',              price:1000 },
@@ -3164,10 +3182,6 @@ function showToast(msg) {
 
 initDayLock();
 // 수박 특가세트 itemMeta 등록 (heroAddItem 에서 사용)
-reg('set_wmelon_avocado', '🍉🥑 양평수박(특품) 11kg+아보카도 5개 세트', 32900);
-reg('set_wmelon_cherry500', '🍉🍒 양평수박(특품) 11kg+워싱턴체리 500g 세트', 36900);
-reg('set_wmelon_chamoe', '🍉🍈 7월수박특가세트 — 양평수박(특품) 11kg+게르마늄참외 2봉', 35900);
-reg('set_wmelon_tomato', '🍉🍅 7월수박특가세트 — 양평수박(특품) 11kg+방울토마토 2팩', 34900);
 renderSpecial();
 renderFruit();
 renderVeg();
@@ -3919,9 +3933,11 @@ function renderFlashSection() {
             '<div class="flash-stepper" style="margin-top:2px;">' + stepper + '</div></div>' +
           '</div>';
         const card = document.createElement('div');
-        card.className = 'flash-card';
+        card.className = 'flash-card' + (fi.badge ? ' flash-highlight' : '');
         card.style.gridColumn = '1 / -1';
+        const badgeHtml = fi.badge ? '<div style="font-size:0.72rem;font-weight:900;color:#e63946;margin-bottom:4px;">' + fi.badge + '</div>' : '';
         card.innerHTML =
+          badgeHtml +
           '<div class="flash-name">🍑 ' + comboLabel + '</div>' +
           rowHtml(fi.label.replace(comboLabel, '').trim() || fi.label, fi.flashPrice || meta.price, stepperHtmlMain) +
           rowHtml(pfi.label.replace(comboLabel, '').trim() || pfi.label, pfi.flashPrice || pmeta.price, pStepper);
@@ -3973,20 +3989,19 @@ function renderFlashSection() {
 
 const FLASH_ITEMS = [
   { id:'f51_super',          label:'양평수박(특품) 11kg',                                   max:9999, flashPrice:28900, origPrice:34900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가', gridCol:'1', gridRow:'1 / 3' },
-  { id:'set_wmelon_avocado', label:'양평수박(특품) 11kg + 아보카도 5개',                                   max:9999, flashPrice:32900, section:'🍉 수박,멜론 특가' },
-  { id:'set_wmelon_cherry500', label:'양평수박(특품) 11kg + 워싱턴체리 500g',                             max:9999, flashPrice:36900, section:'🍉 수박,멜론 특가' },
-  { id:'set_wmelon_chamoe',  label:'양평수박(특품) 11kg + 게르마늄참외 2봉',                              max:9999, flashPrice:35900, section:'🍉 수박,멜론 특가' },
-  { id:'set_wmelon_tomato',  label:'양평수박(특품) 11kg + 방울토마토 2팩',                                max:9999, flashPrice:34900, section:'🍉 수박,멜론 특가' },
   { id:'f_melon',            label:'고당도 괴물멜론(머스크) 1통(2kg이상)',           max:9999, flashPrice:9900, section:'🍉 수박,멜론 특가', gridCol:'2', gridRow:'1' },
   { id:'f_melon_honeydew',   label:'고당도 괴물멜론(허니듀) 1통(1.5kg±)',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가', gridCol:'2', gridRow:'2' },
-  { id:'honeystick_1',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 1개',    max:9999, flashPrice:1800,  badge:'✨ 🍈 델몬트 골드파인 허니스틱-초특가 ✨', section:'🍈 델몬트 특가' },
+  { id:'honeystick_1',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 1개',    max:9999, flashPrice:1800,  section:'🍈 델몬트 특가' },
   { id:'honeystick_6',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 6개',    max:9999, flashPrice:9900,  section:'🍈 델몬트 특가' },
   { id:'honeystick_10', label:'델몬트 골드파인 허니스틱(14브릭스이상) 10개(1팩)', max:9999, flashPrice:15500, section:'🍈 델몬트 특가' },
-  { id:'ts_daekuk2kg',   label:'대극천(딱복) 2kg',                          max:9999, flashPrice:18900, badge:'✨ 🍑 올해 첫 딱딱이 선봉장-초특가행사 ✨', section:'🍑 복숭아 특가' },
-  { id:'f_hwangdo_4kg',  label:'황도(수황) 4kg 1박스',                      max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', comboPartner:'f_hwangdo_2kg', fullWidth:true },
-  { id:'f_hwangdo_2kg',  label:'황도(수황) 2kg',                           max:9999, flashPrice:18900,                  section:'🍑 복숭아 특가', comboChild:true },
+  { id:'ts_daekuk2kg',   label:'대극천(딱복) 2kg',                          max:9999, flashPrice:18900, badge:'✨ 🍑 올해 첫 딱딱이 선봉장-초특가행사 (13~14브릭스) ✨', section:'🍑 복숭아 특가', comboPartner:'ts_daekuk_7ip', fullWidth:true },
+  { id:'ts_daekuk_7ip',  label:'대극천(7입) 1.3kg이상(특가)',                max:9999, flashPrice:10900,                  section:'🍑 복숭아 특가', comboChild:true },
+  { id:'f_hwangdo_4kg',  label:'황도 4kg 1박스',                      max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', comboPartner:'f_hwangdo_2kg', fullWidth:true },
+  { id:'f_hwangdo_2kg',  label:'황도 2kg',                           max:9999, flashPrice:18900,                  section:'🍑 복숭아 특가', comboChild:true },
   { id:'f_baekdo_4kg',   label:'백도(대월) 4kg 1박스',                      max:9999, flashPrice:38900,                  section:'🍑 복숭아 특가', comboPartner:'f_baekdo_2kg', fullWidth:true },
   { id:'f_baekdo_2kg',   label:'백도(대월) 2kg',                           max:9999, flashPrice:19900,                  section:'🍑 복숭아 특가', comboChild:true },
+  { id:'f_baekdo_cheonbong', label:'백도(천봉) 10입 1박스(2.5kg)',          max:9999, flashPrice:33900,                  section:'🍑 복숭아 특가' },
+  { id:'f_delmonte_banana',  label:'델몬트 하이랜드 허니바나나 1송이',        max:9999, flashPrice:3800,                   section:'🍈 델몬트 특가' },
   { id:'f_jaju_5kg',     label:'자두(후무사) 5kg 1박스',                    max:9999, flashPrice:56900,                  section:'🟣 자두 특가' },
   { id:'f_jaju_2kg',     label:'자두(후무사) 2kg',                         max:9999, flashPrice:23900,                  section:'🟣 자두 특가' },
   { id:'ts_cherry',      label:'워싱턴체리(9row-최대사이즈) 500g',           max:9999, flashPrice:10900,                  section:'🍒 체리 특가' },
