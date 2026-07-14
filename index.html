@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>🧺 코코바스켓 주문계산기</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
@@ -15,9 +15,9 @@
   body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text);padding-bottom:80px;}
 
   /* 화면 */
-  .screen{display:none;min-height:100vh;flex-direction:column;background:#1a0f00;}
+  .screen{display:none;min-height:100vh;min-height:100dvh;flex-direction:column;background:#1a0f00;}
   .screen.active{display:flex;}
-  #s4{background:var(--bg);min-height:100vh;}
+  #s4{background:var(--bg);min-height:100vh;min-height:100dvh;}
 
   /* 히어로 — 이미지는 JS로 주입 */
   .hero{position:relative;height:50vw;max-height:230px;min-height:150px;overflow:hidden;flex-shrink:0;}
@@ -182,7 +182,7 @@
   .veg-btn{width:28px;height:28px;background:#f5f5f2;border:none;font-size:1rem;font-weight:700;color:var(--green);cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
   .veg-btn:active{background:var(--green-pale);}
   .veg-qval{width:28px;text-align:center;font-size:0.85rem;font-weight:700;border-left:1px solid var(--border);border-right:1px solid var(--border);height:28px;line-height:28px;background:white;}
-  .summary-bar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:2px solid var(--border);z-index:200;box-shadow:0 -4px 16px rgba(0,0,0,0.1);}
+  .summary-bar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:2px solid var(--border);z-index:200;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding-bottom:env(safe-area-inset-bottom);}
   .summary-tab{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
   .summary-tab-left{display:flex;align-items:center;gap:7px;}
   .summary-tab-label{font-size:0.82rem;color:var(--muted);font-weight:700;}
@@ -235,7 +235,7 @@
   .hook-price{font-size:1.15rem;font-weight:900;color:#ffd166;letter-spacing:-0.5px;}
   .reorder-btn{width:100%;padding:7px;background:rgba(255,209,102,0.08);border:1.5px dashed rgba(255,209,102,0.4);border-radius:8px;color:#ffd166;font-family:"Noto Sans KR",sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer;letter-spacing:-0.3px;margin-top:4px;-webkit-tap-highlight-color:transparent;}
   .reorder-btn:active{background:rgba(255,209,102,0.15);}
-  .reorder-screen{background:#1a0f00;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;gap:20px;}
+  .reorder-screen{background:#1a0f00;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;gap:20px;}
   .reorder-title{color:#ffd166;font-size:1.4rem;font-weight:900;text-align:center;letter-spacing:-0.5px;}
   .reorder-sub{color:rgba(255,255,255,0.45);font-size:0.78rem;text-align:center;line-height:1.6;margin-top:-10px;}
   .reorder-input{width:100%;padding:16px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,209,102,0.3);border-radius:12px;color:#f5f0e8;font-family:"Noto Sans KR",sans-serif;font-size:1.1rem;font-weight:700;outline:none;text-align:center;letter-spacing:2px;}
@@ -691,7 +691,7 @@
 
 <!-- ── 장바구니 확인 ── -->
 <div class="screen" id="s-cart">
-  <div style="background:var(--bg);min-height:100vh;display:flex;flex-direction:column;padding-bottom:120px;">
+  <div style="background:var(--bg);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding-bottom:120px;">
     <!-- 헤더 -->
     <div style="background:var(--green);color:white;padding:14px 16px 12px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:7px;">
       <button onclick="goScreen('s4')" style="background:rgba(255,255,255,0.15);border:none;color:white;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
@@ -747,7 +747,7 @@
       </div>
     </div>
     <!-- 하단 고정 버튼 -->
-    <div style="position:fixed;bottom:0;left:0;right:0;background:white;border-top:1.5px solid var(--border);padding:14px 16px 24px;z-index:200;display:flex;flex-direction:column;gap:8px;">
+    <div style="position:fixed;bottom:0;left:0;right:0;background:white;border-top:1.5px solid var(--border);padding:14px 16px calc(24px + env(safe-area-inset-bottom));z-index:200;display:flex;flex-direction:column;gap:8px;">
       <button id="cart-next-btn" onclick="goToInfo()" style="width:100%;padding:16px;background:#2d6a4f;color:white;border:none;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;">👤 주문자 정보 입력하기</button>
       <button onclick="goScreen('s4')" style="width:100%;padding:12px;background:#f5f5f2;color:#666;border:1.5px solid var(--border);border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;">✏️ 품목 변경 및 추가하기</button>
     </div>
@@ -820,7 +820,7 @@
 
 <!-- ③ 개인정보 -->
 <div class="screen" id="s3">
-  <div style="background:var(--bg);min-height:100vh;display:flex;flex-direction:column;padding-bottom:80px;">
+  <div style="background:var(--bg);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding-bottom:80px;">
     <!-- 헤더 -->
     <div style="background:var(--green);color:white;padding:14px 16px 12px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:7px;">
       <button onclick="goScreen('s-cart')" style="background:rgba(255,255,255,0.15);border:none;color:white;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
@@ -1041,7 +1041,7 @@
 
 <!-- ── 배송 안내 ── -->
 <div class="screen" id="s-delivery">
-  <div style="background:var(--bg);min-height:100vh;display:flex;flex-direction:column;padding-bottom:130px;">
+  <div style="background:var(--bg);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding-bottom:130px;">
     <!-- 헤더 -->
     <div style="background:var(--green);color:white;padding:14px 16px 12px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:7px;">
       <button onclick="goScreen('s3')" style="background:rgba(255,255,255,0.15);border:none;color:white;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
@@ -1127,7 +1127,7 @@
     </div>
   </div>
   <!-- 하단 고정 버튼 -->
-  <div style="position:fixed;bottom:0;left:0;right:0;background:white;border-top:1.5px solid var(--border);padding:14px 16px 28px;z-index:200;">
+  <div style="position:fixed;bottom:0;left:0;right:0;background:white;border-top:1.5px solid var(--border);padding:14px 16px calc(28px + env(safe-area-inset-bottom));z-index:200;">
     <div id="delivery-min-warn" style="display:none;background:#fff3cd;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:0.8rem;color:#856404;font-weight:600;text-align:center;"></div>
     <button id="btn-delivery-submit" onclick="orderDirect()" style="width:100%;padding:16px;background:#c1121f;color:white;border:none;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;">✅ 확인했어요 · 주문 접수하기</button>
   </div>
