@@ -401,19 +401,11 @@
         <div class="hsec">
           <div class="hsec-title">🍑 복숭아</div>
 
-          <div class="hcard featured">
-            <span class="hbadge" style="width:fit-content;">✨ 올해 첫 딱복 초특가</span>
-            <span class="hbadge soft" style="width:fit-content;margin-left:4px;">13~14브릭스</span>
-            <div class="hitem-name" style="margin:6px 0;">🍑 대극천(딱복)</div>
-            <div class="hgrid2">
-              <div class="hcombo featured" onclick="heroAddItem('ts_daekuk2kg')">
-                <div class="hcombo-label">2kg</div>
-                <div class="hcombo-price">18,900원</div>
-              </div>
-              <div class="hcombo featured" onclick="heroAddItem('ts_daekuk_7ip')">
-                <div class="hcombo-label">7입 1.3kg이상(특가)</div>
-                <div class="hcombo-price">10,900원</div>
-              </div>
+          <div class="hitem featured" style="flex-direction:column;align-items:stretch;" onclick="heroAddItem('ts_daekuk_7ip')">
+            <span class="hbadge" style="width:fit-content;">✨ 올해 첫 딱복 초특가 (13~14브릭스)</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div class="hitem-name">🍑 대극천(7입) 1.2kg 전후(특가)</div>
+              <div class="hitem-price-wrap"><span class="hitem-price">10,900<small>원</small></span></div>
             </div>
           </div>
 
@@ -3994,8 +3986,7 @@ const FLASH_ITEMS = [
   { id:'honeystick_1',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 1개',    max:9999, flashPrice:1800,  section:'🍈 델몬트 특가' },
   { id:'honeystick_6',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 6개',    max:9999, flashPrice:9900,  section:'🍈 델몬트 특가' },
   { id:'honeystick_10', label:'델몬트 골드파인 허니스틱(14브릭스이상) 10개(1팩)', max:9999, flashPrice:15500, section:'🍈 델몬트 특가' },
-  { id:'ts_daekuk2kg',   label:'대극천(딱복) 2kg',                          max:9999, flashPrice:18900, badge:'✨ 🍑 올해 첫 딱딱이 선봉장-초특가행사 (13~14브릭스) ✨', section:'🍑 복숭아 특가', comboPartner:'ts_daekuk_7ip', fullWidth:true },
-  { id:'ts_daekuk_7ip',  label:'대극천(7입) 1.3kg이상(특가)',                max:9999, flashPrice:10900,                  section:'🍑 복숭아 특가', comboChild:true },
+  { id:'ts_daekuk_7ip',  label:'대극천(7입) 1.2kg 전후(특가)',                max:9999, flashPrice:10900, badge:'✨ 🍑 올해 첫 딱딱이 선봉장-초특가행사 (13~14브릭스) ✨', section:'🍑 복숭아 특가' },
   { id:'f_hwangdo_4kg',  label:'황도 4kg 1박스',                      max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', comboPartner:'f_hwangdo_2kg', fullWidth:true },
   { id:'f_hwangdo_2kg',  label:'황도 2kg',                           max:9999, flashPrice:18900,                  section:'🍑 복숭아 특가', comboChild:true },
   { id:'f_baekdo_4kg',   label:'백도(대월) 4kg 1박스',                      max:9999, flashPrice:38900,                  section:'🍑 복숭아 특가', comboPartner:'f_baekdo_2kg', fullWidth:true },
