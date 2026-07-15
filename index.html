@@ -4289,9 +4289,14 @@ function selectPayMethod(method) {
   const bankBtn = document.getElementById('pay-method-bank');
   const cardBtn = document.getElementById('pay-method-card');
   if (method === 'card') {
-    if (typeof showToast === 'function') showToast('💳 카드결제는 곧 오픈 예정이에요!');
-    else alert('카드결제는 곧 오픈 예정이에요!');
-    return; // 실결제 테스트 완료 전까지 비활성 — 선택 상태 변경 안 함
+    // ⚠️ TEMP: KCP 연동 테스트용으로 임시 해제. 테스트 끝나면 다시 아래처럼 막을 것:
+    //   if (typeof showToast === 'function') showToast('💳 카드결제는 곧 오픈 예정이에요!');
+    //   else alert('카드결제는 곧 오픈 예정이에요!');
+    //   return;
+    window._payMethod = 'card';
+    if (cardBtn) { cardBtn.style.background = '#2d7a4f'; cardBtn.style.borderColor = '#2d7a4f'; cardBtn.style.color = '#fff'; }
+    if (bankBtn) { bankBtn.style.background = '#f5f5f5'; bankBtn.style.borderColor = '#ddd'; bankBtn.style.color = '#aaa'; }
+    return;
   }
   window._payMethod = 'bank';
   if (bankBtn) { bankBtn.style.background = '#2d7a4f'; bankBtn.style.borderColor = '#2d7a4f'; bankBtn.style.color = '#fff'; }
