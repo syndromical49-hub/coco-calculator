@@ -4353,7 +4353,7 @@ async function submitCardOrder(ctx) {
   try {
     const orderName = orderItems.length ? (orderItems[0].item_name + (orderItems.length>1 ? ' 외 '+(orderItems.length-1)+'건' : '')) : '코코바스켓 주문';
 
-    const regRes = await fetch('/api/kcp/register', {
+    const regRes = await fetch('https://cocobasket-danji.vercel.app/api/kcp/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ orderPayload, orderItems, goodName: orderName })
@@ -4401,7 +4401,7 @@ function redirectToKcpPaymentWindow(p) {
     pay_method: 'CARD',
     currency: '410',
     shop_name: 'COCOBASKET',
-    Ret_URL: window.location.origin + '/api/kcp/return',
+    Ret_URL: 'https://cocobasket-danji.vercel.app/api/kcp/return',
     approval_key: p.approvalKey,
     PayUrl: p.payUrl,
     ordr_idxx: p.ordrIdxx,
