@@ -527,6 +527,14 @@
                 <div class="hcombo-label">바나나 2송이+허니스틱 10개</div>
                 <div class="hcombo-price">19,900원</div>
               </div>
+              <div class="hcombo purple" style="min-height:52px;" onclick="heroAddItem('set_banana1_honeystick1')">
+                <div class="hcombo-label">바나나 1송이+허니스틱 1개</div>
+                <div class="hcombo-price">4,900원</div>
+              </div>
+              <div class="hcombo purple" style="min-height:52px;" onclick="heroAddItem('set_banana2_honeystick3')">
+                <div class="hcombo-label">바나나 2송이+허니스틱 3개</div>
+                <div class="hcombo-price">9,900원</div>
+              </div>
             </div>
           </div>
         </div>
@@ -560,7 +568,7 @@
               </div>
               <div class="hcombo gold" onclick="heroAddItem('f_delmonte_banana2')">
                 <div class="hcombo-label">2송이</div>
-                <div class="hcombo-price">6,500원</div>
+                <div class="hcombo-price">5,900원</div>
               </div>
             </div>
           </div>
@@ -3966,6 +3974,8 @@ const FLASH_ITEMS = [
   { id:'set_honeydew_cherry',label:'고당도 괴물멜론(허니듀)+워싱턴체리 500g',                        max:9999, flashPrice:17900, section:'🍹 수입과일세트' },
   { id:'set_cherry_honeystick6', label:'워싱턴체리 500g+델몬트 골드파인 허니스틱 6개',                    max:9999, flashPrice:19000, section:'🍹 수입과일세트' },
   { id:'set_banana_honeystick10', label:'델몬트 하이랜드 허니바나나 2송이+델몬트 골드파인 허니스틱 10개',                max:9999, flashPrice:19900, section:'🍹 수입과일세트' },
+  { id:'set_banana1_honeystick1', label:'델몬트 하이랜드 허니바나나 1송이+델몬트 골드파인 허니스틱 1개',                max:9999, flashPrice:4900, section:'🍹 수입과일세트' },
+  { id:'set_banana2_honeystick3', label:'델몬트 하이랜드 허니바나나 2송이+델몬트 골드파인 허니스틱 3개',                max:9999, flashPrice:9900, section:'🍹 수입과일세트' },
   { id:'f51_super',          label:'양평수박(특품) 11kg',                                   max:9999, flashPrice:28900, origPrice:34900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가', gridCol:'1', gridRow:'1 / 3' },
   { id:'f_melon',            label:'고당도 괴물멜론(머스크) 1통(2kg이상)',           max:9999, flashPrice:9900, section:'🍉 수박,멜론 특가', gridCol:'2', gridRow:'1' },
   { id:'f_melon_honeydew',   label:'고당도 괴물멜론(허니듀) 1통(1.5kg±)',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가', gridCol:'2', gridRow:'2' },
@@ -3978,7 +3988,7 @@ const FLASH_ITEMS = [
   { id:'f_baekdo_2kg',   label:'백도(대월) 2kg',                           max:9999, flashPrice:19900,                  section:'🍑 복숭아 특가', comboChild:true },
   { id:'f_baekdo_cheonbong', label:'백도(천봉) 10입 1박스(2.5kg)',          max:9999, flashPrice:33900,                  section:'🍑 복숭아 특가' },
   { id:'f_delmonte_banana',  label:'델몬트 하이랜드 허니바나나 1송이',        max:9999, flashPrice:3800,                   section:'🍈 델몬트 특가', comboPartner:'f_delmonte_banana2', fullWidth:true },
-  { id:'f_delmonte_banana2', label:'델몬트 하이랜드 허니바나나 2송이',        max:9999, flashPrice:6500,                   section:'🍈 델몬트 특가', comboChild:true },
+  { id:'f_delmonte_banana2', label:'델몬트 하이랜드 허니바나나 2송이',        max:9999, flashPrice:5900,                   section:'🍈 델몬트 특가', comboChild:true },
   { id:'f_jaju_5kg',     label:'자두(후무사) 5kg 1박스',                    max:9999, flashPrice:56900,                  section:'🟣 자두 특가' },
   { id:'f_jaju_2kg',     label:'자두(후무사) 2kg',                         max:9999, flashPrice:23900,                  section:'🟣 자두 특가' },
   { id:'ts_cherry',      label:'워싱턴체리(9row-최대사이즈) 500g',           max:9999, flashPrice:10900,                  section:'🍒 체리 특가' },
