@@ -503,11 +503,12 @@
         <div class="hsec">
           <div class="hcat-title">🍒 체리</div>
           <div class="hcard" style="width:100%;box-sizing:border-box;">
+            <div style="background:linear-gradient(90deg,#c1121f,#ff4d4d);color:#fff;font-size:0.72rem;font-weight:900;padding:5px 8px;margin:-1px -1px 8px;border-radius:9px 9px 0 0;text-align:center;letter-spacing:-0.2px;box-shadow:0 0 8px rgba(255,60,60,0.5);animation:pulse 1.6s infinite,twinkle 0.9s infinite alternate;">🔥 500g 선착순 20개 특가</div>
             <div class="hitem-name" style="margin-bottom:8px;">🍒 워싱턴체리 <span class="hbadge soft" style="margin:0 0 0 2px;">9row 최대사이즈</span></div>
             <div class="hgrid2">
               <div class="hcombo" onclick="heroAddItem('ts_cherry')">
                 <div class="hcombo-label">500g</div>
-                <div class="hcombo-price">10,900원</div>
+                <div class="hcombo-price"><span style="text-decoration:line-through;color:rgba(255,255,255,0.4);font-size:0.75em;margin-right:4px;">10,900원</span>8,900원</div>
               </div>
               <div class="hcombo" onclick="heroAddItem('ts_cherry1kg')">
                 <div class="hcombo-label">1kg</div>
@@ -4013,7 +4014,7 @@ const FLASH_ITEMS = [
   { id:'f_delmonte_banana2', label:'델몬트 하이랜드 허니바나나 2송이',        max:9999, flashPrice:5900,                   section:'🍈 델몬트 특가', comboChild:true },
   { id:'f_jaju_5kg',     label:'자두(후무사) 5kg 1박스',                    max:9999, flashPrice:56900,                  section:'🟣 자두 특가' },
   { id:'f_jaju_2kg',     label:'자두(후무사) 2kg',                         max:9999, flashPrice:23900,                  section:'🟣 자두 특가' },
-  { id:'ts_cherry',      label:'워싱턴체리(9row-최대사이즈) 500g',           max:9999, flashPrice:10900,                  section:'🍒 체리 특가' },
+  { id:'ts_cherry',      label:'워싱턴체리(9row-최대사이즈) 500g',           max:20, flashPrice:8900, origPrice:10900,                  section:'🍒 체리 특가', badge:'🔥 선착순 20개 특가' },
   { id:'ts_cherry1kg',   label:'워싱턴체리(9row-최대사이즈) 1kg',            max:9999, flashPrice:20900,                  section:'🍒 체리 특가' },
   { id:'v36b',           label:'찰토마토 2봉',                               max:9999, flashPrice:6000,  origPrice:8000,  section:'🍅 찰토마토 특가' },
 ];
