@@ -4563,6 +4563,9 @@ window.orderDirect = async function() {
   // 수량 합산 함수 (양파 1봉 ×2 → 양파 2봉)
   function mergeQty(name, qty) {
     if (qty <= 1) return name;
+    // 세트/콤보 상품(이름에 '+'로 여러 구성품이 나열된 경우)은 구성품별 수량이 이미 명시되어 있어서
+    // 정규식으로 임의의 한 곳만 곱하면 나머지 구성품 수량이 틀어짐 → ×수량만 붙임
+    if (name.includes('+')) return name + ' ×' + qty;
     const m = name.match(/^(.+?)\s*(\d+\.?\d*)\s*(개|봉|팩|판|장|통|kg|g|L|ml|매|접|송이|구|입|근|박스|줄|인분|포|캔|병|마리)(.*)$/);
     if (m) {
       const tot = Math.round(parseFloat(m[2]) * qty * 10) / 10;
