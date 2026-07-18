@@ -223,6 +223,7 @@
   .delivery-notice{background:#fff0f0;border:2px solid var(--red);border-radius:8px;padding:7px 10px;margin-bottom:8px;text-align:center;font-size:0.8rem;font-weight:900;color:var(--red);animation:pulse 1.8s ease-in-out infinite;}
   @keyframes twinkle{from{color:#ffd166;text-shadow:none;}to{color:#fff;text-shadow:0 0 8px #ffd166,0 0 16px #ff9900;}}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(193,18,31,0.3);}50%{box-shadow:0 0 0 5px rgba(193,18,31,0);}}
+  @keyframes ctaGlow{0%,100%{box-shadow:0 8px 26px rgba(255,90,31,0.5),0 2px 8px rgba(0,0,0,0.25);}50%{box-shadow:0 8px 34px rgba(255,90,31,0.9),0 2px 10px rgba(0,0,0,0.3);}}
   .order-guide{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;}
   .order-guide-box{background:#f9f7f2;border:1px solid var(--border);border-radius:8px;padding:7px 8px;font-size:0.67rem;line-height:1.75;}
   .order-guide-box b{color:var(--green);font-size:0.72rem;}
@@ -651,21 +652,22 @@
 
 
       <!-- CTA 버튼 -->
-      <button onclick="startOrder()" style="width:100%;max-width:440px;background:linear-gradient(135deg,#ffd166,#ffba00);color:#1a0f00;border:none;border-radius:14px;padding:18px 20px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;box-shadow:0 8px 28px rgba(245,200,66,0.45),0 2px 8px rgba(0,0,0,0.25);-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:7px;">
+      <button onclick="startOrder()" style="width:100%;max-width:440px;background:linear-gradient(135deg,#ff6a3d,#e63900);color:#fff;border:none;border-radius:14px;padding:13px 20px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;box-shadow:0 8px 26px rgba(255,90,31,0.5),0 2px 8px rgba(0,0,0,0.25);-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:7px;animation:ctaGlow 1.8s ease-in-out infinite;">
         <span style="font-size:22px;">🛒</span>
         <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px;">
-          <div style="font-size:17px;font-weight:900;letter-spacing:-0.4px;line-height:1.2;">다른 품목 보러가기</div>
-          <div style="font-size:11px;font-weight:600;color:rgba(26,15,0,0.5);letter-spacing:0.2px;">전체 메뉴 · 장바구니 · 주문 →</div>
+          <div style="font-size:17px;font-weight:900;letter-spacing:-0.4px;line-height:1.2;">전체품목(메뉴) 보러가기</div>
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.75);letter-spacing:0.2px;">전체 메뉴 · 장바구니 · 주문 →</div>
         </div>
       </button>
 
       <!-- 배송안내 -->
       <div style="margin-top:8px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.16);border-radius:10px;padding:11px 15px;text-align:center;max-width:440px;width:100%;">
-        <div style="font-size:13.5px;font-weight:700;color:rgba(255,255,255,0.88);line-height:1.9;letter-spacing:0.01em;">
-          📦 초기 요일별 지역배송이니만큼<br>동선 가능한 한 <span style="color:#ffd166;font-weight:900;">당일 배송</span> 해드리오나<br>동선 불가 시 <span style="color:rgba(255,200,150,0.9);font-weight:900;">익일 배송</span>될 수 있음을 안내드립니다
+        <div style="font-size:12.5px;font-weight:900;color:#fff;margin-bottom:4px;">🚚 오늘 배송지역이 아니신가요?</div>
+        <div style="font-size:12.5px;font-weight:600;color:rgba(255,255,255,0.78);line-height:1.75;">
+          <span style="color:#ffd166;font-weight:800;">선주문</span> 주시면 동선을 잡아 최대한 당일 배송해드리고, 불가한 경우 익일 배송으로 안내드립니다.
         </div>
-        <div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,0.12);font-size:13px;font-weight:700;color:rgba(255,209,102,0.85);">
-          동선 확인 후 담당자 안내
+        <div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,0.12);font-size:12.5px;font-weight:700;color:rgba(255,209,102,0.85);">
+          📍 동선 확인 후 담당자가 안내드립니다
         </div>
       </div>
 
@@ -1485,7 +1487,7 @@ const SCHEDULE = {
        nextRegions:{ 운정:'월요일', 일산동구:'목요일', 일산서구:'금요일', 덕양구:'금요일' } },
   4: { label:'목요일', special:true,
        unjeong:['all'], ilsandong:['all'], ilsanseo:['all'], deogyang:['all'],
-       specialNote:'지역 무관 · 선착순 30세트' },
+       specialNote:'지역 무관 · 선착순 50세트' },
   5: { label:'금요일',
        unjeong:[],
        ilsandong:[],
@@ -1535,8 +1537,8 @@ function getCurrentSch() {
     if (cfg.areas && cfg.areas[dayIdx] !== undefined) {
       const areaText = cfg.areas[dayIdx];
       if (areaText.includes('지역 무관') || areaText.includes('선착순')) {
-        sch.special = true; sch.specialNote = '지역 무관 · 선착순 30세트';
-        sch.goyangAll = true; sch.goyangAreas = ['전 지역 (선착순 30세트)'];
+        sch.special = true; sch.specialNote = '지역 무관 · 선착순 50세트';
+        sch.goyangAll = true; sch.goyangAreas = ['전 지역 (선착순 50세트)'];
       } else {
         sch.special = false; sch.goyangAll = false;
         sch.goyangAreas = areaText.split(/[·,\s]+/).filter(Boolean);
@@ -1578,7 +1580,7 @@ function renderGoyangAreaGrid() {
   notice.style.display = 'block';
   if (sch.special) {
     notice.className = 'goyang-notice';
-    notice.textContent = '🎯 오늘은 지역 무관! 선착순 30세트';
+    notice.textContent = '🎯 오늘은 지역 무관! 선착순 50세트';
   } else if (todayAreas.length) {
     notice.className = 'goyang-notice';
     notice.textContent = '📅 오늘(' + sch.label + ') 배송: ' + todayAreas.join(' · ') + ' / 나머지는 다른 날 배송해요';
@@ -3178,7 +3180,7 @@ applySoldout();
     1: '책향기·초롱꽃·숲속길·노을빛·청석·산내',
     2: '대화·주엽·정발산·일산동·중산·식사동',
     3: '가람·해솔·별하람·힐스더운정·물향기·해오름',
-    4: '⭐ 지역 무관 선착순 30세트',
+    4: '⭐ 지역 무관 선착순 50세트',
     5: '가좌·한빛·한울·야당·덕이·탄현',
     6: '마두·백석·장항동·풍동·풍산동',
     0: '휴무',
@@ -3334,8 +3336,8 @@ applySoldout();
       const areaText = cfg.areas[dayIdx];
       if (areaText.includes('지역 무관') || areaText.includes('선착순')) {
         sch.special = true;
-        sch.specialNote = '지역 무관 · 선착순 30세트';
-        sch.goyangAreas = ['전 지역 (선착순 30세트)'];
+        sch.specialNote = '지역 무관 · 선착순 50세트';
+        sch.goyangAreas = ['전 지역 (선착순 50세트)'];
       } else {
         sch.special = false;
         sch.goyangAreas = areaText.split(/[·,·\s]+/).filter(Boolean);
@@ -3531,7 +3533,7 @@ function s3RenderGoyangGrid(region) {
   notice.style.display = 'block';
   if (sch.special) {
     notice.className = 'goyang-notice';
-    notice.textContent = '🎯 오늘은 지역 무관! 선착순 30세트';
+    notice.textContent = '🎯 오늘은 지역 무관! 선착순 50세트';
   } else if (todayAreas.length) {
     notice.className = 'goyang-notice';
     notice.textContent = '📅 오늘(' + sch.label + ') 배송: ' + todayAreas.join(' · ');
@@ -3678,7 +3680,7 @@ function renderDeliveryScreen() {
         (todayOk ? '✅ 오늘 배송 가능 지역' : '⏳ 오늘 배송일이 아닙니다') + '</div>' +
       '<div style="font-size:1rem;font-weight:900;color:#1b1b1b;margin-bottom:4px;">' + sch.label + ' · ' + rLabel + '</div>' +
       '<div style="font-size:0.82rem;color:#555;line-height:1.7;">' +
-        (sch.special ? '🎯 지역 무관 · 선착순 30세트' :
+        (sch.special ? '🎯 지역 무관 · 선착순 50세트' :
           todayAreas.length ? '📅 오늘 배송: ' + todayAreas.filter(function(v){return v!=='all';}).join(' · ') :
           '📅 오늘은 배송이 없어요. 주문은 미리 받아요 😊') + '</div>';
   }
