@@ -612,7 +612,7 @@
             </div>
             <div class="hitem-price-wrap"><span class="hitem-price">5,900<small>원</small></span></div>
           </div>
-          <div class="hitem" onclick="heroAddItem('ts_goguma3kg')">
+          <div class="hitem" onclick="heroAddItem('ts_goguma3kg')" style="background:rgba(193,18,31,0.18);border:1.5px solid rgba(230,57,70,0.7);border-radius:7px;animation:pulse 1.6s infinite;">
             <div class="hitem-left">
               <span class="hitem-icon">🍠</span>
               <div>
@@ -620,9 +620,9 @@
                 <div class="hitem-sub">당도최고조</div>
               </div>
             </div>
-            <div class="hitem-price-wrap"><span class="hitem-price">8,900<small>원</small></span></div>
+            <div class="hitem-price-wrap"><span class="hitem-price">7,900<small>원</small></span></div>
           </div>
-          <div class="hitem" onclick="heroAddItem('ts_gamja2')">
+          <div class="hitem" onclick="heroAddItem('ts_gamja2')" style="background:rgba(193,18,31,0.18);border:1.5px solid rgba(230,57,70,0.7);border-radius:7px;animation:pulse 1.6s infinite;">
             <div class="hitem-left">
               <span class="hitem-icon">🥔</span>
               <div class="hitem-name">수미햇감자 2봉(2kg↑)</div>
@@ -632,12 +632,12 @@
               <span class="hitem-price">4,900<small>원</small></span>
             </div>
           </div>
-          <div class="hitem">
+          <div class="hitem" onclick="heroAddItem('ts_zucchini')" style="background:rgba(193,18,31,0.18);border:1.5px solid rgba(230,57,70,0.7);border-radius:7px;animation:pulse 1.6s infinite;">
             <div class="hitem-left">
               <span class="hitem-icon">🥒</span>
               <div class="hitem-name">애호박 1개</div>
             </div>
-            <div class="hitem-price-wrap"><span class="hitem-price">1,000<small>원</small></span></div>
+            <div class="hitem-price-wrap"><span class="hitem-price">700<small>원</small></span></div>
           </div>
         </div>
 
@@ -1797,15 +1797,15 @@ const vegItems = [
   { id:'v_corn_eol10', todaySpecial:true, num:'🌽', name:'🌽 강원도 찰옥수수(미백,얼룩이랜덤) 10개',       desc:'강원도 찰옥수수(미백,얼룩이랜덤) 10개', price:7800, maxQty:1 },
   { id:'v_corn10', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 10개(입고특가)', desc:'괴산 대학찰옥수수 10개(입고특가)', price:8800 },
   { id:'v_corn10_30', todaySpecial:false, num:'🌽', name:'🌽 괴산 대학찰옥수수 1망(30입)', desc:'괴산 대학찰옥수수 1망(30입)', price:20000 },
-  { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg이상', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg이상', price:8900 },
-  { id:'v_corn_eol1',  todaySpecial:true, num:'🌽', name:'🌽 강원도찰옥수수(미백,얼룩이랜덤) 6개',        desc:'강원도찰옥수수(미백,얼룩이랜덤) 6개', price:4800 },
-  { id:'v_corn10_5', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 5개', desc:'괴산 대학찰옥수수 5개', price:4800 },
+  { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg이상', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg이상', price:7900 },
+  { id:'v_corn_eol1',  todaySpecial:true, num:'🌽', name:'🌽 강원도찰옥수수(미백,얼룩이랜덤) 6개',        desc:'강원도찰옥수수(미백,얼룩이랜덤) 6개', price:4400 },
+  { id:'v_corn10_5', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 5개', desc:'괴산 대학찰옥수수 5개', price:4000 },
   { id:'ts_gamja2', todaySpecial:true, num:'🥔', name:'🥔 수미햇감자 2봉(2kg↑)', desc:'수미햇감자 2봉(2kg↑)', orig:8000, price:4900 },
   { id:'v2b', num:'묶음', name:'🧅 양파 2kg이상', price:3900, orig:4000, todaySpecial:true, badge:'묶음특가', badgeColor:'#c1121f' },
   { id:'v7',  num:'7',  name:'양배추 1통',             price:3500, todaySpecial:true },
   { id:'v6', num:'🥬', name:'🥬 알배기배추 1통',          price:2000, todaySpecial:true },
   { id:'v7_half', num:'7', name:'양배추 반통',            price:2000, todaySpecial:true },
-  { id:'ts_oigaji10', num:'가지', todaySpecial:true, name:'🍆 가지(특) 10개', desc:'가지(특) 10개', price:2000 },
+  { id:'ts_oigaji10', num:'가지', todaySpecial:true, name:'🍆 가지(특) 5개', desc:'가지(특) 5개', price:1000 },
   { id:'v_corn_eol30', todaySpecial:false, num:'🌽', name:'🌽 강원도 찰옥수수(미백,얼룩이랜덤) 1망(30입)',   desc:'강원도 찰옥수수(미백,얼룩이랜덤) 1망(30입)', price:18900 },
 
   // ── 기존 품목 ──
@@ -1819,15 +1819,16 @@ const vegItems = [
   { id:'v9',  num:'9',  name:'꽈리고추 1봉',            price:2000 },
   { id:'v10', num:'10', name:'아삭이고추 1봉',          price:2000 },
   { id:'v18b',num:'18', name:'청국장 2개',              price:3000 },
-  { id:'v20', num:'20', name:'숙주 1봉',               price:2000 },
-  { id:'v21', num:'21', name:'콩나물(500g↑)',         price:1000 },
-  { id:'v_oi5', num:'오이', name:'🥒 오이(특) 2개', desc:'오이(특) 2개 (쓰지않는 품종)', price:1000 },
+  { id:'v20', num:'20', name:'숙주 1봉',               price:500 },
+  { id:'v21', num:'21', name:'콩나물(500g↑)',         price:500 },
+  { id:'v_oi5', num:'오이', name:'🥒 오이(특) 5개', desc:'오이(특) 5개 (쓰지않는 품종)', price:2000 },
 
-  { id:'ts_zucchini', num:'13', name:'🥒 애호박 1개',              price:1000 },
+  { id:'ts_zucchini', num:'13', name:'🥒 애호박 1개',              price:700 },
   { id:'v14', num:'14', name:'브로콜리 1개',             price:2000 },
   { id:'v15', num:'16', name:'양상추 1봉',              price:2500 },
-  { id:'v16', num:'17', name:'미나리 1봉',              price:3000 },
+  { id:'v16', num:'17', name:'미나리 1봉', todaySpecial:true, tba:'추후입고', price:3000 },
   { id:'v22', num:'22', name:'표고버섯 1봉',            price:3500 },
+  { id:'v_mushroom_set', num:'🍄', name:'🍄 새송이1봉+느타리1팩+팽이버섯2봉 세트', todaySpecial:true, desc:'새송이버섯 1봉 + 느타리버섯 1팩 + 팽이버섯 2봉', price:2000 },
   { id:'v23', num:'23', name:'새송이버섯 1봉',           price:1500 },
   { id:'v24', num:'24', name:'느타리버섯 1봉',           price:900 },
   { id:'v25', num:'25', name:'팽이버섯 1봉(3입)',        price:1000 },
@@ -1841,7 +1842,7 @@ const vegItems = [
   { id:'v32', num:'32', name:'두부 1팩',               price:2000 },
   { id:'v33', num:'33', name:'순두부 2개',              price:1000 },
   { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7200, origPrice:8500, badge:'특란 7,200원', badgeColor:'#c1121f', maxQty:1 },
-  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888', maxQty:1 },
+  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888' },
   { id:'v34u',num:'34', name:'🥚 유정란 20구 (난각1번·무항생제)', price:11900, origPrice:12900, badge:'유정란 11,900원', badgeColor:'#4caf50' },
 
 ];
@@ -3979,8 +3980,8 @@ const FLASH_ITEMS = [
   { id:'f_uhwangdo_25kg',  label:'단황도(우황도) 2.5kg 1박스',                      max:9999, flashPrice:23900, origPrice:28900,   section:'🍑 복숭아 특가', fullWidth:true, badge:'🍑 망고향 머금은 절묘한 13브릭스의 찐한 달콤함 · 당일선별후 랜덤입고' },
   { id:'f_danhojang_4kg', label:'단호장(13브릭스이상) 1.8+- [강추]',              max:9999, flashPrice:16900,                  section:'🍑 복숭아 특가', badge:'🍑 강력추천! 클래식 정통황도(신맛제로) · 어린이·부모님이 좋아하실 맛 · 당일선별후 랜덤입고' },
   { id:'gamjagoguma_set', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카고구마(밤+호박) 1kg)', max:9999, flashPrice:5900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
-  { id:'v_corn_eol1', label:'🌽 강원도 찰옥수수(미백,얼룩이랜덤) 6개', max:9999, flashPrice:4800, section:'🥬 채소' },
-  { id:'v_corn10_5', label:'🌽 괴산 대학찰옥수수 5개', max:9999, flashPrice:4800, section:'🥬 채소' },
+  { id:'v_corn_eol1', label:'🌽 강원도 찰옥수수(미백,얼룩이랜덤) 6개', max:9999, flashPrice:4400, section:'🥬 채소' },
+  { id:'v_corn10_5', label:'🌽 괴산 대학찰옥수수 5개', max:9999, flashPrice:4000, section:'🥬 채소' },
   { id:'honeystick_1',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 1개',    max:9999, flashPrice:1800,  section:'🍈 델몬트 특가' },
   { id:'honeystick_6',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 6개',    max:9999, flashPrice:9900,  section:'🍈 델몬트 특가' },
   { id:'honeystick_10', label:'델몬트 골드파인 허니스틱(14브릭스이상) 10개(1팩)', max:9999, flashPrice:15500, section:'🍈 델몬트 특가' },
