@@ -457,14 +457,6 @@
                   <div class="oname">대월(13입) 4kg(13브릭스이상)</div>
                   <div class="oprice">35,900원</div>
                 </div>
-                <div class="hbanner-opt" style="flex:1;" onclick="heroAddItem('f_cheonjungdo_4kg')">
-                  <div class="oname">천중도 4kg</div>
-                  <div class="oprice">35,900원</div>
-                </div>
-                <div class="hbanner-opt" style="flex:1;background:#fff8e1;border:2px solid #e63946;animation:pulse 1.6s infinite;" onclick="heroAddItem('f_baekdo_mongboosa_3kg')">
-                  <div class="oname">몽부사(9입) 3kg(설탕물같은 진득함)</div>
-                  <div class="oprice"><span class="hbanner-orig">28,900원</span>24,900원</div>
-                </div>
                 <div class="hbanner-opt" style="flex:1;background:#fff8e1;border:2px solid #e63946;animation:pulse 1.6s infinite;" onclick="heroAddItem('f_daegeukcheon_25kg')">
                   <div class="oname">대극천 2.5kg 🚨시즌마감특가</div>
                   <div class="oprice"><span class="hbanner-orig">22,900원</span>19,900원</div>
@@ -501,6 +493,18 @@
             <div class="hcombo" onclick="heroAddItem('ts_cherry')" style="width:100%;box-sizing:border-box;">
               <div class="hcombo-label">500g</div>
               <div class="hcombo-price"><span style="font-size:11px;text-decoration:line-through;opacity:0.6;margin-right:4px;">10,900원</span>9,900원</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🍊 제주하우스감귤 -->
+        <div class="hsec">
+          <div class="hcat-title">🍊 제주하우스감귤</div>
+          <div class="hcard" style="width:100%;box-sizing:border-box;background:rgba(193,18,31,0.18);border:1.5px solid rgba(230,57,70,0.7);animation:pulse 1.6s infinite;">
+            <div class="hitem-name" style="margin-bottom:8px;">🍊 제주하우스감귤 <span class="hbadge soft" style="margin:0 0 0 2px;">엄청달콤해요</span></div>
+            <div class="hcombo" onclick="heroAddItem('jeju_gamgyul_9')" style="width:100%;box-sizing:border-box;">
+              <div class="hcombo-label">1팩(9입)</div>
+              <div class="hcombo-price">5,500원</div>
             </div>
           </div>
         </div>
@@ -3985,8 +3989,6 @@ const FLASH_ITEMS = [
   { id:'f_melon',            label:'고당도괴물멜론(머스크)1통(2kg+-)',           max:9999, flashPrice:9900, section:'🍉 수박,멜론 특가' },
   { id:'f_melon_honeydew',   label:'고당도괴물멜론(허니듀)1.5+-',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가' },
   { id:'f_baekdo_daewol_4kg', label:'대월(13입) 4kg',                  max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', badge:'🍑 13브릭스이상 · 당일선별후 랜덤입고' },
-  { id:'f_cheonjungdo_4kg', label:'천중도 4kg',                       max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', badge:'🍑 정통백도 특유의 고급스러운향과 진한 달콤함 · 당일선별후 랜덤입고' },
-  { id:'f_baekdo_mongboosa_3kg', label:'몽부사(9입) 3kg',                 max:9999, flashPrice:24900, origPrice:28900,   section:'🍑 복숭아 특가', badge:'🍑 설탕물같은 진득함 · 당일선별후 랜덤입고' },
   { id:'f_daegeukcheon_25kg', label:'대극천 2.5kg(13~15입) 🚨시즌마감특가',           max:9999, flashPrice:19900, origPrice:22900,   section:'🍑 복숭아 특가', badge:'🍑 시즌오프! 오늘(금일) 주문분까지만 · 선착순 10분 한정' },
   { id:'f_uhwangdo_25kg',  label:'단황도(우황도) 2.5kg 1박스',                      max:9999, flashPrice:23900, origPrice:28900,   section:'🍑 복숭아 특가', fullWidth:true, badge:'🍑 망고향 머금은 절묘한 13브릭스의 찐한 달콤함 · 당일선별후 랜덤입고' },
   { id:'f_danhojang_4kg', label:'단호장(13브릭스이상) 1.8+- [강추]',              max:9999, flashPrice:16900,                  section:'🍑 복숭아 특가', badge:'🍑 강력추천! 클래식 정통황도(신맛제로) · 어린이·부모님이 좋아하실 맛 · 당일선별후 랜덤입고' },
@@ -4001,6 +4003,7 @@ const FLASH_ITEMS = [
   { id:'f_jaju_5kg',     label:'자두(후무사) 5kg 1박스',                    max:9999, flashPrice:56900,                  section:'🟣 자두 특가' },
   { id:'f_jaju_2kg',     label:'자두(후무사) 2kg',                         max:9999, flashPrice:23900,                  section:'🟣 자두 특가' },
   { id:'ts_cherry',      label:'캐나다체리(9.5row-대과) 500g [입고기념]',           max:20, flashPrice:9900, origPrice:10900,                  section:'🍒 체리 특가', badge:'🔥 입고기념 특가 · 지금이 가장맛있을때에요' },
+  { id:'jeju_gamgyul_9', label:'제주하우스감귤 1팩(9입)',           max:9999, flashPrice:5500,                  section:'🍒 체리 특가', badge:'🍊 엄청달콤해요' },
   { id:'v36b',           label:'찰토마토 2봉',                               max:9999, flashPrice:6000,  origPrice:8000,  section:'🍅 찰토마토 특가' },
 ];
 const flashCounts = {};
