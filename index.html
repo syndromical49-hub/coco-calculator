@@ -431,9 +431,9 @@
             <div class="hbanner wmelon sparkle-card" onclick="heroAddItem('f51_super')" style="cursor:pointer;grid-column:1 / 3;">
               <span class="hbanner-tag">수박</span>
               <span class="badge-recommend" style="margin-left:4px;">강력추천</span>
-              <div class="hbanner-title">전북진안 고랭지수박(특) 9kg</div>
+              <div class="hbanner-title">강원도 양구수박(특품) 10kg</div>
               <div class="hbanner-sub">진안, 양구 등 당일 당도 선별 후 입고</div>
-              <div class="hbanner-price"><span class="hbanner-orig">29,900원</span>26,900원</div>
+              <div class="hbanner-price"><span class="hbanner-orig">30,900원</span>27,900원</div>
             </div>
             <div class="hbanner melon2" onclick="heroAddItem('f_melon')" style="cursor:pointer;">
               <span class="hbanner-tag">멜론</span>
@@ -607,7 +607,7 @@
               <span class="hitem-icon">🥔</span>
               <div>
                 <div class="hitem-name">감자고구마세트</div>
-                <div class="hitem-sub">수미햇감자 1kg + 베니하루카고구마(밤+호박) 1kg</div>
+                <div class="hitem-sub">수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 1kg</div>
               </div>
             </div>
             <div class="hitem-price-wrap"><span class="hitem-price">5,900<small>원</small></span></div>
@@ -985,7 +985,7 @@
       <div style="height:1px;background:rgba(255,209,102,0.15);margin:4px 0;"></div>
       <div><label class="fl">이름</label><input class="fi" id="inp-name" placeholder="홍길동" maxlength="10" oninput="checkFormReady()"></div>
       <div><label class="fl">닉네임 (선택)</label><input class="fi" id="inp-nick" placeholder="없으면 '없음' 입력" oninput="checkFormReady()" maxlength="15"></div>
-      <div><label class="fl">연락처</label><input class="fi" type="tel" id="inp-phone" placeholder="010-0000-0000" maxlength="13" oninput="checkFormReady();try{localStorage.setItem('ccb_phone',this.value)}catch(e){}" onblur="loadCashReceiptPhonePref()"></div>
+      <div><label class="fl">연락처</label><input class="fi" type="tel" id="inp-phone" placeholder="010-0000-0000" maxlength="13" oninput="checkFormReady();try{localStorage.setItem('ccb_phone',this.value)}catch(e){}" onblur="loadCashReceiptPhonePref();checkMembership()"></div>
       <div style="display:flex;align-items:center;gap:6px;margin:2px 0 6px 2px;">
         <input type="checkbox" id="inp-cash-receipt" style="width:16px;height:16px;" onchange="document.getElementById('cr-phone-wrap').style.display=this.checked?'block':'none';">
         <label for="inp-cash-receipt" style="font-size:0.8rem;color:#555;cursor:pointer;">현금영수증 발급 받기 (소득공제용, 입력하신 전화번호로 자동발급)</label>
@@ -1773,7 +1773,7 @@ const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
   { id:'honeystick_6', todaySpecial:false, num:'🍈', name:'🍈 델몬트 골드파인 허니스틱(14브릭스이상) 6개', desc:'델몬트 골드파인 허니스틱(14브릭스이상) 6개', price:9900 },
 
-  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 전북진안 고랭지수박(특) 9kg', desc:'전북진안 고랭지수박(특) 9kg', orig:29900, price:26900 },
+  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 강원도 양구수박(특품) 10kg', desc:'강원도 양구수박(특품) 10kg', orig:30900, price:27900 },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
   { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'', orig:9800, price:7900 },
   { id:'f_avocado', todaySpecial:false, num:'🥑', name:'🥑 아보카도 5개 [주말초특가]', desc:'아보카도 5개', price:5900 },
@@ -2674,13 +2674,18 @@ function changeQty(id, delta, price, max) {
 function updateTotal() {
   let total = 0;
   for (const id in qtys) {
-    if (qtys[id] > 0 && itemMeta[id]) total += qtys[id] * itemMeta[id].price;
+    if (qtys[id] > 0 && itemMeta[id]) {
+      const base = itemMeta[id].price;
+      const price = (window._isMember && MEMBER_PRICES[id] != null) ? MEMBER_PRICES[id] : base;
+      total += qtys[id] * price;
+    }
   }
   // 선착순 특가 수량 별도 계산
   for (const id in flashQtys) {
     if (flashQtys[id] > 0) {
       const fi = FLASH_ITEMS.find(function(f){ return f.id===id; });
-      const price = (fi && fi.flashPrice) ? fi.flashPrice : (itemMeta[id] ? itemMeta[id].price : 0);
+      const base = (fi && fi.flashPrice) ? fi.flashPrice : (itemMeta[id] ? itemMeta[id].price : 0);
+      const price = (window._isMember && MEMBER_PRICES[id] != null) ? MEMBER_PRICES[id] : base;
       total += flashQtys[id] * price;
     }
   }
@@ -3969,8 +3974,14 @@ function renderFlashSection() {
   }
 }
 
+// ══ 오픈채팅 회원가 (여기에 품목ID: 회원가 로 추가하면 됩니다. 예: ts_goguma3kg: 7500) ══
+// 회원 여부는 전화번호가 customers 테이블에 있는지로 자동 판단됩니다 (한 번이라도 주문한 고객 = 회원)
+const MEMBER_PRICES = {
+  // 'ts_goguma3kg': 7500,
+};
+
 const FLASH_ITEMS = [
-  { id:'f51_super',          label:'전북진안 고랭지수박(특) 9kg',                                   max:9999, flashPrice:26900, origPrice:29900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가 · 전북진안 고랭지수박', fullWidth:true },
+  { id:'f51_super',          label:'강원도 양구수박(특품) 10kg',                                   max:9999, flashPrice:27900, origPrice:30900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가 · 강원도 양구수박', fullWidth:true },
   { id:'f_melon',            label:'고당도괴물멜론(머스크)1통(2kg+-)',           max:9999, flashPrice:9900, section:'🍉 수박,멜론 특가' },
   { id:'f_melon_honeydew',   label:'고당도괴물멜론(허니듀)1.5+-',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가' },
   { id:'f_baekdo_daewol_4kg', label:'대월(13입) 4kg',                  max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', badge:'🍑 13브릭스이상 · 당일선별후 랜덤입고' },
@@ -3979,7 +3990,7 @@ const FLASH_ITEMS = [
   { id:'f_daegeukcheon_25kg', label:'대극천 2.5kg(13~15입) 🚨시즌마감특가',           max:9999, flashPrice:19900, origPrice:22900,   section:'🍑 복숭아 특가', badge:'🍑 시즌오프! 오늘(금일) 주문분까지만 · 선착순 10분 한정' },
   { id:'f_uhwangdo_25kg',  label:'단황도(우황도) 2.5kg 1박스',                      max:9999, flashPrice:23900, origPrice:28900,   section:'🍑 복숭아 특가', fullWidth:true, badge:'🍑 망고향 머금은 절묘한 13브릭스의 찐한 달콤함 · 당일선별후 랜덤입고' },
   { id:'f_danhojang_4kg', label:'단호장(13브릭스이상) 1.8+- [강추]',              max:9999, flashPrice:16900,                  section:'🍑 복숭아 특가', badge:'🍑 강력추천! 클래식 정통황도(신맛제로) · 어린이·부모님이 좋아하실 맛 · 당일선별후 랜덤입고' },
-  { id:'gamjagoguma_set', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카고구마(밤+호박) 1kg)', max:9999, flashPrice:5900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
+  { id:'gamjagoguma_set', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 1kg)', max:9999, flashPrice:5900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
   { id:'v_corn_eol1', label:'🌽 강원도 찰옥수수(미백,얼룩이랜덤) 6개', max:9999, flashPrice:4400, section:'🥬 채소' },
   { id:'v_corn10_5', label:'🌽 괴산 대학찰옥수수 5개', max:9999, flashPrice:4000, section:'🥬 채소' },
   { id:'honeystick_1',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 1개',    max:9999, flashPrice:1800,  section:'🍈 델몬트 특가' },
@@ -4251,11 +4262,29 @@ async function loadCashReceiptPhonePref() {
   } catch (e) {}
 }
 
+// ── 오픈채팅 회원가 조회 (전화번호 기준, 실패해도 무조건 일반가로 조용히 넘어감 — 주문 흐름에 절대 영향 없음) ──
+window._isMember = false;
+async function checkMembership() {
+  try {
+    const phone = (document.getElementById('inp-phone').value || '').replace(/\D/g, '');
+    if (phone.length < 10) { window._isMember = false; updateTotal(); return; }
+    const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + phone + '&select=is_member&limit=1', {
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    });
+    if (!res.ok) { window._isMember = false; return; }
+    const data = await res.json();
+    window._isMember = !!(Array.isArray(data) && data.length && data[0].is_member);
+  } catch (e) {
+    window._isMember = false;
+  }
+  updateTotal();
+}
+
 // ── 고객정보 동기화 (매 주문마다 이름/주소/현관비번/현금영수증번호를 customers 테이블에 upsert, 다음 재주문 자동완성용) ──
 async function saveCashReceiptPhonePref(mainPhone, crPhone, name, address, entry) {
   if (!mainPhone) return;
   try {
-    const body = { phone: mainPhone };
+    const body = { phone: mainPhone, is_member: true };
     if (name) body.name = name;
     if (address) body.address = address;
     if (entry) body.entry = entry;
@@ -4306,14 +4335,17 @@ async function submitCardOrder(ctx) {
       const tcObj = typeChoices[id] || {};
       const tcParts = Object.entries(tcObj).filter(([,v])=>v>0).map(([k,v])=>k+(v>1?'×'+v:''));
       const tc = tcParts.length ? ' (' + tcParts.join('+') + ')' : '';
-      orderItems.push({ item_name: itemMeta[id].name+tc, item_code:id, qty:qtys[id], price:itemMeta[id].price });
+      const base = itemMeta[id].price;
+      const price = (window._isMember && MEMBER_PRICES[id] != null) ? MEMBER_PRICES[id] : base;
+      orderItems.push({ item_name: itemMeta[id].name+tc, item_code:id, qty:qtys[id], price });
     }
   }
   if (typeof flashQtys !== 'undefined') {
     for (const id in flashQtys) {
       if (flashQtys[id] > 0) {
         const fi = FLASH_ITEMS.find(function(f){ return f.id===id; });
-        const price = (fi&&fi.flashPrice) ? fi.flashPrice : (itemMeta[id]?itemMeta[id].price:0);
+        const base = (fi&&fi.flashPrice) ? fi.flashPrice : (itemMeta[id]?itemMeta[id].price:0);
+        const price = (window._isMember && MEMBER_PRICES[id] != null) ? MEMBER_PRICES[id] : base;
         const tcObj = typeChoices[id] || {};
         const tcParts = Object.entries(tcObj).filter(([,v])=>v>0).map(([k,v])=>k+(v>1?'×'+v:''));
         const tc = tcParts.length ? ' (' + tcParts.join('+') + ')' : '';
@@ -4600,7 +4632,7 @@ window.orderDirect = async function() {
     const ordRes = await fetch(SB_URL + '/rest/v1/orders', {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'},
-      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked), cash_receipt_phone:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null })
+      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked), cash_receipt_phone:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, applied_price_tier: (window._isMember ? 'member' : 'normal') })
     });
 
     // 중복(409/23505)이면 이미 접수된 주문 → 완료 화면만 표시
