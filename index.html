@@ -434,9 +434,9 @@
               <div class="hbanner-title">강원도 양구수박(특품) 10kg</div>
               <div class="hbanner-sub">진안, 양구 등 당일 당도 선별 후 입고</div>
               <div class="hbanner-price"><span class="hbanner-orig">30,900원</span>27,900원</div>
-              <div id="promo-f51_promo" onclick="event.stopPropagation();tryAddPromo30k('f51_promo')" style="margin-top:8px;background:#fdecea;border:2px solid #e63946;border-radius:8px;padding:6px 10px;text-align:center;animation:pulse 1.6s infinite;">
-                <div style="font-size:11.5px;font-weight:900;color:#c1121f;">🚨 3만원 이상 주문 시 단돈</div>
-                <div style="font-size:18px;font-weight:900;color:#c1121f;">23,900원</div>
+              <div style="margin-top:8px;background:#fdecea;border:2px solid #e63946;border-radius:8px;padding:6px 10px;text-align:center;animation:pulse 1.6s infinite;">
+                <div style="font-size:11.5px;font-weight:900;color:#c1121f;">🚨 3만원 이상 주문 시 단돈 23,900원</div>
+                <div style="font-size:11px;font-weight:800;color:#c1121f;margin-top:2px;">🎉 단골이시면 3만원 조건 없이 23,900원!</div>
               </div>
             </div>
             <div class="hbanner melon2" onclick="heroAddItem('f_melon')" style="cursor:pointer;">
@@ -2588,14 +2588,43 @@ function heroAddItem(id) {
   if (tabEl) tabEl.click();
 }
 
-function changeQty(id, delta, price, max) {
-  // 특란 3만원 이상 프로모션 게이트 — 히어로카드뿐 아니라 전체목록 +버튼 등 모든 경로에서 막음
+async function changeQty(id, delta, price, max) {
+  // 특란/수박 3만원 이상 프로모션 게이트 — 히어로카드, 전체목록, 제철특가탭 등 모든 경로가 이 함수를 거침
   if (delta > 0 && typeof EGG_PROMO_IDS !== 'undefined' && EGG_PROMO_IDS.includes(id)) {
     const sub = nonEggSubtotal();
-    if (sub < EGG_PROMO_THRESHOLD) {
-      const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-      showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
-      return;
+    const alreadyOk = sub >= EGG_PROMO_THRESHOLD || (window._isMember && id === 'f51_promo');
+    if (!alreadyOk) {
+      if (id === 'f51_promo') {
+        const phoneRaw = prompt('전화번호를 입력하시면 단골 회원인지 바로 확인해드려요! (예: 01012345678)');
+        if (phoneRaw === null) return; // 취소
+        const phone = phoneRaw.replace(/\D/g, '');
+        if (phone.length < 10) { showToast('전화번호를 정확히 입력해주세요'); return; }
+        showToast('🔍 회원 확인 중...');
+        let isMem = false;
+        try {
+          const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + phone + '&select=is_member&limit=1', {
+            headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            isMem = !!(Array.isArray(data) && data.length && data[0].is_member);
+          }
+        } catch (e) {}
+        window._isMember = isMem;
+        const phoneInput = document.getElementById('inp-phone');
+        if (phoneInput && !phoneInput.value) {
+          phoneInput.value = phone.length === 11 ? phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') : phone;
+        }
+        if (!isMem) {
+          showToast('처음 뵙는 번호예요 — 3만원 이상 담으시면 이 특가도 열려요!');
+          return;
+        }
+        showToast('✅ 단골 회원 확인됐어요! 23,900원 특가 담을게요');
+      } else {
+        const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
+        showToast(`🥚 특란 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+        return;
+      }
     }
   }
   // 타입피커 품목 (오이·가지, 감자·고구마, 잎채소 등) - 수량 미선택 시 안내
@@ -2706,28 +2735,59 @@ function nonEggSubtotal() {
 }
 function tryAddEggPromo(id) {
   const sub = nonEggSubtotal();
-  if (sub < EGG_PROMO_THRESHOLD) {
+  if (sub < EGG_PROMO_THRESHOLD && !(window._isMember && id === 'f51_promo')) {
     const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
     showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
     return;
   }
   heroAddItem(id);
 }
-function tryAddPromo30k(id) {
+async function tryAddPromo30k(id) {
   const sub = nonEggSubtotal();
-  if (sub < EGG_PROMO_THRESHOLD) {
-    const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-    showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+  const alreadyOk = sub >= EGG_PROMO_THRESHOLD || (window._isMember && id === 'f51_promo');
+  if (alreadyOk) { heroAddItem(id); return; }
+
+  // 수박(f51_promo)만: 아직 3만원도 안 채웠고 회원여부도 모르는 상태라면, 그 자리에서 번호 물어보고 즉시 확인
+  if (id === 'f51_promo') {
+    const phoneRaw = prompt('전화번호를 입력하시면 단골 회원인지 바로 확인해드려요! (예: 01012345678)');
+    if (phoneRaw === null) return; // 취소
+    const phone = phoneRaw.replace(/\D/g, '');
+    if (phone.length < 10) { showToast('전화번호를 정확히 입력해주세요'); return; }
+    showToast('🔍 회원 확인 중...');
+    let isMem = false;
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + phone + '&select=is_member&limit=1', {
+        headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        isMem = !!(Array.isArray(data) && data.length && data[0].is_member);
+      }
+    } catch (e) {}
+    window._isMember = isMem;
+    // 나중에 주문서 작성할 때 다시 안 적어도 되게 연락처 칸에 미리 채워둠
+    const phoneInput = document.getElementById('inp-phone');
+    if (phoneInput && !phoneInput.value) {
+      phoneInput.value = phone.length === 11 ? phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') : phone;
+    }
+    if (isMem) {
+      showToast('✅ 단골 회원 확인됐어요! 23,900원 특가 담을게요');
+      heroAddItem(id);
+    } else {
+      showToast('처음 뵙는 번호예요 — 3만원 이상 담으시면 이 특가도 열려요!');
+    }
     return;
   }
-  heroAddItem(id);
+
+  const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
+  showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
 }
 function updateEggPromoLock() {
   const sub = nonEggSubtotal();
-  const unlocked = sub >= EGG_PROMO_THRESHOLD;
+  const eggUnlocked = sub >= EGG_PROMO_THRESHOLD; // 계란은 회원이어도 3만원 조건 그대로
   const bannerEl = document.getElementById('eggPromoBanner');
   if (bannerEl) {
-    if (unlocked) {
+    if (eggUnlocked) {
       bannerEl.innerHTML = '✅ 특란 특가 열렸어요! 30구 5,900원 / 2판 13,900원(2일한정)';
     } else {
       const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
@@ -2737,6 +2797,8 @@ function updateEggPromoLock() {
   EGG_PROMO_IDS.forEach(id => {
     const el = document.getElementById('eggpromo-' + id) || document.getElementById('promo-' + id);
     if (!el) return;
+    // 수박(f51_promo)은 회원이면 조건 없이 항상 해제, 계란은 3만원 조건 그대로
+    const unlocked = (id === 'f51_promo' && window._isMember) ? true : eggUnlocked;
     el.style.opacity = unlocked ? '1' : '0.4';
     el.style.filter = unlocked ? 'none' : 'grayscale(60%)';
   });
@@ -4131,14 +4193,43 @@ function applyFlashSoldout() {
 }
 
 
-function flashAdj(id, delta) {
-  // 특란/수박 등 3만원 이상 프로모션 게이트 — 제철특가 탭 경로도 동일하게 막음
+async function flashAdj(id, delta) {
+  // 특란/수박 등 3만원 이상 프로모션 게이트 — 실제 주문은 이 탭에서 이뤄짐
   if (delta > 0 && typeof EGG_PROMO_IDS !== 'undefined' && EGG_PROMO_IDS.includes(id)) {
     const sub = nonEggSubtotal();
-    if (sub < EGG_PROMO_THRESHOLD) {
-      const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-      showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
-      return;
+    const alreadyOk = sub >= EGG_PROMO_THRESHOLD || (window._isMember && id === 'f51_promo');
+    if (!alreadyOk) {
+      if (id === 'f51_promo') {
+        const phoneRaw = prompt('전화번호를 입력하시면 단골 회원인지 바로 확인해드려요! (예: 01012345678)');
+        if (phoneRaw === null) return; // 취소
+        const phone = phoneRaw.replace(/\D/g, '');
+        if (phone.length < 10) { showToast('전화번호를 정확히 입력해주세요'); return; }
+        showToast('🔍 회원 확인 중...');
+        let isMem = false;
+        try {
+          const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + phone + '&select=is_member&limit=1', {
+            headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            isMem = !!(Array.isArray(data) && data.length && data[0].is_member);
+          }
+        } catch (e) {}
+        window._isMember = isMem;
+        const phoneInput = document.getElementById('inp-phone');
+        if (phoneInput && !phoneInput.value) {
+          phoneInput.value = phone.length === 11 ? phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') : phone;
+        }
+        if (!isMem) {
+          showToast('처음 뵙는 번호예요 — 3만원 이상 담으시면 이 특가도 열려요!');
+          return;
+        }
+        showToast('✅ 단골 회원 확인됐어요! 23,900원 특가 담을게요');
+      } else {
+        const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
+        showToast(`🥚 특란 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+        return;
+      }
     }
   }
   const fi = FLASH_ITEMS.find(function(f) { return f.id === id; });
