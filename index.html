@@ -2594,7 +2594,7 @@ function changeQty(id, delta, price, max) {
     const sub = nonEggSubtotal();
     if (sub < EGG_PROMO_THRESHOLD) {
       const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-      showToast(`🥚 특란 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+      showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
       return;
     }
   }
@@ -2708,7 +2708,7 @@ function tryAddEggPromo(id) {
   const sub = nonEggSubtotal();
   if (sub < EGG_PROMO_THRESHOLD) {
     const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-    showToast(`🥚 특란 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+    showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
     return;
   }
   heroAddItem(id);
@@ -2717,7 +2717,7 @@ function tryAddPromo30k(id) {
   const sub = nonEggSubtotal();
   if (sub < EGG_PROMO_THRESHOLD) {
     const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-    showToast(`🍉 이 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+    showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
     return;
   }
   heroAddItem(id);
@@ -4054,9 +4054,10 @@ const MEMBER_PRICES = {
 
 const FLASH_ITEMS = [
   { id:'f51_super',          label:'강원도 양구수박(특품) 10kg',                                   max:9999, flashPrice:27900, origPrice:30900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가 · 강원도 양구수박', fullWidth:true },
+  { id:'f51_promo',          label:'강원도 양구수박(특품) 10kg 🚨3만원이상특가',                   max:1, flashPrice:23900, section:'🍉 수박,멜론 특가', badge:'🚨 3만원 이상 주문시만 · 1통 한정', fullWidth:true },
   { id:'f_melon',            label:'고당도괴물멜론(머스크)1통(2kg+-)',           max:9999, flashPrice:9900, section:'🍉 수박,멜론 특가' },
   { id:'f_melon_honeydew',   label:'고당도괴물멜론(허니듀)1.5+-',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가' },
-  { id:'f_baekdo_daewol_4kg', label:'백도(대월,경봉,유명,그레이트,천중도등) 4kg',                  max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', badge:'🍑 선별 후 랜덤입고(4kg기준)' },
+  { id:'f_baekdo_daewol_4kg', label:'백도(대월,경봉,유명,그레이트,천중도등) 4kg',                  max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, badge:'🍑 선별 후 랜덤입고(4kg기준)' },
   { id:'f_uhwangdo_25kg',  label:'황도(단호장,엘바트,금황등) 4kg',                      max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, badge:'🍑 선별 후 랜덤입고(4kg기준)' },
   { id:'gamjagoguma_set', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 1kg)', max:9999, flashPrice:5900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
   { id:'v_corn_eol1', label:'🌽 강원도 찰옥수수(미백,얼룩이랜덤) 6개', max:9999, flashPrice:4400, section:'🥬 채소' },
@@ -4131,6 +4132,15 @@ function applyFlashSoldout() {
 
 
 function flashAdj(id, delta) {
+  // 특란/수박 등 3만원 이상 프로모션 게이트 — 제철특가 탭 경로도 동일하게 막음
+  if (delta > 0 && typeof EGG_PROMO_IDS !== 'undefined' && EGG_PROMO_IDS.includes(id)) {
+    const sub = nonEggSubtotal();
+    if (sub < EGG_PROMO_THRESHOLD) {
+      const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
+      showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+      return;
+    }
+  }
   const fi = FLASH_ITEMS.find(function(f) { return f.id === id; });
   if (!fi) return;
   const maxRemain = fi.max >= 9999 ? 99 : Math.max(0, fi.max - (flashCounts[fi.id] || 0));
