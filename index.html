@@ -4669,6 +4669,32 @@ window.orderDirect = async function() {
     (typeof flashQtys!=='undefined' && Object.values(flashQtys).some(function(v){ return v>0; }));
   if (!hasItems) { showToast('담은 상품이 없어요!'); return; }
 
+  // ⚠️ 최종 안전장치: 특란/수박 3만원특가가 담겨있는데 지금 조건(3만원 이상 또는 회원)을 못 채우면
+  // 제출 직전에 다시 한번 확인해서 자동으로 빼고 제출을 막음 (중간에 다른 상품을 뺀 경우 등 대비)
+  if (typeof EGG_PROMO_IDS !== 'undefined') {
+    const sub = nonEggSubtotal();
+    let removedAny = false;
+    EGG_PROMO_IDS.forEach(function(id){
+      const inCart = (qtys[id] > 0) || (typeof flashQtys !== 'undefined' && flashQtys[id] > 0);
+      if (!inCart) return;
+      const ok = sub >= EGG_PROMO_THRESHOLD || (window._isMember && id === 'f51_promo');
+      if (!ok) {
+        if (qtys[id] > 0) qtys[id] = 0;
+        if (typeof flashQtys !== 'undefined' && flashQtys[id] > 0) flashQtys[id] = 0;
+        const qEl = document.getElementById('qty-' + id);
+        if (qEl) qEl.textContent = '0';
+        const fqEl = document.getElementById('fqty-' + id);
+        if (fqEl) fqEl.textContent = '0';
+        removedAny = true;
+      }
+    });
+    if (removedAny) {
+      updateTotal();
+      alert('⚠️ 3만원 특가 조건을 더 이상 만족하지 않아, 해당 특가 상품은 장바구니에서 제외했습니다.\n합계를 확인하고 다시 주문해주세요.');
+      return;
+    }
+  }
+
   // 교차 선택 필수 체크 (types 있는 품목은 반드시 수량 채워야 제출 가능)
   const typeItems = typeof FLASH_ITEMS !== 'undefined'
     ? FLASH_ITEMS.filter(function(f){ return f.types && f.types.length; })
