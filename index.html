@@ -441,12 +441,12 @@
             </div>
             <div class="hbanner melon2" onclick="heroAddItem('f_melon')" style="cursor:pointer;">
               <span class="hbanner-tag">멜론</span>
-              <div class="hbanner-title">고당도괴물멜론(머스크)1통(2kg+-)</div>
-              <div class="hbanner-price">9,900원</div>
+              <div class="hbanner-title">고당도괴물멜론(머스크-고창) 2.5kg전후 1통</div>
+              <div class="hbanner-price">12,900원</div>
             </div>
             <div class="hbanner melon2" onclick="heroAddItem('f_melon_honeydew')" style="cursor:pointer;">
               <span class="hbanner-tag">멜론</span>
-              <div class="hbanner-title">고당도괴물멜론(허니듀)1.5+-</div>
+              <div class="hbanner-title">고당도괴물멜론(허니듀)1.5전후</div>
               <div class="hbanner-price">9,000원</div>
             </div>
             <div style="grid-column:1 / 3;background:linear-gradient(90deg,#8b4a1f,#a8672e);color:#fff;font-size:10px;font-weight:900;padding:3px 8px;border-radius:6px;text-align:center;margin-bottom:-2px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;">
@@ -3165,30 +3165,6 @@ async function orderDirect() {
   showToast('✅ 주문이 접수됐어요!');
 }
 
-// ══ 카카오 주문 ════════════════════════════
-function orderKakao() {
-  const text = buildOrderText();
-  if (!text) { showToast('담은 상품이 없어요!'); return; }
-  navigator.clipboard.writeText(text).then(() => {
-    showToast('✅ 복사완료! 카톡 열리면 채팅창 길게 눌러 붙여넣기 후 전송!');
-    setTimeout(() => { window.open('https://open.kakao.com/o/sY6gshpi', '_blank'); }, 800);
-  }).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-    showToast('✅ 복사완료! 카톡 열리면 채팅창 길게 눌러 붙여넣기 후 전송!');
-    setTimeout(() => { window.open('https://open.kakao.com/o/sY6gshpi', '_blank'); }, 800);
-  });
-}
-
-// ══ 문자 주문 ══════════════════════════════
-function orderSms() {
-  const text = buildOrderText();
-  if (!text) { showToast('담은 상품이 없어요!'); return; }
-  const encoded = encodeURIComponent(text);
-  window.location.href = `sms:01076794994?body=${encoded}`;
-}
-
 // ══ 초기화 ════════════════════════════════
 function resetAll() {
   for (const id in qtys) qtys[id] = 0;
@@ -3267,27 +3243,6 @@ function buildOrderText() {
     }
   }
   return '📦 코코바스켓 주문\n' + userLine + lines.join('\n') + '\n─────────────\n합계: ' + total.toLocaleString() + '원';
-}
-
-function orderKakao() {
-  const text = buildOrderText();
-  if (!text) { showToast('담은 상품이 없어요!'); return; }
-  navigator.clipboard.writeText(text).then(() => {
-    showToast('✅ 복사완료! 카톡 열리면 채팅창 길게 눌러 붙여넣기 후 전송!');
-    setTimeout(() => { window.open('https://open.kakao.com/o/sY6gshpi', '_blank'); }, 800);
-  }).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;';
-    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-    showToast('✅ 복사완료! 카톡 열리면 채팅창 길게 눌러 붙여넣기 후 전송!');
-    setTimeout(() => { window.open('https://open.kakao.com/o/sY6gshpi', '_blank'); }, 800);
-  });
-}
-
-function orderSms() {
-  const text = buildOrderText();
-  if (!text) { showToast('담은 상품이 없어요!'); return; }
-  window.location.href = 'sms:01076794994?body=' + encodeURIComponent(text);
 }
 
 function toggleSummary() {
@@ -4137,7 +4092,7 @@ const FLASH_ITEMS = [
   { id:'f51_super',          label:'강원도 양구수박(특품) 10kg',                                   max:9999, flashPrice:27900, origPrice:30900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가 · 강원도 양구수박', fullWidth:true },
   { id:'f51_promo',          label:'강원도 양구수박(특품) 10kg 🚨3만원이상특가',                   max:9999, flashPrice:23900, section:'🍉 수박,멜론 특가', badge:'🚨 3만원 이상 주문시만', fullWidth:true },
   { id:'f_melon',            label:'고당도괴물멜론(머스크-고창) 2.5kg전후 1통 [강추]',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!' },
-  { id:'f_melon_honeydew',   label:'고당도괴물멜론(허니듀)1.5+-',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가' },
+  { id:'f_melon_honeydew',   label:'고당도괴물멜론(허니듀)1.5전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가' },
   { id:'f_baekdo_daewol_4kg', label:'백도(대월,경봉,유명,그레이트,천중도등) 4kg',                  max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'그레이트', badge:'🍑 선별 후 랜덤입고(4kg기준)' },
   { id:'f_uhwangdo_25kg',  label:'황도(단호장,엘바트,금황등) 4kg',                      max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'단호장', badge:'🍑 선별 후 랜덤입고(4kg기준)' },
   { id:'gamjagoguma_set', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 1kg)', max:9999, flashPrice:5900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
@@ -4198,19 +4153,6 @@ async function loadFlashCounts() {
   }
   applyFlashSoldout();
   renderFlashSection();
-}
-
-function applyFlashSoldout() {
-  const params = new URLSearchParams(location.search);
-  const sold = params.get('sold') || '';
-  const keywords = sold.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
-  keywords.forEach(function(kw) {
-    FLASH_ITEMS.forEach(function(fi) {
-      if (fi.label.includes(kw) || kw.includes(fi.label.substring(0,3))) {
-        flashCounts[fi.id] = fi.max;
-      }
-    });
-  });
 }
 
 
