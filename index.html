@@ -4511,7 +4511,7 @@ async function submitCardOrder(ctx) {
 
     if (!regRes.ok || !reg.success) {
       if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
-      console.error('[KCP register 실패 - 디버그]', reg); // ⚠️ 디버깅용, 원인 파악 후 제거
+      console.error('[KCP register] 실패:', reg.error || reg);
       showToast('❌ 카드결제 준비에 실패했어요. (' + (reg.error||'') + ')\n계좌이체로 시도해주세요.');
       return;
     }
