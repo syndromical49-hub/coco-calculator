@@ -1151,13 +1151,9 @@
         <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:10px;">💳 결제수단</div>
         <div style="display:flex;gap:8px;">
           <button type="button" id="pay-method-bank" onclick="selectPayMethod('bank')" style="flex:1;padding:12px;border-radius:10px;border:2px solid #2d7a4f;background:#2d7a4f;color:#fff;font-weight:900;font-size:0.85rem;cursor:pointer;">🏦 계좌이체</button>
-          <button type="button" id="pay-method-card" onclick="selectPayMethod('card')" style="flex:1;padding:12px;border-radius:10px;border:2px solid #ddd;background:#f5f5f5;color:#aaa;font-weight:900;font-size:0.85rem;cursor:pointer;position:relative;">
+          <button type="button" id="pay-method-card" onclick="selectPayMethod('card')" style="flex:1;padding:12px;border-radius:10px;border:2px solid #ddd;background:#f5f5f5;color:#aaa;font-weight:900;font-size:0.85rem;cursor:pointer;">
             💳 카드결제(간편결제)
-            <span style="position:absolute;top:-8px;right:6px;background:#ffd166;color:#7a5c00;font-size:0.6rem;font-weight:900;padding:2px 6px;border-radius:8px;">예정</span>
           </button>
-        </div>
-        <div style="margin-top:10px;background:#fff0f0;border:1.5px solid #ffb3b3;border-radius:10px;padding:8px 10px;text-align:center;">
-          <div style="font-size:0.72rem;font-weight:900;color:#c1121f;line-height:1.6;">⚠️ 카드연동 테스트 및 심사 진행 중이므로<br>카드결제 버튼은 절대 누르지 마세요!<br>지금은 계좌이체로만 주문 진행해주세요.</div>
         </div>
       </div>
 
@@ -3882,9 +3878,9 @@ function renderFlashSection() {
       const nameOnly = fullName.includes('+') ? '+' + fullName.split('+').slice(1).join('+') : fullName;
       const stepperHtml = sold
         ? '<span style="font-size:0.85rem;color:#c1121f;font-weight:900;">⛔ 마감</span>'
-        : '<button class="flash-btn-sub" style="width:30px;height:30px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',9999)">－</button>' +
+        : '<button class="flash-btn-sub" style="width:30px;height:30px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',' + (fi.maxQty||9999) + ')">－</button>' +
           '<span class="flash-qty" id="qty-' + fid + '" style="min-width:18px;font-size:1.05rem;">' + qty + '</span>' +
-          '<button class="flash-btn-add" style="width:30px;height:30px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',9999)">＋</button>';
+          '<button class="flash-btn-add" style="width:30px;height:30px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',' + (fi.maxQty||9999) + ')">＋</button>';
       const line = document.createElement('div');
       line.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;' + (sold ? 'opacity:0.5;' : '');
       line.innerHTML =
@@ -3930,9 +3926,9 @@ function renderFlashSection() {
       const nameOnly = meta.name.replace(/^\S+\s*/, '');
       const stepperHtml = sold
         ? '<span style="font-size:0.78rem;color:#c1121f;font-weight:900;">⛔ 마감</span>'
-        : '<button class="flash-btn-sub" style="width:29px;height:29px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',9999)">－</button>' +
+        : '<button class="flash-btn-sub" style="width:29px;height:29px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',' + (fi.maxQty||9999) + ')">－</button>' +
           '<span class="flash-qty" id="qty-' + fid + '" style="min-width:18px;">' + qty + '</span>' +
-          '<button class="flash-btn-add" style="width:29px;height:29px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',9999)">＋</button>';
+          '<button class="flash-btn-add" style="width:29px;height:29px;font-size:1.05rem;" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',' + (fi.maxQty||9999) + ')">＋</button>';
       const card = document.createElement('div');
       card.className = 'set-card' + (sold ? ' sold' : '');
       if (fi.highlight && !sold) {
@@ -4018,12 +4014,12 @@ function renderFlashSection() {
         if (!pmeta) { pmeta = { name: pfi.label, price: pfi.flashPrice || 0 }; itemMeta[pfi.id] = pmeta; }
         qtys[pfi.id] = qtys[pfi.id] || 0;
         const pqty = qtys[pfi.id];
-        const pStepper = '<button class="flash-btn-sub" onclick="changeQty(\'' + pfi.id + '\',-1,' + pmeta.price + ',9999)">－</button>' +
+        const pStepper = '<button class="flash-btn-sub" onclick="changeQty(\'' + pfi.id + '\',-1,' + pmeta.price + ',' + (pfi.maxQty||9999) + ')">－</button>' +
           '<span class="flash-qty" id="qty-' + pfi.id + '">' + pqty + '</span>' +
-          '<button class="flash-btn-add" onclick="changeQty(\'' + pfi.id + '\',1,' + pmeta.price + ',9999)">＋</button>';
-        const stepperHtmlMain = '<button class="flash-btn-sub" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',9999)">－</button>' +
+          '<button class="flash-btn-add" onclick="changeQty(\'' + pfi.id + '\',1,' + pmeta.price + ',' + (pfi.maxQty||9999) + ')">＋</button>';
+        const stepperHtmlMain = '<button class="flash-btn-sub" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',' + (fi.maxQty||9999) + ')">－</button>' +
           '<span class="flash-qty" id="qty-' + fid + '">' + qty + '</span>' +
-          '<button class="flash-btn-add" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',9999)">＋</button>';
+          '<button class="flash-btn-add" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',' + (fi.maxQty||9999) + ')">＋</button>';
         const comboLabel = meta.name.replace(/\s*\d.*$/, '').trim();
         const rowHtml = (name, price, stepper) =>
           '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid rgba(0,0,0,0.06);">' +
@@ -4046,9 +4042,9 @@ function renderFlashSection() {
     }
     const stepperHtml = sold
       ? '<button class="flash-btn-add" disabled style="opacity:0.3;cursor:not-allowed;">마감</button>'
-      : '<button class="flash-btn-sub" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',9999)">－</button>' +
+      : '<button class="flash-btn-sub" onclick="changeQty(\'' + fid + '\',-1,' + meta.price + ',' + (fi.maxQty||9999) + ')">－</button>' +
         '<span class="flash-qty" id="qty-' + fid + '">' + qty + '</span>' +
-        '<button class="flash-btn-add" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',9999)">＋</button>';
+        '<button class="flash-btn-add" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',' + (fi.maxQty||9999) + ')">＋</button>';
     const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'coco';
   const counterHtml = sold
       ? '<span class="flash-sold">⛔ 마감</span>'
@@ -4098,7 +4094,7 @@ const FLASH_ITEMS = [
   { id:'f51_promo',          label:'강원도 양구수박(특품) 10kg 🚨3만원이상특가',                   max:0, flashPrice:23900, section:'🍉 수박,멜론 특가', badge:'🚨 3만원 이상 주문시만', fullWidth:true },
   { id:'f_melon',            label:'고당도괴물멜론(머스크-고창) 2.5kg전후 1통 [강추]',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!' },
   { id:'f_melon_honeydew',   label:'고당도괴물멜론(허니듀)1.5전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가' },
-  { id:'f_baekdo_daewol_4kg', label:'백도(대월,경봉,유명,그레이트,천중도등) 4kg',                  max:9999, flashPrice:28900, origPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'그레이트', badge:'🍑 초특가 선착순 · 선별 후 랜덤입고(4kg기준)' },
+  { id:'f_baekdo_daewol_4kg', label:'백도(대월,경봉,유명,그레이트,천중도등) 4kg',                  max:9999, maxQty:1, flashPrice:28900, origPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'그레이트', badge:'🍑 초특가 · 1인 1개 한정 · 선별 후 랜덤입고(4kg기준)' },
   { id:'f_uhwangdo_25kg',  label:'황도(단호장,엘바트,금황등) 4kg',                      max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'단호장', badge:'🍑 선별 후 랜덤입고(4kg기준)' },
   { id:'gamjagoguma_set', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 1kg)', max:9999, flashPrice:5900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
   { id:'v_paprika_1', label:'🫑 스위트 미니 파프리카 1팩(250g)', max:9999, flashPrice:3000, section:'🥬 채소' },
@@ -4444,10 +4440,6 @@ function selectPayMethod(method) {
   const bankBtn = document.getElementById('pay-method-bank');
   const cardBtn = document.getElementById('pay-method-card');
   if (method === 'card') {
-    // ⚠️ TEMP: KCP 연동 테스트용으로 임시 해제. 테스트 끝나면 다시 아래처럼 막을 것:
-    //   if (typeof showToast === 'function') showToast('💳 카드결제는 곧 오픈 예정이에요!');
-    //   else alert('카드결제는 곧 오픈 예정이에요!');
-    //   return;
     window._payMethod = 'card';
     if (cardBtn) { cardBtn.style.background = '#2d7a4f'; cardBtn.style.borderColor = '#2d7a4f'; cardBtn.style.color = '#fff'; }
     if (bankBtn) { bankBtn.style.background = '#f5f5f5'; bankBtn.style.borderColor = '#ddd'; bankBtn.style.color = '#aaa'; }
@@ -4460,8 +4452,7 @@ function selectPayMethod(method) {
 
 // ══════════════════════════════════════════════════════════════
 // 카드결제(KCP) 처리 — 서버 검증 후에만 저장. 절대 클라이언트에서 직접 INSERT 안 함.
-// 지금은 selectPayMethod에서 카드결제 선택 자체를 막아뒀기 때문에 실제로는 호출되지 않지만,
-// 테스트 완료 후 selectPayMethod의 가드만 풀면 바로 쓸 수 있도록 로직은 미리 준비해둠.
+// 2026.07.24 카드사심사 전체 완료 확인 후 정식 오픈됨.
 // ══════════════════════════════════════════════════════════════
 async function submitCardOrder(ctx) {
   const { u, total, addr, doneItemsHtml, renderDoneItems, submitBtn, doneEl } = ctx;
