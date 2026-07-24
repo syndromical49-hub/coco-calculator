@@ -457,11 +457,14 @@
               <span class="hbanner-tag">백도</span>
               <div class="hbanner-title">백도(대월,경봉,아부,그레이트등 당일선별 랜덤입고)</div>
               <div style="display:flex;align-items:stretch;gap:6px;">
-                <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900;color:#c1121f;padding:0 8px;">그레이트</div>
+                <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#c1121f,#e63946);border-radius:10px;padding:6px 10px;box-shadow:0 2px 8px rgba(193,18,31,0.5);">
+                  <div style="font-size:10px;color:#fff;font-weight:700;opacity:0.9;">🔥오늘의품종</div>
+                  <div style="font-size:24px;font-weight:900;color:#fff;line-height:1.1;text-shadow:0 1px 2px rgba(0,0,0,0.3);">그레이트</div>
+                </div>
                 <div class="hbanner-opts" style="flex:1;">
-                  <div class="hbanner-opt" style="flex:1;" onclick="heroAddItem('f_baekdo_daewol_4kg')">
-                    <div class="oname">대월,경봉,유명,그레이트,천중도등<br>선별 후 랜덤입고 (4kg기준)</div>
-                    <div class="oprice">35,900원</div>
+                  <div class="hbanner-opt" style="flex:1;background:#fff8e1;border:2px solid #e63946;animation:pulse 1.6s infinite;" onclick="heroAddItem('f_baekdo_daewol_4kg')">
+                    <div class="oname">대월,경봉,유명,그레이트,천중도등<br>선별 후 랜덤입고 (4kg기준) <span style="background:#e63946;color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:8px;">초특가 선착순</span></div>
+                    <div class="oprice"><span class="hbanner-orig">35,900원</span>28,900원</div>
                   </div>
                 </div>
               </div>
@@ -561,8 +564,8 @@
         <div class="hsec">
           <div class="hcat-title">🌽 옥수수</div>
           <div class="hcard" style="width:100%;box-sizing:border-box;">
-            <div class="hitem-name" style="margin-bottom:6px;">🌽 괴산 대학찰옥수수 <span class="hbadge soft" style="margin:0 0 0 2px;">입고특가</span></div>
-            <div class="hgrid3">
+            <div class="hitem-name" style="margin-bottom:6px;">🌽 괴산 대학찰옥수수 <span class="hbadge soft" style="margin:0 0 0 2px;background:#e89b00;color:#fff;">⏰ 미입고(토요일까지)</span></div>
+            <div class="hgrid3" style="opacity:0.5;">
               <div class="hcombo" onclick="heroAddItem('v_corn10_5')">
                 <div class="hcombo-label">5개</div>
                 <div class="hcombo-price">4,800원</div>
@@ -1776,8 +1779,8 @@ const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
   { id:'honeystick_6', todaySpecial:false, num:'🍈', name:'🍈 델몬트 골드파인 허니스틱(14브릭스이상) 6개', desc:'델몬트 골드파인 허니스틱(14브릭스이상) 6개', price:9900 },
 
-  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 강원도 양구수박(특품) 10kg', desc:'강원도 양구수박(특품) 10kg', orig:30900, price:27900 },
-  { id:'f51_promo', todaySpecial:true, num:'🍉', name:'🍉 강원도 양구수박(특품) 10kg [3만원이상특가]', desc:'강원도 양구수박(특품) 10kg - 3만원 이상 주문시', price:23900 },
+  { id:'f51_super', todaySpecial:true, num:'🍉', name:'🍉 강원도 양구수박(특품) 10kg', desc:'강원도 양구수박(특품) 10kg', orig:30900, price:27900, sold:true },
+  { id:'f51_promo', todaySpecial:true, num:'🍉', name:'🍉 강원도 양구수박(특품) 10kg [3만원이상특가]', desc:'강원도 양구수박(특품) 10kg - 3만원 이상 주문시', price:23900, sold:true },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
   { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'', orig:9800, price:7900 },
   { id:'f_avocado', todaySpecial:false, num:'🥑', name:'🥑 아보카도 5개 [주말초특가]', desc:'아보카도 5개', price:5900 },
@@ -1799,11 +1802,11 @@ const vegItems = [
 
 
   { id:'v_corn_eol10', todaySpecial:true, num:'🌽', name:'🌽 강원도 찰옥수수(미백,얼룩이랜덤) 10개',       desc:'강원도 찰옥수수(미백,얼룩이랜덤) 10개', price:7800, maxQty:1 },
-  { id:'v_corn10', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 10개(입고특가)', desc:'괴산 대학찰옥수수 10개(입고특가)', price:8800 },
-  { id:'v_corn10_30', todaySpecial:false, num:'🌽', name:'🌽 괴산 대학찰옥수수 1망(30입)', desc:'괴산 대학찰옥수수 1망(30입)', price:20000 },
+  { id:'v_corn10', todaySpecial:false, num:'🌽', name:'🌽 괴산 대학찰옥수수 10개(입고특가)', desc:'괴산 대학찰옥수수 10개(입고특가)', price:8800, tba:'미입고(토요일까지)' },
+  { id:'v_corn10_30', todaySpecial:false, num:'🌽', name:'🌽 괴산 대학찰옥수수 1망(30입)', desc:'괴산 대학찰옥수수 1망(30입)', price:20000, tba:'미입고(토요일까지)' },
   { id:'ts_goguma3kg', todaySpecial:true, num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg이상', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg이상', price:7900 },
   { id:'v_corn_eol1',  todaySpecial:true, num:'🌽', name:'🌽 강원도찰옥수수(미백,얼룩이랜덤) 6개',        desc:'강원도찰옥수수(미백,얼룩이랜덤) 6개', price:4400 },
-  { id:'v_corn10_5', todaySpecial:true, num:'🌽', name:'🌽 괴산 대학찰옥수수 5개', desc:'괴산 대학찰옥수수 5개', price:4000 },
+  { id:'v_corn10_5', todaySpecial:false, num:'🌽', name:'🌽 괴산 대학찰옥수수 5개', desc:'괴산 대학찰옥수수 5개', price:4000, tba:'미입고(토요일까지)' },
   { id:'ts_gamja2', todaySpecial:true, num:'🥔', name:'🥔 수미햇감자 2봉(2kg↑)', desc:'수미햇감자 2봉(2kg↑)', orig:8000, price:4900 },
   { id:'v2b', num:'묶음', name:'🧅 양파 2kg이상', price:3900, orig:4000, todaySpecial:true, badge:'묶음특가', badgeColor:'#c1121f' },
   { id:'v7',  num:'7',  name:'양배추 1통',             price:3500 },
@@ -1845,8 +1848,8 @@ const vegItems = [
   { id:'v31', num:'31', name:'청경채 1봉',              price:1000 },
   { id:'v32', num:'32', name:'두부 1팩',               price:2000 },
   { id:'v33', num:'33', name:'순두부 2개',              price:1000 },
-  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:5900, origPrice:7200, badge:'3만원이상 특란 5,900원', badgeColor:'#c1121f', maxQty:1 },
-  { id:'v34_2pan', num:'34-2', name:'🥚 특란 30구 2판(60구)',        price:13900, badge:'2일한정 13,900원', badgeColor:'#c1121f', maxQty:1 },
+  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:5900, origPrice:7200, badge:'3만원이상 특란 5,900원', badgeColor:'#c1121f', maxQty:1, sold:true },
+  { id:'v34_2pan', num:'34-2', name:'🥚 특란 30구 2판(60구)',        price:13900, badge:'2일한정 13,900원', badgeColor:'#c1121f', maxQty:1, sold:true },
   { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888' },
   { id:'v34u',num:'34', name:'🥚 유정란 30구 (난각1번·무항생제)', price:17900, badge:'유정란 17,900원', badgeColor:'#4caf50' },
 
@@ -2588,6 +2591,8 @@ function heroAddItem(id) {
   const setItem = (typeof FLASH_SETS !== 'undefined') && FLASH_SETS.find(s => s.id === id);
   if (setItem) { addBundle(id); return; }
   const srcItem = (typeof vegItems !== 'undefined' && vegItems.find(i => i.id === id)) || (typeof fruitItems !== 'undefined' && fruitItems.find(i => i.id === id));
+  if (srcItem && srcItem.sold) { showToast('😢 죄송해요, 오늘은 품절됐어요!'); return; }
+  if (srcItem && srcItem.tba) { showToast(`⏰ ${srcItem.tba} 예정이에요, 조금만 기다려주세요!`); return; }
   const maxCap = (srcItem && srcItem.maxQty) || 9999;
   if (itemMeta[id]) changeQty(id, 1, itemMeta[id].price, maxCap);
   const tabEl = document.querySelector('[data-tab="fruit"]');
@@ -4089,17 +4094,17 @@ const MEMBER_PRICES = {
 };
 
 const FLASH_ITEMS = [
-  { id:'f51_super',          label:'강원도 양구수박(특품) 10kg',                                   max:9999, flashPrice:27900, origPrice:30900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가 · 강원도 양구수박', fullWidth:true },
-  { id:'f51_promo',          label:'강원도 양구수박(특품) 10kg 🚨3만원이상특가',                   max:9999, flashPrice:23900, section:'🍉 수박,멜론 특가', badge:'🚨 3만원 이상 주문시만', fullWidth:true },
+  { id:'f51_super',          label:'강원도 양구수박(특품) 10kg',                                   max:0, flashPrice:27900, origPrice:30900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가 · 강원도 양구수박', fullWidth:true },
+  { id:'f51_promo',          label:'강원도 양구수박(특품) 10kg 🚨3만원이상특가',                   max:0, flashPrice:23900, section:'🍉 수박,멜론 특가', badge:'🚨 3만원 이상 주문시만', fullWidth:true },
   { id:'f_melon',            label:'고당도괴물멜론(머스크-고창) 2.5kg전후 1통 [강추]',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!' },
   { id:'f_melon_honeydew',   label:'고당도괴물멜론(허니듀)1.5전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가' },
-  { id:'f_baekdo_daewol_4kg', label:'백도(대월,경봉,유명,그레이트,천중도등) 4kg',                  max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'그레이트', badge:'🍑 선별 후 랜덤입고(4kg기준)' },
+  { id:'f_baekdo_daewol_4kg', label:'백도(대월,경봉,유명,그레이트,천중도등) 4kg',                  max:9999, flashPrice:28900, origPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'그레이트', badge:'🍑 초특가 선착순 · 선별 후 랜덤입고(4kg기준)' },
   { id:'f_uhwangdo_25kg',  label:'황도(단호장,엘바트,금황등) 4kg',                      max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'단호장', badge:'🍑 선별 후 랜덤입고(4kg기준)' },
   { id:'gamjagoguma_set', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 1kg)', max:9999, flashPrice:5900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
   { id:'v_paprika_1', label:'🫑 스위트 미니 파프리카 1팩(250g)', max:9999, flashPrice:3000, section:'🥬 채소' },
   { id:'v_paprika_2', label:'🫑 스위트 미니 파프리카 2팩(250g×2)', max:9999, flashPrice:5000, section:'🥬 채소' },
   { id:'v_corn_eol1', label:'🌽 강원도 찰옥수수(미백,얼룩이랜덤) 6개', max:9999, flashPrice:4400, section:'🥬 채소' },
-  { id:'v_corn10_5', label:'🌽 괴산 대학찰옥수수 5개', max:9999, flashPrice:4000, section:'🥬 채소' },
+  { id:'v_corn10_5', label:'🌽 괴산 대학찰옥수수 5개 [미입고-토요일까지]', max:0, flashPrice:4000, section:'🥬 채소' },
   { id:'honeystick_1',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 1개',    max:9999, flashPrice:1800,  section:'🍈 델몬트 특가' },
   { id:'honeystick_6',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 6개',    max:9999, flashPrice:9900,  section:'🍈 델몬트 특가' },
   { id:'honeystick_10', label:'델몬트 골드파인 허니스틱(14브릭스이상) 10개(1팩)', max:9999, flashPrice:15500, section:'🍈 델몬트 특가' },
