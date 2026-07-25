@@ -1207,6 +1207,21 @@
           <span id="delivery-total" style="font-size:1.3rem;font-weight:900;color:#c1121f;"></span>
         </div>
       </div>
+
+      <!-- 🎁 포인트 사용 -->
+      <div id="points-use-wrap" style="display:none;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;">
+        <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:8px;">🎁 포인트 사용</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:0.82rem;color:#555;">보유 포인트</span>
+          <span id="points-balance-display" style="font-size:0.95rem;font-weight:900;color:#1a0f00;">0P</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:6px;">
+          <input type="number" id="points-use-input" placeholder="사용할 포인트" min="0" style="flex:1;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;">
+          <button type="button" onclick="applyPointsUse()" style="padding:10px 14px;background:#2d6a4f;color:#fff;border:none;border-radius:8px;font-weight:900;font-size:0.85rem;cursor:pointer;white-space:nowrap;">적용</button>
+          <button type="button" onclick="applyPointsUseMax()" style="padding:10px 12px;background:#f0ede8;color:#555;border:none;border-radius:8px;font-weight:700;font-size:0.8rem;cursor:pointer;white-space:nowrap;">최대</button>
+        </div>
+        <div id="points-use-note" style="font-size:0.72rem;color:#999;line-height:1.6;">주문금액의 최대 50%까지 사용 가능합니다.<br>사용한 포인트를 제외한 결제금액에 대해 포인트가 적립됩니다.</div>
+      </div>
       <!-- 결제수단 선택 -->
       <div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;">
         <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:10px;">💳 결제수단</div>
@@ -4015,6 +4030,49 @@ function enterDelivery() {
   goScreen('s-delivery');
 }
 
+window._pointsUsed = 0;
+
+// ── 🎁 포인트 사용 (s-delivery 화면) ──
+function renderPointsUseUI(subtotal) {
+  const wrap = document.getElementById('points-use-wrap');
+  if (!wrap) return;
+  let me = null;
+  try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) {}
+  if (!me) { wrap.style.display = 'none'; window._pointsUsed = 0; return; }
+  wrap.style.display = 'block';
+  const balance = me.points_balance || 0;
+  const maxUsable = Math.min(balance, Math.floor(subtotal * 0.5));
+  document.getElementById('points-balance-display').textContent = balance.toLocaleString() + 'P';
+  // 이미 입력해둔 값이 새 한도를 넘으면 자동으로 줄임
+  if (window._pointsUsed > maxUsable) window._pointsUsed = maxUsable;
+  const input = document.getElementById('points-use-input');
+  if (input && document.activeElement !== input) input.value = window._pointsUsed || '';
+  input.max = maxUsable;
+  document.getElementById('points-use-note').innerHTML =
+    '최대 ' + maxUsable.toLocaleString() + 'P까지 사용 가능해요 (주문금액의 50%까지)<br>사용한 포인트를 제외한 결제금액에 대해 포인트가 적립됩니다.';
+}
+
+function applyPointsUse() {
+  const input = document.getElementById('points-use-input');
+  let val = parseInt(input.value, 10) || 0;
+  let me = null;
+  try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) {}
+  const balance = me ? (me.points_balance || 0) : 0;
+  const maxUsable = Math.min(balance, Math.floor((window._deliveryRawTotal || 0) * 0.5));
+  if (val < 0) val = 0;
+  if (val > maxUsable) { val = maxUsable; showToast('최대 ' + maxUsable.toLocaleString() + 'P까지만 사용할 수 있어요'); }
+  window._pointsUsed = val;
+  renderDeliveryScreen();
+}
+
+function applyPointsUseMax() {
+  let me = null;
+  try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) {}
+  const balance = me ? (me.points_balance || 0) : 0;
+  window._pointsUsed = Math.min(balance, Math.floor((window._deliveryRawTotal || 0) * 0.5));
+  renderDeliveryScreen();
+}
+
 function renderDeliveryScreen() {
   const u = window._cocoUser || {};
   const sch = getCurrentSch();
@@ -4083,7 +4141,10 @@ function renderDeliveryScreen() {
 
   // ── 합계 ──
   const totalEl = document.getElementById('delivery-total');
-  if (totalEl) totalEl.textContent = total.toLocaleString() + '원';
+  window._deliveryRawTotal = total; // 포인트 사용 전 원래 금액 (50%한도 계산용)
+  renderPointsUseUI(total);
+  const finalTotal = Math.max(0, total - (window._pointsUsed || 0));
+  if (totalEl) totalEl.textContent = finalTotal.toLocaleString() + '원' + (window._pointsUsed > 0 ? ' (포인트 -' + window._pointsUsed.toLocaleString() + '원)' : '');
 
   // ── 최소주문 경고 ──
   const warnEl = document.getElementById('delivery-min-warn');
@@ -4719,7 +4780,7 @@ function selectPayMethod(method) {
 // 2026.07.24 카드사심사 전체 완료 확인 후 정식 오픈됨.
 // ══════════════════════════════════════════════════════════════
 async function submitCardOrder(ctx) {
-  const { u, total, addr, doneItemsHtml, renderDoneItems, submitBtn, doneEl } = ctx;
+  const { u, total, addr, doneItemsHtml, renderDoneItems, submitBtn, doneEl, pointsUsed } = ctx;
   const phone = (u.phone||'').replace(/\D/g,'');
 
   const orderItems = [];
@@ -4761,7 +4822,8 @@ async function submitCardOrder(ctx) {
     cash_receipt_requested: !!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked),
     cash_receipt_phone: (document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null,
     cash_receipt_type: (document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked) ? crTypeVal : null,
-    cash_receipt_number: (document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null
+    cash_receipt_number: (document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null,
+    points_used: pointsUsed || 0
   };
 
   saveCashReceiptPhonePref(orderPayload.customer_phone, orderPayload.cash_receipt_number, orderPayload.customer_name, orderPayload.customer_address, orderPayload.door_password, window._payMethod, orderPayload.cash_receipt_type);
@@ -5074,10 +5136,16 @@ window.orderDirect = async function() {
 
   // 텔레그램은 Supabase 저장 후 orderId 포함해서 전송
 
+  // ── 🎁 포인트 사용 반영: 원래금액(rawTotal) 보관 후 total을 할인된 실결제액으로 교체 ──
+  // 이 아래부터는 total = 실제 결제(청구)될 금액. 카드결제 KCP 청구액도 자동으로 이 값이 됨.
+  const rawTotalBeforePoints = total;
+  const pointsUsedNow = Math.max(0, Math.min(window._pointsUsed || 0, Math.floor(total * 0.5)));
+  total = Math.max(0, total - pointsUsedNow);
+
   // ── 결제수단이 카드면 완전히 다른 흐름(서버 검증 후 저장)으로 분기 ──
   // 기존 계좌이체 흐름(아래 Supabase 저장 블록)은 절대 손대지 않음
   if (window._payMethod === 'card') {
-    return await submitCardOrder({ u, total, addr, doneItemsHtml, renderDoneItems, submitBtn, doneEl });
+    return await submitCardOrder({ u, total, addr, doneItemsHtml, renderDoneItems, submitBtn, doneEl, pointsUsed: pointsUsedNow });
   }
 
   // Supabase 저장
@@ -5107,7 +5175,7 @@ window.orderDirect = async function() {
     const ordRes = await fetch(SB_URL + '/rest/v1/orders', {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'},
-      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked), cash_receipt_phone:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, cash_receipt_type:(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked)?((document.getElementById('cr-type-business')&&document.getElementById('cr-type-business').checked)?'business':'personal'):null, cash_receipt_number:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, applied_price_tier: (window._isMember ? 'member' : 'normal') })
+      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked), cash_receipt_phone:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, cash_receipt_type:(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked)?((document.getElementById('cr-type-business')&&document.getElementById('cr-type-business').checked)?'business':'personal'):null, cash_receipt_number:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, applied_price_tier: (window._isMember ? 'member' : 'normal'), points_used: pointsUsedNow })
     });
 
     // 중복(409/23505)이면 이미 접수된 주문 → 완료 화면만 표시
