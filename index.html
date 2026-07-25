@@ -374,6 +374,7 @@
 
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://spay.kcp.co.kr/plugin/kcp_spay_hub.js"></script>
 </head>
 <body>
 <!-- 마감 오버레이 -->
@@ -4552,53 +4553,42 @@ async function submitCardOrder(ctx) {
 }
 
 // ── KCP PC 결제창 호출 (KCP_Pay_Execute_Web 방식 — 거래등록 불필요, Mobile과 완전히 다른 SDK) ──
+// SDK는 <head>에서 페이지 로드 시점에 미리 불러와둠 (버튼 클릭과 동기적으로 실행해야 팝업이 차단되지 않음)
 function callKcpPaymentWindowPC(p) {
-  const sdkUrl = p.isTest
-    ? 'https://testspay.kcp.co.kr/plugin/kcp_spay_hub.js'
-    : 'https://spay.kcp.co.kr/plugin/kcp_spay_hub.js';
-
-  function buildAndSubmit() {
-    const frm = document.createElement('form');
-    frm.name = 'order_info';
-    frm.method = 'post';
-    frm.action = 'https://cocobasket-danji.vercel.app/api/kcp/return'; // 승인요청 전 결제창이 가로채므로, 실패시 폴백 목적지
-    frm.style.display = 'none';
-
-    const fields = {
-      site_cd: p.siteCd,
-      site_name: 'COCOBASKET',
-      pay_method: '100000000000', // PC 전용 12자리 코드 — 신용카드
-      currency: 'WON',
-      Ret_URL: 'https://cocobasket-danji.vercel.app/api/kcp/return',
-      ordr_idxx: p.ordrIdxx,
-      good_mny: String(p.amount),
-      good_name: p.goodName,
-      buyr_name: p.buyerName || '',
-      buyr_tel2: p.buyerTel || '',
-      shop_user_id: p.buyerTel || ''
-    };
-    for (const k in fields) {
-      const inp = document.createElement('input');
-      inp.type = 'hidden'; inp.name = k; inp.value = fields[k] == null ? '' : fields[k];
-      frm.appendChild(inp);
-    }
-    document.body.appendChild(frm);
-    try {
-      KCP_Pay_Execute_Web(frm); // 결제창 호출(팝업). 정상종료 시 내부적으로 throw 하는 게 정상 동작.
-    } catch (e) {
-      // KCP 문서상 정상 종료 시에도 throw가 발생할 수 있음 — 여기서는 별도 에러처리 안 함
-    }
+  if (typeof KCP_Pay_Execute_Web !== 'function') {
+    showToast('❌ 결제 모듈이 아직 준비되지 않았어요. 새로고침 후 다시 시도해주세요.');
+    const submitBtn = document.getElementById('btn-confirm-submit') || document.getElementById('btn-delivery-submit');
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
+    return;
   }
+  const frm = document.createElement('form');
+  frm.name = 'order_info';
+  frm.method = 'post';
+  frm.action = 'https://cocobasket-danji.vercel.app/api/kcp/return';
 
-  // SDK가 이미 로드돼 있으면 바로 호출, 아니면 스크립트 로드 후 호출
-  if (typeof KCP_Pay_Execute_Web === 'function') {
-    buildAndSubmit();
-  } else {
-    const script = document.createElement('script');
-    script.src = sdkUrl;
-    script.onload = buildAndSubmit;
-    script.onerror = function() { showToast('❌ 결제 모듈을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'); };
-    document.body.appendChild(script);
+  const fields = {
+    site_cd: p.siteCd,
+    site_name: 'COCOBASKET',
+    pay_method: '100000000000', // PC 전용 12자리 코드 — 신용카드
+    currency: 'WON',
+    Ret_URL: 'https://cocobasket-danji.vercel.app/api/kcp/return',
+    ordr_idxx: p.ordrIdxx,
+    good_mny: String(p.amount),
+    good_name: p.goodName,
+    buyr_name: p.buyerName || '',
+    buyr_tel2: p.buyerTel || '',
+    shop_user_id: p.buyerTel || ''
+  };
+  for (const k in fields) {
+    const inp = document.createElement('input');
+    inp.type = 'hidden'; inp.name = k; inp.value = fields[k] == null ? '' : fields[k];
+    frm.appendChild(inp);
+  }
+  document.body.appendChild(frm);
+  try {
+    KCP_Pay_Execute_Web(frm); // 결제창 호출(팝업). 정상종료 시 내부적으로 throw 하는 게 정상 동작.
+  } catch (e) {
+    // KCP 문서상 정상 종료 시에도 throw가 발생할 수 있음 — 여기서는 별도 에러처리 안 함
   }
 }
 
