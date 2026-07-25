@@ -728,10 +728,11 @@
   </div>
 
       <!-- 탭 3개 (누르면 s4로 화면이동) -->
+      <div style="width:100%;max-width:440px;text-align:center;font-size:11px;font-weight:700;color:rgba(255,255,255,0.6);margin-bottom:5px;">👇 눌러서 상품 둘러보기</div>
       <div style="width:100%;max-width:440px;display:flex;gap:5px;">
-        <button onclick="goToTabScreen('sp')" style="flex:1;background:rgba(255,255,255,0.13);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:9px;padding:8px 4px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:11.5px;font-weight:700;cursor:pointer;">🔥 제철특가</button>
-        <button onclick="goToTabScreen('fr')" style="flex:1;background:rgba(255,255,255,0.13);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:9px;padding:8px 4px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:11.5px;font-weight:700;cursor:pointer;">🍊 과일</button>
-        <button onclick="goToTabScreen('vg')" style="flex:1;background:rgba(255,255,255,0.13);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:9px;padding:8px 4px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:11.5px;font-weight:700;cursor:pointer;">🥦 채소·기타</button>
+        <button onclick="goToTabScreen('sp')" style="flex:1;background:rgba(255,255,255,0.13);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:9px;padding:8px 4px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:11.5px;font-weight:700;cursor:pointer;">🔥 제철특가 →</button>
+        <button onclick="goToTabScreen('fr')" style="flex:1;background:rgba(255,255,255,0.13);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:9px;padding:8px 4px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:11.5px;font-weight:700;cursor:pointer;">🍊 과일 →</button>
+        <button onclick="goToTabScreen('vg')" style="flex:1;background:rgba(255,255,255,0.13);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:9px;padding:8px 4px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:11.5px;font-weight:700;cursor:pointer;">🥦 채소·기타 →</button>
       </div>
 
       <!-- 배송안내 -->
@@ -5252,7 +5253,7 @@ window.orderDirect = async function() {
     const referrerVal = (document.getElementById('inp-referrer') && document.getElementById('inp-referrer').value.trim()) || '';
     const referrerLine = referrerVal ? ('\n' + D + '\n🎁 소개인: ' + referrerVal) : '';
     const tgMsg = D + '\n'
-      + '[주문] #' + orderNum + '\n'
+      + '[주문] #' + orderNum + ' 🏦계좌이체\n'
       + D + '\n'
       + '이름: ' + nameStr + '\n'
       + '전화: ' + (u.phone||'') + '\n'
@@ -5261,7 +5262,7 @@ window.orderDirect = async function() {
       + D + '\n'
       + allItemLines.join('\n') + '\n'
       + D + '\n'
-      + '합계: ' + total.toLocaleString() + '원'
+      + '합계: ' + total.toLocaleString() + '원' + (pointsUsedNow > 0 ? ' (포인트 ' + pointsUsedNow.toLocaleString() + 'P 사용)' : '')
       + referrerLine + '\n'
       + D;
     const tgRes2 = await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
