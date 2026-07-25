@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>🧺 코코바스켓 주문계산기</title>
@@ -9,10 +10,10 @@
   :root {
     --green:#2d6a4f; --green-light:#40916c; --green-pale:#d8f3dc;
     --red:#c1121f; --bg:#f9f7f2; --card:#fff;
-    --text:#1b1b1b; --muted:#777; --border:#e0ddd5; --radius:12px;
+    --text:#1b1b1b; --muted:#777; --border:#e0ddd5; --radius:12px; --gold:#ffd166;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text);padding-bottom:80px;}
+  body{font-family:"Pretendard","Noto Sans KR",sans-serif;background:var(--bg);color:var(--text);padding-bottom:80px;}
 
   /* 화면 */
   .screen{display:none;min-height:100vh;min-height:100dvh;flex-direction:column;background:#1a0f00;}
@@ -117,7 +118,7 @@
 
   /* 주거유형 탭 */
   .ttabs{display:flex;gap:8px;}
-  .ttab{flex:1;padding:12px 8px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,209,102,0.18);border-radius:12px;color:rgba(255,255,255,0.35);font-family:"Noto Sans KR",sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4;-webkit-tap-highlight-color:transparent;}
+  .ttab{flex:1;padding:12px 8px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,209,102,0.18);border-radius:12px;color:rgba(255,255,255,0.35);font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4;-webkit-tap-highlight-color:transparent;}
   .ttab.on{border-color:#ffd166;background:rgba(255,209,102,0.1);color:#ffd166;}
 
   /* 주소 블록 */
@@ -126,13 +127,13 @@
 
   /* 인풋 */
   .fl{display:block;font-size:0.72rem;font-weight:700;color:rgba(255,209,102,0.65);margin-bottom:5px;letter-spacing:0.5px;}
-  .fi,.fsel{width:100%;padding:12px 14px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,209,102,0.2);border-radius:10px;color:#f5f0e8;font-family:"Noto Sans KR",sans-serif;font-size:0.92rem;font-weight:500;outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none;}
+  .fi,.fsel{width:100%;padding:12px 14px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,209,102,0.2);border-radius:10px;color:#f5f0e8;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.92rem;font-weight:500;outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none;}
   .fi::placeholder{color:#5a4a32;}
   .fsel option{background:#2a1a08;color:#f5f0e8;}
   .fi:focus,.fsel:focus{border-color:rgba(255,209,102,0.6);background:rgba(255,255,255,0.1);}
 
   /* 버튼 */
-  .nbtn{width:100%;padding:15px;background:#ffd166;color:#1a0f00;border:none;border-radius:12px;font-family:"Noto Sans KR",sans-serif;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;margin-top:4px;transition:transform .1s,background .15s;-webkit-tap-highlight-color:transparent;}
+  .nbtn{width:100%;padding:15px;background:#ffd166;color:#1a0f00;border:none;border-radius:12px;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;margin-top:4px;transition:transform .1s,background .15s;-webkit-tap-highlight-color:transparent;}
   .nbtn:active:not(:disabled){transform:scale(0.97);background:#f0c040;}
   .field-hint{font-size:0.77rem;margin-top:3px;min-height:10px;padding-left:2px;}
   .field-hint.err{color:#c1121f;}
@@ -144,13 +145,33 @@
   .saved-notice{font-size:0.7rem;color:#7a6648;text-align:center;}
 
   /* 앱 헤더 */
-  .app-hd{background:var(--green);color:white;padding:14px 16px 12px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+  .app-hd{background:#1a0f00;color:white;padding:14px 16px 12px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
   .app-hd h1{font-size:1.1rem;font-weight:900;letter-spacing:-0.5px;}
   .app-hd-sub{font-size:0.7rem;opacity:0.85;margin-top:2px;}
   .jump-bar{display:flex;background:#fff;border-bottom:2px solid var(--border);position:sticky;top:54px;z-index:90;}
-  .jbtn{flex:1;padding:13px 4px;border:none;background:none;font-family:"Noto Sans KR",sans-serif;font-size:0.88rem;font-weight:900;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-0.3px;border-bottom:3px solid transparent;transition:all .15s;}
+  .jbtn{flex:1;padding:13px 4px;border:none;background:none;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.88rem;font-weight:900;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-0.3px;border-bottom:3px solid transparent;transition:all .15s;}
   .jbtn.active{color:var(--green);border-bottom:3px solid var(--green);}
   .tab-panel{display:none;}
+  /* 🆕 과일/채소 패널은 목업처럼 전체화면 모달로 (제철특가는 기존 in-flow 패널 유지) */
+  #panel-fr.cat-modal-open, #panel-vg.cat-modal-open{
+    display:block;position:fixed;inset:0;z-index:500;
+    background:var(--bg,#f9f7f2);overflow-y:auto;padding-bottom:120px;box-sizing:border-box;
+    animation:modalUp .22s ease-out;
+  }
+  @keyframes modalUp{
+    from{opacity:0;transform:translateY(16px) scale(0.98);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+  }
+  .cat-modal-hd{
+    position:sticky;top:0;z-index:2;background:#2d6a4f;color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 14px;gap:8px;
+  }
+  .cat-modal-hd .cmh-title{font-size:1.05rem;font-weight:900;letter-spacing:-0.3px;flex:1;text-align:center;}
+  .cat-modal-hd .cmh-back{
+    background:rgba(255,255,255,0.15);border:none;color:#fff;
+    width:34px;height:34px;border-radius:50%;font-size:1.15rem;cursor:pointer;flex-shrink:0;
+  }
   .tab-panel.active{display:block;}
 
   /* 섹션 */
@@ -176,7 +197,7 @@
   .special-card-discount{font-size:0.78rem;font-weight:900;background:#c1121f;color:white;border-radius:4px;padding:1px 6px;}
   .special-card-price{font-size:1.8rem;font-weight:900;color:#c1121f;letter-spacing:-1px;line-height:1;}
   .special-card-price span{font-size:0.9rem;font-weight:700;}
-  .special-add-btn{background:#1b1b1b;color:white;border:none;border-radius:20px;padding:10px 18px;font-size:0.85rem;font-weight:700;font-family:"Noto Sans KR",sans-serif;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+  .special-add-btn{background:#1b1b1b;color:white;border:none;border-radius:20px;padding:10px 18px;font-size:0.85rem;font-weight:700;font-family:"Pretendard","Noto Sans KR",sans-serif;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
   .special-card.selected .special-add-btn{background:var(--green);}
   .suh{display:flex;align-items:center;gap:7px;padding:14px 16px 12px;background:var(--green);color:white;}
   .suh-icon{font-size:1.6rem;}
@@ -228,10 +249,10 @@
   .order-guide-box{background:#f9f7f2;border:1px solid var(--border);border-radius:8px;padding:7px 8px;font-size:0.67rem;line-height:1.75;}
   .order-guide-box b{color:var(--green);font-size:0.72rem;}
   .summary-btn-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
-  .btn-kakao{background:#FEE500;color:#3C1E1E;border:none;border-radius:10px;padding:11px 4px;font-family:"Noto Sans KR",sans-serif;font-size:0.75rem;font-weight:900;cursor:pointer;line-height:1.35;}
-  .btn-sms{background:#1a73e8;color:white;border:none;border-radius:10px;padding:11px 4px;font-family:"Noto Sans KR",sans-serif;font-size:0.75rem;font-weight:900;cursor:pointer;line-height:1.35;}
-  .btn-reset{background:#f5f5f2;color:var(--muted);border:1.5px solid var(--border);border-radius:10px;padding:11px 4px;font-family:"Noto Sans KR",sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;}
-  .btn-order{width:100%;padding:15px;background:var(--green);color:white;border:none;border-radius:12px;font-family:"Noto Sans KR",sans-serif;font-size:1.05rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;margin-bottom:8px;transition:transform .1s,background .15s;-webkit-tap-highlight-color:transparent;}
+  .btn-kakao{background:#FEE500;color:#3C1E1E;border:none;border-radius:10px;padding:11px 4px;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.75rem;font-weight:900;cursor:pointer;line-height:1.35;}
+  .btn-sms{background:#1a73e8;color:white;border:none;border-radius:10px;padding:11px 4px;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.75rem;font-weight:900;cursor:pointer;line-height:1.35;}
+  .btn-reset{background:#f5f5f2;color:var(--muted);border:1.5px solid var(--border);border-radius:10px;padding:11px 4px;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;}
+  .btn-order{width:100%;padding:15px;background:var(--green);color:white;border:none;border-radius:12px;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:1.05rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;margin-bottom:8px;transition:transform .1s,background .15s;-webkit-tap-highlight-color:transparent;}
   .btn-order:active{transform:scale(0.97);background:var(--green-light);}
   .btn-order:disabled{opacity:0.5;cursor:not-allowed;}
   .sdiv{height:10px;background:#ebe8e0;}
@@ -263,15 +284,15 @@
   .hook-item{background:rgba(255,255,255,0.05);border-radius:8px;padding:9px 10px;display:flex;flex-direction:column;gap:2px;}
   .hook-name{font-size:0.72rem;color:rgba(255,255,255,0.55);font-weight:600;}
   .hook-price{font-size:1.15rem;font-weight:900;color:#ffd166;letter-spacing:-0.5px;}
-  .reorder-btn{width:100%;padding:7px;background:rgba(255,209,102,0.08);border:1.5px dashed rgba(255,209,102,0.4);border-radius:8px;color:#ffd166;font-family:"Noto Sans KR",sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer;letter-spacing:-0.3px;margin-top:4px;-webkit-tap-highlight-color:transparent;}
+  .reorder-btn{width:100%;padding:7px;background:rgba(255,209,102,0.08);border:1.5px dashed rgba(255,209,102,0.4);border-radius:8px;color:#ffd166;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer;letter-spacing:-0.3px;margin-top:4px;-webkit-tap-highlight-color:transparent;}
   .reorder-btn:active{background:rgba(255,209,102,0.15);}
   .reorder-screen{background:#1a0f00;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;gap:20px;}
   .reorder-title{color:#ffd166;font-size:1.4rem;font-weight:900;text-align:center;letter-spacing:-0.5px;}
   .reorder-sub{color:rgba(255,255,255,0.45);font-size:0.78rem;text-align:center;line-height:1.6;margin-top:-10px;}
-  .reorder-input{width:100%;padding:16px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,209,102,0.3);border-radius:12px;color:#f5f0e8;font-family:"Noto Sans KR",sans-serif;font-size:1.1rem;font-weight:700;outline:none;text-align:center;letter-spacing:2px;}
+  .reorder-input{width:100%;padding:16px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,209,102,0.3);border-radius:12px;color:#f5f0e8;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:1.1rem;font-weight:700;outline:none;text-align:center;letter-spacing:2px;}
   .reorder-input:focus{border-color:#ffd166;}
   .reorder-input::placeholder{color:#5a4a32;font-size:0.85rem;letter-spacing:0;font-weight:400;}
-  .bchip{padding:7px 10px;border:1.5px solid #ddd;border-radius:20px;background:#f5f5f2;font-family:"Noto Sans KR",sans-serif;font-size:0.8rem;font-weight:700;color:#555;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s;}
+  .bchip{padding:7px 10px;border:1.5px solid #ddd;border-radius:20px;background:#f5f5f2;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.8rem;font-weight:700;color:#555;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s;}
   .bchip.on{border-color:var(--green);background:var(--green);color:white;}
 
   /* ── 요일별 지역 잠금 ── */
@@ -287,7 +308,7 @@
   .goyang-notice{background:rgba(255,209,102,0.08);border:1px solid rgba(255,209,102,0.25);border-radius:8px;padding:8px 12px;font-size:0.75rem;color:rgba(255,209,102,0.75);font-weight:700;line-height:1.6;margin-bottom:4px;}
   .goyang-notice.warn{background:rgba(255,100,100,0.08);border-color:rgba(255,100,100,0.3);color:rgba(255,150,150,0.8);}
   .garea-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:2px;}
-  .garea-btn{padding:9px 4px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,209,102,0.12);border-radius:8px;color:rgba(255,255,255,0.22);font-family:"Noto Sans KR",sans-serif;font-size:0.82rem;font-weight:700;text-align:center;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+  .garea-btn{padding:9px 4px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,209,102,0.12);border-radius:8px;color:rgba(255,255,255,0.22);font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.82rem;font-weight:700;text-align:center;transition:all .2s;-webkit-tap-highlight-color:transparent;}
   .garea-btn.avail{border-color:rgba(255,209,102,0.38);color:rgba(255,255,255,0.72);cursor:pointer;}
   .garea-btn.avail:active{transform:scale(0.96);}
   .garea-btn.sel{background:rgba(255,209,102,0.14);border-color:#ffd166;color:#ffd166;}
@@ -375,6 +396,256 @@
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://spay.kcp.co.kr/plugin/kcp_spay_hub.js"></script>
+<style>
+/* ══ 목업(firstscreen.html) 디자인 이식 — 검색/카드/장바구니/탭모달 ══ */
+.jump-bar{top:60px !important;}
+
+
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+        
+  /* ── 로고 스트립 (기존 유지, 높이만 압축) ── */
+  .brand-strip{
+    background:#1a0f00;
+    padding:7px 16px 6px;
+    display:flex;align-items:baseline;justify-content:center;gap:7px;
+  }
+  .brand-name{font-weight:900;font-size:14px;color:#fff;letter-spacing:-0.3px;line-height:1;}
+  .brand-since{font-size:8.5px;color:rgba(255,255,255,0.45);letter-spacing:0.1em;font-weight:700;}
+
+  /* ── 오늘의 특가: 가로 3카드, 세로로 안쌓임 ── */
+  .today-wrap{
+    background:#1a0f00;
+    padding:8px 12px 12px;
+  }
+  .today-label{
+    display:flex;align-items:center;gap:5px;
+    color:var(--gold);font-size:15px;font-weight:900;
+    margin-bottom:8px;padding-left:2px;
+  }
+  .today-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:9px;
+  }
+  .today-card{
+    background:#faf7f2;border-radius:10px;padding:8px 6px 8px;
+    text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.25);
+    cursor:pointer;position:relative;overflow:hidden;
+    border-top:2px solid var(--gold);
+    transition:transform .1s;
+  }
+  .today-card:active{transform:scale(0.96);}
+  .today-card.hot::before{
+    content:'추천';position:absolute;top:5px;right:5px;
+    background:linear-gradient(90deg,#ff6a00,#ff2d55);color:#fff;
+    font-size:8px;font-weight:900;padding:1.5px 5px;border-radius:20px;
+  }
+  .today-emoji{
+    font-size:20px;line-height:1;margin:2px auto 5px;
+    width:36px;height:36px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#fff,#f0ece2);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 5px rgba(0,0,0,0.18);
+  }
+  .today-name{font-size:11px;font-weight:700;color:var(--muted);line-height:1.25;margin-bottom:4px;height:27px;overflow:hidden;}
+  .today-orig{font-size:10px;text-decoration:line-through;opacity:0.5;color:var(--muted);height:14px;display:block;}
+  .today-price{font-size:18px;font-weight:900;color:var(--red);letter-spacing:-0.3px;}
+
+  .today-combo .today-name{margin-bottom:4px;}
+  .tc-opts{display:flex;flex-direction:column;gap:3px;}
+  .tc-opt{background:#fff;border:1px solid #e6e0d4;border-radius:6px;padding:3px 4px;}
+  .tc-opt .tco-name{font-size:8px;font-weight:800;color:var(--muted);}
+  .tc-opt .tco-price{font-size:12.5px;font-weight:900;color:var(--red);}
+
+  /* ── 검색바 ── */
+  .search-wrap{padding:9px 12px;background:#fff;display:flex;gap:8px;align-items:center;position:relative;z-index:80;}
+  .search-box-real{
+    flex:1;display:flex;align-items:center;gap:6px;
+    background:var(--bg);border:1.5px solid var(--border);border-radius:20px;
+    padding:9px 14px;font-size:12.5px;color:var(--muted);
+  }
+  .search-box-real input{
+    flex:1;border:none;background:none;outline:none;font-size:12.5px;color:var(--text);font-family:inherit;
+  }
+  .search-box-real input::placeholder{color:var(--muted);}
+  .search-results{
+    display:none;background:#fff;border-bottom:1px solid var(--border);
+    max-height:260px;overflow-y:auto;
+  }
+  .search-results.show{display:block;}
+  .sres-item{
+    display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;border-bottom:1px solid #f2f0ea;
+  }
+  .sres-item:active{background:var(--bg);}
+  .sres-item .sres-thumb{font-size:18px;flex-shrink:0;}
+  .sres-item .sres-mid{flex:1;overflow:hidden;}
+  .sres-item .sres-name{font-size:12.5px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sres-item .sres-tab{font-size:9.5px;color:var(--green);font-weight:700;}
+  .sres-item .sres-price{font-size:13px;font-weight:900;color:var(--red);flex-shrink:0;}
+  .sres-empty{padding:16px;text-align:center;font-size:12px;color:var(--muted);}
+  .cart-mini{
+    background:var(--green);color:#fff;border-radius:19px;
+    height:38px;padding:0 12px;display:flex;align-items:center;gap:6px;
+    font-size:16px;flex-shrink:0;cursor:pointer;transition:padding .15s;
+  }
+  .cart-mini .cm-icon{font-size:15px;}
+  .cart-mini .cm-info{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;}
+  .cart-mini .cm-cnt{font-size:10.5px;font-weight:900;}
+  .cart-mini .cm-amt{font-size:11.5px;font-weight:900;color:var(--gold);}
+  .search-suggest{
+    display:none;padding:0 12px 10px;background:#fff;gap:6px;flex-wrap:wrap;
+  }
+  .search-suggest.show{display:flex;}
+  .suggest-label{width:100%;font-size:10.5px;color:var(--muted);font-weight:700;margin-bottom:2px;}
+  .schip{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:5px 11px;font-size:11.5px;font-weight:700;color:var(--text);cursor:pointer;}
+
+  /* ── 탭바 (기존 스타일 그대로, sticky top:0 고정) ── */
+  .jump-bar{display:flex;background:#fff;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .jbtn{flex:1;padding:12px 4px;border:none;background:none;font-family:"Noto Sans KR",sans-serif;font-size:0.85rem;font-weight:900;color:var(--muted);cursor:pointer;letter-spacing:-0.3px;border-bottom:3px solid transparent;}
+  .jbtn.active{color:var(--green);border-bottom:3px solid var(--green);}
+
+  /* ── 이 아래부터는 실제 tab-panel(JS 렌더링) 자리 — 목업에선 미리보기만 ── */
+  .suh{display:flex;align-items:center;gap:5px;padding:8px 12px;background:var(--green-pale);}
+  .suh-icon{font-size:0.95rem;}
+  .suh-title{font-size:0.78rem;font-weight:900;color:var(--green);letter-spacing:-0.2px;}
+  .suh-sub{display:none;}
+  .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;}
+  .pcard{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;position:relative;cursor:pointer;transition:box-shadow .15s,outline .15s;}
+  .pcard:active{transform:scale(0.97);}
+  .pcard .pthumb{font-size:26px;line-height:1;margin-bottom:5px;}
+  .pcard .pname{font-size:11.5px;font-weight:700;line-height:1.25;margin-bottom:3px;color:var(--text);}
+  .pweight{display:inline-block;font-size:10px;font-weight:800;color:var(--green);background:var(--green-pale);border-radius:8px;padding:1px 7px;margin-bottom:5px;}
+  .pcard .pprice{font-size:15px;font-weight:900;color:var(--red);}
+  .pbadge{
+    display:inline-block;
+    background:var(--green);color:#fff;font-size:8px;font-weight:900;
+    padding:2px 6px;border-radius:10px;letter-spacing:-0.2px;margin-bottom:5px;
+  }
+  .pbadge.new{background:linear-gradient(90deg,#ff6a00,#ff2d55);}
+
+  .pcard-wide{grid-column:1 / 3;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;position:relative;transition:box-shadow .15s,outline .15s;}
+  .pcard-wide .pthumb{font-size:22px;position:absolute;top:10px;right:10px;opacity:0.9;}
+  .pcard-wide .pname{font-size:12.5px;font-weight:800;line-height:1.25;margin-bottom:7px;color:var(--text);padding-right:26px;display:block;}
+  .popt-row{display:flex;gap:6px;}
+  .popt{flex:1;background:#f3efe8;border:1px solid #e2dccf;border-radius:8px;padding:6px 4px;text-align:center;cursor:pointer;}
+  .popt:active{background:#e9e3d6;}
+  .popt .oname{font-size:11px;font-weight:800;opacity:0.75;color:var(--text);}
+  .popt .oprice{font-size:14px;font-weight:900;color:var(--red);margin-top:1px;}
+
+  .pcard-row{
+    grid-column:1 / 3;background:var(--card);border:1px solid var(--border);border-radius:10px;
+    padding:8px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;
+  }
+  .pcard-row:active{transform:scale(0.98);}
+  .pcard-row .pthumb{font-size:20px;margin:0;flex-shrink:0;}
+  .pcard-row .prow-mid{flex:1;display:flex;align-items:baseline;gap:7px;overflow:hidden;}
+  .pcard-row .pname{font-size:12.5px;font-weight:700;color:var(--text);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pcard-row .pweight{margin:0;flex-shrink:0;}
+  .pcard-row .pprice{font-size:14.5px;font-weight:900;color:var(--red);flex-shrink:0;}
+
+  @keyframes jumpGlow{
+    0%{outline:3px solid var(--gold);box-shadow:0 0 0 4px rgba(255,209,102,0.35);}
+    100%{outline:3px solid transparent;box-shadow:none;}
+  }
+  .glow{animation:jumpGlow 1.4s ease-out;}
+
+  /* ── 하단 고정 장바구니 요약바(기존 summary-bar 자리) — 모달 위에도 항상 보이게 ── */
+  .cart-summary{
+    position:fixed;left:50%;bottom:0;transform:translateX(-50%);
+    width:390px;max-width:100%;
+    background:#1b1b1b;color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 16px;z-index:600;box-shadow:0 -2px 10px rgba(0,0,0,0.2);
+  }
+  .cart-summary .cs-left{font-size:12px;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:8px;}
+  .cart-summary .cs-viewcart{
+    background:rgba(255,255,255,0.15);border:none;color:#fff;
+    font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:12px;cursor:pointer;
+  }
+  .cart-summary .cs-amt{font-size:16px;font-weight:900;color:var(--gold);}
+  .cart-summary .cs-btn{background:var(--green);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:900;font-size:13px;}
+
+  .cart-detail{
+    display:none;position:fixed;left:50%;bottom:60px;transform:translateX(-50%);
+    width:390px;max-width:100%;max-height:44vh;overflow-y:auto;
+    background:#fff;border-radius:14px 14px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,0.18);
+    z-index:601;
+  }
+  .cart-detail.open{display:block;animation:cdUp .18s ease-out;}
+  @keyframes cdUp{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+  .cd-hd{padding:12px 16px;font-size:13px;font-weight:900;color:var(--text);border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;}
+  .cd-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #f2f0ea;}
+  .cd-row .cd-name{flex:1;font-size:12.5px;font-weight:700;color:var(--text);}
+  .cd-row .cd-qty{font-size:11.5px;color:var(--muted);font-weight:700;}
+  .cd-row .cd-sub{font-size:13px;font-weight:900;color:var(--red);width:66px;text-align:right;}
+  .cd-empty{padding:20px;text-align:center;font-size:12.5px;color:var(--muted);}
+
+  .toast{
+    position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+    background:#1b1b1b;color:#fff;padding:9px 16px;border-radius:20px;
+    font-size:12.5px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s;z-index:300;
+  }
+  .toast.show{opacity:1;}
+
+  .info-wrap{padding:14px 16px 4px;}
+  .toggle-btn{
+    width:100%;background:#f5f5f5;border:1px solid #e0e0e0;border-radius:8px;
+    padding:11px 14px;font-size:12px;font-weight:700;color:#666;cursor:pointer;text-align:center;
+    margin-bottom:8px;
+  }
+  .toggle-box{
+    display:none;background:#fff;border:1px solid #e0e0e0;border-top:none;border-radius:0 0 8px 8px;
+    padding:14px;font-size:12px;color:#555;line-height:1.7;text-align:left;margin:-9px 0 8px;
+  }
+  .toggle-box.open{display:block;}
+  .toggle-box h4{font-weight:900;font-size:12.5px;color:#333;margin-bottom:6px;}
+  .toggle-box .th{font-weight:700;color:#333;margin-top:9px;}
+  .toggle-box ul{margin:5px 0 0;padding-left:16px;}
+  .sched-row{display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed #eee;}
+  .sched-day{flex-shrink:0;width:44px;font-weight:900;color:var(--green);}
+  .sched-area{flex:1;color:#555;}
+  .sched-row.today{
+    background:linear-gradient(90deg,#fff8e1,#fffdf5);
+    border-radius:6px;padding:6px 6px;margin:2px -6px;
+    animation:schedPulse 1.6s ease-in-out infinite;
+  }
+  .sched-row.today .sched-day{color:var(--red);}
+  .sched-row.today .sched-day::after{content:' 🔥오늘';font-size:9px;}
+  @keyframes schedPulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(255,209,102,0.55);}
+    50%{box-shadow:0 0 0 5px rgba(255,209,102,0);}
+  }
+
+  .site-footer{
+    background:#f5f5f5;padding:20px 16px;text-align:center;font-size:11px;color:#999;
+    line-height:2.1;border-top:1px solid #e0e0e0;
+  }
+
+  /* ── 과일/채소 탭: 확대된 전체화면 모달 ── */
+  #panel-fr, #panel-vg{display:none;}
+  #panel-fr.cat-modal-open, #panel-vg.cat-modal-open{
+    display:block;position:fixed;inset:0;z-index:500;
+    background:var(--bg);overflow-y:auto;padding-bottom:62px;box-sizing:border-box;
+    animation:modalUp .22s ease-out;
+  }
+  @keyframes modalUp{
+    from{opacity:0;transform:translateY(16px) scale(0.98);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+  }
+  .cat-modal-hd{
+    position:sticky;top:0;z-index:2;background:var(--green);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 14px;gap:8px;
+  }
+  .cat-modal-hd .cmh-title{font-size:1.05rem;font-weight:900;letter-spacing:-0.3px;flex:1;text-align:center;}
+  .cat-modal-hd .cmh-back{
+    background:rgba(255,255,255,0.15);border:none;color:#fff;
+    width:34px;height:34px;border-radius:50%;font-size:1.15rem;cursor:pointer;flex-shrink:0;
+  }
+  .modal-grid{grid-template-columns:1fr !important;padding:12px !important;gap:9px !important;}
+  .modal-grid .pcard-row{padding:13px 15px;}
+  .modal-grid .pcard-row .pthumb{font-size:24px;}
+  .modal-grid .pcard-row .pname{font-size:13.5px;}
+  .modal-grid .pcard-row .pprice{font-size:16px;}
+</style>
 </head>
 <body>
 <!-- 마감 오버레이 -->
@@ -416,6 +687,7 @@
     <div style="position:relative;z-index:10;padding:8px 20px 0;display:flex;justify-content:center;align-items:center;">
       <div style="text-align:center;">
         <div style="font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:16px;color:#fff;letter-spacing:-0.3px;line-height:1.1;">코코바스켓 현관장보기</div>
+        <div style="font-size:10.5px;color:#ffd166;font-weight:800;margin-top:2px;">🌅 당일 새벽 선별입고</div>
         <div style="font-size:10px;color:rgba(255,255,255,0.65);letter-spacing:0.12em;font-weight:700;margin-top:1px;">SINCE 2026.03</div>
       </div>
       <button id="hero-save-btn" onclick="saveHeroImage()" style="display:none;position:absolute;right:14px;top:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:8px;cursor:pointer;z-index:20;">📷 이미지 저장</button>
@@ -423,241 +695,48 @@
     <!-- ── 스크롤 가능 콘텐츠 영역 ── -->
     <div style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;padding:6px 16px 40px;overflow-y:auto;flex:1;">
 
-      <!-- ── 품목 가격 그리드 ── -->
-      <div class="hgrid" style="margin-bottom:8px;">
-
-        <!-- 🎠 메인 배너 캐러셀 -->
-        <div style="position:relative;">
-          <div class="hbanner-wrap" id="hbanner-wrap">
-            <div class="hbanner wmelon sparkle-card" onclick="heroAddItem('f51_super')" style="cursor:pointer;grid-column:1 / 3;">
-              <span class="hbanner-tag">수박</span>
-              <span class="badge-recommend" style="margin-left:4px;">강력추천</span>
-              <div class="hbanner-title">강원도 양구수박(특품) 10kg</div>
-              <div class="hbanner-sub">진안, 양구 등 당일 당도 선별 후 입고</div>
-              <div class="hbanner-price"><span class="hbanner-orig">30,900원</span>27,900원</div>
-              <div style="margin-top:8px;background:#fdecea;border:2px solid #e63946;border-radius:8px;padding:6px 10px;text-align:center;animation:pulse 1.6s infinite;">
-                <div style="font-size:11.5px;font-weight:900;color:#c1121f;">🚨 3만원 이상 주문 시 단돈 23,900원</div>
-                <div style="font-size:11px;font-weight:800;color:#c1121f;margin-top:2px;">🎉 단골이시면 3만원 조건 없이 23,900원!</div>
-              </div>
-            </div>
-            <div class="hbanner melon2" onclick="heroAddItem('f_melon')" style="cursor:pointer;">
-              <span class="hbanner-tag">멜론</span>
-              <div class="hbanner-title">고당도괴물멜론(머스크-고창) 2.5kg전후 1통</div>
-              <div class="hbanner-price">12,900원</div>
-            </div>
-            <div class="hbanner melon2" onclick="heroAddItem('f_melon_honeydew')" style="cursor:pointer;">
-              <span class="hbanner-tag">멜론</span>
-              <div class="hbanner-title">고당도괴물멜론(허니듀)1.5전후</div>
-              <div class="hbanner-price">9,000원</div>
-            </div>
-            <div style="grid-column:1 / 3;background:linear-gradient(90deg,#8b4a1f,#a8672e);color:#fff;font-size:10px;font-weight:900;padding:3px 8px;border-radius:6px;text-align:center;margin-bottom:-2px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;">
-              <span>🍑 가장맛있는놈만 갖고와요 - 선별후 랜덤입고</span>
-              <span class="badge-recommend">강력추천</span>
-            </div>
-            <div class="hbanner peach sparkle-card" style="grid-column:1 / 3;">
-              <span class="hbanner-tag">백도</span>
-              <div class="hbanner-title">백도(대월,경봉,아부,그레이트등 당일선별 랜덤입고)</div>
-              <div style="display:flex;align-items:stretch;gap:6px;">
-                <div class="hbanner-opts" style="flex:1;">
-                  <div class="hbanner-opt" style="flex:1;background:#fff8e1;border:2px solid #e63946;animation:pulse 1.6s infinite;" onclick="heroAddItem('f_baekdo_daewol_4kg')">
-                    <div class="oname">대월,경봉,유명,그레이트,천중도등<br>선별 후 랜덤입고 (4kg기준) <span style="background:#e63946;color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:8px;">초특가 선착순</span></div>
-                    <div class="oprice"><span class="hbanner-orig">35,900원</span>32,900원</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div style="grid-column:1 / 3;background:linear-gradient(90deg,#8b4a1f,#a8672e);color:#fff;font-size:10px;font-weight:900;padding:3px 8px;border-radius:6px;text-align:center;margin-bottom:-2px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;">
-              <span>🍑 가장맛있는놈만 갖고와요 - 선별후 랜덤입고</span>
-              <span class="badge-recommend">강력추천</span>
-            </div>
-            <div class="hbanner peach sparkle-card" style="grid-column:1 / 3;">
-              <span class="hbanner-tag">황도</span>
-              <div class="hbanner-title">황도(13브릭스이상만 당일선별 랜덤입고)</div>
-              <div style="display:flex;align-items:stretch;gap:6px;">
-                <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900;color:#c1121f;padding:0 8px;">단호장</div>
-                <div class="hbanner-opts" style="flex:1;">
-                  <div class="hbanner-opt" style="flex:1;background:#fff8e1;border:2px solid #e63946;animation:pulse 1.6s infinite;" onclick="heroAddItem('f_uhwangdo_25kg')">
-                    <div class="oname">단호장,엘바트,금황등<br>선별 후 랜덤입고 (4kg기준)</div>
-                    <div class="oprice">35,900원</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 🍒 체리 -->
-        <div class="hsec">
-          <div class="hcat-title">🍒 체리</div>
-          <div class="hcard" style="width:100%;box-sizing:border-box;">
-            <div style="background:linear-gradient(90deg,#c1121f,#ff4d4d);color:#fff;font-size:0.72rem;font-weight:900;padding:5px 8px;margin:-1px -1px 8px;border-radius:9px 9px 0 0;text-align:center;letter-spacing:-0.2px;box-shadow:0 0 8px rgba(255,60,60,0.5);animation:pulse 1.6s infinite,twinkle 0.9s infinite alternate;">🔥 지금이 가장맛있을때에요</div>
-            <div class="hitem-name" style="margin-bottom:8px;">🍒 캐나다체리 <span class="hbadge soft" style="margin:0 0 0 2px;">9.5row-대과</span> <span class="hbadge soft" style="margin:0 0 0 2px;background:#e63946;color:#fff;">입고기념</span></div>
-            <div class="hcombo" onclick="heroAddItem('ts_cherry')" style="width:100%;box-sizing:border-box;">
-              <div class="hcombo-label">500g</div>
-              <div class="hcombo-price"><span style="font-size:11px;text-decoration:line-through;opacity:0.6;margin-right:4px;">10,900원</span>9,900원</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 🍊 제주하우스감귤 -->
-        <div class="hsec">
-          <div class="hcat-title">🍊 제주하우스감귤</div>
-          <div class="hcard" style="width:100%;box-sizing:border-box;background:rgba(193,18,31,0.18);border:1.5px solid rgba(230,57,70,0.7);animation:pulse 1.6s infinite;">
-            <div class="hitem-name" style="margin-bottom:8px;">🍊 제주하우스감귤 <span class="hbadge soft" style="margin:0 0 0 2px;">엄청달콤해요</span></div>
-            <div class="hcombo" onclick="heroAddItem('jeju_gamgyul_9')" style="width:100%;box-sizing:border-box;">
-              <div class="hcombo-label">1팩(9입)</div>
-              <div class="hcombo-price">5,500원</div>
-            </div>
-          </div>
-        </div>
 
 
-
-        <!-- 🟣 자두 -->
-        <div class="hsec">
-          <div class="hcat-title">🟣 자두</div>
-          <div class="hitem purple" onclick="heroAddItem('f_jaju_5kg')">
-            <div class="hitem-left">
-              <span class="hbadge" style="background:linear-gradient(90deg,#9c27b0,#6a1b9a);">🟣 후무사</span>
-              <div class="hitem-name">자두(후무사) 5kg 1박스</div>
-            </div>
-            <div class="hitem-price-wrap"><span class="hitem-price">56,900<small>원</small></span></div>
-          </div>
-          <div class="hitem" onclick="heroAddItem('f_jaju_2kg')">
-            <div class="hitem-left">
-              <span class="hitem-icon">🟣</span>
-              <div class="hitem-name">자두(후무사) 2kg</div>
-            </div>
-            <div class="hitem-price-wrap"><span class="hitem-price">23,900<small>원</small></span></div>
-          </div>
-        </div>
-
-        <!-- 🍈 델몬트 특가 -->
-        <div class="hsec">
-          <div class="hbadge" style="width:100%;text-align:center;box-sizing:border-box;background:linear-gradient(90deg,#e6a817,#b8860b);">🍈 델몬트 특가</div>
-          <div class="hcard gold" style="width:100%;box-sizing:border-box;">
-            <div class="hitem-name" style="margin-bottom:4px;">🍈 골드파인 허니스틱 <span class="hbadge soft" style="margin:0 0 0 2px;">14브릭스이상</span></div>
-            <div class="hcombo gold" onclick="heroAddItem('honeystick_6')" style="width:100%;box-sizing:border-box;">
-              <div class="hcombo-label">6개</div>
-              <div class="hcombo-price">9,900원</div>
-            </div>
-            <div style="height:1px;background:rgba(255,255,255,0.12);margin:6px 0;"></div>
-            <div class="hitem-name" style="margin-bottom:1px;">🍌 하이랜드 허니바나나</div>
-            <div class="hitem-sub" style="margin-bottom:4px;">쫀쫀한 바나나 - 무를수록 찰기 강해져요</div>
-            <div class="hgrid2">
-              <div class="hcombo gold" onclick="heroAddItem('f_delmonte_banana')">
-                <div class="hcombo-label">1송이</div>
-                <div class="hcombo-price">3,000원</div>
-              </div>
-              <div class="hcombo gold" onclick="heroAddItem('f_delmonte_banana2')">
-                <div class="hcombo-label">2송이</div>
-                <div class="hcombo-price">5,500원</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 🌽 옥수수 -->
-        <div class="hsec">
-          <div class="hcat-title">🌽 옥수수</div>
-          <div class="hcard" style="width:100%;box-sizing:border-box;">
-            <div class="hitem-name" style="margin-bottom:6px;">🌽 찰옥수수(대학찰,미백,얼룩이랜덤)</div>
-            <div class="hgrid2">
-              <div class="hcombo" onclick="heroAddItem('v_corn_eol1')">
-                <div class="hcombo-label">6개</div>
-                <div class="hcombo-price">5,000원</div>
-              </div>
-              <div class="hcombo featured" onclick="heroAddItem('v_corn_eol10')">
-                <div class="hcombo-label">10개</div>
-                <div class="hcombo-price">7,000원</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 🥬 채소 -->
-        <div class="hsec">
-          <div class="hsec-title">🥬 채소</div>
-          <div class="hitem featured" onclick="heroAddItem('gamjagoguma_set')">
-            <div class="hitem-left">
-              <span class="hitem-icon">🥔</span>
-              <div>
-                <div class="hitem-name">감자고구마세트</div>
-                <div class="hitem-sub">수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 1kg</div>
-              </div>
-            </div>
-            <div class="hitem-price-wrap"><span class="hitem-price">5,900<small>원</small></span></div>
-          </div>
-          <div class="hitem" onclick="heroAddItem('ts_goguma3kg')" style="background:rgba(193,18,31,0.18);border:1.5px solid rgba(230,57,70,0.7);border-radius:7px;animation:pulse 1.6s infinite;">
-            <div class="hitem-left">
-              <span class="hitem-icon">🍠</span>
-              <div>
-                <div class="hitem-name">베니하루카(밤+호박) 꿀 고구마 2kg이상</div>
-                <div class="hitem-sub">당도최고조</div>
-              </div>
-            </div>
-            <div class="hitem-price-wrap"><span class="hitem-price">7,900<small>원</small></span></div>
-          </div>
-          <div class="hitem" onclick="heroAddItem('ts_gamja2')" style="background:rgba(193,18,31,0.18);border:1.5px solid rgba(230,57,70,0.7);border-radius:7px;animation:pulse 1.6s infinite;">
-            <div class="hitem-left">
-              <span class="hitem-icon">🥔</span>
-              <div class="hitem-name">수미햇감자 2봉(2kg↑)</div>
-            </div>
-            <div class="hitem-price-wrap">
-              <span class="hitem-orig">8,000원</span>
-              <span class="hitem-price">4,900<small>원</small></span>
-            </div>
-          </div>
-          <div class="hitem" onclick="heroAddItem('ts_zucchini')" style="background:rgba(193,18,31,0.18);border:1.5px solid rgba(230,57,70,0.7);border-radius:7px;animation:pulse 1.6s infinite;">
-            <div class="hitem-left">
-              <span class="hitem-icon">🥒</span>
-              <div class="hitem-name">애호박 2개</div>
-            </div>
-            <div class="hitem-price-wrap"><span class="hitem-price">1,500<small>원</small></span></div>
-          </div>
-        </div>
-
-        <!-- 🍊 과일 · 🥚 계란 -->
-        <div class="hsec">
-          <div class="hsec-title">🍊 과일 · 🥚 계란</div>
-          <div class="hgrid2" style="border-radius:8px;overflow:hidden;">
-            <div class="hcombo" onclick="heroAddItem('v34u')">
-              <div class="hcombo-label">🥚 유정란 30구</div>
-              <div class="hcombo-price">17,900원</div>
-            </div>
-            <div class="hcombo" onclick="heroAddItem('v34')">
-              <div class="hcombo-label">🥚 특란 30구</div>
-              <div class="hcombo-price">8,000원</div>
-            </div>
-          </div>
-        </div>
-
+  <div style="padding:12px 16px 0;display:flex;flex-direction:column;align-items:center;">
+    <!-- 🔍 상품 검색 + 장바구니 아이콘 -->
+    <div style="width:100%;max-width:440px;position:relative;margin-bottom:10px;display:flex;gap:6px;">
+      <div style="flex:1;position:relative;display:flex;align-items:center;background:#fff;border-radius:24px;">
+        <span style="font-size:17px;padding-left:14px;flex-shrink:0;">🔍</span>
+        <input id="prod-search-input" type="text" placeholder="복숭아, 수박, 계란... 상품명을 검색하세요" oninput="runProductSearch(this.value)" style="flex:1;width:100%;box-sizing:border-box;padding:12px 16px 12px 8px;border:none;border-radius:24px;background:transparent;color:#1a0f00;font-size:13.5px;font-weight:700;font-family:'Noto Sans KR',sans-serif;">
+        <div id="prod-search-results" style="display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border-radius:14px;max-height:340px;overflow-y:auto;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,0.35);"></div>
       </div>
+      <button onclick="goToCart()" style="flex-shrink:0;width:46px;background:#fff;border:none;border-radius:50%;font-size:18px;cursor:pointer;">🛒</button>
+    </div>
 
-
-      <!-- CTA 버튼 -->
-      <button onclick="startOrder()" style="width:100%;max-width:440px;background:linear-gradient(135deg,#ff6a3d,#e63900);color:#fff;border:none;border-radius:14px;padding:13px 20px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;box-shadow:0 8px 26px rgba(255,90,31,0.5),0 2px 8px rgba(0,0,0,0.25);-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:7px;animation:ctaGlow 1.8s ease-in-out infinite;">
-        <span style="font-size:22px;">🛒</span>
-        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px;">
-          <div style="font-size:17px;font-weight:900;letter-spacing:-0.4px;line-height:1.2;">전체품목(메뉴) 보러가기</div>
-          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.75);letter-spacing:0.2px;">전체 메뉴 · 장바구니 · 주문 →</div>
-        </div>
+    <!-- 👤 나의 코코바스켓 (아코디언 바) -->
+    <div style="width:100%;max-width:440px;margin-bottom:10px;background:#fff;border-radius:10px;overflow:hidden;">
+      <button onclick="toggleMyccAccordion()" id="mycc-accordion-bar" style="width:100%;height:46px;background:#fff;border:none;display:flex;align-items:center;justify-content:space-between;padding:0 14px;cursor:pointer;font-family:inherit;">
+        <span style="font-size:13.5px;font-weight:900;color:#1a0f00;">👤 나의 코코바스켓</span>
+        <span id="mycc-accordion-arrow" style="font-size:13px;color:#999;font-weight:700;display:inline-block;transition:transform .2s;">›</span>
       </button>
+      <div id="mycc-accordion-body" style="display:none;"></div>
+    </div>
+
+    <!-- 🔥 오늘의 특가 (아코디언 — 월요일에 실제 상품으로 채우면 됨, renderTodaySpecialBody만 수정) -->
+    <div style="width:100%;max-width:440px;margin-bottom:10px;background:#fff;border-radius:10px;overflow:hidden;">
+      <button onclick="toggleTodaySpecialAccordion()" id="today-accordion-bar" style="width:100%;height:46px;background:#fff;border:none;display:flex;align-items:center;justify-content:space-between;padding:0 14px;cursor:pointer;font-family:inherit;">
+        <span style="font-size:13.5px;font-weight:900;color:#1a0f00;">🔥 오늘의 특가</span>
+        <span id="today-accordion-arrow" style="font-size:13px;color:#999;font-weight:700;display:inline-block;transition:transform .2s;">›</span>
+      </button>
+      <div id="today-accordion-body" style="display:none;"></div>
+    </div>
+  </div>
+
+      <!-- 탭 3개 (누르면 s4로 화면이동) -->
+      <div style="width:100%;max-width:440px;display:flex;gap:5px;">
+        <button onclick="goToTabScreen('sp')" style="flex:1;background:rgba(255,255,255,0.13);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:9px;padding:8px 4px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:11.5px;font-weight:700;cursor:pointer;">🔥 제철특가</button>
+        <button onclick="goToTabScreen('fr')" style="flex:1;background:rgba(255,255,255,0.13);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:9px;padding:8px 4px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:11.5px;font-weight:700;cursor:pointer;">🍊 과일</button>
+        <button onclick="goToTabScreen('vg')" style="flex:1;background:rgba(255,255,255,0.13);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:9px;padding:8px 4px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:11.5px;font-weight:700;cursor:pointer;">🥦 채소·기타</button>
+      </div>
 
       <!-- 배송안내 -->
       <div style="margin-top:8px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.16);border-radius:10px;padding:11px 15px;text-align:center;max-width:440px;width:100%;">
-        <div style="font-size:12.5px;font-weight:900;color:#fff;margin-bottom:4px;">🚚 오늘 배송지역이 아니신가요?</div>
-        <div style="font-size:12.5px;font-weight:600;color:rgba(255,255,255,0.78);line-height:1.75;">
-          <span style="color:#ffd166;font-weight:800;">선주문</span> 주시면 동선을 잡아 최대한 당일 배송해드리고, 불가한 경우 익일 배송으로 안내드립니다.
-        </div>
-        <div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,0.12);font-size:12.5px;font-weight:700;color:rgba(255,209,102,0.85);">
-          📍 동선 확인 후 담당자가 안내드립니다
-        </div>
-      </div>
-
-      <!-- ⚠️ 카드결제 테스트/심사 안내 배너 -->
-      <div style="margin-top:12px;width:100%;max-width:440px;background:rgba(193,18,31,0.15);border:1.5px solid #ff6b6b;border-radius:12px;padding:10px 14px;text-align:center;">
-        <div style="font-size:12.5px;font-weight:900;color:#fff;line-height:1.6;">⚠️ 카드연동 테스트 및 심사 진행 중이므로<br>카드결제 버튼은 절대 누르지 마세요!<br>👉 지금은 계좌이체로만 주문 진행해주세요.</div>
+        <div style="font-size:12.5px;font-weight:700;color:#fff;line-height:1.6;">🚚 오늘 배송지역이 아니신가요? <span style="color:rgba(255,255,255,0.85);font-weight:600;">선주문해 주시면 배송 동선을 구성해 최대한 당일 배송해드립니다.</span></div>
       </div>
 
       <!-- 요일별 배송지역 -->
@@ -996,10 +1075,11 @@
 <!-- ④ 가격표+주문 -->
 <div class="screen" id="s4">
   <div class="app-hd" style="position:relative;">
-    <button onclick="openOrderLookup()" style="position:absolute;top:12px;right:14px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.45);color:#fff;font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px;cursor:pointer;">📋 주문조회</button>
+    <button onclick="goScreen('s1')" style="position:absolute;top:12px;left:14px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.45);color:#fff;font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px;cursor:pointer;">← 이전</button>
     <h1>🧺 코코바스켓 주문계산기</h1>
     <div class="app-hd-sub" id="app-sub">담고 싶은 상품을 골라주세요</div>
   </div>
+
 
   <!-- 주문조회 모달 -->
   <div id="order-lookup-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;padding:16px;">
@@ -1020,7 +1100,6 @@
       <div id="lookup-result"></div>
     </div>
   </div>
-
   <div class="jump-bar">
     <button class="jbtn active" id="tab-sp" onclick="switchTab('sp')">🔥 제철특가</button>
     <button class="jbtn" id="tab-fr" onclick="switchTab('fr')">🍊 과일</button>
@@ -1035,10 +1114,12 @@
     <div id="special-grid"></div>
   </div>
   <div class="tab-panel" id="panel-fr">
+    <div class="cat-modal-hd"><button class="cmh-back" onclick="closeCatModal()">←</button><div class="cmh-title">🍊 과일</div><div style="width:34px;"></div></div>
     <div class="suh"><div class="suh-icon">🍊</div><div><div class="suh-title">과일</div><div class="suh-sub">신선하게 경매 직송</div></div></div>
     <div class="card-grid" id="fruit-grid"></div>
   </div>
   <div class="tab-panel" id="panel-vg">
+    <div class="cat-modal-hd"><button class="cmh-back" onclick="closeCatModal()">←</button><div class="cmh-title">🥦 채소 · 버섯 · 두부 · 계란</div><div style="width:34px;"></div></div>
     <div class="suh"><div class="suh-icon">🥦</div><div><div class="suh-title">채소 · 버섯 · 두부 · 계란</div><div class="suh-sub">매일 아침 직접 경매</div></div></div>
     <div class="veg-list" id="veg-list"></div>
   </div>
@@ -1048,9 +1129,10 @@
         <span class="summary-tab-label">총 주문금액</span>
         <span class="summary-tab-amt" id="total-amt">0원</span>
       </div>
-      <span class="summary-tab-arrow" id="summary-arrow">▲ 주문하기</span>
+      <span class="summary-tab-arrow" id="summary-arrow">▲ 주문 계속하기</span>
     </div>
     <div class="summary-body" id="summary-body">
+      <div id="inline-cart-list" style="max-height:38vh;overflow-y:auto;margin-bottom:8px;"></div>
       <div class="delivery-notice">📦 2만원 이상 현관 배송</div>
       <button class="btn-order" id="btn-order-main" onclick="goToCart()">🛒 장바구니 확인하기</button>
       <button class="btn-reset" style="width:100%;margin-top:0;" onclick="resetAll()">🗑️ 초기화</button>
@@ -1357,6 +1439,11 @@ function goScreen(id) {
   if (id === 's3') setTimeout(checkFormReady, 50);
 }
 
+function goToTabScreen(tab) {
+  goScreen('s4');
+  switchTab(tab);
+}
+
 // ── 재주문 ──
 function formatPhone11(digits) {
   const v = digits.replace(/[^0-9]/g, '');
@@ -1395,7 +1482,7 @@ async function goReorder() {
     if (res.ok) {
       const data = await res.json();
       if (data.length && data[0].name) {
-        found = { name: data[0].name, address: data[0].address, entry: data[0].entry };
+        found = { name: data[0].name, address: data[0].address || null, entry: data[0].entry || null };
         // 기본결제수단/현금영수증 정보도 같이 기억해뒀다가, 주문서 진입 시 자동선택에 사용
         window._customerPrefs = { defaultPayMethod: data[0].default_payment_method, crType: data[0].cash_receipt_type, crNumber: data[0].cash_receipt_number };
         if (data[0].default_payment_method && typeof selectPayMethod === 'function') selectPayMethod(data[0].default_payment_method);
@@ -1403,15 +1490,22 @@ async function goReorder() {
     }
   } catch(e) {}
 
-  // 1.5순위: orders 최근 주문에서 조회
-  if (!found) {
+  // 1.5순위: orders 최근 주문에서 조회 (customers에 이름만 있고 주소/비번이 비어있는 경우도 여기서 보완)
+  if (!found || !found.address) {
     try {
       const res = await fetch(SB_URL + '/rest/v1/orders?customer_phone=eq.' + inputClean + '&select=customer_name,customer_address,door_password&order=order_date.desc&limit=1', {
         headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
       });
       if (res.ok) {
         const data = await res.json();
-        if (data.length && data[0].customer_name) found = { name: data[0].customer_name, address: data[0].customer_address, entry: data[0].door_password };
+        if (data.length && data[0].customer_name) {
+          if (found) { // 이름은 이미 있었으니 주소/현관비번만 보완
+            found.address = found.address || data[0].customer_address;
+            found.entry = found.entry || data[0].door_password;
+          } else {
+            found = { name: data[0].customer_name, address: data[0].customer_address, entry: data[0].door_password };
+          }
+        }
       }
     } catch(e) {}
   }
@@ -1760,16 +1854,13 @@ const fruitItems = [
   { id:'honeystick_6', todaySpecial:false, num:'🍈', name:'🍈 델몬트 골드파인 허니스틱(14브릭스이상) 6개', desc:'델몬트 골드파인 허니스틱(14브릭스이상) 6개', price:9900 },
 
   { id:'f51_super', num:'🍉', name:'🍉 강원도 양구수박(특품) 10kg', desc:'강원도 양구수박(특품) 10kg', orig:30900, price:27900 },
-  { id:'f51_promo', num:'🍉', name:'🍉 강원도 양구수박(특품) 10kg [3만원이상특가]', desc:'강원도 양구수박(특품) 10kg - 3만원 이상 주문시', price:23900 },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
   { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'', orig:9800, price:7900 },
   { id:'f_avocado', todaySpecial:false, num:'🥑', name:'🥑 아보카도 5개 [주말초특가]', desc:'아보카도 5개', price:5900 },
   { id:'f54', num:'#54', name:'🍈 참외(소과·게르마늄) 1봉', desc:'성주 게르마늄 재배 참외 1봉 (소과)',             orig:null,  price:5000 },
   { id:'f55', num:'#55', name:'🍅 방울토마토 1팩',   desc:'',            orig:null,  price:4900  },
-  { id:'f60', num:'#60', name:'🥝 골드키위 왕왕특 4개', desc:'골드키위(왕왕특)입', orig:10000, price:8800 },
   { id:'v36', num:'36', name:'🍅 찰토마토 1봉',          desc:'달고 아삭한 찰토마토',  price:4000 },
 
-  { id:'f51', num:'#51', name:'🍉 대소수박 9kg(복불복제로)', desc:'복불복없는 수박 · 대소 9kg', orig:32900, price:26900 },
   // ── 단품 ──
   { id:'honeystick_1', todaySpecial:false, num:'🍈', name:'🍈 델몬트 골드파인 허니스틱(14브릭스이상) 1개', desc:'델몬트 골드파인 허니스틱(14브릭스이상) 1개', price:1800 },
   { id:'honeystick_10', todaySpecial:false, num:'🍈', name:'🍈 델몬트 골드파인 허니스틱(14브릭스이상) 10개(1팩)', desc:'델몬트 골드파인 허니스틱(14브릭스이상) 10개(1팩)', price:15500 },
@@ -1782,7 +1873,7 @@ const vegItems = [
 
 
   { id:'v_corn_eol10', num:'🌽', name:'🌽 찰옥수수(대학찰,미백,얼룩이랜덤) 10개',       desc:'찰옥수수(대학찰,미백,얼룩이랜덤) 10개', price:7000, maxQty:1 },
-  { id:'ts_goguma3kg', num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg이상', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg이상', price:7900 },
+  { id:'ts_goguma3kg', num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg이상', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg이상', price:8900 },
   { id:'v_corn_eol1',  num:'🌽', name:'🌽 찰옥수수(대학찰,미백,얼룩이랜덤) 6개',        desc:'찰옥수수(대학찰,미백,얼룩이랜덤) 6개', price:5000 },
   { id:'ts_gamja2', num:'🥔', name:'🥔 수미햇감자 2봉(2kg↑)', desc:'수미햇감자 2봉(2kg↑)', orig:8000, price:4900 },
   { id:'v2b', num:'묶음', name:'🧅 양파 2kg이상', price:3900, orig:4000, badge:'묶음특가', badgeColor:'#c1121f' },
@@ -1825,7 +1916,7 @@ const vegItems = [
   { id:'v31', num:'31', name:'청경채 1봉',              price:1000 },
   { id:'v32', num:'32', name:'두부 1팩',               price:2000 },
   { id:'v33', num:'33', name:'순두부 2개',              price:1000 },
-  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:8000, maxQty:1 },
+  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7900, maxQty:1 },
   { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888' },
   { id:'v34u',num:'34', name:'🥚 유정란 30구 (난각1번·무항생제)', price:17900, badge:'유정란 17,900원', badgeColor:'#4caf50' },
 
@@ -2186,6 +2277,95 @@ function resetBundle(bid) {
   const item = specialItems.find(s => s.id === bid);
   renderBundleCard(item, null);
   updateTotal();
+}
+
+// ══════════════════════════════════════════════════════════════
+// 🆕 새 디자인 렌더러 (목업 스타일) — USE_NEW_RENDER=true일 때만 사용됨
+// ⚠️ 기존 renderFruit/renderVeg/renderSpecial은 절대 수정하지 않음.
+// ⚠️ changeQty(id, delta, price, max) 호출 계약은 100% 동일하게 유지 — 이벤트 인터페이스 불변.
+// ══════════════════════════════════════════════════════════════
+function newCardStepper(id, price, max) {
+  return `
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <button onclick="event.stopPropagation();changeQty('${id}',-1,${price},${max})" style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--green);background:#fff;color:var(--green);font-size:14px;font-weight:900;cursor:pointer;line-height:1;">−</button>
+      <span id="qty-${id}" style="min-width:16px;text-align:center;font-size:13px;font-weight:900;color:var(--text);">0</span>
+      <button onclick="event.stopPropagation();changeQty('${id}',1,${price},${max})" style="width:26px;height:26px;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:14px;font-weight:900;cursor:pointer;line-height:1;">+</button>
+    </div>`;
+}
+function newCardRow(opts) {
+  // opts: {id, name, desc, price, orig, badge, badgeColor, max, disabled, statusText, thumb}
+  const priceHtml = opts.disabled
+    ? `<span class="pprice" style="color:#bbb;">${opts.statusText||'품절'}</span>`
+    : `${opts.orig ? `<span style="text-decoration:line-through;color:#999;font-size:10px;margin-right:4px;">${opts.orig.toLocaleString()}원</span>` : ''}<span class="pprice">${opts.price.toLocaleString()}원</span>`;
+  const badgeHtml = opts.badge ? `<span class="pbadge" style="background:${opts.badgeColor||'#e63946'};flex-shrink:0;">${opts.badge}</span>` : '';
+  return `
+    <div id="card-${opts.id}" class="pcard-row" style="${opts.disabled?'opacity:0.45;pointer-events:none;':''}">
+      <div class="pthumb">${opts.thumb||'🛒'}</div>
+      <div class="prow-mid">
+        <div class="pname">${opts.name}</div>${badgeHtml}
+      </div>
+      ${priceHtml}
+      ${opts.disabled ? '' : newCardStepper(opts.id, opts.price, opts.max || 99)}
+    </div>`;
+}
+
+function renderFruitNew() {
+  const grid = document.getElementById('fruit-grid');
+  const normalItems = fruitItems.filter(i => !i.todaySpecial && !i.todayShadow && !i.sold && !i.comingSoon);
+  const shadowItems = fruitItems.filter(i => i.todayShadow && !i.sold && !i.comingSoon);
+  const soldItems   = fruitItems.filter(i => i.sold);
+  const comingSoonItems = fruitItems.filter(i => i.comingSoon);
+  let html = '';
+
+  normalItems.forEach(item => {
+    if (!item.tba) reg(item.id, item.name, item.price);
+    if (item.tba) {
+      html += newCardRow({ id:item.id, name:item.name, disabled:true, statusText:'⏰ '+item.tba });
+      return;
+    }
+    if (item.chatOrder) {
+      html += `<div id="card-${item.id}" style="display:flex;align-items:center;justify-content:space-between;background:#f0fdf4;border:1.5px solid #2d7a4f;border-radius:12px;padding:11px 14px;margin-bottom:7px;">
+        <div><div style="font-size:13px;font-weight:800;">${item.name}</div><div style="font-size:10.5px;color:#2d7a4f;font-weight:700;">💬 카카오채팅으로 주문해주세요</div></div>
+      </div>`;
+      return;
+    }
+    html += newCardRow({ id:item.id, name:item.name, desc:item.desc, price:item.price, orig:item.orig, badge:item.badge, badgeColor:item.badgeColor, max:item.maxQty });
+  });
+
+  shadowItems.forEach(item => {
+    reg(item.id, item.name, item.price);
+    html += newCardRow({ id:item.id, name:item.name, desc:item.desc, price:item.price, max:item.maxQty });
+  });
+  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, statusText: item.soldLabel||'품절' }); });
+  comingSoonItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, statusText:'⏰ 입고예정' }); });
+
+  grid.innerHTML = html;
+}
+
+function renderVegNew() {
+  const list = document.getElementById('veg-list');
+  const normalItems = vegItems.filter(i => !i.todaySpecial && !i.sold);
+  const soldItems   = vegItems.filter(i => i.sold);
+  let html = '';
+
+  normalItems.forEach(item => {
+    reg(item.id, item.name, item.price);
+    const max = item.maxQty || 99;
+    if (item.chatOrder) {
+      html += `<div id="card-${item.id}" style="display:flex;align-items:center;justify-content:space-between;background:#f0fdf4;border:1.5px solid #2d7a4f;border-radius:12px;padding:11px 14px;margin-bottom:7px;">
+        <div><div style="font-size:13px;font-weight:800;">${item.name}</div><div style="font-size:10.5px;color:#2d7a4f;font-weight:700;">💬 카카오채팅으로 주문해주세요</div></div>
+      </div>`;
+      return;
+    }
+    if (item.maxQty === 0) {
+      html += newCardRow({ id:item.id, name:item.name, disabled:true, statusText:'품절' });
+      return;
+    }
+    html += newCardRow({ id:item.id, name:item.name, price:item.price, orig:item.origPrice, badge:item.badge, badgeColor:item.badgeColor, max:max });
+  });
+  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, statusText:'마감' }); });
+
+  list.innerHTML = html;
 }
 
 // ══ 렌더: 과일 ════════════════════════════
@@ -2569,6 +2749,54 @@ function heroAdj(id, delta) {
     if (meta2) changeQty(id, -1, meta2.price);
   }
 }
+// ── 🔍 상품 검색 (실제 카탈로그 vegItems/fruitItems/FLASH_ITEMS 기준) ──
+function runProductSearch(qRaw) {
+  const q = (qRaw || '').trim();
+  const box = document.getElementById('prod-search-results');
+  if (!q) { box.style.display = 'none'; box.innerHTML = ''; return; }
+
+  const pool = [
+    ...(typeof vegItems !== 'undefined' ? vegItems : []),
+    ...(typeof fruitItems !== 'undefined' ? fruitItems : []),
+    ...(typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.map(f => ({ id: f.id, name: f.label, price: f.flashPrice, sold: f.max === 0, tba: null })) : []),
+  ];
+  const seen = new Set();
+  const matches = pool.filter(function(it) {
+    const nm = (it.name || '').replace(/^[^\w가-힣]+\s*/, '');
+    if (!nm.includes(q)) return false;
+    const key = it.id;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 20);
+
+  if (!matches.length) {
+    box.innerHTML = '<div style="padding:16px;text-align:center;color:#999;font-size:12.5px;">"' + q + '" 검색 결과가 없어요</div>';
+    box.style.display = 'block';
+    return;
+  }
+  box.innerHTML = matches.map(function(it) {
+    const nm = (it.name || '').replace(/^[^\w가-힣]+\s*/, '');
+    const disabled = it.sold || it.tba;
+    const statusTxt = it.sold ? '품절' : (it.tba ? it.tba : '');
+    return `<div onclick="${disabled ? '' : `searchAddAndClose('${it.id}')`}" style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #f0ede8;cursor:${disabled?'default':'pointer'};${disabled?'opacity:0.45;':''}">
+      <div style="font-size:13px;font-weight:700;color:#1a0f00;">${nm}</div>
+      <div style="font-size:12.5px;font-weight:900;color:${disabled?'#999':'#2d6a4f'};">${disabled ? statusTxt : (it.price||0).toLocaleString()+'원'}</div>
+    </div>`;
+  }).join('');
+  box.style.display = 'block';
+}
+function searchAddAndClose(id) {
+  heroAddItem(id);
+  document.getElementById('prod-search-results').style.display = 'none';
+  document.getElementById('prod-search-input').value = '';
+}
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('prod-search-input');
+  const box = document.getElementById('prod-search-results');
+  if (wrap && box && !wrap.contains(e.target) && !box.contains(e.target)) box.style.display = 'none';
+});
+
 function heroAddItem(id) {
   const setItem = (typeof FLASH_SETS !== 'undefined') && FLASH_SETS.find(s => s.id === id);
   if (setItem) { addBundle(id); return; }
@@ -2576,7 +2804,13 @@ function heroAddItem(id) {
   if (srcItem && srcItem.sold) { showToast('😢 죄송해요, 오늘은 품절됐어요!'); return; }
   if (srcItem && srcItem.tba) { showToast(`⏰ ${srcItem.tba} 예정이에요, 조금만 기다려주세요!`); return; }
   const maxCap = (srcItem && srcItem.maxQty) || 9999;
-  if (itemMeta[id]) changeQty(id, 1, itemMeta[id].price, maxCap);
+  if (itemMeta[id]) {
+    changeQty(id, 1, itemMeta[id].price, maxCap);
+    const fullName = itemMeta[id].name || '';
+    const emojiMatch = fullName.match(/^([\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}])/u);
+    const cleanName = fullName.replace(/^[^\w가-힣]+\s*/, '').split(/[\s(]/)[0];
+    if (typeof trackRecentView === 'function') trackRecentView(id, cleanName, emojiMatch ? emojiMatch[1] : '🛒');
+  }
   const tabEl = document.querySelector('[data-tab="fruit"]');
   if (tabEl) tabEl.click();
 }
@@ -2780,12 +3014,7 @@ function updateEggPromoLock() {
   const eggUnlocked = sub >= EGG_PROMO_THRESHOLD; // 계란은 회원이어도 3만원 조건 그대로
   const bannerEl = document.getElementById('eggPromoBanner');
   if (bannerEl) {
-    if (eggUnlocked) {
-      bannerEl.innerHTML = '✅ 특란 특가 열렸어요! 30구 5,900원 / 2판 13,900원(2일한정)';
-    } else {
-      const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-      bannerEl.innerHTML = `✅ 3만원 이상 장보시면 특란 30구 5,900원!<br>🔒 ${need}원 더 담으면 특가가 열려요`;
-    }
+    bannerEl.style.display = 'none'; // 수박 3만원특가 삭제로 더 이상 홍보할 상품 없음
   }
   EGG_PROMO_IDS.forEach(id => {
     const el = document.getElementById('eggpromo-' + id) || document.getElementById('promo-' + id);
@@ -2820,9 +3049,47 @@ function updateTotal() {
   }
   document.getElementById('total-amt').textContent = total.toLocaleString() + '원';
   updateEggPromoLock();
+  renderCartDetailInline(total);
 }
 
-// ══ 왕란 품절 처리 ══════════════════════════
+// 🆕 하단 장바구니바를 펼치면(summary-body) 실제 담은 상품 목록을 그 자리에 표시 (목업의 cart-detail 방식)
+function renderCartDetailInline(total) {
+  const box = document.getElementById('inline-cart-list');
+  if (!box) return;
+  const rows = [];
+  for (const id in qtys) {
+    if (qtys[id] > 0 && itemMeta[id]) {
+      const base = itemMeta[id].price;
+      const price = (window._isMember && MEMBER_PRICES[id] != null) ? MEMBER_PRICES[id] : base;
+      rows.push({ name: itemMeta[id].name, qty: qtys[id], sub: qtys[id]*price });
+    }
+  }
+  for (const id in flashQtys) {
+    if (flashQtys[id] > 0) {
+      const fi = FLASH_ITEMS.find(f => f.id === id);
+      const base = (fi && fi.flashPrice) ? fi.flashPrice : (itemMeta[id] ? itemMeta[id].price : 0);
+      const price = (window._isMember && MEMBER_PRICES[id] != null) ? MEMBER_PRICES[id] : base;
+      rows.push({ name: (itemMeta[id]?itemMeta[id].name:(fi?fi.label:id)), qty: flashQtys[id], sub: flashQtys[id]*price });
+    }
+  }
+  for (const bid in bundleState) {
+    if (bundleState[bid].done) {
+      const b = (typeof FLASH_SETS !== 'undefined') && FLASH_SETS.find(s => s.id === bid);
+      rows.push({ name: (b?b.label:bid), qty: 1, sub: bundleState[bid].price });
+    }
+  }
+  if (!rows.length) {
+    box.innerHTML = '<div style="text-align:center;color:#aaa;font-size:12.5px;padding:14px 0;">아직 담은 상품이 없어요</div>';
+    return;
+  }
+  box.innerHTML = rows.map(r => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px solid #f0ede8;font-size:12.5px;">
+      <div style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px;">${r.name}</div>
+      <div style="color:#888;flex-shrink:0;margin-right:8px;">×${r.qty}</div>
+      <div style="font-weight:800;flex-shrink:0;">${r.sub.toLocaleString()}원</div>
+    </div>`).join('');
+}
+
 function applyEggSoldout() {
   ['v34','v35'].forEach(id => {
     const card = document.getElementById('card-' + id);
@@ -3225,15 +3492,25 @@ function toggleSummary() {
   const arrow = document.getElementById('summary-arrow');
   const isOpen = body.classList.toggle('open');
   arrow.classList.toggle('open', isOpen);
-  arrow.textContent = isOpen ? '▼ 닫기' : '▲ 주문하기';
+  arrow.textContent = isOpen ? '▼ 닫기' : '▲ 주문 계속하기';
 }
 
 function switchTab(tab) {
   ['sp','fr','vg'].forEach(t => {
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
-    document.getElementById('panel-'+t).classList.toggle('active', t===tab);
   });
+  if (tab === 'sp') {
+    document.getElementById('panel-fr').classList.remove('cat-modal-open');
+    document.getElementById('panel-vg').classList.remove('cat-modal-open');
+    document.getElementById('panel-sp').classList.add('active');
+  } else {
+    document.getElementById('panel-fr').classList.toggle('cat-modal-open', tab==='fr');
+    document.getElementById('panel-vg').classList.toggle('cat-modal-open', tab==='vg');
+  }
   window.scrollTo(0,0);
+}
+function closeCatModal() {
+  switchTab('sp');
 }
 
 function jumpTo(id) {
@@ -3250,10 +3527,13 @@ function showToast(msg) {
 }
 
 initDayLock();
+// 🆕 새 디자인 렌더러 스위치 — true로 바꾸면 새 카드 디자인 사용, false면 기존 그대로.
+// 문제 생기면 이 줄만 false로 되돌리면 즉시 원상복구됨.
+const USE_NEW_RENDER = true;
 // 수박 특가세트 itemMeta 등록 (heroAddItem 에서 사용)
 renderSpecial();
-renderFruit();
-renderVeg();
+if (USE_NEW_RENDER) { renderFruitNew(); } else { renderFruit(); }
+if (USE_NEW_RENDER) { renderVegNew(); } else { renderVeg(); }
 checkEggSoldout();
 applySoldout();
 
@@ -4065,7 +4345,6 @@ const MEMBER_PRICES = {
 
 const FLASH_ITEMS = [
   { id:'f51_super',          label:'강원도 양구수박(특품) 10kg',                                   max:9999, flashPrice:27900, origPrice:30900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가 · 강원도 양구수박', fullWidth:true },
-  { id:'f51_promo',          label:'강원도 양구수박(특품) 10kg 🚨3만원이상특가',                   max:9999, flashPrice:23900, section:'🍉 수박,멜론 특가', badge:'🚨 3만원 이상 주문시만', fullWidth:true },
   { id:'f_melon',            label:'고당도괴물멜론(머스크-고창) 2.5kg전후 1통 [강추]',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!' },
   { id:'f_melon_honeydew',   label:'고당도괴물멜론(허니듀)1.5전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가' },
   { id:'f_baekdo_daewol_4kg', label:'백도(대월,경봉,유명,그레이트,천중도등) 4kg',                  max:9999, maxQty:1, flashPrice:32900, origPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, badge:'🍑 초특가 · 1인 1개 한정 · 선별 후 랜덤입고(4kg기준)' },
@@ -5062,5 +5341,549 @@ if (typeof changeQty === 'function') {
 }
 setInterval(updateFloatCart, 500);
 </script>
+<!-- ══ 나의 코코바스켓 모달 ══ -->
+<div id="mycc-modal" style="display:none;">
+  <div style="background:#fff;border-radius:16px;width:100%;max-width:440px;padding:16px;position:relative;margin:0 auto 10px;box-sizing:border-box;">
+    <button onclick="document.getElementById('mycc-modal').style.display='none'" style="position:absolute;top:10px;right:10px;background:#f0f0f0;border:none;border-radius:50%;width:26px;height:26px;font-size:12px;cursor:pointer;">✕</button>
+    <div style="font-size:14px;font-weight:900;margin-bottom:12px;">👤 나의 코코바스켓</div>
+
+    <div id="mycc-form" style="background:#f9f7f2;border:1px solid #e0ddd5;border-radius:12px;padding:16px;">
+      <div style="font-size:12.5px;color:#777;margin-bottom:10px;">전화번호와 6자리 PIN을 입력하시면 등급·포인트·최근주문을 확인할 수 있어요</div>
+      <input id="mycc-phone" type="tel" placeholder="전화번호 (예: 01012345678)" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;margin-bottom:7px;">
+      <input id="mycc-pin" type="password" inputmode="numeric" maxlength="6" placeholder="PIN 6자리 숫자" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;margin-bottom:10px;letter-spacing:4px;">
+      <div id="mycc-error" style="display:none;color:#c1121f;font-size:12px;font-weight:700;margin-bottom:8px;"></div>
+      <button onclick="myccVerify()" id="mycc-submit-btn" style="width:100%;background:#2d6a4f;color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:900;cursor:pointer;">조회하기</button>
+      <div style="text-align:center;font-size:11.5px;color:#777;margin-top:10px;cursor:pointer;text-decoration:underline;" onclick="myccShowSetup()">처음이신가요? PIN 처음 만들기</div>
+    </div>
+
+    <div id="mycc-setup-form" style="display:none;background:#fffdf5;border:1.5px solid #ffd166;border-radius:12px;padding:16px;">
+      <div style="font-size:12.5px;color:#777;margin-bottom:10px;">주문하실 때 사용하신 <b>전화번호</b>와 <b>이름</b>을 입력하시면, 앞으로 쓰실 PIN을 만들어드려요</div>
+      <input id="mycc-setup-phone" type="tel" placeholder="전화번호" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;margin-bottom:7px;">
+      <input id="mycc-setup-name" type="text" placeholder="이름 (주문 시 입력한 이름)" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;margin-bottom:7px;">
+      <input id="mycc-setup-pin" type="password" inputmode="numeric" maxlength="6" placeholder="새로 만들 PIN 6자리" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;margin-bottom:10px;letter-spacing:4px;">
+      <div id="mycc-setup-error" style="display:none;color:#c1121f;font-size:12px;font-weight:700;margin-bottom:8px;"></div>
+      <button onclick="myccDoSetup()" style="width:100%;background:#ffd166;color:#5a4400;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:900;cursor:pointer;">PIN 만들기</button>
+      <div style="text-align:center;font-size:11.5px;color:#777;margin-top:10px;cursor:pointer;text-decoration:underline;" onclick="myccShowLogin()">이미 PIN이 있어요</div>
+    </div>
+
+    <div id="mycc-result" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  function el(id){ return document.getElementById(id); }
+  window.openMyCocobasketModal = function(){
+    el('mycc-modal').style.display = 'block';
+    try {
+      const cached = sessionStorage.getItem('mycc_me');
+      if (cached) { myccRender(JSON.parse(cached)); return; }
+    } catch(e) {}
+    myccShowLogin();
+  };
+  window.myccShowSetup = function(){ el('mycc-form').style.display='none'; el('mycc-setup-form').style.display='block'; el('mycc-result').style.display='none'; };
+  window.myccShowLogin = function(){ el('mycc-setup-form').style.display='none'; el('mycc-result').style.display='none'; el('mycc-form').style.display='block'; };
+
+  // 🔁 첫화면 "최근주문 다시담기" 버튼 — 로그인 돼있으면 바로 재주문, 아니면 나의코코바스켓 열어서 로그인 유도
+  window.quickReorder = function(){
+    let me; try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) {}
+    if (me && me.recent_order) { myccReorder(me.recent_order.id); return; }
+    showToast('먼저 "나의 코코바스켓"에서 확인해주세요');
+    openMyCocobasketModal();
+  };
+
+  // 🎁 적립금 안내 모달
+  window.openPointsInfoModal = function(){
+    let modal = el('points-info-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'points-info-modal';
+      modal.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:10002;align-items:flex-start;justify-content:center;overflow-y:auto;padding:16px 0;';
+      modal.innerHTML = `<div style="background:#fff;border-radius:16px;width:92%;max-width:420px;padding:18px;position:relative;">
+        <button onclick="document.getElementById('points-info-modal').style.display='none'" style="position:absolute;top:12px;right:12px;background:#f0f0f0;border:none;border-radius:50%;width:30px;height:30px;font-size:14px;cursor:pointer;">✕</button>
+        <div style="font-size:16px;font-weight:900;margin-bottom:14px;">🎁 적립 혜택 안내</div>
+        <div style="display:flex;gap:8px;">
+          <div style="flex:1;">
+            <div style="font-size:11.5px;font-weight:800;margin-bottom:2px;">💳 카드결제</div>
+            <div style="font-size:10px;color:#888;margin-bottom:6px;">결제 즉시 자동 적립</div>
+            <table style="width:100%;font-size:11px;border-collapse:collapse;">
+              <tr><td style="padding:3px 0;color:#888;">🌱 일반</td><td style="text-align:right;font-weight:800;">0.5%</td></tr>
+              <tr><td style="padding:3px 0;color:#888;">🥉 브론즈</td><td style="text-align:right;font-weight:800;">1.0%</td></tr>
+              <tr><td style="padding:3px 0;color:#888;">🥈 실버</td><td style="text-align:right;font-weight:800;">1.5%</td></tr>
+              <tr><td style="padding:3px 0;color:#888;">🥇 골드</td><td style="text-align:right;font-weight:800;">2.0%</td></tr>
+            </table>
+          </div>
+          <div style="width:1px;background:#e0ddd5;"></div>
+          <div style="flex:1;">
+            <div style="font-size:11.5px;font-weight:800;color:#c1121f;margin-bottom:2px;">💰 계좌이체 <span style="font-size:9.5px;background:#fdecea;padding:1px 5px;border-radius:6px;">+0.5%</span></div>
+            <div style="font-size:10px;color:#888;margin-bottom:6px;">입금 확인 후 자동 적립</div>
+            <table style="width:100%;font-size:11px;border-collapse:collapse;">
+              <tr><td style="padding:3px 0;color:#888;">🌱 일반</td><td style="text-align:right;font-weight:800;color:#c1121f;">1.0%</td></tr>
+              <tr><td style="padding:3px 0;color:#888;">🥉 브론즈</td><td style="text-align:right;font-weight:800;color:#c1121f;">1.5%</td></tr>
+              <tr><td style="padding:3px 0;color:#888;">🥈 실버</td><td style="text-align:right;font-weight:800;color:#c1121f;">2.0%</td></tr>
+              <tr><td style="padding:3px 0;color:#888;">🥇 골드</td><td style="text-align:right;font-weight:800;color:#c1121f;">2.5%</td></tr>
+            </table>
+          </div>
+        </div>
+        <div style="font-size:10px;color:#888;margin-top:8px;padding-top:8px;border-top:1px dashed #e0ddd5;">※ 등급은 누적 구매금액에 따라 자동으로 올라가요 · 포인트는 실제 결제금액 기준으로 적립돼요</div>
+      </div>`;
+      document.body.appendChild(modal);
+    }
+    modal.style.display = 'flex';
+  };
+
+  // 🕐 최근 본 상품 (localStorage, 최대 6개)
+  window.trackRecentView = function(id, name, emoji){
+    try {
+      let list = JSON.parse(localStorage.getItem('ccb_recent_viewed') || '[]');
+      list = list.filter(function(x){ return x.id !== id; });
+      list.unshift({ id: id, name: name, emoji: emoji || '🛒' });
+      list = list.slice(0, 6);
+      localStorage.setItem('ccb_recent_viewed', JSON.stringify(list));
+      renderRecentViewed();
+    } catch(e) {}
+  };
+  window.renderRecentViewed = function(){
+    const wrap = el('recent-viewed-wrap');
+    const listEl = el('recent-viewed-list');
+    if (!wrap || !listEl) return;
+    let list = [];
+    try { list = JSON.parse(localStorage.getItem('ccb_recent_viewed') || '[]'); } catch(e) {}
+    if (!list.length) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+    listEl.innerHTML = list.map(function(it){
+      return `<div onclick="heroAddItem('${it.id}')" style="flex-shrink:0;background:#fff;border-radius:12px;padding:10px 14px;text-align:center;cursor:pointer;min-width:64px;">
+        <div style="font-size:20px;">${it.emoji}</div>
+        <div style="font-size:10.5px;font-weight:700;margin-top:2px;color:#1a0f00;">${it.name}</div>
+      </div>`;
+    }).join('');
+  };
+  document.addEventListener('DOMContentLoaded', renderRecentViewed);
+  document.addEventListener('DOMContentLoaded', function(){
+    try {
+      const cached = sessionStorage.getItem('mycc_me');
+      const previewEl = document.getElementById('mycc-points-preview');
+      if (cached && previewEl) {
+        const data = JSON.parse(cached);
+        previewEl.textContent = (data.points_balance||0).toLocaleString() + 'P 보유 →';
+      }
+    } catch(e) {}
+  });
+  if (document.readyState !== 'loading') {
+    renderRecentViewed();
+    try {
+      const cached = sessionStorage.getItem('mycc_me');
+      const previewEl = document.getElementById('mycc-points-preview');
+      if (cached && previewEl) {
+        const data = JSON.parse(cached);
+        previewEl.textContent = (data.points_balance||0).toLocaleString() + 'P 보유 →';
+      }
+    } catch(e) {}
+  }
+
+  // ══════════════════════════════════════════════
+  // 👤 나의 코코바스켓 — 검색창 아래 아코디언 바
+  // 인증은 기존 재주문(myccVerify)과 동일한 전화번호+PIN, 세션(mycc_me) 공유
+  // ══════════════════════════════════════════════
+  // ══════════════════════════════════════════════
+  // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
+  // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
+  // ══════════════════════════════════════════════
+  const TODAY_SPECIAL_IDS = [];
+
+  window.toggleTodaySpecialAccordion = function(){
+    const body = document.getElementById('today-accordion-body');
+    const arrow = document.getElementById('today-accordion-arrow');
+    const open = body.style.display !== 'none';
+    if (open) {
+      body.style.display = 'none';
+      arrow.style.transform = 'rotate(0deg)';
+    } else {
+      body.style.display = 'block';
+      arrow.style.transform = 'rotate(90deg)';
+      renderTodaySpecialBody();
+    }
+  };
+
+  // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
+  function findCatalogItem(id) {
+    const pools = [
+      typeof vegItems !== 'undefined' ? vegItems : [],
+      typeof fruitItems !== 'undefined' ? fruitItems : [],
+      typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.map(f => ({ id:f.id, name:f.label, price:f.flashPrice, sold:f.max===0, maxQty:f.max, tba:null })) : [],
+    ];
+    for (const pool of pools) {
+      const found = pool.find(x => x.id === id);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  window.renderTodaySpecialBody = function(){
+    const body = document.getElementById('today-accordion-body');
+    // 삭제된(카탈로그에 없는) id는 조용히 걸러내고, 최대 5개까지만, 배열 순서 그대로
+    const validItems = TODAY_SPECIAL_IDS
+      .map(id => ({ id, cat: findCatalogItem(id) }))
+      .filter(x => x.cat)
+      .slice(0, 5);
+
+    if (!validItems.length) {
+      body.innerHTML = `<div style="padding:16px;border-top:1px solid #f0ede8;text-align:center;font-size:12px;color:#999;">이번 주 특가를 준비하고 있습니다.<br>월요일 오전 공개됩니다.</div>`;
+      return;
+    }
+    const rows = validItems.map(({ id, cat }) => {
+      const cleanName = (cat.name||'').replace(/^[^\w가-힣]+\s*/, '');
+      const isSoldOut = cat.sold === true || cat.maxQty === 0 || !!cat.tba;
+      if (isSoldOut) {
+        return `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid #f0ede8;opacity:0.5;">
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:12.5px;font-weight:700;color:#1a0f00;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cleanName}</div>
+              <div style="font-size:12px;font-weight:800;color:#999;">품절</div>
+            </div>
+            <button disabled style="flex-shrink:0;background:#eee;color:#aaa;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:not-allowed;">품절</button>
+          </div>`;
+      }
+      return `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid #f0ede8;">
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:12.5px;font-weight:700;color:#1a0f00;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cleanName}</div>
+            <div style="font-size:13.5px;font-weight:900;color:#c1121f;">${cat.price.toLocaleString()}원</div>
+          </div>
+          <button onclick="todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:pointer;min-width:64px;">+ 담기</button>
+        </div>`;
+    }).join('');
+    body.innerHTML = rows + `
+      <div style="padding:12px 16px;border-top:1px solid #f0ede8;text-align:center;">
+        <span onclick="goToTabScreen('sp')" style="font-size:12px;font-weight:700;color:var(--green);cursor:pointer;text-decoration:underline;">오늘 특가 전체보기 →</span>
+      </div>`;
+  };
+
+  // 담기 버튼 클릭 시 "+담기" → "✓담김"으로 1초간 바뀌는 피드백
+  window.todaySpecialAddClick = function(btn, id){
+    heroAddItem(id);
+    const original = btn.textContent;
+    btn.textContent = '✓ 담김';
+    btn.style.background = '#1a4d33';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = 'var(--green)';
+      btn.disabled = false;
+    }, 1000);
+  };
+
+  window.toggleMyccAccordion = function(){
+    const body = document.getElementById('mycc-accordion-body');
+    const arrow = document.getElementById('mycc-accordion-arrow');
+    const open = body.style.display !== 'none';
+    if (open) {
+      body.style.display = 'none';
+      arrow.style.transform = 'rotate(0deg)';
+    } else {
+      body.style.display = 'block';
+      arrow.style.transform = 'rotate(90deg)';
+      renderMyccAccordionBody();
+    }
+  };
+
+  window.renderMyccAccordionBody = function(){
+    const body = document.getElementById('mycc-accordion-body');
+    let me = null;
+    try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) {}
+    if (me) { renderMyccAccordionMenu(me); return; }
+    body.innerHTML = `
+      <div style="padding:14px;border-top:1px solid #f0ede8;">
+        <div style="font-size:11.5px;color:#777;margin-bottom:8px;">전화번호와 6자리 PIN을 입력해주세요</div>
+        <input id="acc-phone" type="tel" placeholder="전화번호" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13px;margin-bottom:6px;">
+        <input id="acc-pin" type="password" inputmode="numeric" maxlength="6" placeholder="PIN 6자리" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13px;margin-bottom:8px;letter-spacing:4px;">
+        <div id="acc-error" style="display:none;color:#c1121f;font-size:11.5px;font-weight:700;margin-bottom:6px;"></div>
+        <button onclick="accVerify()" id="acc-submit-btn" style="width:100%;background:var(--green);color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:900;cursor:pointer;">조회하기</button>
+        <div style="text-align:center;font-size:11px;color:#777;margin-top:8px;cursor:pointer;text-decoration:underline;" onclick="openMyCocobasketModal();document.getElementById('mycc-modal').style.display='block';setTimeout(myccShowSetup,0);">처음이신가요? PIN 처음 만들기</div>
+      </div>`;
+  };
+
+  window.accVerify = async function(){
+    const phone = document.getElementById('acc-phone').value.trim();
+    const pin = document.getElementById('acc-pin').value.trim();
+    const errEl = document.getElementById('acc-error');
+    errEl.style.display = 'none';
+    if (!phone || !/^[0-9]{6}$/.test(pin)) { errEl.textContent = '전화번호와 6자리 PIN을 정확히 입력해주세요'; errEl.style.display='block'; return; }
+    const btn = document.getElementById('acc-submit-btn'); btn.disabled = true; btn.textContent = '확인 중...';
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/rpc/get_my_cocobasket', {
+        method: 'POST', headers: { 'Content-Type':'application/json', apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY },
+        body: JSON.stringify({ p_phone: phone, p_pin: pin })
+      });
+      const data = await res.json();
+      if (!data.success) {
+        const msgs = { NOT_FOUND:'가입된 회원 정보가 없어요', PIN_NOT_SET:'PIN이 아직 없으세요. 아래에서 만들어주세요', WRONG_PIN:'PIN이 일치하지 않아요' };
+        errEl.textContent = msgs[data.error] || '조회에 실패했어요'; errEl.style.display='block'; return;
+      }
+      data.phone = phone; data.pin = pin;
+      try { sessionStorage.setItem('mycc_me', JSON.stringify(data)); } catch(e) {}
+      renderMyccAccordionMenu(data);
+    } catch(e) {
+      errEl.textContent = '조회에 실패했어요. 잠시 후 다시 시도해주세요'; errEl.style.display='block';
+    } finally { btn.disabled = false; btn.textContent = '조회하기'; }
+  };
+
+  function gradeEmojiAcc(g){ return { '골드':'🥇','실버':'🥈','브론즈':'🥉' }[g] || '🌱'; }
+
+  window.renderMyccAccordionMenu = function(me){
+    const body = document.getElementById('mycc-accordion-body');
+    const rowStyle = 'padding:13px 16px;font-size:13px;font-weight:700;border-top:1px solid #f0ede8;cursor:pointer;display:flex;align-items:center;justify-content:space-between;';
+    body.innerHTML = `
+      <div class="acc-row" style="${rowStyle}" onclick="accShowSub('info')">👤 내 정보 <span style="color:#999;font-size:11px;font-weight:600;">${me.name||''} ${me.phone||''} ›</span></div>
+      <div class="acc-row" style="${rowStyle}" onclick="accShowSub('orders')">📦 주문내역 <span style="color:#999;font-size:11px;">›</span></div>
+      <div class="acc-row" style="${rowStyle}" onclick="accShowSub('reorder')">🔁 재주문 <span style="color:#999;font-size:11px;">›</span></div>
+      <div class="acc-row" style="${rowStyle}" onclick="accShowSub('points')">⭐ 포인트 <span style="color:var(--red);font-size:12px;font-weight:900;">${(me.points_balance||0).toLocaleString()}P ›</span></div>
+      <div class="acc-row" style="${rowStyle}" onclick="accShowSub('grade')">🏅 회원등급 <span style="color:#999;font-size:11px;font-weight:700;">${gradeEmojiAcc(me.grade)} ${me.grade||'일반'} ›</span></div>
+      <div class="acc-row" style="${rowStyle}" onclick="accShowSub('payment')">💳 결제관리 <span style="color:#999;font-size:11px;">›</span></div>
+      <div class="acc-row" style="${rowStyle}border-bottom:1px solid #f0ede8;" onclick="accShowSub('receipt')">🧾 현금영수증 <span style="color:#999;font-size:11px;">›</span></div>
+      <div id="acc-sub-panel"></div>
+    `;
+  };
+
+  window.accShowSub = function(kind){
+    let me; try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) { return; }
+    if (!me) return;
+    const panel = document.getElementById('acc-sub-panel');
+    const boxStyle = 'padding:14px 16px;background:#faf7f2;border-top:1px solid #f0ede8;font-size:12.5px;color:#333;';
+    if (kind === 'info') {
+      panel.innerHTML = `<div style="${boxStyle}">
+        <div style="margin-bottom:4px;"><b>이름</b> ${me.name||'-'}</div>
+        <div style="margin-bottom:4px;"><b>전화번호</b> ${me.phone||'-'}</div>
+        <div><b>배송지</b> ${me.address||'주문 시 자동저장'}</div>
+      </div>`;
+    } else if (kind === 'orders' || kind === 'reorder') {
+      const ro = me.recent_order;
+      if (!ro) { panel.innerHTML = `<div style="${boxStyle}">아직 주문 내역이 없어요</div>`; return; }
+      panel.innerHTML = `<div style="${boxStyle}">
+        <div style="margin-bottom:8px;">📦 최근 주문 · ${ro.order_date||''} · <b>${(ro.total||0).toLocaleString()}원</b></div>
+        ${kind === 'reorder' ? `<button onclick="myccReorder('${ro.id}')" style="width:100%;background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px;font-size:12.5px;font-weight:900;cursor:pointer;">🔁 이 주문 다시 담기</button>` : ''}
+      </div>`;
+    } else if (kind === 'points') {
+      panel.innerHTML = `<div style="${boxStyle}">
+        <div style="font-size:15px;font-weight:900;margin-bottom:8px;">보유 포인트 ${(me.points_balance||0).toLocaleString()}P</div>
+        <div style="color:#999;margin-bottom:2px;">적립내역 없음</div>
+        <div style="color:#999;">사용내역 없음</div>
+      </div>`;
+    } else if (kind === 'grade') {
+      panel.innerHTML = `<div style="${boxStyle}">현재 등급 <b>${gradeEmojiAcc(me.grade)} ${me.grade||'일반'}</b><br><span style="color:#999;font-size:11.5px;">등급은 누적 구매금액에 따라 자동으로 올라가요</span></div>`;
+    } else if (kind === 'payment' || kind === 'receipt') {
+      panel.innerHTML = `<div id="acc-edit-mount" style="${boxStyle}"></div>`;
+      myccOpenEditInto('acc-edit-mount');
+    }
+  };
+
+  window.myccVerify = async function(){
+    const phone = el('mycc-phone').value.trim();
+    const pin = el('mycc-pin').value.trim();
+    const errEl = el('mycc-error');
+    errEl.style.display = 'none';
+    if (!phone || !/^[0-9]{6}$/.test(pin)) { errEl.textContent = '전화번호와 6자리 PIN을 정확히 입력해주세요'; errEl.style.display='block'; return; }
+    const btn = el('mycc-submit-btn'); btn.disabled = true; btn.textContent = '확인 중...';
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/rpc/get_my_cocobasket', {
+        method: 'POST', headers: { 'Content-Type':'application/json', apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY },
+        body: JSON.stringify({ p_phone: phone, p_pin: pin })
+      });
+      const data = await res.json();
+      if (!data.success) {
+        const msgs = { NOT_FOUND:'가입된 회원 정보가 없어요', PIN_NOT_SET:'PIN이 아직 없으세요. 아래 "PIN 처음 만들기"를 눌러주세요', WRONG_PIN:'PIN이 일치하지 않아요' };
+        errEl.textContent = msgs[data.error] || '조회에 실패했어요'; errEl.style.display='block'; return;
+      }
+      data.phone = phone; data.pin = pin;
+      try { sessionStorage.setItem('mycc_me', JSON.stringify(data)); } catch(e) {}
+      myccRender(data);
+    } catch(e) {
+      errEl.textContent = '조회에 실패했어요. 잠시 후 다시 시도해주세요'; errEl.style.display='block';
+    } finally { btn.disabled = false; btn.textContent = '조회하기'; }
+  };
+
+  window.myccDoSetup = async function(){
+    const phone = el('mycc-setup-phone').value.trim();
+    const name = el('mycc-setup-name').value.trim();
+    const pin = el('mycc-setup-pin').value.trim();
+    const errEl = el('mycc-setup-error'); errEl.style.display = 'none';
+    if (!phone || !name || !/^[0-9]{6}$/.test(pin)) { errEl.textContent = '전화번호·이름·PIN(6자리 숫자)을 모두 입력해주세요'; errEl.style.display='block'; return; }
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/rpc/setup_or_verify_pin', {
+        method: 'POST', headers: { 'Content-Type':'application/json', apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY },
+        body: JSON.stringify({ p_phone: phone, p_name: name, p_pin: pin })
+      });
+      const data = await res.json();
+      if (!data.success) {
+        const msgs = { NOT_FOUND:'가입된 주문 내역을 찾을 수 없어요. 먼저 주문을 한 번 진행해주세요', NAME_MISMATCH:'주문하신 이름과 달라요. 다시 확인해주세요', INVALID_PIN_FORMAT:'PIN은 숫자 6자리여야 해요' };
+        errEl.textContent = msgs[data.error] || '설정에 실패했어요'; errEl.style.display='block'; return;
+      }
+      myccShowLogin();
+      el('mycc-phone').value = phone;
+      showToast('✅ PIN이 설정됐어요! 이제 조회해보세요');
+    } catch(e) { errEl.textContent = '오류가 발생했어요'; errEl.style.display='block'; }
+  };
+
+  function gradeEmoji(g){ return { '골드':'🥇','실버':'🥈','브론즈':'🥉' }[g] || '🌱'; }
+
+  window.myccRender = function(data){
+    el('mycc-form').style.display = 'none';
+    el('mycc-setup-form').style.display = 'none';
+    const box = el('mycc-result');
+    box.style.display = 'block';
+    const previewEl = document.getElementById('mycc-points-preview');
+    if (previewEl) previewEl.textContent = (data.points_balance||0).toLocaleString() + 'P 보유 →';
+    const ro = data.recent_order;
+    const crLabel = data.cash_receipt_type === 'personal' ? '개인소득공제' : data.cash_receipt_type === 'business' ? '사업자지출증빙' : '미등록';
+    box.innerHTML = `
+      <div style="display:flex;gap:8px;margin-bottom:8px;">        <div style="flex:1;background:#f9f7f2;border:1px solid #e0ddd5;border-radius:12px;padding:12px;">
+          <div style="font-size:11px;color:#888;margin-bottom:4px;">회원등급</div>
+          <div style="font-size:16px;font-weight:900;">${gradeEmoji(data.grade)} ${data.grade||'일반'}</div>
+        </div>
+        <div style="flex:1;background:#f9f7f2;border:1px solid #e0ddd5;border-radius:12px;padding:12px;">
+          <div style="font-size:11px;color:#888;margin-bottom:4px;">보유 포인트</div>
+          <div style="font-size:16px;font-weight:900;">${(data.points_balance||0).toLocaleString()}<span style="font-size:11px;">P</span></div>
+        </div>
+      </div>
+      ${ro ? `
+      <div style="background:#f9f7f2;border:1px solid #e0ddd5;border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:11px;color:#888;margin-bottom:2px;">📦 최근 주문 · ${ro.order_date||''}</div>
+          <div style="font-size:14px;font-weight:900;">${(ro.total||0).toLocaleString()}원</div>
+        </div>
+        <button onclick="myccReorder('${ro.id}')" style="background:#2d6a4f;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:12.5px;font-weight:800;cursor:pointer;">재주문</button>
+      </div>` : `<div style="font-size:12.5px;color:#888;padding:10px 2px;">아직 주문 내역이 없어요</div>`}
+      <div style="background:#f9f7f2;border:1px solid #e0ddd5;border-radius:12px;overflow:hidden;margin-top:4px;">
+        <div class="mycc-row" onclick="myccOpenEdit()">🧾 현금영수증 <span style="font-size:11px;color:${data.cash_receipt_type?'#2d6a4f':'#888'};font-weight:700;margin-left:4px;">${crLabel}</span></div>
+        <div class="mycc-row" onclick="myccOpenEdit()">🚚 기본 배송메모 <span style="font-size:11px;color:#888;font-weight:700;margin-left:4px;">${data.entry ? data.entry.slice(0,10)+(data.entry.length>10?'…':'') : '미설정'}</span></div>
+        <div class="mycc-row" style="border-bottom:none;" onclick="myccOpenEdit()">💳 기본 결제수단 <span style="font-size:11px;color:#888;font-weight:700;margin-left:4px;">${data.default_payment_method==='card'?'카드결제':data.default_payment_method==='bank'?'계좌이체':'미설정'}</span></div>
+      </div>
+      <div id="mycc-edit-panel" style="display:none;margin-top:8px;background:#fffdf5;border:1.5px solid #ffd166;border-radius:12px;padding:14px;"></div>
+      <style>.mycc-row{padding:13px 16px;font-size:13.5px;font-weight:700;border-bottom:1px solid #e0ddd5;cursor:pointer;}.mycc-row:active{background:#f0ede8;}</style>
+    `;
+  };
+
+  window.myccOpenEdit = function(){
+    let me; try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) { return; }
+    if (!me) return;
+    const panel = el('mycc-edit-panel');
+    panel.style.display = 'block';
+    panel.innerHTML = `
+      <div style="font-size:13px;font-weight:900;margin-bottom:10px;">정보 수정</div>
+      <div style="font-size:11.5px;font-weight:700;color:#777;margin-bottom:5px;">현금영수증</div>
+      <div style="display:flex;gap:6px;margin-bottom:8px;">
+        <label style="flex:1;text-align:center;padding:8px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:12px;cursor:pointer;"><input type="radio" name="mycc-crtype" value="" ${!me.cash_receipt_type?'checked':''}> 안함</label>
+        <label style="flex:1;text-align:center;padding:8px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:12px;cursor:pointer;"><input type="radio" name="mycc-crtype" value="personal" ${me.cash_receipt_type==='personal'?'checked':''}> 개인소득공제</label>
+        <label style="flex:1;text-align:center;padding:8px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:12px;cursor:pointer;"><input type="radio" name="mycc-crtype" value="business" ${me.cash_receipt_type==='business'?'checked':''}> 사업자지출증빙</label>
+      </div>
+      <input id="mycc-edit-cr-number" placeholder="전화번호 또는 사업자등록번호" value="${me.cash_receipt_number||''}" style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13px;margin-bottom:10px;">
+      <div style="font-size:11.5px;font-weight:700;color:#777;margin-bottom:5px;">기본 배송메모</div>
+      <input id="mycc-edit-memo" placeholder="예: 문 앞에 놔주세요" value="${me.entry||''}" style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13px;margin-bottom:10px;">
+      <div style="font-size:11.5px;font-weight:700;color:#777;margin-bottom:5px;">기본 결제수단</div>
+      <div style="display:flex;gap:6px;margin-bottom:12px;">
+        <label style="flex:1;text-align:center;padding:8px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:12px;cursor:pointer;"><input type="radio" name="mycc-paymethod" value="bank" ${me.default_payment_method==='bank'?'checked':''}> 계좌이체</label>
+        <label style="flex:1;text-align:center;padding:8px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:12px;cursor:pointer;"><input type="radio" name="mycc-paymethod" value="card" ${me.default_payment_method==='card'?'checked':''}> 카드결제</label>
+      </div>
+      <button onclick="myccSaveEdit()" style="width:100%;background:#2d6a4f;color:#fff;border:none;border-radius:8px;padding:11px;font-size:13.5px;font-weight:900;cursor:pointer;">저장</button>
+    `;
+  };
+
+  window.myccOpenEditInto = function(mountId){
+    let me; try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) { return; }
+    if (!me) return;
+    const panel = document.getElementById(mountId);
+    if (!panel) return;
+    panel.innerHTML = `
+      <div style="font-size:13px;font-weight:900;margin-bottom:10px;">정보 수정</div>
+      <div style="font-size:11.5px;font-weight:700;color:#777;margin-bottom:5px;">현금영수증</div>
+      <div style="display:flex;gap:6px;margin-bottom:8px;">
+        <label style="flex:1;text-align:center;padding:8px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:12px;cursor:pointer;"><input type="radio" name="mycc-crtype" value="" ${!me.cash_receipt_type?'checked':''}> 안함</label>
+        <label style="flex:1;text-align:center;padding:8px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:12px;cursor:pointer;"><input type="radio" name="mycc-crtype" value="personal" ${me.cash_receipt_type==='personal'?'checked':''}> 개인소득공제</label>
+        <label style="flex:1;text-align:center;padding:8px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:12px;cursor:pointer;"><input type="radio" name="mycc-crtype" value="business" ${me.cash_receipt_type==='business'?'checked':''}> 사업자지출증빙</label>
+      </div>
+      <input id="mycc-edit-cr-number" placeholder="전화번호 또는 사업자등록번호" value="${me.cash_receipt_number||''}" style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13px;margin-bottom:10px;">
+      <div style="font-size:11.5px;font-weight:700;color:#777;margin-bottom:5px;">기본 배송메모</div>
+      <input id="mycc-edit-memo" placeholder="예: 문 앞에 놔주세요" value="${me.entry||''}" style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13px;margin-bottom:10px;">
+      <div style="font-size:11.5px;font-weight:700;color:#777;margin-bottom:5px;">기본 결제수단</div>
+      <div style="display:flex;gap:6px;margin-bottom:12px;">
+        <label style="flex:1;text-align:center;padding:8px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:12px;cursor:pointer;"><input type="radio" name="mycc-paymethod" value="bank" ${me.default_payment_method==='bank'?'checked':''}> 계좌이체</label>
+        <label style="flex:1;text-align:center;padding:8px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:12px;cursor:pointer;"><input type="radio" name="mycc-paymethod" value="card" ${me.default_payment_method==='card'?'checked':''}> 카드결제</label>
+      </div>
+      <button onclick="myccSaveEdit()" style="width:100%;background:#2d6a4f;color:#fff;border:none;border-radius:8px;padding:11px;font-size:13.5px;font-weight:900;cursor:pointer;">저장</button>
+    `;
+  };
+
+  window.myccSaveEdit = async function(){
+    let me; try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) { return; }
+    if (!me) return;
+    const crType = document.querySelector('input[name="mycc-crtype"]:checked').value || null;
+    const crNumber = el('mycc-edit-cr-number').value.trim() || null;
+    const memo = el('mycc-edit-memo').value.trim() || null;
+    const payEl = document.querySelector('input[name="mycc-paymethod"]:checked');
+    const payMethod = payEl ? payEl.value : null;
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/rpc/update_my_info', {
+        method: 'POST', headers: { 'Content-Type':'application/json', apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY },
+        body: JSON.stringify({ p_phone: me.phone, p_pin: me.pin, p_cash_receipt_type: crType, p_cash_receipt_number: crNumber, p_entry: memo, p_default_payment_method: payMethod })
+      });
+      const data = await res.json();
+      if (!data.success) { showToast('❌ 저장 실패했어요'); return; }
+      me.cash_receipt_type = crType; me.cash_receipt_number = crNumber; me.entry = memo; me.default_payment_method = payMethod;
+      sessionStorage.setItem('mycc_me', JSON.stringify(me));
+      if (document.getElementById('mycc-result')) myccRender(me);
+      if (document.getElementById('mycc-accordion-body') && document.getElementById('mycc-accordion-body').style.display !== 'none') renderMyccAccordionMenu(me);
+      showToast('✅ 저장됐어요');
+    } catch(e) { showToast('❌ 저장 중 오류가 발생했어요'); }
+  };
+
+  // 재주문 — 목업과 달리 실제 상품 카탈로그(vegItems/fruitItems/FLASH_ITEMS)에서 이름으로 찾아 현재가로 담음
+  window.myccReorder = async function(orderId){
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/rpc/get_reorder_items', {
+        method: 'POST', headers: { 'Content-Type':'application/json', apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY },
+        body: JSON.stringify({ p_order_id: orderId })
+      });
+      const data = await res.json();
+      if (!data.success || !data.items || !data.items.length) { showToast('재주문할 품목을 찾지 못했어요'); return; }
+
+      const allCatalog = [
+        ...(typeof vegItems !== 'undefined' ? vegItems : []),
+        ...(typeof fruitItems !== 'undefined' ? fruitItems : []),
+      ];
+      const flashById = (typeof FLASH_ITEMS !== 'undefined') ? FLASH_ITEMS : [];
+
+      let added = 0; const unavailable = [];
+      data.items.forEach(function(it){
+        // item_code로 먼저 매칭 시도 (가장 정확), 실패시 이름으로 매칭
+        let src = null;
+        if (it.item_code) src = allCatalog.find(function(x){ return x.id === it.item_code; });
+        if (!src) {
+          const cleanName = it.item_name.replace(/^[^\w가-힣]+\s*/,'').trim();
+          src = allCatalog.find(function(x){ return x.name.replace(/^[^\w가-힣]+\s*/,'').trim() === cleanName; });
+        }
+        if (src) {
+          if (src.sold || src.tba) { unavailable.push(it.item_name + '(품절/미입고)'); return; }
+          if (itemMeta[src.id]) { changeQty(src.id, it.qty||1, itemMeta[src.id].price, (src.maxQty||9999)); added++; }
+          else unavailable.push(it.item_name);
+        } else {
+          unavailable.push(it.item_name);
+        }
+      });
+
+      document.getElementById('mycc-modal').style.display = 'none';
+      if (unavailable.length) {
+        alert(`${added}개 담았어요.\n다만 아래 상품은 품절되었거나 더 이상 판매하지 않아 담지 못했어요:\n- ${unavailable.join('\n- ')}`);
+      } else if (added) {
+        showToast(`✅ 지난 주문 상품 ${added}개를 현재가격으로 담았어요`);
+      }
+      const tabEl = document.querySelector('[data-tab="fruit"]');
+      if (tabEl) tabEl.click();
+    } catch(e) {
+      showToast('❌ 재주문 중 오류가 발생했어요');
+    }
+  };
+})();
+</script>
+
 </body>
 </html>
