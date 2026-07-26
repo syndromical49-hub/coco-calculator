@@ -1058,10 +1058,6 @@
         <label class="fl" id="cr-num-label" style="font-size:0.72rem;">전화번호</label>
         <input class="fi" type="tel" id="inp-cash-receipt-phone" placeholder="받으실 번호가 다르면 입력 (비우면 주문자 번호로 발급)" maxlength="13" style="font-size:0.8rem;">
       </div>
-      <div style="background:#fff8e1;border:2px solid #ffd166;border-radius:10px;padding:10px 12px;margin:6px 0;">
-        <label class="fl" style="font-size:1rem;font-weight:900;color:#7a5c00;">🔑 주문조회 비밀번호 <span style="font-size:0.75em;font-weight:700;color:#a67c00;">(선택 · 나중에 주문내역 확인용)</span></label>
-        <input class="fi" id="inp-lookup-pw" type="tel" inputmode="numeric" pattern="[0-9]*" oninput="this.value=this.value.replace(/[^0-9]/g,'');try{localStorage.setItem('ccb_lookup_pw',this.value)}catch(e){}" placeholder="예: 1234 (숫자만 입력)" maxlength="10" style="font-size:1.05rem;font-weight:700;padding:12px;color:#1a0f00;background:#fff;">
-      </div>
       <div><label class="fl">소개인 닉네임 <span style="font-size:0.8em;color:#888;">(선택 · 이벤트 참여 시 입력)</span></label><input class="fi" id="inp-referrer" placeholder="예: 코코맘" maxlength="20"></div>
 
 
@@ -1082,25 +1078,6 @@
   </div>
 
 
-  <!-- 주문조회 모달 -->
-  <div id="order-lookup-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;padding:16px;">
-    <div style="background:#fff;border-radius:16px;padding:20px 18px;width:100%;max-width:380px;max-height:85vh;overflow-y:auto;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div style="font-size:1rem;font-weight:900;color:#1a0f00;">📋 주문내역 조회</div>
-        <button onclick="closeOrderLookup()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#888;">✕</button>
-      </div>
-      <div style="font-size:0.78rem;color:#777;margin-bottom:10px;">주문하신 전화번호와 주문 시 입력하신<br>주문조회 비밀번호를 입력해주세요.</div>
-      <div style="font-size:0.68rem;color:#aaa;margin-bottom:10px;background:#f7f7f7;border-radius:8px;padding:7px 10px;">※ 주문 내역은 <b>주문일로부터 1년간</b> 보관 후 자동 삭제됩니다.</div>
-      <div style="margin-bottom:8px;">
-        <input type="tel" id="lookup-phone" oninput="try{localStorage.setItem('ccb_phone',this.value)}catch(e){}" placeholder="전화번호 (- 없이 입력)" style="width:100%;border:1.5px solid #ddd;border-radius:8px;padding:10px 12px;font-size:0.9rem;box-sizing:border-box;">
-      </div>
-      <div style="display:flex;gap:6px;margin-bottom:10px;">
-        <input type="tel" inputmode="numeric" pattern="[0-9]*" oninput="this.value=this.value.replace(/[^0-9]/g,'');try{localStorage.setItem('ccb_lookup_pw',this.value)}catch(e){}" id="lookup-pw" placeholder="주문조회 비밀번호 (숫자)" maxlength="10" style="flex:1;border:1.5px solid #ddd;border-radius:8px;padding:10px 12px;font-size:0.9rem;">
-        <button onclick="searchMyOrders()" style="background:#2d6a4f;color:#fff;border:none;border-radius:8px;padding:0 16px;font-weight:900;font-size:0.85rem;cursor:pointer;white-space:nowrap;">조회</button>
-      </div>
-      <div id="lookup-result"></div>
-    </div>
-  </div>
   <div class="jump-bar">
     <button class="jbtn active" id="tab-sp" onclick="switchTab('sp')">🔥 제철특가</button>
     <button class="jbtn" id="tab-fr" onclick="switchTab('fr')">🍊 과일</button>
@@ -3174,99 +3151,6 @@ const SB_KEY   = 'sb_publishable_nayRjlhkekbf4-BB_yJk5g_DtEgKZ6g';
 const ORDER_KEY = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2);
 
 // ── 주문조회 (전화번호 기반) ──
-function openOrderLookup() {
-  const modal = document.getElementById('order-lookup-modal');
-  if (modal) { modal.style.display = 'flex'; }
-  const resEl = document.getElementById('lookup-result');
-  if (resEl) resEl.innerHTML = '';
-  const inp = document.getElementById('lookup-phone');
-  const pwInp = document.getElementById('lookup-pw');
-  let savedPhone = '', savedPw = '';
-  try { savedPhone = localStorage.getItem('ccb_phone') || ''; savedPw = localStorage.getItem('ccb_lookup_pw') || ''; } catch(e) {}
-  if (pwInp) pwInp.value = savedPw;
-  if (inp) { inp.value = savedPhone; setTimeout(function(){ inp.focus(); }, 100); }
-}
-function closeOrderLookup() {
-  const modal = document.getElementById('order-lookup-modal');
-  if (modal) modal.style.display = 'none';
-}
-async function searchMyOrders() {
-  const resEl = document.getElementById('lookup-result');
-  const phoneRaw = document.getElementById('lookup-phone').value || '';
-  const phone = phoneRaw.replace(/\D/g,'');
-  const pwInput = (document.getElementById('lookup-pw').value || '').trim();
-  if (!phone || phone.length < 8) {
-    resEl.innerHTML = '<div style="color:#e63946;font-size:0.8rem;margin-top:8px;">전화번호를 정확히 입력해주세요.</div>';
-    return;
-  }
-  if (!pwInput) {
-    resEl.innerHTML = '<div style="color:#e63946;font-size:0.8rem;margin-top:8px;">주문조회 비밀번호를 입력해주세요.</div>';
-    return;
-  }
-  resEl.innerHTML = '<div style="text-align:center;padding:16px;color:#888;font-size:0.85rem;">조회 중...</div>';
-  try {
-    const ordRes = await fetch(SB_URL + '/rest/v1/orders?customer_phone=eq.' + phone + '&select=id,order_date,total,created_at,lookup_password&order=order_date.desc,created_at.desc&limit=50', {
-      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-    });
-    const allOrders = await ordRes.json();
-    // 비밀번호가 일치하는 주문만 (비밀번호를 설정 안 한 옛날 주문은 제외 - 보호 안 된 주문이므로)
-    const orders = Array.isArray(allOrders) ? allOrders.filter(function(o){ return o.lookup_password && o.lookup_password === pwInput; }) : [];
-    if (orders.length === 0) {
-      resEl.innerHTML = '<div style="text-align:center;padding:16px;color:#888;font-size:0.85rem;">전화번호 또는 비밀번호가 일치하는 주문이 없어요.<br><span style="font-size:0.72rem;color:#aaa;">※ 비밀번호를 설정하기 전에 주문한 건은 조회되지 않아요.</span></div>';
-      return;
-    }
-    let html = '';
-    for (const ord of orders) {
-      html += '<div style="border:1px solid #eee;border-radius:10px;margin-bottom:8px;overflow:hidden;">' +
-        '<div onclick="toggleLookupOrder(\'' + ord.id + '\')" id="lookup-hdr-' + ord.id + '" style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;cursor:pointer;background:#fafafa;">' +
-          '<span style="font-size:0.8rem;font-weight:900;color:#2d6a4f;">📅 ' + ord.order_date + '</span>' +
-          '<span style="display:flex;align-items:center;gap:8px;">' +
-            '<span style="font-size:0.9rem;font-weight:900;color:#c1121f;">' + (ord.total||0).toLocaleString() + '원</span>' +
-            '<span id="lookup-arrow-' + ord.id + '" style="font-size:0.7rem;color:#999;">▼</span>' +
-          '</span>' +
-        '</div>' +
-        '<div id="lookup-items-' + ord.id + '" style="display:none;padding:8px 12px;border-top:1px solid #f0f0f0;"></div>' +
-      '</div>';
-    }
-    resEl.innerHTML = html;
-  } catch(e) {
-    resEl.innerHTML = '<div style="color:#e63946;font-size:0.8rem;margin-top:8px;">조회 중 오류가 발생했어요. 다시 시도해주세요.</div>';
-  }
-}
-
-async function toggleLookupOrder(orderId) {
-  const box = document.getElementById('lookup-items-' + orderId);
-  const arrow = document.getElementById('lookup-arrow-' + orderId);
-  if (!box) return;
-  const isOpen = box.style.display === 'block';
-  if (isOpen) {
-    box.style.display = 'none';
-    if (arrow) arrow.textContent = '▼';
-    return;
-  }
-  box.style.display = 'block';
-  if (arrow) arrow.textContent = '▲';
-  if (box.dataset.loaded === '1') return;
-  box.innerHTML = '<div style="color:#aaa;font-size:0.75rem;">불러오는 중...</div>';
-  try {
-    const itRes = await fetch(SB_URL + '/rest/v1/order_items?order_id=eq.' + orderId + '&select=item_name,qty,price', {
-      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-    });
-    const items = await itRes.json();
-    box.innerHTML = Array.isArray(items) && items.length
-      ? items.map(function(it){
-          const sub = (it.price||0) * (it.qty||1);
-          return '<div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#444;padding:2px 0;">' +
-            '<span>' + it.item_name + (it.qty>1 ? ' ×' + it.qty : '') + '</span>' +
-            '<span style="white-space:nowrap;">' + sub.toLocaleString() + '원</span></div>';
-        }).join('')
-      : '<div style="color:#aaa;font-size:0.75rem;">상세내역 없음</div>';
-    box.dataset.loaded = '1';
-  } catch(e) {
-    box.innerHTML = '<div style="color:#e63946;font-size:0.75rem;">내역 불러오기 실패</div>';
-  }
-}
-
 
 // ══ 주문 접수하기 (텔레그램 + Supabase) ════
 function showOrderConfirm() {
@@ -5502,7 +5386,7 @@ function toggleFloatCart() {
 
 function goFloatCart() {
   document.getElementById('float-cart-panel').style.display = 'none';
-  goScreen('s-cart');
+  goToCart();
 }
 
 // 장바구니 변경 시 자동 업데이트
