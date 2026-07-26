@@ -717,13 +717,13 @@
       <div id="mycc-accordion-body" style="display:none;"></div>
     </div>
 
-    <!-- 🔥 오늘의 특가 (아코디언 — 월요일에 실제 상품으로 채우면 됨, renderTodaySpecialBody만 수정) -->
+    <!-- 🔥 오늘의 특가 (항상 펼쳐진 상태로 표시 — 월요일에 실제 상품으로 채우면 됨, renderTodaySpecialBody만 수정) -->
     <div style="width:100%;max-width:440px;margin-bottom:10px;background:#fff;border-radius:10px;overflow:hidden;">
-      <button onclick="toggleTodaySpecialAccordion()" id="today-accordion-bar" style="width:100%;height:46px;background:#fff;border:none;display:flex;align-items:center;justify-content:space-between;padding:0 14px;cursor:pointer;font-family:inherit;">
+      <div style="width:100%;min-height:46px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:8px 14px;gap:8px;flex-wrap:wrap;">
         <span style="font-size:13.5px;font-weight:900;color:#1a0f00;">🔥 오늘의 특가</span>
-        <span id="today-accordion-arrow" style="font-size:13px;color:#999;font-weight:700;display:inline-block;transition:transform .2s;">›</span>
-      </button>
-      <div id="today-accordion-body" style="display:none;"></div>
+        <span style="font-size:11px;font-weight:700;color:#e07a1f;">🍉🍑 수박·복숭아는 7/27 오전 공개예정</span>
+      </div>
+      <div id="today-accordion-body" style="display:block;"></div>
     </div>
   </div>
 
@@ -4494,7 +4494,7 @@ const FLASH_ITEMS = [
   // ── 🍉 수박,멜론 특가 ──
   { id:'f51_tba', label:'수박 (선별입고)', tbaOnly:'월요일 오전 공개', badge:'🔥 초특가 · 양평, 진안, 양구 수박중 선별입고', section:'🍉 수박,멜론 특가', fullWidth:true },
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew', fullWidth:true },
-  { id:'f_melon_honeydew',   label:'허니듀 1.5kg전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론' },
+  { id:'f_melon_honeydew',   label:'허니듀 1.5kg전후',           max:9999, flashPrice:7900, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론' },
   // ── 🍑 복숭아 특가 ──
   { id:'f_baekdo_daewol_4kg', label:'백도(대월,경봉,유명,그레이트,천중도등) 4kg',                  max:9999, maxQty:1, flashPrice:32900, origPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, badge:'🍑 초특가 · 1인 1개 한정 · 선별 후 랜덤입고(4kg기준)' },
   { id:'f_uhwangdo_25kg',  label:'황도(단호장,엘바트,금황등) 4kg',                      max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'단호장', badge:'🍑 선별 후 랜덤입고(4kg기준)' },
@@ -4506,13 +4506,14 @@ const FLASH_ITEMS = [
   { id:'f_jaju_2kg',     label:'자두(후무사) 2kg',                         max:9999, flashPrice:23900,                  section:'🟣 자두 특가' },
   // ── 🍈 델몬트 특가 ──
   { id:'honeystick_6',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 6개',    max:9999, flashPrice:9900,  section:'🍈 델몬트 특가' },
+  { id:'honeystick_5',  label:'델몬트 골드파인 허니스틱(14브릭스이상) 5개',    max:9999, flashPrice:7900,  section:'🍈 델몬트 특가' },
   { id:'honeystick_10', label:'델몬트 골드파인 허니스틱(14브릭스이상) 10개(1팩)', max:9999, flashPrice:15500, section:'🍈 델몬트 특가' },
   { id:'f_delmonte_banana',  label:'델몬트 하이랜드 허니바나나 1송이',        max:9999, flashPrice:3000,                   section:'🍈 델몬트 특가', comboPartner:'f_delmonte_banana2', fullWidth:true },
   { id:'f_delmonte_banana2', label:'델몬트 하이랜드 허니바나나 2송이',        max:9999, flashPrice:5500,                   section:'🍈 델몬트 특가', comboChild:true },
   // ── 🥬 채소 (전부 하나로 묶어서 맨 아래) ──
-  { id:'gamjagoguma_set', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 1kg)', max:9999, flashPrice:5900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
+  { id:'gamjagoguma_set2', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 2kg)', max:9999, flashPrice:9900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
   { id:'v_paprika_1', label:'🫑 스위트 미니 파프리카 1팩(250g)', max:9999, flashPrice:3000, section:'🥬 채소', badge:'🔥 완전 강추!' },
-  { id:'v_paprika_2', label:'🫑 스위트 미니 파프리카 2팩(250g×2)', max:9999, flashPrice:5000, section:'🥬 채소', badge:'🔥 완전 강추!' },
+  { id:'v_paprika_2', label:'🫑 스위트 미니 파프리카 2팩(250g×2)', max:9999, flashPrice:3900, section:'🥬 채소', badge:'🔥 완전 강추!' },
   { id:'v_corn_eol1', label:'🌽 찰옥수수(대학찰,미백,얼룩이랜덤) 6개', max:9999, flashPrice:5000, section:'🥬 채소' },
   { id:'v_corn_eol10', label:'🌽 찰옥수수(대학찰,미백,얼룩이랜덤) 10개', max:9999, flashPrice:7000, section:'🥬 채소' },
   { id:'v36b',           label:'찰토마토 2봉',                               max:9999, flashPrice:6000,  origPrice:8000,  section:'🥬 채소' },
@@ -5663,21 +5664,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = [];
-
-  window.toggleTodaySpecialAccordion = function(){
-    const body = document.getElementById('today-accordion-body');
-    const arrow = document.getElementById('today-accordion-arrow');
-    const open = body.style.display !== 'none';
-    if (open) {
-      body.style.display = 'none';
-      arrow.style.transform = 'rotate(0deg)';
-    } else {
-      body.style.display = 'block';
-      arrow.style.transform = 'rotate(90deg)';
-      renderTodaySpecialBody();
-    }
-  };
+  const TODAY_SPECIAL_IDS = ['v_paprika_2', 'honeystick_5', 'gamjagoguma_set2', 'f_melon_honeydew'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
@@ -5695,11 +5682,11 @@ setInterval(updateFloatCart, 500);
 
   window.renderTodaySpecialBody = function(){
     const body = document.getElementById('today-accordion-body');
-    // 삭제된(카탈로그에 없는) id는 조용히 걸러내고, 최대 5개까지만, 배열 순서 그대로
+    // 삭제된(카탈로그에 없는) id는 조용히 걸러내고, 최대 10개까지만, 배열 순서 그대로
     const validItems = TODAY_SPECIAL_IDS
       .map(id => ({ id, cat: findCatalogItem(id) }))
       .filter(x => x.cat)
-      .slice(0, 5);
+      .slice(0, 10);
 
     if (!validItems.length) {
       body.innerHTML = `<div style="padding:16px;border-top:1px solid #f0ede8;text-align:center;font-size:12px;color:#999;">이번 주 특가를 준비하고 있습니다.<br>월요일 오전 공개됩니다.</div>`;
@@ -5732,6 +5719,7 @@ setInterval(updateFloatCart, 500);
         <span onclick="goToTabScreen('sp')" style="font-size:12px;font-weight:700;color:var(--green);cursor:pointer;text-decoration:underline;">오늘 특가 전체보기 →</span>
       </div>`;
   };
+  renderTodaySpecialBody();
 
   // 담기 버튼 클릭 시 "+담기" → "✓담김"으로 1초간 바뀌는 피드백
   window.todaySpecialAddClick = function(btn, id){
