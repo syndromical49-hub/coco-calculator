@@ -759,8 +759,13 @@
           🟡 카카오 오픈채팅 상담하기
         </a>
       </div>
+      <div style="height:70px;"></div>
 
     </div>
+  </div>
+  <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);z-index:600;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;">
+    <div style="font-size:0.82rem;color:#555;">총 주문금액 <b id="s1-total-amt" style="color:#c1121f;font-size:1.05rem;">0원</b></div>
+    <button onclick="goToCart()" style="background:var(--green);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:900;font-size:0.9rem;cursor:pointer;white-space:nowrap;">🛒 주문하기</button>
   </div>
 </div>
 
@@ -1095,11 +1100,19 @@
     <div class="cat-modal-hd"><button class="cmh-back" onclick="closeCatModal()">←</button><div class="cmh-title">🍊 과일</div><div style="width:34px;"></div></div>
     <div class="suh"><div class="suh-icon">🍊</div><div><div class="suh-title">과일</div><div class="suh-sub">신선하게 경매 직송</div></div></div>
     <div class="card-grid" id="fruit-grid"></div>
+    <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);z-index:600;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;">
+      <div style="font-size:0.82rem;color:#555;">총 주문금액 <b id="fruit-total-amt" style="color:#c1121f;font-size:1.05rem;">0원</b></div>
+      <button onclick="goToCart()" style="background:var(--green);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:900;font-size:0.9rem;cursor:pointer;white-space:nowrap;">🛒 주문하기</button>
+    </div>
   </div>
   <div class="tab-panel" id="panel-vg">
     <div class="cat-modal-hd"><button class="cmh-back" onclick="closeCatModal()">←</button><div class="cmh-title">🥦 채소 · 버섯 · 두부 · 계란</div><div style="width:34px;"></div></div>
     <div class="suh"><div class="suh-icon">🥦</div><div><div class="suh-title">채소 · 버섯 · 두부 · 계란</div><div class="suh-sub">매일 아침 직접 경매</div></div></div>
     <div class="veg-list" id="veg-list"></div>
+    <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);z-index:600;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;">
+      <div style="font-size:0.82rem;color:#555;">총 주문금액 <b id="veg-total-amt" style="color:#c1121f;font-size:1.05rem;">0원</b></div>
+      <button onclick="goToCart()" style="background:var(--green);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:900;font-size:0.9rem;cursor:pointer;white-space:nowrap;">🛒 주문하기</button>
+    </div>
   </div>
   <div class="summary-bar">
     <div class="summary-tab" onclick="toggleSummary()">
@@ -3041,7 +3054,14 @@ function updateTotal() {
   for (const bid in bundleState) {
     if (bundleState[bid].done) total += bundleState[bid].price;
   }
-  document.getElementById('total-amt').textContent = total.toLocaleString() + '원';
+  const totalAmtEl = document.getElementById('total-amt');
+  if (totalAmtEl) totalAmtEl.textContent = total.toLocaleString() + '원';
+  const s1TotalEl = document.getElementById('s1-total-amt');
+  if (s1TotalEl) s1TotalEl.textContent = total.toLocaleString() + '원';
+  const fruitTotalEl = document.getElementById('fruit-total-amt');
+  if (fruitTotalEl) fruitTotalEl.textContent = total.toLocaleString() + '원';
+  const vegTotalEl = document.getElementById('veg-total-amt');
+  if (vegTotalEl) vegTotalEl.textContent = total.toLocaleString() + '원';
   updateEggPromoLock();
   renderCartDetailInline(total);
 }
@@ -5163,7 +5183,7 @@ window.orderDirect = async function() {
     const ordRes = await fetch(SB_URL + '/rest/v1/orders', {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'},
-      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked), cash_receipt_phone:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, cash_receipt_type:(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked)?((document.getElementById('cr-type-business')&&document.getElementById('cr-type-business').checked)?'business':'personal'):null, cash_receipt_number:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, applied_price_tier: (window._isMember ? 'member' : 'normal'), points_used: pointsUsedNow })
+      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked), cash_receipt_phone:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, cash_receipt_type:(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked)?((document.getElementById('cr-type-business')&&document.getElementById('cr-type-business').checked)?'business':'personal'):null, cash_receipt_number:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, applied_price_tier: (window._isMember ? 'member' : 'normal'), points_used: pointsUsedNow, pay_method: 'bank', card_amount: 0, bank_amount: total })
     });
 
     // 중복(409/23505)이면 이미 접수된 주문 → 완료 화면만 표시
