@@ -1212,16 +1212,22 @@
       <!-- 🎁 포인트 사용 -->
       <div id="points-use-wrap" style="display:none;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;">
         <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:8px;">🎁 포인트 사용</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <span style="font-size:0.82rem;color:#555;">보유 포인트</span>
-          <span id="points-balance-display" style="font-size:0.95rem;font-weight:900;color:#1a0f00;">0P</span>
+        <div id="points-use-guest" style="display:none;">
+          <div style="font-size:0.82rem;color:#666;line-height:1.7;margin-bottom:10px;">포인트를 사용하려면<br>'나의 코코바스켓' 로그인 후 이용해주세요.</div>
+          <button type="button" onclick="openMyCocobasketModal()" style="width:100%;padding:11px;background:#f0ede8;color:#2d6a4f;border:none;border-radius:8px;font-weight:900;font-size:0.85rem;cursor:pointer;">🔑 나의 코코바스켓 로그인</button>
         </div>
-        <div style="display:flex;gap:6px;margin-bottom:6px;">
-          <input type="number" id="points-use-input" placeholder="사용할 포인트" min="0" style="flex:1;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;">
-          <button type="button" onclick="applyPointsUse()" style="padding:10px 14px;background:#2d6a4f;color:#fff;border:none;border-radius:8px;font-weight:900;font-size:0.85rem;cursor:pointer;white-space:nowrap;">적용</button>
-          <button type="button" onclick="applyPointsUseMax()" style="padding:10px 12px;background:#f0ede8;color:#555;border:none;border-radius:8px;font-weight:700;font-size:0.8rem;cursor:pointer;white-space:nowrap;">최대</button>
+        <div id="points-use-logged">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:0.82rem;color:#555;">보유 포인트</span>
+            <span id="points-balance-display" style="font-size:0.95rem;font-weight:900;color:#1a0f00;">0P</span>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:6px;">
+            <input type="number" id="points-use-input" placeholder="사용할 포인트" min="0" style="flex:1;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;">
+            <button type="button" onclick="applyPointsUse()" style="padding:10px 14px;background:#2d6a4f;color:#fff;border:none;border-radius:8px;font-weight:900;font-size:0.85rem;cursor:pointer;white-space:nowrap;">적용</button>
+            <button type="button" onclick="applyPointsUseMax()" style="padding:10px 12px;background:#f0ede8;color:#555;border:none;border-radius:8px;font-weight:700;font-size:0.8rem;cursor:pointer;white-space:nowrap;">최대</button>
+          </div>
+          <div id="points-use-note" style="font-size:0.72rem;color:#999;line-height:1.6;">주문금액의 최대 50%까지 사용 가능합니다.<br>사용한 포인트를 제외한 결제금액에 대해 포인트가 적립됩니다.</div>
         </div>
-        <div id="points-use-note" style="font-size:0.72rem;color:#999;line-height:1.6;">주문금액의 최대 50%까지 사용 가능합니다.<br>사용한 포인트를 제외한 결제금액에 대해 포인트가 적립됩니다.</div>
       </div>
       <!-- 결제수단 선택 -->
       <div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;">
@@ -1252,6 +1258,7 @@
   <div id="delivery-done" style="display:none;position:fixed;inset:0;background:#fff;z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;">
     <div style="font-size:3.5rem;margin-bottom:14px;">🎉</div>
     <div style="font-size:1.3rem;font-weight:900;color:#2d6a4f;margin-bottom:6px;">주문이 접수됐어요!</div>
+    <div id="done-order-number" style="display:none;font-size:0.72rem;color:#999;font-weight:700;margin-bottom:6px;"></div>
     <div style="font-size:0.82rem;color:#888;margin-bottom:20px;">아래 계좌로 입금해주시면 배송 준비할게요 😊</div>
 
     <!-- 결제 수단 -->
@@ -1287,14 +1294,16 @@
         <span style="font-size:0.8rem;font-weight:700;color:#7a5c00;">입금 금액</span>
         <span id="done-total" style="font-size:1.2rem;font-weight:900;color:#c1121f;"></span>
       </div>
+      <div id="done-points-breakdown" style="display:none;background:#f9f7f2;border:1.5px solid #e0ddd5;border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:0.78rem;color:#555;">
+        <div id="done-points-used-row" style="display:none;justify-content:space-between;padding:2px 0;"><span>포인트 사용</span><span id="done-points-used" style="font-weight:800;color:#c1121f;"></span></div>
+        <div style="display:flex;justify-content:space-between;padding:2px 0;"><span>이번 적립</span><span id="done-points-earned" style="font-weight:800;color:#2d6a4f;">확인 중...</span></div>
+        <div style="display:flex;justify-content:space-between;padding:2px 0;"><span>현재 보유</span><span id="done-points-balance" style="font-weight:800;color:#1a0f00;">확인 중...</span></div>
+      </div>
       <button onclick="copyPaymentInfo()" style="width:100%;padding:14px;background:#2d6a4f;color:white;border:none;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:0.9rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;">
         📋 계좌번호 복사
       </button>
       <div id="copy-done-msg" style="display:none;margin-top:6px;font-size:0.75rem;color:#2d6a4f;font-weight:700;">✅ 클립보드에 복사됐어요!</div>
-      <button onclick="copyDepositConfirm()" style="width:100%;padding:14px;background:#fff8e1;color:#7a5c00;border:1.5px solid #ffd166;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:0.9rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;margin-top:6px;">
-        ✉️ 입금확인 문자 복사
-      </button>
-      <div id="copy-confirm-msg" style="display:none;margin-top:6px;font-size:0.75rem;color:#7a5c00;font-weight:700;">✅ 복사됐어요! 문자 앱에 붙여넣기 하세요</div>
+      <div style="margin-top:10px;font-size:0.75rem;color:#888;">📌 입금 확인 후 배송 준비를 시작합니다.</div>
     </div>
 
     <a href="https://open.kakao.com/o/gcocobasket" style="background:#FEE500;color:#3C1E1E;font-weight:900;font-size:0.88rem;padding:12px 26px;border-radius:50px;text-decoration:none;">💬 채팅방 바로가기 →</a>
@@ -4037,10 +4046,19 @@ window._pointsUsed = 0;
 function renderPointsUseUI(subtotal) {
   const wrap = document.getElementById('points-use-wrap');
   if (!wrap) return;
+  const guestEl = document.getElementById('points-use-guest');
+  const loggedEl = document.getElementById('points-use-logged');
   let me = null;
   try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) {}
-  if (!me) { wrap.style.display = 'none'; window._pointsUsed = 0; return; }
   wrap.style.display = 'block';
+  if (!me) {
+    if (guestEl) guestEl.style.display = 'block';
+    if (loggedEl) loggedEl.style.display = 'none';
+    window._pointsUsed = 0;
+    return;
+  }
+  if (guestEl) guestEl.style.display = 'none';
+  if (loggedEl) loggedEl.style.display = 'block';
   const balance = me.points_balance || 0;
   const maxUsable = Math.min(balance, Math.floor(subtotal * 0.5));
   document.getElementById('points-balance-display').textContent = balance.toLocaleString() + 'P';
@@ -4072,6 +4090,65 @@ function applyPointsUseMax() {
   const balance = me ? (me.points_balance || 0) : 0;
   window._pointsUsed = Math.min(balance, Math.floor((window._deliveryRawTotal || 0) * 0.5));
   renderDeliveryScreen();
+}
+
+// ── 주문완료 화면: 포인트 사용/적립/현재보유 표시 ──
+// 적립여부는 계산하지 않고, 주문 전 잔액을 저장해뒀다가 주문 후 서버에서 잔액을 다시 조회해 차이로 계산함
+// (카드결제는 결제 즉시 트리거로 적립되지만, 계좌이체는 관리자가 입금확인 해야 적립되므로 그 전엔 적립 0으로 정직하게 표시됨)
+async function refetchMyccBalance() {
+  let me = null;
+  try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) {}
+  if (!me || !me.phone || !me.pin) return null;
+  try {
+    const res = await fetch(SB_URL + '/rest/v1/rpc/get_my_cocobasket', {
+      method: 'POST', headers: { 'Content-Type':'application/json', apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY },
+      body: JSON.stringify({ p_phone: me.phone, p_pin: me.pin })
+    });
+    const data = await res.json();
+    if (!data.success) return null;
+    data.phone = me.phone; data.pin = me.pin;
+    try { sessionStorage.setItem('mycc_me', JSON.stringify(data)); } catch(e) {}
+    return data;
+  } catch(e) { return null; }
+}
+
+async function showDonePointsBreakdown(pointsUsedNow, oldBalance, mode) {
+  const wrap = document.getElementById('done-points-breakdown');
+  if (!wrap) return;
+  // 비로그인 주문(포인트 미사용 + 잔액정보 없음)이면 브레이크다운 자체를 숨김
+  if (oldBalance == null) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  const usedRow = document.getElementById('done-points-used-row');
+  const usedEl = document.getElementById('done-points-used');
+  const earnedEl = document.getElementById('done-points-earned');
+  const balanceEl = document.getElementById('done-points-balance');
+  if (pointsUsedNow > 0) {
+    usedRow.style.display = 'flex';
+    usedEl.textContent = '-' + pointsUsedNow.toLocaleString() + 'P';
+  } else if (usedRow) {
+    usedRow.style.display = 'none';
+  }
+  earnedEl.textContent = '확인 중...';
+  balanceEl.textContent = '확인 중...';
+  const fresh = await refetchMyccBalance();
+  if (!fresh) {
+    earnedEl.textContent = '-';
+    balanceEl.textContent = '-';
+    return;
+  }
+  const newBalance = fresh.points_balance || 0;
+  const earnedNow = Math.max(0, newBalance - (oldBalance - pointsUsedNow));
+  const zeroMsg = mode === 'card' ? '적립 처리 중이에요' : '입금 확인 후 적립돼요';
+  earnedEl.textContent = earnedNow > 0 ? ('+' + earnedNow.toLocaleString() + 'P') : zeroMsg;
+  balanceEl.textContent = newBalance.toLocaleString() + 'P';
+}
+
+function setDoneOrderNumber(orderId) {
+  const el = document.getElementById('done-order-number');
+  if (!el) return;
+  if (!orderId) { el.style.display = 'none'; return; }
+  el.textContent = '주문번호 ' + String(orderId).slice(0,8).toUpperCase();
+  el.style.display = 'block';
 }
 
 function renderDeliveryScreen() {
@@ -4781,7 +4858,7 @@ function selectPayMethod(method) {
 // 2026.07.24 카드사심사 전체 완료 확인 후 정식 오픈됨.
 // ══════════════════════════════════════════════════════════════
 async function submitCardOrder(ctx) {
-  const { u, total, addr, doneItemsHtml, renderDoneItems, submitBtn, doneEl, pointsUsed } = ctx;
+  const { u, total, addr, doneItemsHtml, renderDoneItems, submitBtn, doneEl, pointsUsed, oldPointsBalance } = ctx;
   const phone = (u.phone||'').replace(/\D/g,'');
 
   const orderItems = [];
@@ -4850,6 +4927,8 @@ async function submitCardOrder(ctx) {
     try {
       localStorage.setItem('ccb_pending_kcp_total', String(total));
       localStorage.setItem('ccb_pending_kcp_items', doneItemsHtml);
+      localStorage.setItem('ccb_pending_kcp_points_used', String(pointsUsed || 0));
+      localStorage.setItem('ccb_pending_kcp_old_balance', oldPointsBalance == null ? '' : String(oldPointsBalance));
     } catch(e) {}
 
     if (isMobileDevice) {
@@ -4962,7 +5041,13 @@ function handleKcpReturn() {
   if (result === 'success') {
     const total = parseInt(localStorage.getItem('ccb_pending_kcp_total') || '0', 10);
     const itemsHtml = localStorage.getItem('ccb_pending_kcp_items') || '';
-    try { localStorage.removeItem('ccb_pending_kcp_total'); localStorage.removeItem('ccb_pending_kcp_items'); } catch(e) {}
+    const pointsUsedNow = parseInt(localStorage.getItem('ccb_pending_kcp_points_used') || '0', 10);
+    const oldBalanceRaw = localStorage.getItem('ccb_pending_kcp_old_balance');
+    const oldPointsBalance = (oldBalanceRaw === null || oldBalanceRaw === '') ? null : parseInt(oldBalanceRaw, 10);
+    try {
+      localStorage.removeItem('ccb_pending_kcp_total'); localStorage.removeItem('ccb_pending_kcp_items');
+      localStorage.removeItem('ccb_pending_kcp_points_used'); localStorage.removeItem('ccb_pending_kcp_old_balance');
+    } catch(e) {}
     goScreen('s4');
     const doneEl = document.getElementById('delivery-done');
     if (doneEl) {
@@ -4971,6 +5056,8 @@ function handleKcpReturn() {
       if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
       if (doneItemsEl) doneItemsEl.innerHTML = itemsHtml;
       doneEl.style.display = 'flex'; doneEl.style.flexDirection = 'column';
+      showDonePointsBreakdown(pointsUsedNow, oldPointsBalance, 'card');
+      setDoneOrderNumber(null);
     }
     showToast('✅ 카드결제가 완료됐어요!');
   } else {
@@ -5142,11 +5229,13 @@ window.orderDirect = async function() {
   const rawTotalBeforePoints = total;
   const pointsUsedNow = Math.max(0, Math.min(window._pointsUsed || 0, Math.floor(total * 0.5)));
   total = Math.max(0, total - pointsUsedNow);
+  let oldPointsBalance = null;
+  try { const _me = JSON.parse(sessionStorage.getItem('mycc_me')); if (_me) oldPointsBalance = _me.points_balance || 0; } catch(e) {}
 
   // ── 결제수단이 카드면 완전히 다른 흐름(서버 검증 후 저장)으로 분기 ──
   // 기존 계좌이체 흐름(아래 Supabase 저장 블록)은 절대 손대지 않음
   if (window._payMethod === 'card') {
-    return await submitCardOrder({ u, total, addr, doneItemsHtml, renderDoneItems, submitBtn, doneEl, pointsUsed: pointsUsedNow });
+    return await submitCardOrder({ u, total, addr, doneItemsHtml, renderDoneItems, submitBtn, doneEl, pointsUsed: pointsUsedNow, oldPointsBalance });
   }
 
   // Supabase 저장
@@ -5187,6 +5276,7 @@ window.orderDirect = async function() {
         if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
         renderDoneItems();
         doneEl.style.display='flex'; doneEl.style.flexDirection='column';
+        setDoneOrderNumber(null);
       }
       return;
     }
@@ -5242,6 +5332,8 @@ window.orderDirect = async function() {
     if (doneTotalEl2) doneTotalEl2.textContent = total.toLocaleString() + '원';
     renderDoneItems();
     doneEl.style.display='flex'; doneEl.style.flexDirection='column';
+    showDonePointsBreakdown(pointsUsedNow, oldPointsBalance, 'bank');
+    setDoneOrderNumber(window._lastOrderId);
   }
 
   // 텔레그램 새 형식 전송
@@ -5692,6 +5784,7 @@ setInterval(updateFloatCart, 500);
       data.phone = phone; data.pin = pin;
       try { sessionStorage.setItem('mycc_me', JSON.stringify(data)); } catch(e) {}
       renderMyccAccordionMenu(data);
+      if (typeof renderDeliveryScreen === 'function' && document.getElementById('s-delivery') && document.getElementById('s-delivery').classList.contains('active')) renderDeliveryScreen();
     } catch(e) {
       errEl.textContent = '조회에 실패했어요. 잠시 후 다시 시도해주세요'; errEl.style.display='block';
     } finally { btn.disabled = false; btn.textContent = '조회하기'; }
@@ -5766,6 +5859,7 @@ setInterval(updateFloatCart, 500);
       data.phone = phone; data.pin = pin;
       try { sessionStorage.setItem('mycc_me', JSON.stringify(data)); } catch(e) {}
       myccRender(data);
+      if (typeof renderDeliveryScreen === 'function' && document.getElementById('s-delivery') && document.getElementById('s-delivery').classList.contains('active')) renderDeliveryScreen();
     } catch(e) {
       errEl.textContent = '조회에 실패했어요. 잠시 후 다시 시도해주세요'; errEl.style.display='block';
     } finally { btn.disabled = false; btn.textContent = '조회하기'; }
