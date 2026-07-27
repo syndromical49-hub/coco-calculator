@@ -4977,14 +4977,32 @@ function showKcpDoneScreen() {
 // ── PC 표준결제창(KCP_Pay_Execute_Web) 결제 완료 콜백 ──
 // KCP 결제팝업이 결제 끝나면 opener(이 페이지)의 이 함수를 직접 호출함(redirect 아님).
 // res_cd/enc_data/enc_info/tran_cd/ordr_idxx를 받아서 서버 approve API를 호출해 승인 마무리.
-window.m_Completepayment = async function(FormObj) {
+window.m_Completepayment = async function(FormOrJson, closeEvent) {
+  // KCP 공식 스펙: FormOrJson을 직접 쓰면 안 되고, GetField(frm, FormOrJson)으로
+  // 원래 결제창 호출에 썼던 폼(document.order_info)에 값을 채운 뒤 그 폼에서 읽어야 함.
+  // closeEvent()는 성공/실패 관계없이 반드시 호출해줘야 KCP 결제팝업이 닫힘(안 하면 "결제 진행중" 화면에서 안 멈춤).
+  const frm = document.order_info;
+  try {
+    if (typeof GetField === 'function' && frm) {
+      GetField(frm, FormOrJson);
+    }
+  } catch (e) {
+    console.error('[KCP] GetField 실패', e);
+  }
+
   function fv(name) {
-    if (!FormObj) return '';
-    const el = FormObj[name];
-    if (el == null) return '';
-    return (typeof el === 'object' && 'value' in el) ? el.value : el;
+    if (frm && frm[name] != null) {
+      const el = frm[name];
+      return (typeof el === 'object' && 'value' in el) ? el.value : el;
+    }
+    if (FormOrJson && FormOrJson[name] != null) {
+      const el = FormOrJson[name];
+      return (typeof el === 'object' && 'value' in el) ? el.value : el;
+    }
+    return '';
   }
   const res_cd = fv('res_cd');
+  const res_msg = fv('res_msg');
   const enc_data = fv('enc_data');
   const enc_info = fv('enc_info');
   const tran_cd = fv('tran_cd');
@@ -4993,7 +5011,8 @@ window.m_Completepayment = async function(FormObj) {
 
   if (res_cd && res_cd !== '0000') {
     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
-    showToast('❌ 결제가 완료되지 않았어요. (' + res_cd + ')');
+    showToast('❌ 결제가 완료되지 않았어요. (' + res_cd + (res_msg ? ' ' + res_msg : '') + ')');
+    if (typeof closeEvent === 'function') { try { closeEvent(); } catch(e) {} }
     return;
   }
 
@@ -5008,13 +5027,16 @@ window.m_Completepayment = async function(FormObj) {
       if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
       console.error('[KCP approve] 실패:', ap.error || ap);
       showToast('❌ 결제 승인에 실패했어요. (' + (ap.error||'') + ')');
+      if (typeof closeEvent === 'function') { try { closeEvent(); } catch(e) {} }
       return;
     }
+    if (typeof closeEvent === 'function') { try { closeEvent(); } catch(e) {} }
     showKcpDoneScreen();
   } catch (e) {
     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
     console.error('[KCP approve] 오류', e);
     showToast('❌ 결제 승인 처리 중 오류가 발생했어요.');
+    if (typeof closeEvent === 'function') { try { closeEvent(); } catch(e) {} }
   }
 };
 
