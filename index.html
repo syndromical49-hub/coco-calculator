@@ -4949,34 +4949,83 @@ function redirectToKcpPaymentWindow(p) {
   frm.submit();
 }
 
-// ── 페이지 로드시: KCP 결제 후 돌아온 경우인지 확인 ──
+// ── 카드결제 완료화면 표시 (모바일 리다이렉트 복귀, PC 표준결제창 콜백 둘 다 여기로 옴) ──
+function showKcpDoneScreen() {
+  const total = parseInt(localStorage.getItem('ccb_pending_kcp_total') || '0', 10);
+  const itemsHtml = localStorage.getItem('ccb_pending_kcp_items') || '';
+  const pointsUsedNow = parseInt(localStorage.getItem('ccb_pending_kcp_points_used') || '0', 10);
+  const oldBalanceRaw = localStorage.getItem('ccb_pending_kcp_old_balance');
+  const oldPointsBalance = (oldBalanceRaw === null || oldBalanceRaw === '') ? null : parseInt(oldBalanceRaw, 10);
+  try {
+    localStorage.removeItem('ccb_pending_kcp_total'); localStorage.removeItem('ccb_pending_kcp_items');
+    localStorage.removeItem('ccb_pending_kcp_points_used'); localStorage.removeItem('ccb_pending_kcp_old_balance');
+  } catch(e) {}
+  goScreen('s4');
+  const doneEl = document.getElementById('delivery-done');
+  if (doneEl) {
+    const doneTotalEl = document.getElementById('done-total');
+    const doneItemsEl = document.getElementById('done-items');
+    if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
+    if (doneItemsEl) doneItemsEl.innerHTML = itemsHtml;
+    doneEl.style.display = 'flex'; doneEl.style.flexDirection = 'column';
+    showDonePointsBreakdown(pointsUsedNow, oldPointsBalance, 'card');
+    setDoneOrderNumber(null);
+  }
+  showToast('✅ 카드결제가 완료됐어요!');
+}
+
+// ── PC 표준결제창(KCP_Pay_Execute_Web) 결제 완료 콜백 ──
+// KCP 결제팝업이 결제 끝나면 opener(이 페이지)의 이 함수를 직접 호출함(redirect 아님).
+// res_cd/enc_data/enc_info/tran_cd/ordr_idxx를 받아서 서버 approve API를 호출해 승인 마무리.
+window.m_Completepayment = async function(FormObj) {
+  function fv(name) {
+    if (!FormObj) return '';
+    const el = FormObj[name];
+    if (el == null) return '';
+    return (typeof el === 'object' && 'value' in el) ? el.value : el;
+  }
+  const res_cd = fv('res_cd');
+  const enc_data = fv('enc_data');
+  const enc_info = fv('enc_info');
+  const tran_cd = fv('tran_cd');
+  const ordr_idxx = fv('ordr_idxx');
+  const submitBtn = document.getElementById('btn-confirm-submit') || document.getElementById('btn-delivery-submit');
+
+  if (res_cd && res_cd !== '0000') {
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
+    showToast('❌ 결제가 완료되지 않았어요. (' + res_cd + ')');
+    return;
+  }
+
+  try {
+    const apRes = await fetch('https://cocobasket-danji.vercel.app/api/kcp/approve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ordrIdxx: ordr_idxx, encData: enc_data, encInfo: enc_info, tranCd: tran_cd })
+    });
+    const ap = await apRes.json().catch(function(){ return {}; });
+    if (!apRes.ok || !ap.success) {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
+      console.error('[KCP approve] 실패:', ap.error || ap);
+      showToast('❌ 결제 승인에 실패했어요. (' + (ap.error||'') + ')');
+      return;
+    }
+    showKcpDoneScreen();
+  } catch (e) {
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
+    console.error('[KCP approve] 오류', e);
+    showToast('❌ 결제 승인 처리 중 오류가 발생했어요.');
+  }
+};
+
+// ── 페이지 로드시: KCP 결제 후 돌아온 경우인지 확인 (모바일 리다이렉트 경로) ──
 function handleKcpReturn() {
   const qs = new URLSearchParams(window.location.search);
   const result = qs.get('kcp_result');
   if (!result) return;
 
   if (result === 'success') {
-    const total = parseInt(localStorage.getItem('ccb_pending_kcp_total') || '0', 10);
-    const itemsHtml = localStorage.getItem('ccb_pending_kcp_items') || '';
-    const pointsUsedNow = parseInt(localStorage.getItem('ccb_pending_kcp_points_used') || '0', 10);
-    const oldBalanceRaw = localStorage.getItem('ccb_pending_kcp_old_balance');
-    const oldPointsBalance = (oldBalanceRaw === null || oldBalanceRaw === '') ? null : parseInt(oldBalanceRaw, 10);
-    try {
-      localStorage.removeItem('ccb_pending_kcp_total'); localStorage.removeItem('ccb_pending_kcp_items');
-      localStorage.removeItem('ccb_pending_kcp_points_used'); localStorage.removeItem('ccb_pending_kcp_old_balance');
-    } catch(e) {}
-    goScreen('s4');
-    const doneEl = document.getElementById('delivery-done');
-    if (doneEl) {
-      const doneTotalEl = document.getElementById('done-total');
-      const doneItemsEl = document.getElementById('done-items');
-      if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
-      if (doneItemsEl) doneItemsEl.innerHTML = itemsHtml;
-      doneEl.style.display = 'flex'; doneEl.style.flexDirection = 'column';
-      showDonePointsBreakdown(pointsUsedNow, oldPointsBalance, 'card');
-      setDoneOrderNumber(null);
-    }
-    showToast('✅ 카드결제가 완료됐어요!');
+    showKcpDoneScreen();
   } else {
     showToast('❌ 결제가 완료되지 않았어요: ' + (qs.get('msg') || '알 수 없는 오류'));
   }
