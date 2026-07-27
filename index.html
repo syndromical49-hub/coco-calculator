@@ -5017,11 +5017,15 @@ window.m_Completepayment = async function(FormOrJson, closeEvent) {
   }
 
   try {
-    const apRes = await fetch('https://cocobasket-danji.vercel.app/api/kcp/approve', {
+    const apUrl = 'https://cocobasket-danji.vercel.app/api/kcp/approve';
+    const apOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ordrIdxx: ordr_idxx, encData: enc_data, encInfo: enc_info, tranCd: tran_cd })
-    });
+    };
+    console.log('[KCP approve] fetch url =', apUrl);
+    console.log('[KCP approve] fetch options =', apOptions);
+    const apRes = await fetch(apUrl, apOptions);
     const ap = await apRes.json().catch(function(){ return {}; });
     if (!apRes.ok || !ap.success) {
       if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
@@ -5035,6 +5039,7 @@ window.m_Completepayment = async function(FormOrJson, closeEvent) {
   } catch (e) {
     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
     console.error('[KCP approve] 오류', e);
+    console.error('[KCP approve] 오류 name/message =', e && e.name, e && e.message);
     showToast('❌ 결제 승인 처리 중 오류가 발생했어요.');
     if (typeof closeEvent === 'function') { try { closeEvent(); } catch(e) {} }
   }
