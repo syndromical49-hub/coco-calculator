@@ -719,9 +719,8 @@
 
     <!-- 🔥 오늘의 특가 (항상 펼쳐진 상태로 표시 — 월요일에 실제 상품으로 채우면 됨, renderTodaySpecialBody만 수정) -->
     <div style="width:100%;max-width:440px;margin-bottom:10px;background:#fff;border-radius:10px;overflow:hidden;">
-      <div style="width:100%;min-height:46px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:8px 14px;gap:8px;flex-wrap:wrap;">
+      <div style="width:100%;min-height:46px;background:#fff;display:flex;align-items:center;padding:8px 14px;">
         <span style="font-size:13.5px;font-weight:900;color:#1a0f00;">🔥 오늘의 특가</span>
-        <span style="font-size:11px;font-weight:700;color:#e07a1f;">🍉🍑 수박·복숭아는 7/27 오전 공개예정</span>
       </div>
       <div id="today-accordion-body" style="display:block;"></div>
     </div>
@@ -4396,12 +4395,12 @@ const MEMBER_PRICES = {
 
 const FLASH_ITEMS = [
   // ── 🍉 수박,멜론 특가 ──
-  { id:'f51_tba', label:'수박 (선별입고)', tbaOnly:'월요일 오전 공개', badge:'🔥 초특가 · 양평, 진안, 양구 수박중 선별입고', section:'🍉 수박,멜론 특가', fullWidth:true },
+  { id:'f51_super', label:'강원도 양구수박(특품) 8kg', max:9999, flashPrice:25900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가 · 양평, 진안, 양구 수박중 선별입고', fullWidth:true },
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew', fullWidth:true },
   { id:'f_melon_honeydew',   label:'허니듀 1.5kg전후',           max:9999, flashPrice:7900, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론' },
   // ── 🍑 복숭아 특가 ──
-  { id:'f_baekdo_daewol_4kg', label:'백도(대월,경봉,유명,그레이트,천중도등) 4kg',                  max:9999, maxQty:1, flashPrice:32900, origPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, badge:'🍑 초특가 · 1인 1개 한정 · 선별 후 랜덤입고(4kg기준)' },
-  { id:'f_uhwangdo_25kg',  label:'황도(단호장,엘바트,금황등) 4kg',                      max:9999, flashPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'단호장', badge:'🍑 선별 후 랜덤입고(4kg기준)' },
+  { id:'f_baekdo_daewol_4kg', label:'백도(경봉) 5kg (13브릭스)',                  max:9999, maxQty:1, flashPrice:35900,                  section:'🍑 복숭아 특가', fullWidth:true, badge:'🍑 초특가 · 1인 1개 한정 · 선별 후 랜덤입고(5kg기준)' },
+  { id:'f_uhwangdo_25kg',  label:'황도(용택골드,엘바트,금황등) 2.5kg',                      max:9999, flashPrice:27900,                  section:'🍑 복숭아 특가', fullWidth:true, subLabel:'용택골드', badge:'🍑 선별 후 랜덤입고(2.5kg기준)' },
   // ── 🍒 체리 특가 ──
   { id:'ts_cherry',      label:'캐나다체리(9.5row-대과) 500g',           max:20, flashPrice:10900,                  section:'🍒 체리 특가' },
   { id:'jeju_gamgyul_9', label:'제주하우스감귤 1팩(9입)',           max:9999, flashPrice:5500,                  section:'🍒 체리 특가', badge:'🍊 엄청달콤해요' },
@@ -5576,7 +5575,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['v_paprika_2', 'honeystick_5', 'gamjagoguma_set2', 'f_melon_honeydew', 'v21', 'v9', 'v10'];
+  const TODAY_SPECIAL_IDS = ['f51_super', 'f_baekdo_daewol_4kg', 'f_uhwangdo_25kg', 'v_paprika_2', 'honeystick_5', 'gamjagoguma_set2', 'f_melon_honeydew', 'v21', 'v9', 'v10'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
