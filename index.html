@@ -1888,7 +1888,7 @@ const vegItems = [
   { id:'ts_oigaji10', num:'가지', name:'🍆 가지(특) 5개', desc:'가지(특) 5개', price:1000, highlight:true },
   { id:'v10', num:'10', name:'아삭이고추(엄청연해요) 1봉',          price:900, highlight:true },
   { id:'v21', num:'21', name:'콩나물(400g이상)',         price:500, highlight:true },
-  { id:'ts_zucchini', num:'13', name:'🥒 애호박 2개',              price:1500, highlight:true },
+  { id:'ts_zucchini', num:'13', name:'🥒 애호박 3개',              price:2000, highlight:true },
   { id:'v25', num:'25', name:'팽이버섯 1봉(4입)',        price:1000, highlight:true },
 
   // ── 🔥 오늘의 채소 특가 (900원 묶음 맨위 → 나머지 가격 내림차순) ──
@@ -1941,16 +1941,9 @@ const typeUnitMap = {}; // { id: unit }
 
 // ══ 번들 상태 ══════════════════════════════
 const bundleState = {
-  b777: { selected: [], max: 3, price: 2000, done: false },
   b666: { selected: [], max: 2, price: 3000, done: false }
 };
 const BUNDLE_ITEMS = {
-  b777: [
-    {id:'ts_zucchini', name:'애호박 2개'}, {id:'v18b', name:'청국장 1팩'},
-    {id:'v24', name:'느타리버섯'}, {id:'v25', name:'팽이버섯'},
-    {id:'v27', name:'상추'},       {id:'v29', name:'치커리'},
-    {id:'v30', name:'케일'},       {id:'v31', name:'청경채'},
-  ],
   b666: [
     {id:'v8',  name:'청양고추'},   {id:'v9',  name:'꽈리고추'},
     {id:'v10', name:'아삭이고추'}, {id:'v16', name:'미나리'},
@@ -3298,7 +3291,7 @@ async function orderDirect() {
           itemRows.push({ order_id: savedOrder.id, item_name: itemMeta[id].name + tc, item_code: id, qty: qtys[id], price: itemMeta[id].price });
         }
       }
-      const bundleLabels = { b777: '#777 1천원3개묶음', b666: '#666 2천원2개묶음' };
+      const bundleLabels = { b666: '#666 2천원2개묶음' };
       for (const bid in bundleState) {
         const bs = bundleState[bid];
         if (bs.done) {
@@ -3365,7 +3358,7 @@ function buildOrderText() {
     }
   }
   // 번들
-  const bundleLabels = { b777: '#777 1천원3개묶음', b666: '#666 2천원2개묶음' };
+  const bundleLabels = { b666: '#666 2천원2개묶음' };
   for (const bid in bundleState) {
     const bs = bundleState[bid];
     if (bs.done) {
@@ -4406,10 +4399,10 @@ const FLASH_ITEMS = [
   // ── 🍉 수박,멜론 특가 ──
   { id:'f51_super', label:'강원도 양구수박(특품) 8kg', max:9999, flashPrice:25900, section:'🍉 수박,멜론 특가', badge:'🔥 초특가 · 양평, 진안, 양구 수박중 선별입고', fullWidth:true },
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew', fullWidth:true },
-  { id:'f_melon_honeydew',   label:'허니듀 1.5kg전후',           max:9999, flashPrice:7900, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론' },
+  { id:'f_melon_honeydew',   label:'허니듀 1.5kg전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론' },
   // ── 🍑 복숭아 특가 ──
-  { id:'f_yongtaek_25', label:'용택골드(9~12입 랜덤) 2.5kg', max:9999, flashPrice:20900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 용택골드 · 선별 후 랜덤입고' },
-  { id:'f_baekdo_daewol_4kg', label:'백도(대옥계) (9~13입 랜덤) 2.5kg',                  max:9999, maxQty:1, flashPrice:22900,                  section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 대옥계 · 1인 1개 한정 · 선별 후 랜덤입고(2.5kg기준)' },
+  { id:'f_yongtaek_25', label:'용택골드(9~12입 랜덤) 2.5kg', max:9999, flashPrice:27900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 용택골드 · 선별 후 랜덤입고' },
+  { id:'f_baekdo_daewol_4kg', label:'백도(대옥계) (9~13입 랜덤) 2.5kg',                  max:9999, maxQty:1, flashPrice:28900,                  section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 대옥계 · 1인 1개 한정 · 선별 후 랜덤입고(2.5kg기준)' },
   // ── 🍒 체리 특가 ──
   { id:'ts_cherry',      label:'캐나다체리(9row-최대사이즈) 500g',           max:20, flashPrice:11900,                  section:'🍒 체리 특가' },
   { id:'jeju_gamgyul_9', label:'제주하우스감귤 1팩(9입)',           max:9999, flashPrice:5500,                  section:'🍒 체리 특가', badge:'🍊 엄청달콤해요' },
@@ -5656,7 +5649,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['f_yongtaek_25', 'f_baekdo_daewol_4kg', 'f51_super', 'v_paprika_2', 'gamjagoguma_set2', 'f_melon_honeydew', 'v21', 'v10'];
+  const TODAY_SPECIAL_IDS = ['f_yongtaek_25', 'f_baekdo_daewol_4kg', 'v_paprika_2', 'gamjagoguma_set2', 'f_melon_honeydew', 'v21', 'v10', 'ts_zucchini', 'v27'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
