@@ -4329,21 +4329,21 @@ function renderFlashSection() {
           '<button class="flash-btn-add" onclick="changeQty(\'' + fid + '\',1,' + meta.price + ',' + (fi.maxQty||9999) + ')">＋</button>';
         const comboLabel = fi.comboTitle || meta.name.replace(/\s*\d.*$/, '').trim();
         const colHtml = (name, price, stepper) =>
-          '<div style="flex:1;text-align:center;padding:0 4px;">' +
-            '<div style="display:flex;align-items:baseline;justify-content:center;gap:5px;white-space:nowrap;">' +
-              '<span style="font-size:0.8rem;font-weight:700;color:var(--text);">' + name + '</span>' +
-              '<span style="font-size:1.05rem;font-weight:800;color:var(--green);">' + price.toLocaleString() + '원</span>' +
+          '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;">' +
+            '<div style="display:flex;align-items:baseline;justify-content:center;gap:4px;flex-wrap:wrap;overflow:hidden;">' +
+              '<span style="font-size:0.78rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</span>' +
+              '<span style="font-size:1rem;font-weight:800;color:var(--green);white-space:nowrap;">' + price.toLocaleString() + '원</span>' +
             '</div>' +
             '<div class="flash-stepper" style="margin-top:3px;justify-content:center;gap:6px;">' + stepper + '</div>' +
           '</div>';
         const contactColHtml = (name, phone) =>
-          '<div style="flex:1;text-align:center;padding:0 4px;">' +
-            '<div style="font-size:0.8rem;font-weight:700;color:var(--text);white-space:nowrap;">' + name + '</div>' +
-            '<a href="tel:' + phone + '" style="display:inline-block;margin-top:5px;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:5px 9px;font-size:0.74rem;font-weight:900;text-decoration:none;white-space:nowrap;">📞 개별주문 ' + phone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3') + '</a>' +
+          '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;">' +
+            '<div style="font-size:0.78rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
+            '<a href="tel:' + phone + '" style="display:inline-block;margin-top:5px;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:5px 8px;font-size:0.7rem;font-weight:900;text-decoration:none;white-space:nowrap;">📞 ' + phone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3') + '</a>' +
           '</div>';
         const soldColHtml = (name) =>
-          '<div style="flex:1;text-align:center;padding:0 4px;opacity:0.5;">' +
-            '<div style="font-size:0.8rem;font-weight:700;color:var(--text);white-space:nowrap;">' + name + '</div>' +
+          '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;opacity:0.5;">' +
+            '<div style="font-size:0.78rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
             '<div style="margin-top:5px;font-size:0.82rem;font-weight:900;color:#999;">품절</div>' +
           '</div>';
         const card = document.createElement('div');
@@ -5711,27 +5711,27 @@ setInterval(updateFloatCart, 500);
         const pCat = findCatalogItem(cat.comboPartner);
         if (pCat) {
           const mainSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">품절</div>`;
-          const mainLiveHtml = `<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
-                    <span style="font-size:12.5px;font-weight:900;color:#c1121f;">${cat.price.toLocaleString()}원</span>
-                    <button onclick="todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 10px;font-size:11px;font-weight:900;cursor:pointer;">+ 담기</button>
+          const mainLiveHtml = `<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;">
+                    <span style="font-size:12.5px;font-weight:900;color:#c1121f;white-space:nowrap;">${cat.price.toLocaleString()}원</span>
+                    <button onclick="todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;">+ 담기</button>
                   </div>`;
           const partnerSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">품절</div>`;
           const partnerLiveHtml = pCat.contactOnly
-                    ? `<a href="tel:${pCat.contactPhone}" style="display:inline-block;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:5px 9px;font-size:11px;font-weight:900;text-decoration:none;white-space:nowrap;">📞 개별주문 ${pCat.contactPhone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3')}</a>`
-                    : `<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
-                    <span style="font-size:12.5px;font-weight:900;color:#c1121f;">${pCat.price.toLocaleString()}원</span>
-                    <button onclick="todaySpecialAddClick(this,'${cat.comboPartner}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 10px;font-size:11px;font-weight:900;cursor:pointer;">+ 담기</button>
+                    ? `<a href="tel:${pCat.contactPhone}" style="display:inline-block;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:5px 8px;font-size:10.5px;font-weight:900;text-decoration:none;white-space:nowrap;">📞 ${pCat.contactPhone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3')}</a>`
+                    : `<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;">
+                    <span style="font-size:12.5px;font-weight:900;color:#c1121f;white-space:nowrap;">${pCat.price.toLocaleString()}원</span>
+                    <button onclick="todaySpecialAddClick(this,'${cat.comboPartner}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;">+ 담기</button>
                   </div>`;
           return `
             <div style="padding:11px 16px;border-top:1px solid #f0ede8;">
               <div style="font-size:12.5px;font-weight:800;color:#1a0f00;margin-bottom:8px;">${cat.comboTitle||cleanName}</div>
               <div style="display:flex;gap:8px;">
-                <div style="flex:1;background:#f9f7f2;border-radius:8px;padding:8px 10px;${cat.soldOut?'opacity:0.5;':''}">
-                  <div style="font-size:11px;color:#666;margin-bottom:2px;">${cat.rawLabel||cleanName}</div>
+                <div style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;${cat.soldOut?'opacity:0.5;':''}">
+                  <div style="font-size:11px;color:#666;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cat.rawLabel||cleanName}</div>
                   ${cat.soldOut ? mainSoldHtml : mainLiveHtml}
                 </div>
-                <div style="flex:1;background:#f9f7f2;border-radius:8px;padding:8px 10px;${pCat.soldOut?'opacity:0.5;':''}">
-                  <div style="font-size:11px;color:#666;margin-bottom:2px;">${pCat.rawLabel||pCat.name}</div>
+                <div style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;${pCat.soldOut?'opacity:0.5;':''}">
+                  <div style="font-size:11px;color:#666;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.rawLabel||pCat.name}</div>
                   ${pCat.soldOut ? partnerSoldHtml : partnerLiveHtml}
                 </div>
               </div>
