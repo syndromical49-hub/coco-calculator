@@ -13,6 +13,8 @@
     --text:#1b1b1b; --muted:#777; --border:#e0ddd5; --radius:12px; --gold:#ffd166;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
+  /* 🚨 긴급 임시 안전장치 (2026-07-29) — 원인 불문하고 어떤 요소도 화면폭을 못 넘도록 강제. 원인 확정되면 제거 예정 */
+  *{max-width:100vw;}
   html{overflow-x:hidden;width:100%;max-width:100vw;}
   body{font-family:"Pretendard","Noto Sans KR",sans-serif;background:var(--bg);color:var(--text);padding-bottom:80px;overflow-x:hidden;width:100%;max-width:100vw;}
 
@@ -673,6 +675,32 @@
         '  overflow=' + cs.overflow + ' whiteSpace=' + cs.whiteSpace + '\n';
     }
 
+    // ── 요청하신 10개 실측값 ──
+    function rectDump(node, label) {
+      if (!node) return label + ': (없음)\n';
+      const r = node.getBoundingClientRect();
+      const cs = getComputedStyle(node);
+      return label + '\n' +
+        '  1.getBoundingClientRect: left=' + r.left.toFixed(1) + ' top=' + r.top.toFixed(1) + ' width=' + r.width.toFixed(1) + ' right=' + r.right.toFixed(1) + '\n' +
+        '  2.offsetLeft=' + node.offsetLeft + '\n' +
+        '  3.clientLeft=' + node.clientLeft + '\n' +
+        '  4.computed marginLeft=' + cs.marginLeft + '\n' +
+        '  5.computed paddingLeft=' + cs.paddingLeft + '\n' +
+        '  6.computed transform=' + cs.transform + '\n';
+    }
+
+    let out2 = '── 실측값(요청 10항목) ──\n';
+    out2 += '9.viewport width(innerWidth)=' + window.innerWidth + '\n';
+    out2 += '10.document.scrollingElement.scrollLeft=' + (document.scrollingElement ? document.scrollingElement.scrollLeft : 'N/A') + '\n\n';
+    const measureRow = document.querySelector('#today-accordion-body > div');
+    out2 += rectDump(measureRow, '1~6. [문제의 첫 상품행]');
+    if (measureRow && measureRow.parentElement) {
+      out2 += '\n8. [부모요소] getBoundingClientRect:\n';
+      const pr = measureRow.parentElement.getBoundingClientRect();
+      out2 += '  left=' + pr.left.toFixed(1) + ' width=' + pr.width.toFixed(1) + ' right=' + pr.right.toFixed(1) + '\n';
+    }
+    out2 += '\n';
+
     let out = '';
     out += 'viewport: innerWidth=' + window.innerWidth + ' scrollX=' + window.scrollX + '\n';
     out += 'html: clientWidth=' + html.clientWidth + ' scrollWidth=' + html.scrollWidth + '\n';
@@ -693,7 +721,7 @@
       out += '[product-row] 못찾음 (today-accordion-body 비어있음)\n';
     }
 
-    el.textContent = out;
+    el.textContent = out2 + '\n' + out;
   }
   window.addEventListener('load', () => setTimeout(updateDebugBadge, 800));
   window.addEventListener('resize', updateDebugBadge);
@@ -4393,11 +4421,11 @@ function renderFlashSection() {
         card.innerHTML =
           badgeHtml +
           '<div class="flash-name" style="text-align:center;font-size:0.9rem;margin-bottom:2px;">' + comboLabel + '</div>' +
-          '<div style="display:flex;flex-direction:column;align-items:stretch;gap:8px;">' +
+          '<div style="display:flex;align-items:center;">' +
             (fi.soldOut
               ? soldColHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label))
               : colHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label), fi.flashPrice || meta.price, stepperHtmlMain)) +
-            '<div style="height:1px;background:rgba(0,0,0,0.08);"></div>' +
+            '<div style="width:1px;align-self:stretch;background:rgba(0,0,0,0.08);"></div>' +
             (pfi.soldOut
               ? soldColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label))
               : pfi.contactOnly
@@ -5765,12 +5793,12 @@ setInterval(updateFloatCart, 500);
           return `
             <div style="padding:11px 16px;border-top:1px solid #f0ede8;">
               <div style="font-size:12.5px;font-weight:800;color:#1a0f00;margin-bottom:8px;">${cat.comboTitle||cleanName}</div>
-              <div style="display:flex;flex-direction:column;gap:8px;">
-                <div style="min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;${cat.soldOut?'opacity:0.5;':''}">
+              <div style="display:flex;gap:8px;">
+                <div style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;${cat.soldOut?'opacity:0.5;':''}">
                   <div style="font-size:11px;color:#666;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cat.rawLabel||cleanName}</div>
                   ${cat.soldOut ? mainSoldHtml : mainLiveHtml}
                 </div>
-                <div style="min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;${pCat.soldOut?'opacity:0.5;':''}">
+                <div style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;${pCat.soldOut?'opacity:0.5;':''}">
                   <div style="font-size:11px;color:#666;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.rawLabel||pCat.name}</div>
                   ${pCat.soldOut ? partnerSoldHtml : partnerLiveHtml}
                 </div>
