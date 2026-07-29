@@ -1445,6 +1445,10 @@
     <!-- 최소주문 경고 -->
     <div id="confirm-warn" style="display:none;background:#fff3cd;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:0.82rem;color:#856404;"></div>
 
+    <!-- 요청사항 메모 -->
+    <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:6px;">📝 요청사항 (선택)</div>
+    <textarea id="confirm-memo" placeholder="예: 복숭아 너무 무르지 않게 부탁드려요" rows="2" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:0.85rem;font-family:inherit;resize:none;margin-bottom:14px;"></textarea>
+
     <button id="btn-confirm-submit" onclick="orderDirect()" style="width:100%;padding:16px;background:#e63946;border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.5px;">✅ 확인했어요 · 주문 접수하기</button>
     <button onclick="document.getElementById('order-confirm-modal').style.display='none'" style="width:100%;padding:12px;background:#f0f0f0;border:none;border-radius:12px;color:#555;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:8px;">← 돌아가서 수정하기</button>
   </div>
@@ -3148,6 +3152,7 @@ function updateEggPromoLock() {
 }
 
 function updateTotal() {
+  if (typeof saveCartToStorage === 'function') saveCartToStorage();
   let total = 0;
   for (const id in qtys) {
     if (qtys[id] > 0 && itemMeta[id]) {
@@ -3560,6 +3565,31 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
+
+// ══ 장바구니 3일 보관 (localStorage) ══
+const CART_STORAGE_KEY = 'ccb_saved_cart_v1';
+const CART_STORAGE_DAYS = 3;
+let _cartRestoredCount = 0;
+let _cartDroppedCount = 0;
+function saveCartToStorage() {
+  try {
+    const qOut = {}; for (const id in qtys) { if (qtys[id] > 0) qOut[id] = qtys[id]; }
+    if (Object.keys(qOut).length === 0) { localStorage.removeItem(CART_STORAGE_KEY); return; }
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify({ savedAt: Date.now(), qtys: qOut, typeChoices: typeChoices }));
+  } catch(e) {}
+}
+function _getSavedCartData() {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    const ageDays = (Date.now() - (data.savedAt||0)) / (1000*60*60*24);
+    if (ageDays > CART_STORAGE_DAYS) { localStorage.removeItem(CART_STORAGE_KEY); return null; }
+    return data;
+  } catch(e) { return null; }
+}
+// 실제 qtys 복원은 모든 카드 렌더(reg() 호출)가 끝난 뒤에 해야 함 — reg()가 qtys[id]=0으로 초기화하기 때문
+window._pendingCartRestore = _getSavedCartData();
 
 initDayLock();
 // 🆕 새 디자인 렌더러 스위치 — true로 바꾸면 새 카드 디자인 사용, false면 기존 그대로.
@@ -4545,13 +4575,15 @@ const FLASH_ITEMS = [
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew', fullWidth:true },
   { id:'f_melon_honeydew',   label:'허니듀 1.5kg전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론' },
   // ── 🍑 복숭아 특가 ──
-  { id:'f_hwangdo_danhojang', label:'단호장 4kg(13수)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고', comboTitle:'황도', comboPartner:'f_hwangdo_yongtaek', soldOut:true },
+  { id:'f_hwangdo_danhojang', label:'단호장 4kg(14브릭스)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고', comboTitle:'황도', comboPartner:'f_hwangdo_yongtaek' },
   { id:'f_hwangdo_yongtaek', label:'용택골드 2.5kg(12수)', max:9999, flashPrice:22900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'황도' },
-  { id:'f_baekdo_gyeongbong', label:'경봉 2.5kg(10수)', max:9999, flashPrice:22900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_daeokgye', soldOut:true },
+  { id:'f_baekdo_gyeongbong', label:'천중도형제 2.5kg(14브릭스)', max:9999, flashPrice:24900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_daeokgye' },
   { id:'f_baekdo_daeokgye', label:'대옥계 2.5kg(9~10수)', max:9999, flashPrice:23900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
   // ── 🍒 체리 특가 ──
   { id:'ts_cherry',      label:'캐나다체리(9row-최대사이즈) 500g',           max:20, flashPrice:13900,                  section:'🍒 체리 특가' },
   { id:'jeju_gamgyul_9', label:'제주하우스감귤 1팩(9입)',           max:9999, flashPrice:5500,                  section:'🍒 체리 특가', badge:'🍊 엄청달콤해요' },
+  { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:8900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3' },
+  { id:'ts_grape_campbell_3', label:'(특) 3송이', max:9999, flashPrice:12900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도' },
   // ── 🟣 자두 특가 ──
   { id:'f_jaju_5kg',     label:'자두(후무사) 5kg 1박스',                    max:9999, flashPrice:56900,                  section:'🟣 자두 특가' },
   { id:'f_jaju_2kg',     label:'자두(후무사) 2kg',                         max:9999, flashPrice:23900,                  section:'🟣 자두 특가' },
@@ -4661,6 +4693,43 @@ async function flashAdj(id, delta) {
 document.addEventListener('DOMContentLoaded', function() {
   renderFlashSection(); // 즉시 렌더 (카운트 0으로)
   setTimeout(loadFlashCounts, 1000); // 1초 후 실제 카운트 반영
+
+  // ── 장바구니 3일 보관 복원 (모든 카드 렌더 완료 후 실행 — reg()가 qtys를 0으로 초기화하므로 이 순서가 중요) ──
+  (function restoreSavedCart() {
+    const data = window._pendingCartRestore;
+    if (!data || !data.qtys) return;
+    function isCurrentlyValid(id) {
+      if (!itemMeta[id]) return false; // reg() 호출 안 됨 = 존재하지 않거나 과일/채소에서 품절
+      // FLASH_ITEMS는 품절이어도 itemMeta가 미리 채워지므로 별도로 soldOut/max 확인
+      if (typeof FLASH_ITEMS !== 'undefined') {
+        const fi = FLASH_ITEMS.find(function(f){ return f.id===id; });
+        if (fi) {
+          if (fi.max === 0 || fi.soldOut) return false;
+          const cnt = (typeof flashCounts !== 'undefined' && flashCounts[id]) || 0;
+          if (cnt >= fi.max) return false; // 선착순 마감
+        }
+      }
+      return true;
+    }
+    for (const id in data.qtys) {
+      if (isCurrentlyValid(id)) { qtys[id] = data.qtys[id]; _cartRestoredCount++; }
+      else { _cartDroppedCount++; }
+    }
+    if (data.typeChoices) Object.assign(typeChoices, data.typeChoices);
+    if (_cartRestoredCount > 0) {
+      for (const id in qtys) {
+        if (qtys[id] > 0) {
+          const el = document.getElementById('qty-' + id);
+          if (el) el.textContent = qtys[id];
+        }
+      }
+      updateTotal();
+      showToast('🛒 지난번 담아두신 상품 ' + _cartRestoredCount + '개를 불러왔어요' + (_cartDroppedCount > 0 ? ' (품절/변경된 ' + _cartDroppedCount + '개는 제외)' : ''));
+    } else if (_cartDroppedCount > 0) {
+      try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
+    }
+  })();
+
   try {
     const savedPhone = localStorage.getItem('ccb_phone');
     const savedPw = localStorage.getItem('ccb_lookup_pw');
@@ -4962,7 +5031,8 @@ async function submitCardOrder(ctx) {
     cash_receipt_phone: (document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null,
     cash_receipt_type: (document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked) ? crTypeVal : null,
     cash_receipt_number: (document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null,
-    points_used: pointsUsed || 0
+    points_used: pointsUsed || 0,
+    customer_memo: (document.getElementById('confirm-memo')&&document.getElementById('confirm-memo').value.trim())||null
   };
 
   saveCashReceiptPhonePref(orderPayload.customer_phone, orderPayload.cash_receipt_number, orderPayload.customer_name, orderPayload.customer_address, orderPayload.door_password, window._payMethod, orderPayload.cash_receipt_type);
@@ -5112,6 +5182,7 @@ function showKcpDoneScreen() {
     if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
     if (doneItemsEl) doneItemsEl.innerHTML = itemsHtml;
     doneEl.style.display = 'flex'; doneEl.style.flexDirection = 'column';
+    try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
     showDonePointsBreakdown(pointsUsedNow, oldPointsBalance, 'card');
     setDoneOrderNumber(null);
   }
@@ -5410,7 +5481,7 @@ window.orderDirect = async function() {
     const ordRes = await fetch(SB_URL + '/rest/v1/orders', {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'},
-      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked), cash_receipt_phone:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, cash_receipt_type:(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked)?((document.getElementById('cr-type-business')&&document.getElementById('cr-type-business').checked)?'business':'personal'):null, cash_receipt_number:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, applied_price_tier: (window._isMember ? 'member' : 'normal'), points_used: pointsUsedNow, pay_method: 'bank', card_amount: 0, bank_amount: total })
+      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked), cash_receipt_phone:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, cash_receipt_type:(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked)?((document.getElementById('cr-type-business')&&document.getElementById('cr-type-business').checked)?'business':'personal'):null, cash_receipt_number:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, applied_price_tier: (window._isMember ? 'member' : 'normal'), points_used: pointsUsedNow, pay_method: 'bank', card_amount: 0, bank_amount: total, customer_memo: (document.getElementById('confirm-memo')&&document.getElementById('confirm-memo').value.trim())||null })
     });
 
     // 중복(409/23505)이면 이미 접수된 주문 → 완료 화면만 표시
@@ -5421,6 +5492,7 @@ window.orderDirect = async function() {
         if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
         renderDoneItems();
         doneEl.style.display='flex'; doneEl.style.flexDirection='column';
+        try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
         setDoneOrderNumber(null);
       }
       return;
@@ -5477,6 +5549,7 @@ window.orderDirect = async function() {
     if (doneTotalEl2) doneTotalEl2.textContent = total.toLocaleString() + '원';
     renderDoneItems();
     doneEl.style.display='flex'; doneEl.style.flexDirection='column';
+    try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
     showDonePointsBreakdown(pointsUsedNow, oldPointsBalance, 'bank');
     setDoneOrderNumber(window._lastOrderId);
   }
@@ -5489,6 +5562,8 @@ window.orderDirect = async function() {
     const nameStr = _tgBase + (u.nick ? ' (' + u.nick + ')' : '');
     const referrerVal = (document.getElementById('inp-referrer') && document.getElementById('inp-referrer').value.trim()) || '';
     const referrerLine = referrerVal ? ('\n' + D + '\n🎁 소개인: ' + referrerVal) : '';
+    const memoVal = (document.getElementById('confirm-memo') && document.getElementById('confirm-memo').value.trim()) || '';
+    const memoLine = memoVal ? ('\n' + D + '\n📝 요청사항: ' + memoVal) : '';
     const tgMsg = D + '\n'
       + '[주문] #' + orderNum + ' 🏦계좌이체\n'
       + D + '\n'
@@ -5500,7 +5575,7 @@ window.orderDirect = async function() {
       + allItemLines.join('\n') + '\n'
       + D + '\n'
       + '합계: ' + total.toLocaleString() + '원' + (pointsUsedNow > 0 ? ' (포인트 ' + pointsUsedNow.toLocaleString() + 'P 사용)' : '')
-      + referrerLine + '\n'
+      + referrerLine + memoLine + '\n'
       + D;
     const tgRes2 = await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -5795,7 +5870,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['f_hwangdo_danhojang', 'f_baekdo_gyeongbong', 'v_paprika_2', 'gamjagoguma_set2', 'f_melon_honeydew', 'v21', 'v10', 'ts_zucchini', 'v27'];
+  const TODAY_SPECIAL_IDS = ['ts_grape_campbell', 'f_hwangdo_danhojang', 'f_baekdo_gyeongbong', 'v_paprika_2', 'gamjagoguma_set2', 'f_melon_honeydew', 'v21', 'v10', 'ts_zucchini', 'v27'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
