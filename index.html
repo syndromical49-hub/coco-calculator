@@ -4341,6 +4341,11 @@ function renderFlashSection() {
             '<div style="font-size:0.8rem;font-weight:700;color:var(--text);white-space:nowrap;">' + name + '</div>' +
             '<a href="tel:' + phone + '" style="display:inline-block;margin-top:5px;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:5px 9px;font-size:0.74rem;font-weight:900;text-decoration:none;white-space:nowrap;">📞 개별주문 ' + phone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3') + '</a>' +
           '</div>';
+        const soldColHtml = (name) =>
+          '<div style="flex:1;text-align:center;padding:0 4px;opacity:0.5;">' +
+            '<div style="font-size:0.8rem;font-weight:700;color:var(--text);white-space:nowrap;">' + name + '</div>' +
+            '<div style="margin-top:5px;font-size:0.82rem;font-weight:900;color:#999;">품절</div>' +
+          '</div>';
         const card = document.createElement('div');
         card.className = 'flash-card' + (fi.badge ? ' flash-highlight' : '');
         card.style.gridColumn = '1 / -1';
@@ -4349,9 +4354,13 @@ function renderFlashSection() {
           badgeHtml +
           '<div class="flash-name" style="text-align:center;font-size:0.9rem;margin-bottom:2px;">' + comboLabel + '</div>' +
           '<div style="display:flex;align-items:center;">' +
-            colHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label), fi.flashPrice || meta.price, stepperHtmlMain) +
+            (fi.soldOut
+              ? soldColHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label))
+              : colHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label), fi.flashPrice || meta.price, stepperHtmlMain)) +
             '<div style="width:1px;align-self:stretch;background:rgba(0,0,0,0.08);"></div>' +
-            (pfi.contactOnly
+            (pfi.soldOut
+              ? soldColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label))
+              : pfi.contactOnly
               ? contactColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.contactPhone)
               : colHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.flashPrice || pmeta.price, pStepper)) +
           '</div>';
@@ -4416,7 +4425,7 @@ const FLASH_ITEMS = [
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew', fullWidth:true },
   { id:'f_melon_honeydew',   label:'허니듀 1.5kg전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론' },
   // ── 🍑 복숭아 특가 ──
-  { id:'f_hwangdo_danhojang', label:'단호장 4kg(13수)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고', comboTitle:'황도', comboPartner:'f_hwangdo_yongtaek' },
+  { id:'f_hwangdo_danhojang', label:'단호장 4kg(13수)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고', comboTitle:'황도', comboPartner:'f_hwangdo_yongtaek', soldOut:true },
   { id:'f_hwangdo_yongtaek', label:'용택골드 2.5kg(12수)', max:9999, flashPrice:22900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'황도' },
   { id:'f_baekdo_gyeongbong', label:'경봉 2.5kg(10수)', max:9999, flashPrice:22900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_daeokgye' },
   { id:'f_baekdo_daeokgye', label:'대옥계 2.5kg(9~10수)', max:9999, flashPrice:23900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
@@ -5673,7 +5682,7 @@ setInterval(updateFloatCart, 500);
     const pools = [
       typeof vegItems !== 'undefined' ? vegItems : [],
       typeof fruitItems !== 'undefined' ? fruitItems : [],
-      typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.map(f => ({ id:f.id, name:(f.comboTitle ? (f.comboTitle + ' ' + f.label) : f.label), price:f.flashPrice, sold:f.max===0, maxQty:f.max, tba:null, comboPartner:f.comboPartner, comboTitle:f.comboTitle, rawLabel:f.label, contactOnly:f.contactOnly, contactPhone:f.contactPhone })) : [],
+      typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.map(f => ({ id:f.id, name:(f.comboTitle ? (f.comboTitle + ' ' + f.label) : f.label), price:f.flashPrice, sold:(f.max===0 || !!f.soldOut), maxQty:f.max, tba:null, comboPartner:f.comboPartner, comboTitle:f.comboTitle, rawLabel:f.label, contactOnly:f.contactOnly, contactPhone:f.contactPhone, soldOut:f.soldOut })) : [],
     ];
     for (const pool of pools) {
       const found = pool.find(x => x.id === id);
@@ -5697,6 +5706,38 @@ setInterval(updateFloatCart, 500);
     const rows = validItems.map(({ id, cat }) => {
       const cleanName = (cat.name||'').replace(/^[^\w가-힣]+\s*/, '');
       const isSoldOut = cat.sold === true || cat.maxQty === 0 || !!cat.tba;
+      // 콤보상품(comboPartner 있음)은 한쪽만 품절이어도 다른쪽은 살릴 수 있어야 하므로 단독 품절처리보다 먼저 체크
+      if (cat.comboPartner) {
+        const pCat = findCatalogItem(cat.comboPartner);
+        if (pCat) {
+          const mainSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">품절</div>`;
+          const mainLiveHtml = `<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+                    <span style="font-size:12.5px;font-weight:900;color:#c1121f;">${cat.price.toLocaleString()}원</span>
+                    <button onclick="todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 10px;font-size:11px;font-weight:900;cursor:pointer;">+ 담기</button>
+                  </div>`;
+          const partnerSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">품절</div>`;
+          const partnerLiveHtml = pCat.contactOnly
+                    ? `<a href="tel:${pCat.contactPhone}" style="display:inline-block;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:5px 9px;font-size:11px;font-weight:900;text-decoration:none;white-space:nowrap;">📞 개별주문 ${pCat.contactPhone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3')}</a>`
+                    : `<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+                    <span style="font-size:12.5px;font-weight:900;color:#c1121f;">${pCat.price.toLocaleString()}원</span>
+                    <button onclick="todaySpecialAddClick(this,'${cat.comboPartner}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 10px;font-size:11px;font-weight:900;cursor:pointer;">+ 담기</button>
+                  </div>`;
+          return `
+            <div style="padding:11px 16px;border-top:1px solid #f0ede8;">
+              <div style="font-size:12.5px;font-weight:800;color:#1a0f00;margin-bottom:8px;">${cat.comboTitle||cleanName}</div>
+              <div style="display:flex;gap:8px;">
+                <div style="flex:1;background:#f9f7f2;border-radius:8px;padding:8px 10px;${cat.soldOut?'opacity:0.5;':''}">
+                  <div style="font-size:11px;color:#666;margin-bottom:2px;">${cat.rawLabel||cleanName}</div>
+                  ${cat.soldOut ? mainSoldHtml : mainLiveHtml}
+                </div>
+                <div style="flex:1;background:#f9f7f2;border-radius:8px;padding:8px 10px;${pCat.soldOut?'opacity:0.5;':''}">
+                  <div style="font-size:11px;color:#666;margin-bottom:2px;">${pCat.rawLabel||pCat.name}</div>
+                  ${pCat.soldOut ? partnerSoldHtml : partnerLiveHtml}
+                </div>
+              </div>
+            </div>`;
+        }
+      }
       if (isSoldOut) {
         return `
           <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid #f0ede8;opacity:0.5;">
@@ -5706,34 +5747,6 @@ setInterval(updateFloatCart, 500);
             </div>
             <button disabled style="flex-shrink:0;background:#eee;color:#aaa;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:not-allowed;">품절</button>
           </div>`;
-      }
-      // 콤보상품(comboPartner 있음)은 한 카드 안에 옵션 두 개를 나란히 표시
-      if (cat.comboPartner) {
-        const pCat = findCatalogItem(cat.comboPartner);
-        if (pCat) {
-          return `
-            <div style="padding:11px 16px;border-top:1px solid #f0ede8;">
-              <div style="font-size:12.5px;font-weight:800;color:#1a0f00;margin-bottom:8px;">${cat.comboTitle||cleanName}</div>
-              <div style="display:flex;gap:8px;">
-                <div style="flex:1;background:#f9f7f2;border-radius:8px;padding:8px 10px;">
-                  <div style="font-size:11px;color:#666;margin-bottom:2px;">${cat.rawLabel||cleanName}</div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
-                    <span style="font-size:12.5px;font-weight:900;color:#c1121f;">${cat.price.toLocaleString()}원</span>
-                    <button onclick="todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 10px;font-size:11px;font-weight:900;cursor:pointer;">+ 담기</button>
-                  </div>
-                </div>
-                <div style="flex:1;background:#f9f7f2;border-radius:8px;padding:8px 10px;">
-                  <div style="font-size:11px;color:#666;margin-bottom:2px;">${pCat.rawLabel||pCat.name}</div>
-                  ${pCat.contactOnly
-                    ? `<a href="tel:${pCat.contactPhone}" style="display:inline-block;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:5px 9px;font-size:11px;font-weight:900;text-decoration:none;white-space:nowrap;">📞 개별주문 ${pCat.contactPhone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3')}</a>`
-                    : `<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
-                    <span style="font-size:12.5px;font-weight:900;color:#c1121f;">${pCat.price.toLocaleString()}원</span>
-                    <button onclick="todaySpecialAddClick(this,'${cat.comboPartner}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 10px;font-size:11px;font-weight:900;cursor:pointer;">+ 담기</button>
-                  </div>`}
-                </div>
-              </div>
-            </div>`;
-        }
       }
       return `
         <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid #f0ede8;">
