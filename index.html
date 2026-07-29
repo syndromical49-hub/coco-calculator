@@ -4393,11 +4393,11 @@ function renderFlashSection() {
         card.innerHTML =
           badgeHtml +
           '<div class="flash-name" style="text-align:center;font-size:0.9rem;margin-bottom:2px;">' + comboLabel + '</div>' +
-          '<div style="display:flex;align-items:center;">' +
+          '<div style="display:flex;flex-direction:column;align-items:stretch;gap:8px;">' +
             (fi.soldOut
               ? soldColHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label))
               : colHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label), fi.flashPrice || meta.price, stepperHtmlMain)) +
-            '<div style="width:1px;align-self:stretch;background:rgba(0,0,0,0.08);"></div>' +
+            '<div style="height:1px;background:rgba(0,0,0,0.08);"></div>' +
             (pfi.soldOut
               ? soldColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label))
               : pfi.contactOnly
@@ -5765,12 +5765,12 @@ setInterval(updateFloatCart, 500);
           return `
             <div style="padding:11px 16px;border-top:1px solid #f0ede8;">
               <div style="font-size:12.5px;font-weight:800;color:#1a0f00;margin-bottom:8px;">${cat.comboTitle||cleanName}</div>
-              <div style="display:flex;gap:8px;">
-                <div style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;${cat.soldOut?'opacity:0.5;':''}">
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;${cat.soldOut?'opacity:0.5;':''}">
                   <div style="font-size:11px;color:#666;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cat.rawLabel||cleanName}</div>
                   ${cat.soldOut ? mainSoldHtml : mainLiveHtml}
                 </div>
-                <div style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;${pCat.soldOut?'opacity:0.5;':''}">
+                <div style="min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;${pCat.soldOut?'opacity:0.5;':''}">
                   <div style="font-size:11px;color:#666;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.rawLabel||pCat.name}</div>
                   ${pCat.soldOut ? partnerSoldHtml : partnerLiveHtml}
                 </div>
