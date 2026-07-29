@@ -649,6 +649,57 @@
 </style>
 </head>
 <body>
+<!-- 🔧 임시 디버그 배지 (가로 밀림 원인 진단용 — ?debug=1일 때만 표시, 원인 확인되면 통째로 제거) -->
+<div id="debug-width-badge" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:#000;color:#0f0;font-family:monospace;font-size:9.5px;line-height:1.5;padding:6px 8px;white-space:pre-wrap;word-break:break-all;max-height:60vh;overflow-y:auto;"></div>
+<script>
+  function updateDebugBadge() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('debug') !== '1') return;
+    const el = document.getElementById('debug-width-badge');
+    if (!el) return;
+    el.style.display = 'block';
+
+    const html = document.documentElement;
+    const b = document.body;
+
+    function csDump(node, label) {
+      if (!node) return label + ': (없음)\n';
+      const cs = getComputedStyle(node);
+      return label + '\n' +
+        '  offsetWidth=' + node.offsetWidth + ' clientWidth=' + node.clientWidth + ' scrollWidth=' + node.scrollWidth + '\n' +
+        '  display=' + cs.display + ' position=' + cs.position + '\n' +
+        '  flex=' + cs.flex + ' flexBasis=' + cs.flexBasis + ' flexShrink=' + cs.flexShrink + '\n' +
+        '  width=' + cs.width + ' minWidth=' + cs.minWidth + ' maxWidth=' + cs.maxWidth + '\n' +
+        '  overflow=' + cs.overflow + ' whiteSpace=' + cs.whiteSpace + '\n';
+    }
+
+    let out = '';
+    out += 'viewport: innerWidth=' + window.innerWidth + ' scrollX=' + window.scrollX + '\n';
+    out += 'html: clientWidth=' + html.clientWidth + ' scrollWidth=' + html.scrollWidth + '\n';
+    out += 'body: clientWidth=' + b.clientWidth + ' scrollWidth=' + b.scrollWidth + '\n\n';
+
+    const row = document.querySelector('#today-accordion-body > div');
+    if (row) {
+      // 빨간 테두리로 문제 행 표시
+      row.style.outline = '3px solid red';
+      row.style.outlineOffset = '-3px';
+      out += csDump(row, '[product-row] (오늘의특가 첫번째 행)');
+      // 첫번째/두번째 자식 (보통 정보영역 / 버튼)
+      const kids = Array.from(row.children);
+      kids.forEach((kid, i) => {
+        out += csDump(kid, '  ㄴchild[' + i + '] <' + kid.tagName.toLowerCase() + '>' + (kid.textContent||'').trim().slice(0,20));
+      });
+    } else {
+      out += '[product-row] 못찾음 (today-accordion-body 비어있음)\n';
+    }
+
+    el.textContent = out;
+  }
+  window.addEventListener('load', () => setTimeout(updateDebugBadge, 800));
+  window.addEventListener('resize', updateDebugBadge);
+  setTimeout(updateDebugBadge, 1500);
+  setTimeout(updateDebugBadge, 3000);
+</script>
 <!-- 마감 오버레이 -->
 <div id="closed-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:#0d0700;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;">
   <div style="font-size:3.5rem;margin-bottom:16px;">🚫</div>
@@ -763,10 +814,6 @@
       <div style="height:70px;"></div>
 
     </div>
-  </div>
-  <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);z-index:600;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;">
-    <div style="font-size:0.82rem;color:#555;">총 주문금액 <b id="s1-total-amt" style="color:#c1121f;font-size:1.05rem;">0원</b></div>
-    <button onclick="goToCart()" style="background:var(--green);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:900;font-size:0.9rem;cursor:pointer;white-space:nowrap;">🛒 주문하기</button>
   </div>
 </div>
 
@@ -1101,19 +1148,11 @@
     <div class="cat-modal-hd"><button class="cmh-back" onclick="closeCatModal()">←</button><div class="cmh-title">🍊 과일</div><div style="width:34px;"></div></div>
     <div class="suh"><div class="suh-icon">🍊</div><div><div class="suh-title">과일</div><div class="suh-sub">신선하게 경매 직송</div></div></div>
     <div class="card-grid" id="fruit-grid"></div>
-    <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);z-index:600;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;">
-      <div style="font-size:0.82rem;color:#555;">총 주문금액 <b id="fruit-total-amt" style="color:#c1121f;font-size:1.05rem;">0원</b></div>
-      <button onclick="goToCart()" style="background:var(--green);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:900;font-size:0.9rem;cursor:pointer;white-space:nowrap;">🛒 주문하기</button>
-    </div>
   </div>
   <div class="tab-panel" id="panel-vg">
     <div class="cat-modal-hd"><button class="cmh-back" onclick="closeCatModal()">←</button><div class="cmh-title">🥦 채소 · 버섯 · 두부 · 계란</div><div style="width:34px;"></div></div>
     <div class="suh"><div class="suh-icon">🥦</div><div><div class="suh-title">채소 · 버섯 · 두부 · 계란</div><div class="suh-sub">매일 아침 직접 경매</div></div></div>
     <div class="veg-list" id="veg-list"></div>
-    <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);z-index:600;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;">
-      <div style="font-size:0.82rem;color:#555;">총 주문금액 <b id="veg-total-amt" style="color:#c1121f;font-size:1.05rem;">0원</b></div>
-      <button onclick="goToCart()" style="background:var(--green);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:900;font-size:0.9rem;cursor:pointer;white-space:nowrap;">🛒 주문하기</button>
-    </div>
   </div>
   <div class="summary-bar">
     <div class="summary-tab" onclick="toggleSummary()">
