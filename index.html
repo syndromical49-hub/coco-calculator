@@ -3154,7 +3154,7 @@ function updateEggPromoLock() {
 }
 
 function updateTotal() {
-  if (typeof saveCartToStorage === 'function') saveCartToStorage();
+  if (typeof scheduleCartSave === 'function') scheduleCartSave();
   let total = 0;
   for (const id in qtys) {
     if (qtys[id] > 0 && itemMeta[id]) {
@@ -3579,6 +3579,11 @@ function saveCartToStorage() {
     if (Object.keys(qOut).length === 0) { localStorage.removeItem(CART_STORAGE_KEY); return; }
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify({ savedAt: Date.now(), qtys: qOut, typeChoices: typeChoices }));
   } catch(e) {}
+}
+let _cartSaveTimer = null;
+function scheduleCartSave() {
+  if (_cartSaveTimer) clearTimeout(_cartSaveTimer);
+  _cartSaveTimer = setTimeout(function() { saveCartToStorage(); _cartSaveTimer = null; }, 800);
 }
 function _getSavedCartData() {
   try {
@@ -5189,6 +5194,7 @@ function showKcpDoneScreen() {
     if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
     if (doneItemsEl) doneItemsEl.innerHTML = itemsHtml;
     doneEl.style.display = 'flex'; doneEl.style.flexDirection = 'column';
+    if (typeof _cartSaveTimer !== 'undefined' && _cartSaveTimer) { clearTimeout(_cartSaveTimer); _cartSaveTimer = null; }
     try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
     showDonePointsBreakdown(pointsUsedNow, oldPointsBalance, 'card');
     setDoneOrderNumber(null);
@@ -5499,6 +5505,7 @@ window.orderDirect = async function() {
         if (doneTotalEl) doneTotalEl.textContent = total.toLocaleString() + '원';
         renderDoneItems();
         doneEl.style.display='flex'; doneEl.style.flexDirection='column';
+        if (typeof _cartSaveTimer !== 'undefined' && _cartSaveTimer) { clearTimeout(_cartSaveTimer); _cartSaveTimer = null; }
         try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
         setDoneOrderNumber(null);
       }
@@ -5556,6 +5563,7 @@ window.orderDirect = async function() {
     if (doneTotalEl2) doneTotalEl2.textContent = total.toLocaleString() + '원';
     renderDoneItems();
     doneEl.style.display='flex'; doneEl.style.flexDirection='column';
+    if (typeof _cartSaveTimer !== 'undefined' && _cartSaveTimer) { clearTimeout(_cartSaveTimer); _cartSaveTimer = null; }
     try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
     showDonePointsBreakdown(pointsUsedNow, oldPointsBalance, 'bank');
     setDoneOrderNumber(window._lastOrderId);
