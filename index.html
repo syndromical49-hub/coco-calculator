@@ -4697,6 +4697,7 @@ document.addEventListener('DOMContentLoaded', function() {
   setTimeout(loadFlashCounts, 1000); // 1초 후 실제 카운트 반영
 
   // ── 장바구니 3일 보관 복원 (모든 카드 렌더 완료 후 실행 — reg()가 qtys를 0으로 초기화하므로 이 순서가 중요) ──
+  try {
   (function restoreSavedCart() {
     const data = window._pendingCartRestore;
     if (!data || !data.qtys) return;
@@ -4731,6 +4732,10 @@ document.addEventListener('DOMContentLoaded', function() {
       try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
     }
   })();
+  } catch(cartRestoreErr) {
+    console.error('[장바구니 복원 오류]', cartRestoreErr);
+    try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
+  }
 
   try {
     const savedPhone = localStorage.getItem('ccb_phone');
