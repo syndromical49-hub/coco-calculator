@@ -2050,7 +2050,7 @@ const vegItems = [
   { id:'v32', num:'32', name:'두부 1팩',               price:2000 },
   { id:'v33', num:'33', name:'순두부 2개',              price:1000 },
   { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7900, maxQty:1 },
-  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888' },
+  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888', sold:true },
   { id:'v34u',num:'34', name:'🥚 유정란 30구 (난각1번·무항생제)', price:17900, badge:'유정란 17,900원', badgeColor:'#4caf50' },
 
 ];
@@ -2420,19 +2420,24 @@ function newCardStepper(id, price, max) {
     </div>`;
 }
 function newCardRow(opts) {
-  // opts: {id, name, desc, price, orig, badge, badgeColor, max, disabled, statusText, thumb, highlight}
-  const priceHtml = opts.disabled
+  // opts: {id, name, desc, price, orig, badge, badgeColor, max, disabled, statusText, thumb, highlight, blur}
+  const isDisabled = opts.disabled || opts.blur;
+  const priceHtml = isDisabled
     ? `<span class="pprice" style="color:#bbb;">${opts.statusText||'품절'}</span>`
     : `${opts.orig ? `<span style="text-decoration:line-through;color:#999;font-size:10px;margin-right:4px;">${opts.orig.toLocaleString()}원</span>` : ''}<span class="pprice">${opts.price.toLocaleString()}원</span>`;
   const badgeHtml = opts.badge ? `<span class="pbadge" style="background:${opts.badgeColor||'#e63946'};flex-shrink:0;">${opts.badge}</span>` : '';
+  const nameHtml = opts.blur
+    ? `<div class="pname" style="filter:blur(3px);user-select:none;">${opts.name}</div>`
+    : `<div class="pname">${opts.name}</div>`;
   return `
-    <div id="card-${opts.id}" class="pcard-row" style="${opts.disabled?'opacity:0.45;pointer-events:none;':''}${opts.highlight?'border-color:#e57373;background:#fff5f5;':''}">
-      <div class="pthumb">${opts.thumb||'🛒'}</div>
+    <div id="card-${opts.id}" class="pcard-row" style="${isDisabled?'opacity:0.45;pointer-events:none;':''}${opts.highlight?'border-color:#e57373;background:#fff5f5;':''}${opts.blur?'position:relative;':''}">
+      <div class="pthumb"${opts.blur?' style="filter:blur(3px);"':''}>${opts.thumb||'🛒'}</div>
       <div class="prow-mid">
-        <div class="pname">${opts.name}</div>${badgeHtml}
+        ${nameHtml}${badgeHtml}
       </div>
       ${priceHtml}
-      ${opts.disabled ? '' : newCardStepper(opts.id, opts.price, opts.max || 99)}
+      ${isDisabled ? '' : newCardStepper(opts.id, opts.price, opts.max || 99)}
+      ${opts.blur ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><span style="font-size:0.78rem;font-weight:900;color:#c1121f;background:rgba(255,255,255,0.9);padding:3px 10px;border-radius:8px;">${opts.statusText||'품절'}</span></div>` : ''}
     </div>`;
 }
 
@@ -2490,7 +2495,7 @@ function renderVegNew() {
     }
     html += newCardRow({ id:item.id, name:item.name, price:item.price, orig:item.orig, badge:item.badge, badgeColor:item.badgeColor, max:max, highlight:item.highlight });
   });
-  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, statusText:'마감' }); });
+  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, blur:(item.id==='v35'), statusText:'품절' }); });
 
   list.innerHTML = html;
 }
@@ -4499,9 +4504,14 @@ function renderFlashSection() {
             '<a href="tel:' + phone + '" style="display:inline-block;margin-top:5px;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:5px 8px;font-size:0.7rem;font-weight:900;text-decoration:none;white-space:nowrap;">📞 ' + phone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3') + '</a>' +
           '</div>';
         const soldColHtml = (name) =>
-          '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;opacity:0.5;">' +
-            '<div style="font-size:0.78rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
-            '<div style="margin-top:5px;font-size:0.82rem;font-weight:900;color:#999;">품절</div>' +
+          '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;position:relative;">' +
+            '<div style="filter:blur(3px);pointer-events:none;user-select:none;">' +
+              '<div style="font-size:0.78rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
+              '<div style="margin-top:5px;font-size:0.82rem;font-weight:900;color:#999;">00,000원</div>' +
+            '</div>' +
+            '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">' +
+              '<span style="font-size:0.76rem;font-weight:900;color:#c1121f;background:rgba(255,255,255,0.9);padding:3px 9px;border-radius:8px;">품절</span>' +
+            '</div>' +
           '</div>';
         const card = document.createElement('div');
         card.className = 'flash-card' + (fi.badge ? ' flash-highlight' : '');
@@ -4583,8 +4593,8 @@ const FLASH_ITEMS = [
   { id:'f_melon_honeydew',   label:'허니듀 1.5kg전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론' },
   // ── 🍑 복숭아 특가 ──
   { id:'f_hwangdo_danhojang', label:'단호장 4kg(14브릭스)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고', comboTitle:'황도', comboPartner:'f_hwangdo_yongtaek' },
-  { id:'f_hwangdo_yongtaek', label:'용택골드 2.5kg(12수)', max:9999, flashPrice:22900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'황도' },
-  { id:'f_baekdo_gyeongbong', label:'천중도형제 2.5kg(14브릭스)', max:9999, flashPrice:24900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_daeokgye' },
+  { id:'f_hwangdo_yongtaek', label:'용택골드 2.5kg(12수)', max:9999, flashPrice:22900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'황도', soldOut:true },
+  { id:'f_baekdo_gyeongbong', label:'천중도형제 2.5kg(14브릭스)', max:9999, flashPrice:24900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_daeokgye', soldOut:true },
   { id:'f_baekdo_daeokgye', label:'대옥계 2.5kg(9~10수)', max:9999, flashPrice:23900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
   // ── 🍒 체리 특가 ──
   { id:'ts_cherry',      label:'캐나다체리(9row-최대사이즈) 500g',           max:20, flashPrice:13900,                  section:'🍒 체리 특가' },
