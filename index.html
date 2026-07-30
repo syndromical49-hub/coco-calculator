@@ -1350,6 +1350,12 @@
         </div>
       </div>
 
+      <!-- 요청사항 메모 -->
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;">
+        <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:8px;">📝 요청사항 (선택)</div>
+        <textarea id="confirm-memo" placeholder="예: 복숭아 너무 무르지 않게 부탁드려요" rows="2" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:0.85rem;font-family:inherit;resize:none;"></textarea>
+      </div>
+
       <!-- 주문 후 안내 -->
       <div style="background:#f9f7f2;border-radius:10px;padding:12px 14px;font-size:0.75rem;color:#888;line-height:1.9;">
         📌 주문 접수 후 아래 계좌로 입금해주세요<br>
@@ -1444,10 +1450,6 @@
 
     <!-- 최소주문 경고 -->
     <div id="confirm-warn" style="display:none;background:#fff3cd;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:0.82rem;color:#856404;"></div>
-
-    <!-- 요청사항 메모 -->
-    <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:6px;">📝 요청사항 (선택)</div>
-    <textarea id="confirm-memo" placeholder="예: 복숭아 너무 무르지 않게 부탁드려요" rows="2" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:0.85rem;font-family:inherit;resize:none;margin-bottom:14px;"></textarea>
 
     <button id="btn-confirm-submit" onclick="orderDirect()" style="width:100%;padding:16px;background:#e63946;border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.5px;">✅ 확인했어요 · 주문 접수하기</button>
     <button onclick="document.getElementById('order-confirm-modal').style.display='none'" style="width:100%;padding:12px;background:#f0f0f0;border:none;border-radius:12px;color:#555;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:8px;">← 돌아가서 수정하기</button>
