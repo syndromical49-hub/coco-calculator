@@ -3576,8 +3576,6 @@ function showToast(msg) {
 // ══ 장바구니 3일 보관 (localStorage) ══
 const CART_STORAGE_KEY = 'ccb_saved_cart_v1';
 const CART_STORAGE_DAYS = 3;
-let _cartRestoredCount = 0;
-let _cartDroppedCount = 0;
 function saveCartToStorage() {
   try {
     const qOut = {}; for (const id in qtys) { if (qtys[id] > 0) qOut[id] = qtys[id]; }
@@ -4601,8 +4599,9 @@ const FLASH_ITEMS = [
   { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:8900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3', badge:'🍇 8월1일 입고예정(개별문의)', soldOut:true },
   { id:'ts_grape_campbell_3', label:'(특) 3송이', max:9999, flashPrice:12900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도', soldOut:true },
   // ── 🟣 자두 특가 ──
-  { id:'f_jaju_5kg',     label:'자두(도담) 5kg 1박스',                    max:9999, flashPrice:56900,                  section:'🟣 자두 특가', badge:'🟣 아삭하고 산미없어요!' },
-  { id:'f_jaju_2kg',     label:'자두(도담) 2kg',                         max:9999, flashPrice:23900,                  section:'🟣 자두 특가', badge:'🟣 아삭하고 산미없어요!' },
+  { id:'f_jaju_1kg',     label:'1kg',                                    max:9999, flashPrice:13900,                  section:'🟣 자두 특가', badge:'🟣 아삭하고 산미없어요!', comboTitle:'도담자두(왕특)', comboPartner:'f_jaju_2kg' },
+  { id:'f_jaju_2kg',     label:'2kg',                                    max:9999, flashPrice:23900,                  section:'🟣 자두 특가', comboChild:true, comboTitle:'도담자두(왕특)' },
+  { id:'f_jaju_5kg',     label:'도담자두(왕특) 5kg 1박스',                    max:9999, flashPrice:56900,                  section:'🟣 자두 특가', fullWidth:true, badge:'🟣 아삭하고 산미없어요!' },
   // ── 🍈 델몬트 특가 ──
   { id:'f_delmonte_banana',  label:'델몬트 하이랜드 허니바나나 1송이',        max:9999, flashPrice:3000,                   section:'🍈 델몬트 특가', comboPartner:'f_delmonte_banana2', fullWidth:true },
   { id:'f_delmonte_banana2', label:'델몬트 하이랜드 허니바나나 2송이',        max:9999, flashPrice:5500,                   section:'🍈 델몬트 특가', comboChild:true },
@@ -4710,30 +4709,29 @@ document.addEventListener('DOMContentLoaded', function() {
   renderFlashSection(); // 즉시 렌더 (카운트 0으로)
   setTimeout(loadFlashCounts, 1000); // 1초 후 실제 카운트 반영
 
-  // ── 장바구니 3일 보관 복원 (모든 카드 렌더 완료 후 실행 — reg()가 qtys를 0으로 초기화하므로 이 순서가 중요) ──
-  try {
-  (function restoreSavedCart() {
-    const data = window._pendingCartRestore;
-    if (!data || !data.qtys) return;
-    function isCurrentlyValid(id) {
-      if (!itemMeta[id]) return false; // reg() 호출 안 됨 = 존재하지 않거나 과일/채소에서 품절
-      // FLASH_ITEMS는 품절이어도 itemMeta가 미리 채워지므로 별도로 soldOut/max 확인
-      if (typeof FLASH_ITEMS !== 'undefined') {
-        const fi = FLASH_ITEMS.find(function(f){ return f.id===id; });
-        if (fi) {
-          if (fi.max === 0 || fi.soldOut) return false;
-          const cnt = (typeof flashCounts !== 'undefined' && flashCounts[id]) || 0;
-          if (cnt >= fi.max) return false; // 선착순 마감
+  // ── 장바구니 3일 보관: 자동 복원 안 함, "다시 담기" 버튼 눌렀을 때만 적용 ──
+  window.applySavedCartRestore = function() {
+    try {
+      const data = window._pendingCartRestore;
+      if (!data || !data.qtys) return;
+      function isCurrentlyValid(id) {
+        if (!itemMeta[id]) return false; // reg() 호출 안 됨 = 존재하지 않거나 과일/채소에서 품절
+        if (typeof FLASH_ITEMS !== 'undefined') {
+          const fi = FLASH_ITEMS.find(function(f){ return f.id===id; });
+          if (fi) {
+            if (fi.max === 0 || fi.soldOut) return false;
+            const cnt = (typeof flashCounts !== 'undefined' && flashCounts[id]) || 0;
+            if (cnt >= fi.max) return false; // 선착순 마감
+          }
         }
+        return true;
       }
-      return true;
-    }
-    for (const id in data.qtys) {
-      if (isCurrentlyValid(id)) { qtys[id] = data.qtys[id]; _cartRestoredCount++; }
-      else { _cartDroppedCount++; }
-    }
-    if (data.typeChoices) Object.assign(typeChoices, data.typeChoices);
-    if (_cartRestoredCount > 0) {
+      let restored = 0, dropped = 0;
+      for (const id in data.qtys) {
+        if (isCurrentlyValid(id)) { qtys[id] = data.qtys[id]; restored++; }
+        else { dropped++; }
+      }
+      if (data.typeChoices) Object.assign(typeChoices, data.typeChoices);
       for (const id in qtys) {
         if (qtys[id] > 0) {
           const el = document.getElementById('qty-' + id);
@@ -4741,15 +4739,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
       updateTotal();
-      showToast('🛒 지난번 담아두신 상품 ' + _cartRestoredCount + '개를 불러왔어요' + (_cartDroppedCount > 0 ? ' (품절/변경된 ' + _cartDroppedCount + '개는 제외)' : ''));
-    } else if (_cartDroppedCount > 0) {
+      const banner = document.getElementById('cart-restore-banner');
+      if (banner) banner.remove();
+      if (restored > 0) {
+        showToast('🛒 이전 상품 ' + restored + '개를 다시 담았어요' + (dropped > 0 ? ' (품절/변경된 ' + dropped + '개는 제외)' : ''));
+      }
+      try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
+    } catch(cartRestoreErr) {
+      console.error('[다시 담기 오류]', cartRestoreErr);
       try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
     }
-  })();
-  } catch(cartRestoreErr) {
-    console.error('[장바구니 복원 오류]', cartRestoreErr);
-    try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
-  }
+  };
+  try {
+    const data = window._pendingCartRestore;
+    if (data && data.qtys && Object.keys(data.qtys).length > 0) {
+      const s1El = document.getElementById('s1');
+      const searchWrap = s1El && s1El.querySelector('[style*="max-width:440px"]');
+      if (searchWrap) {
+        const banner = document.createElement('div');
+        banner.id = 'cart-restore-banner';
+        banner.style.cssText = 'width:100%;max-width:440px;background:#fff8e1;border:1.5px solid #ffd166;border-radius:12px;padding:12px 14px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;';
+        banner.innerHTML = '<span style="font-size:0.82rem;color:#7a5c00;font-weight:700;">🛒 이전에 담아두신 상품이 있어요</span>' +
+          '<button onclick="applySavedCartRestore()" style="flex-shrink:0;background:#e63946;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;white-space:nowrap;">다시 담기</button>';
+        searchWrap.parentNode.insertBefore(banner, searchWrap.nextSibling);
+      }
+    }
+  } catch(e) {}
 
   try {
     const savedPhone = localStorage.getItem('ccb_phone');
@@ -5894,7 +5909,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['ts_grape_campbell', 'f_hwangdo_danhojang', 'f_baekdo_gyeongbong', 'v_paprika_2', 'gamjagoguma_set2', 'f_melon_honeydew', 'v21', 'v10', 'ts_zucchini', 'v27'];
+  const TODAY_SPECIAL_IDS = ['ts_grape_campbell', 'f_hwangdo_danhojang', 'f_baekdo_gyeongbong', 'f_jaju_1kg', 'v_paprika_2', 'gamjagoguma_set2', 'f_melon_honeydew', 'v21', 'v10', 'ts_zucchini', 'v27'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
@@ -5916,7 +5931,7 @@ setInterval(updateFloatCart, 500);
     const validItems = TODAY_SPECIAL_IDS
       .map(id => ({ id, cat: findCatalogItem(id) }))
       .filter(x => x.cat)
-      .slice(0, 10);
+      .slice(0, 11);
 
     if (!validItems.length) {
       body.innerHTML = `<div style="padding:16px;border-top:1px solid #f0ede8;text-align:center;font-size:12px;color:#999;">이번 주 특가를 준비하고 있습니다.<br>월요일 오전 공개됩니다.</div>`;
