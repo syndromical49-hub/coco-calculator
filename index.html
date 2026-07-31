@@ -4517,7 +4517,9 @@ function renderFlashSection() {
         const badgeHtml = fi.badge ? '<div style="font-size:0.82rem;font-weight:900;color:#e63946;margin-bottom:3px;">' + fi.badge + '</div>' : '';
         card.innerHTML =
           badgeHtml +
-          '<div class="flash-name" style="text-align:center;font-size:0.9rem;margin-bottom:2px;">' + comboLabel + '</div>' +
+          (fi.subLabel
+            ? '<div style="font-size:19px;font-weight:900;color:#c1121f;text-align:center;margin:2px 0 6px;">' + fi.subLabel + '</div>'
+            : '<div class="flash-name" style="text-align:center;font-size:0.9rem;margin-bottom:2px;">' + comboLabel + '</div>') +
           '<div style="display:flex;align-items:center;">' +
             (fi.soldOut
               ? soldColHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label))
@@ -4590,8 +4592,8 @@ const FLASH_ITEMS = [
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew', fullWidth:true },
   { id:'f_melon_honeydew',   label:'허니듀 1.5kg전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론' },
   // ── 🍑 복숭아 특가 ──
-  { id:'f_hwangdo_danhojang', label:'황도(단호장) 4kg(14브릭스)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고' },
-  { id:'f_baekdo_gyeongbong', label:'경봉(11~13수) 4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_daeokgye' },
+  { id:'f_hwangdo_danhojang', label:'황도(단호장) 4kg(14브릭스)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'단호장', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고' },
+  { id:'f_baekdo_gyeongbong', label:'경봉(11~13수) 4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'백도(경봉·대옥계)', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_daeokgye' },
   { id:'f_baekdo_daeokgye', label:'대옥계 2.5kg(9~10수)', max:9999, flashPrice:23900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
   // ── 🍒 체리 특가 ──
   { id:'ts_cherry',      label:'캐나다체리(9row-최대사이즈) 500g',           max:20, flashPrice:13900,                  section:'🍒 체리 특가' },
@@ -4599,9 +4601,9 @@ const FLASH_ITEMS = [
   { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:8900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3', badge:'🍇 8월1일 입고예정(개별문의)', soldOut:true },
   { id:'ts_grape_campbell_3', label:'(특) 3송이', max:9999, flashPrice:12900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도', soldOut:true },
   // ── 🟣 자두 특가 ──
-  { id:'f_jaju_1kg',     label:'1kg',                                    max:9999, flashPrice:13900,                  section:'🟣 자두 특가', badge:'🟣 아삭하고 산미없어요!', comboTitle:'도담자두(왕특)', comboPartner:'f_jaju_2kg' },
+  { id:'f_jaju_1kg',     label:'1kg', subLabel:'도담자두(왕특)',                                    max:9999, flashPrice:13900,                  section:'🟣 자두 특가', badge:'🟣 아삭하고 산미없어요!', comboTitle:'도담자두(왕특)', comboPartner:'f_jaju_2kg' },
   { id:'f_jaju_2kg',     label:'2kg',                                    max:9999, flashPrice:23900,                  section:'🟣 자두 특가', comboChild:true, comboTitle:'도담자두(왕특)' },
-  { id:'f_jaju_5kg',     label:'도담자두(왕특) 5kg 1박스',                    max:9999, flashPrice:56900,                  section:'🟣 자두 특가', fullWidth:true, badge:'🟣 아삭하고 산미없어요!' },
+  { id:'f_jaju_5kg',     label:'도담자두(왕특) 5kg 1박스', subLabel:'도담자두(왕특)',                    max:9999, flashPrice:56900,                  section:'🟣 자두 특가', fullWidth:true, badge:'🟣 아삭하고 산미없어요!' },
   // ── 🍈 델몬트 특가 ──
   { id:'f_delmonte_banana',  label:'델몬트 하이랜드 허니바나나 1송이',        max:9999, flashPrice:3000,                   section:'🍈 델몬트 특가', comboPartner:'f_delmonte_banana2', fullWidth:true },
   { id:'f_delmonte_banana2', label:'델몬트 하이랜드 허니바나나 2송이',        max:9999, flashPrice:5500,                   section:'🍈 델몬트 특가', comboChild:true },
