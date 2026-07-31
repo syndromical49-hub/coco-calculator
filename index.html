@@ -1321,22 +1321,31 @@
 
       <!-- 🎁 포인트 사용 -->
       <div id="points-use-wrap" style="display:none;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;">
-        <div style="font-size:0.78rem;font-weight:700;color:#888;margin-bottom:8px;">🎁 포인트 사용</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:0.78rem;font-weight:700;color:#888;">🎁 포인트 사용</span>
+          <span id="points-grade-display" style="font-size:0.72rem;font-weight:900;color:#2d6a4f;background:#f0f7f2;padding:3px 8px;border-radius:100px;"></span>
+        </div>
         <div id="points-use-guest" style="display:none;">
-          <div style="font-size:0.82rem;color:#666;line-height:1.7;margin-bottom:10px;">포인트를 사용하려면<br>'나의 코코바스켓' 로그인 후 이용해주세요.</div>
+          <div style="font-size:0.82rem;color:#666;line-height:1.7;margin-bottom:10px;">회원이 아니어도 주문은 가능해요.<br>포인트 적립·사용은 '나의 코코바스켓' 로그인 후 이용해주세요.</div>
           <button type="button" onclick="openMyCocobasketModal()" style="width:100%;padding:11px;background:#f0ede8;color:#2d6a4f;border:none;border-radius:8px;font-weight:900;font-size:0.85rem;cursor:pointer;">🔑 나의 코코바스켓 로그인</button>
         </div>
         <div id="points-use-logged">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <span style="font-size:0.82rem;color:#555;">보유 포인트</span>
             <span id="points-balance-display" style="font-size:0.95rem;font-weight:900;color:#1a0f00;">0P</span>
           </div>
           <div style="display:flex;gap:6px;margin-bottom:6px;">
             <input type="number" id="points-use-input" placeholder="사용할 포인트" min="0" style="flex:1;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;">
             <button type="button" onclick="applyPointsUse()" style="padding:10px 14px;background:#2d6a4f;color:#fff;border:none;border-radius:8px;font-weight:900;font-size:0.85rem;cursor:pointer;white-space:nowrap;">적용</button>
-            <button type="button" onclick="applyPointsUseMax()" style="padding:10px 12px;background:#f0ede8;color:#555;border:none;border-radius:8px;font-weight:700;font-size:0.8rem;cursor:pointer;white-space:nowrap;">최대</button>
           </div>
-          <div id="points-use-note" style="font-size:0.72rem;color:#999;line-height:1.6;">주문금액의 최대 50%까지 사용 가능합니다.<br>사용한 포인트를 제외한 결제금액에 대해 포인트가 적립됩니다.</div>
+          <div id="points-use-quickbtns" style="display:flex;gap:6px;margin-bottom:10px;"></div>
+          <div id="points-use-note" style="font-size:0.72rem;color:#999;line-height:1.6;margin-bottom:10px;">주문금액의 최대 50%까지 사용 가능합니다.</div>
+          <div id="points-calc-box" style="background:#f9f7f2;border-radius:10px;padding:10px 12px;font-size:0.8rem;color:#555;">
+            <div style="display:flex;justify-content:space-between;padding:2px 0;"><span>상품금액</span><span id="points-calc-subtotal">0원</span></div>
+            <div id="points-calc-used-row" style="display:none;justify-content:space-between;padding:2px 0;color:#c1121f;"><span>사용포인트</span><span id="points-calc-used">-0원</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0 2px;margin-top:2px;border-top:1px dashed #ddd8cc;font-weight:900;color:#1a0f00;"><span>결제금액</span><span id="points-calc-final">0원</span></div>
+          </div>
+          <div id="points-earn-preview" style="margin-top:8px;font-size:0.78rem;color:#2d6a4f;font-weight:700;text-align:center;"></div>
         </div>
       </div>
       <!-- 결제수단 선택 -->
@@ -4092,33 +4101,87 @@ function enterDelivery() {
 
 window._pointsUsed = 0;
 
+// ── 등급별 적립률 (get_points_rate DB함수와 동일한 값, 미리보기용) ──
+const POINTS_RATE_BY_GRADE = { '골드':0.02, '실버':0.015, '브론즈':0.01 };
+function getPointsRatePreview(grade, payMethod) {
+  const base = POINTS_RATE_BY_GRADE[grade] != null ? POINTS_RATE_BY_GRADE[grade] : 0.005;
+  return base + (payMethod === 'bank' ? 0.005 : 0);
+}
+function gradeEmojiPoints(g){ return { '골드':'🥇','실버':'🥈','브론즈':'🥉' }[g] || '🌱'; }
+
 // ── 🎁 포인트 사용 (s-delivery 화면) ──
 function renderPointsUseUI(subtotal) {
   const wrap = document.getElementById('points-use-wrap');
   if (!wrap) return;
   const guestEl = document.getElementById('points-use-guest');
   const loggedEl = document.getElementById('points-use-logged');
+  const gradeEl = document.getElementById('points-grade-display');
   let me = null;
   try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) {}
   wrap.style.display = 'block';
   if (!me) {
     if (guestEl) guestEl.style.display = 'block';
     if (loggedEl) loggedEl.style.display = 'none';
+    if (gradeEl) gradeEl.textContent = '';
     window._pointsUsed = 0;
     return;
   }
   if (guestEl) guestEl.style.display = 'none';
   if (loggedEl) loggedEl.style.display = 'block';
+  if (gradeEl) gradeEl.textContent = gradeEmojiPoints(me.grade) + ' ' + (me.grade || '일반');
   const balance = me.points_balance || 0;
   const maxUsable = Math.min(balance, Math.floor(subtotal * 0.5));
   document.getElementById('points-balance-display').textContent = balance.toLocaleString() + 'P';
   // 이미 입력해둔 값이 새 한도를 넘으면 자동으로 줄임
   if (window._pointsUsed > maxUsable) window._pointsUsed = maxUsable;
+  const usedNow = window._pointsUsed || 0;
   const input = document.getElementById('points-use-input');
-  if (input && document.activeElement !== input) input.value = window._pointsUsed || '';
+  if (input && document.activeElement !== input) input.value = usedNow || '';
   input.max = maxUsable;
-  document.getElementById('points-use-note').innerHTML =
-    '최대 ' + maxUsable.toLocaleString() + 'P까지 사용 가능해요 (주문금액의 50%까지)<br>사용한 포인트를 제외한 결제금액에 대해 포인트가 적립됩니다.';
+  document.getElementById('points-use-note').textContent =
+    '최대 ' + maxUsable.toLocaleString() + 'P까지 사용 가능해요 (주문금액의 50%까지)';
+
+  // 빠른선택 버튼 (1,000 / 3,000 / 5,000 / 전액)
+  const quickWrap = document.getElementById('points-use-quickbtns');
+  if (quickWrap) {
+    const options = [1000, 3000, 5000];
+    let html = '';
+    options.forEach(v => {
+      const disabled = v > maxUsable;
+      html += '<button type="button" ' + (disabled ? 'disabled' : ('onclick="setPointsUseQuick(' + v + ')"')) +
+        ' style="flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid ' + (disabled ? '#e0ddd5' : '#2d7a4f') +
+        ';background:' + (disabled ? '#f5f5f5' : '#fff') + ';color:' + (disabled ? '#bbb' : '#2d7a4f') +
+        ';font-weight:800;font-size:0.78rem;cursor:' + (disabled ? 'default' : 'pointer') + ';">' + v.toLocaleString() + '</button>';
+    });
+    html += '<button type="button" onclick="applyPointsUseMax()" style="flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid #2d7a4f;background:' +
+      (maxUsable > 0 ? '#2d7a4f' : '#f5f5f5') + ';color:' + (maxUsable > 0 ? '#fff' : '#bbb') + ';font-weight:900;font-size:0.78rem;cursor:pointer;">전액</button>';
+    quickWrap.innerHTML = html;
+  }
+
+  // 실시간 3줄 계산
+  const finalAmt = Math.max(0, subtotal - usedNow);
+  document.getElementById('points-calc-subtotal').textContent = subtotal.toLocaleString() + '원';
+  const usedRow = document.getElementById('points-calc-used-row');
+  if (usedNow > 0) {
+    usedRow.style.display = 'flex';
+    document.getElementById('points-calc-used').textContent = '-' + usedNow.toLocaleString() + '원';
+  } else {
+    usedRow.style.display = 'none';
+  }
+  document.getElementById('points-calc-final').textContent = finalAmt.toLocaleString() + '원';
+
+  // 결제 후 적립 예정 (선택된 결제수단 기준 미리보기)
+  const payMethod = window._payMethod || 'bank';
+  const rate = getPointsRatePreview(me.grade, payMethod);
+  const earnPreview = Math.floor(finalAmt * rate);
+  const earnEl = document.getElementById('points-earn-preview');
+  if (earnEl) earnEl.textContent = '💰 결제 후 적립 예정 +' + earnPreview.toLocaleString() + 'P (적립률 ' + (rate*100).toFixed(1) + '%)';
+}
+
+function setPointsUseQuick(val) {
+  const input = document.getElementById('points-use-input');
+  if (input) input.value = val;
+  applyPointsUse();
 }
 
 function applyPointsUse() {
@@ -4593,13 +4656,13 @@ const FLASH_ITEMS = [
   { id:'f_melon_honeydew',   label:'허니듀 1.5kg전후',           max:9999, flashPrice:9000, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론' },
   // ── 🍑 복숭아 특가 ──
   { id:'f_hwangdo_danhojang', label:'황도(단호장) 4kg(14브릭스)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'단호장', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고' },
-  { id:'f_baekdo_gyeongbong', label:'경봉(11~13수) 4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'백도(경봉·대옥계)', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_daeokgye' },
+  { id:'f_baekdo_gyeongbong', label:'경봉(9~13수) 4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'백도(경봉·대옥계)', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_daeokgye' },
   { id:'f_baekdo_daeokgye', label:'대옥계 2.5kg(9~10수)', max:9999, flashPrice:23900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
   // ── 🍒 체리 특가 ──
   { id:'ts_cherry',      label:'캐나다체리(9row-최대사이즈) 500g',           max:20, flashPrice:13900,                  section:'🍒 체리 특가' },
   { id:'jeju_gamgyul_9', label:'제주하우스감귤 1팩(9입)',           max:9999, flashPrice:5500,                  section:'🍒 체리 특가', badge:'🍊 엄청달콤해요' },
-  { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:8900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3', badge:'🍇 8월1일 입고예정(개별문의)', soldOut:true },
-  { id:'ts_grape_campbell_3', label:'(특) 3송이', max:9999, flashPrice:12900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도', soldOut:true },
+  { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:7900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3' },
+  { id:'ts_grape_campbell_3', label:'(특) 4송이', max:9999, flashPrice:13900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도' },
   // ── 🟣 자두 특가 ──
   { id:'f_jaju_1kg',     label:'1kg', subLabel:'도담자두(왕특)',                                    max:9999, flashPrice:13900,                  section:'🟣 자두 특가', badge:'🟣 아삭하고 산미없어요!', comboTitle:'도담자두(왕특)', comboPartner:'f_jaju_2kg' },
   { id:'f_jaju_2kg',     label:'2kg',                                    max:9999, flashPrice:23900,                  section:'🟣 자두 특가', comboChild:true, comboTitle:'도담자두(왕특)' },
@@ -4611,7 +4674,7 @@ const FLASH_ITEMS = [
   { id:'gamjagoguma_set2', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 2kg)', max:9999, flashPrice:9900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
   { id:'v_paprika_1', label:'🫑 스위트 미니 파프리카 1팩(250g)', max:9999, flashPrice:3500, section:'🥬 채소', badge:'🔥 완전 강추!' },
   { id:'v_paprika_2', label:'🫑 스위트 미니 파프리카 2팩(250g×2)', max:9999, flashPrice:6000, section:'🥬 채소', badge:'🔥 완전 강추!' },
-  { id:'v_corn_eol10', label:'🌽 찰옥수수(대학찰,미백,얼룩이랜덤) 10개', max:9999, flashPrice:5500, section:'🥬 채소' },
+  { id:'v_corn_eol10', label:'🌽 찰옥수수(대학찰,미백,얼룩이,흑찰 랜덤) 10개', max:9999, flashPrice:5500, section:'🥬 채소' },
   { id:'v36b',           label:'찰토마토 2봉',                               max:9999, flashPrice:6000,  origPrice:8000,  section:'🥬 채소' },
 ];
 const flashCounts = {};
@@ -5014,11 +5077,13 @@ function selectPayMethod(method) {
     window._payMethod = 'card';
     if (cardBtn) { cardBtn.style.background = '#2d7a4f'; cardBtn.style.borderColor = '#2d7a4f'; cardBtn.style.color = '#fff'; }
     if (bankBtn) { bankBtn.style.background = '#f5f5f5'; bankBtn.style.borderColor = '#ddd'; bankBtn.style.color = '#aaa'; }
+    if (typeof renderPointsUseUI === 'function') renderPointsUseUI(window._deliveryRawTotal || 0);
     return;
   }
   window._payMethod = 'bank';
   if (bankBtn) { bankBtn.style.background = '#2d7a4f'; bankBtn.style.borderColor = '#2d7a4f'; bankBtn.style.color = '#fff'; }
   if (cardBtn) { cardBtn.style.background = '#f5f5f5'; cardBtn.style.borderColor = '#ddd'; cardBtn.style.color = '#aaa'; }
+  if (typeof renderPointsUseUI === 'function') renderPointsUseUI(window._deliveryRawTotal || 0);
 }
 
 // ══════════════════════════════════════════════════════════════
