@@ -4816,6 +4816,13 @@ document.addEventListener('DOMContentLoaded', function() {
       try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
     }
   };
+  window.dismissSavedCartBanner = function() {
+    try { localStorage.removeItem(CART_STORAGE_KEY); } catch(e) {}
+    window._pendingCartRestore = null;
+    const banner = document.getElementById('cart-restore-banner');
+    if (banner) banner.remove();
+    showToast('이전 장바구니를 삭제했어요');
+  };
   try {
     const data = window._pendingCartRestore;
     if (data && data.qtys && Object.keys(data.qtys).length > 0) {
@@ -4824,9 +4831,12 @@ document.addEventListener('DOMContentLoaded', function() {
       if (searchWrap) {
         const banner = document.createElement('div');
         banner.id = 'cart-restore-banner';
-        banner.style.cssText = 'width:100%;max-width:440px;background:#fff8e1;border:1.5px solid #ffd166;border-radius:12px;padding:12px 14px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;';
-        banner.innerHTML = '<span style="font-size:0.82rem;color:#7a5c00;font-weight:700;">🛒 이전에 담아두신 상품이 있어요</span>' +
-          '<button onclick="applySavedCartRestore()" style="flex-shrink:0;background:#e63946;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;white-space:nowrap;">다시 담기</button>';
+        banner.style.cssText = 'width:100%;max-width:440px;background:#fff8e1;border:1.5px solid #ffd166;border-radius:12px;padding:12px 14px;margin-top:8px;';
+        banner.innerHTML = '<div style="font-size:0.82rem;color:#7a5c00;font-weight:700;margin-bottom:8px;">🛒 이전에 담아두신 상품이 있어요</div>' +
+          '<div style="display:flex;gap:6px;">' +
+            '<button onclick="applySavedCartRestore()" style="flex:1;background:#e63946;color:#fff;border:none;border-radius:8px;padding:9px 10px;font-size:0.8rem;font-weight:900;cursor:pointer;">다시 담기</button>' +
+            '<button onclick="dismissSavedCartBanner()" style="flex-shrink:0;background:#fff;color:#999;border:1.5px solid #e0d9c0;border-radius:8px;padding:9px 14px;font-size:0.8rem;font-weight:700;cursor:pointer;">삭제</button>' +
+          '</div>';
         searchWrap.parentNode.insertBefore(banner, searchWrap.nextSibling);
       }
     }
