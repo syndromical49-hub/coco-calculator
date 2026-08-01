@@ -4613,7 +4613,8 @@ function renderFlashSection() {
         let pmeta = itemMeta[pfi.id];
         if (!pmeta) {
           const firstOpt = pfi.subOptions ? pfi.subOptions[0] : null;
-          pmeta = { name: pfi.comboTitle ? (pfi.comboTitle + ' ' + pfi.label) : pfi.label, price: (firstOpt ? firstOpt.flashPrice : pfi.flashPrice) || 0 };
+          const pLabel = firstOpt ? (pfi.label + ' ' + firstOpt.label) : pfi.label; // subOptions 있으면 "품종명 + 무게" 조합(예: "허니듀 1.5kg전후")
+          pmeta = { name: pfi.comboTitle ? (pfi.comboTitle + ' ' + pLabel) : pLabel, price: (firstOpt ? firstOpt.flashPrice : pfi.flashPrice) || 0 };
           itemMeta[pfi.id] = pmeta;
         }
         qtys[pfi.id] = qtys[pfi.id] || 0;
@@ -4628,7 +4629,7 @@ function renderFlashSection() {
         const multiColHtml = (name, subOptions) => {
           const optLines = subOptions.map(opt => {
             let optMeta = itemMeta[opt.id];
-            if (!optMeta) { optMeta = { name: (pfi.comboTitle ? pfi.comboTitle + ' ' : '') + opt.label, price: opt.flashPrice || 0 }; itemMeta[opt.id] = optMeta; }
+            if (!optMeta) { optMeta = { name: (pfi.comboTitle ? pfi.comboTitle + ' ' : '') + pfi.label + ' ' + opt.label, price: opt.flashPrice || 0 }; itemMeta[opt.id] = optMeta; }
             qtys[opt.id] = qtys[opt.id] || 0;
             const oQty = qtys[opt.id];
             const oStepper = '<button class="flash-btn-sub" onclick="changeQty(\'' + opt.id + '\',-1,' + optMeta.price + ',' + (opt.maxQty||9999) + ')">－</button>' +
@@ -6100,7 +6101,7 @@ setInterval(updateFloatCart, 500);
     const pools = [
       typeof vegItems !== 'undefined' ? vegItems : [],
       typeof fruitItems !== 'undefined' ? fruitItems : [],
-      typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.map(f => ({ id:f.id, name:(f.comboTitle ? (f.comboTitle + ' ' + f.label) : f.label), price:(f.subOptions ? f.subOptions[0].flashPrice : f.flashPrice), sold:(f.max===0 || !!f.soldOut), maxQty:f.max, tba:f.tbaOnly||null, comboPartner:f.comboPartner, comboTitle:f.comboTitle, rawLabel:f.label, contactOnly:f.contactOnly, contactPhone:f.contactPhone, soldOut:f.soldOut, section:f.section, varietyGroup:f.varietyGroup, subOptions:f.subOptions })) : [],
+      typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.map(f => { const fLabel = f.subOptions ? (f.label + ' ' + f.subOptions[0].label) : f.label; return { id:f.id, name:(f.comboTitle ? (f.comboTitle + ' ' + fLabel) : fLabel), price:(f.subOptions ? f.subOptions[0].flashPrice : f.flashPrice), sold:(f.max===0 || !!f.soldOut), maxQty:f.max, tba:f.tbaOnly||null, comboPartner:f.comboPartner, comboTitle:f.comboTitle, rawLabel:fLabel, contactOnly:f.contactOnly, contactPhone:f.contactPhone, soldOut:f.soldOut, section:f.section, varietyGroup:f.varietyGroup, subOptions:f.subOptions }; }) : [],
     ];
     for (const pool of pools) {
       const found = pool.find(x => x.id === id);
@@ -6585,6 +6586,111 @@ setInterval(updateFloatCart, 500);
       showToast('❌ 재주문 중 오류가 발생했어요');
     }
   };
+})();
+
+// ══ 스테퍼 진단 로그 (2026-08-03) ══
+// changeQty() 자체는 건드리지 않고 바깥에서 감싸서, +/- 누를 때마다
+// 클릭전/클릭후/50ms뒤 상태를 localStorage에 기록. 문제 재현 시 ?stepperlog=1로 접속하면
+// 최근 40건이 화면에 그대로 뜬다 (드보구 없이 그 폰에서 바로 확인 가능).
+(function() {
+  const LOG_KEY = 'ccb_stepper_debug_v1';
+  let _log = [];
+  try { _log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch(e) { _log = []; }
+  function saveLog() {
+    try {
+      if (_log.length > 40) _log = _log.slice(_log.length - 40);
+      localStorage.setItem(LOG_KEY, JSON.stringify(_log));
+    } catch(e) {}
+  }
+  window._stepperDebugLog = _log;
+
+  const _origChangeQty = window.changeQty;
+  if (typeof _origChangeQty !== 'function') return; // 안전장치: 원본 못 찾으면 아무것도 안 건드림
+
+  let _chain = Promise.resolve(); // 로깅 순서만 직렬 보장 — 원본 실행 자체는 아래에서 항상 즉시(동기) 시작됨
+  window.changeQty = function(id, delta, price, max) {
+    const t0 = Date.now();
+    const qtyBefore = qtys[id] || 0;
+    const elBefore = document.getElementById('qty-' + id);
+    const domBefore = elBefore ? elBefore.textContent : null;
+    let errMsg = null;
+    let resultPromise;
+    try {
+      // 원본은 반드시 이 자리에서 즉시(동기적으로) 호출 — 로깅 때문에 실제 담기 처리가 한 틱이라도 늦어지면
+      // "담자마자 바로 주문" 같은 상황에서 상품이 안 담긴 채 주문될 위험이 있어 절대 늦추면 안 됨
+      resultPromise = Promise.resolve(_origChangeQty(id, delta, price, max));
+    } catch (e) {
+      errMsg = e && e.message || String(e);
+      resultPromise = Promise.resolve();
+    }
+    _chain = _chain.then(function () { return resultPromise.catch(function(e){ errMsg = e && e.message || String(e); }); }).then(function () {
+      const qtyAfter = qtys[id] || 0;
+      const elAfter = document.getElementById('qty-' + id);
+      const domAfter = elAfter ? elAfter.textContent : null;
+      const expected = Math.min(max, Math.max(0, qtyBefore + delta));
+
+      const entry = {
+        time: new Date(t0).toISOString().slice(11, 19),
+        id: id, delta: delta,
+        qtyBefore: qtyBefore, qtyAfter: qtyAfter, expected: expected,
+        domBefore: domBefore, domAfter: domAfter,
+        // stateMismatch는 참고정보만 — 매우 빠른 연속클릭 시 로깅 자체의 비동기 지연으로 자연스럽게 어긋날 수 있어 이상 판정에서는 제외
+        stateMismatch: qtyAfter !== expected,
+        domMismatch: domAfter !== null && String(qtyAfter) !== domAfter, // ③qtys는 바뀌었는데 화면(DOM)만 안 바뀜 — 이게 실제 "스테퍼 안 올라감" 증상과 정확히 일치
+        error: errMsg
+      };
+      _log.push(entry);
+      saveLog();
+      if (entry.domMismatch || errMsg) {
+        console.error('[스테퍼 이상감지]', JSON.stringify(entry));
+      }
+
+      // 50ms 뒤 재확인 — ④다른 코드가 뒤늦게 값을 다시 덮어쓰는지 (줄어들었을 때만 이상 — 그 사이 정상적인 추가 클릭으로 늘어난 건 정상)
+      setTimeout(function () {
+        const laterQty = qtys[id] || 0;
+        const laterEl = document.getElementById('qty-' + id);
+        const laterDom = laterEl ? laterEl.textContent : null;
+        if (laterQty < qtyAfter) {
+          const lateEntry = {
+            time: new Date().toISOString().slice(11, 19),
+            id: id, note: '50ms후_재확인_값이_줄어듦',
+            qtyAfter: qtyAfter, laterQty: laterQty,
+            domAfter: domAfter, laterDom: laterDom
+          };
+          _log.push(lateEntry);
+          saveLog();
+          console.error('[스테퍼 이상감지-지연]', JSON.stringify(lateEntry));
+        }
+      }, 50);
+    });
+    return resultPromise; // 호출부(onclick)는 원본과 동일하게 즉시 결과를 받음 — 로깅 체인과 별개
+  };
+
+  // ?stepperlog=1 로 접속하면 화면에 최근 기록 그대로 표시
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('stepperlog') === '1') {
+    document.addEventListener('DOMContentLoaded', function () {
+      const box = document.createElement('div');
+      box.style.cssText = 'position:fixed;inset:0;z-index:999999;background:#0d0700;color:#7fffb0;font-family:monospace;font-size:11px;white-space:pre-wrap;padding:14px;overflow:auto;';
+      const lines = _log.length
+        ? _log.map(function (e) {
+            if (e.note) return e.time + ' [지연이상] ' + e.id + ' qty ' + e.qtyAfter + '→' + e.laterQty + ' / 화면 ' + e.domAfter + '→' + e.laterDom;
+            const flag = (e.domMismatch || e.error) ? ' ⚠️이상' : '';
+            return e.time + flag + ' | ' + e.id + ' delta=' + e.delta +
+              ' | qty ' + e.qtyBefore + '→' + e.qtyAfter + '(기대값' + e.expected + ')' +
+              ' | 화면 ' + e.domBefore + '→' + e.domAfter +
+              (e.error ? ' | 에러:' + e.error : '');
+          }).join('\n')
+        : '(아직 기록된 스테퍼 클릭 없음)';
+      box.textContent = '=== 스테퍼 클릭 기록 (최근 ' + _log.length + '건) ===\n\n' + lines;
+      const btn = document.createElement('button');
+      btn.textContent = '닫기';
+      btn.style.cssText = 'position:fixed;top:8px;right:8px;padding:8px 14px;z-index:1000000;';
+      btn.onclick = function () { box.remove(); btn.remove(); };
+      document.body.appendChild(box);
+      document.body.appendChild(btn);
+    });
+  }
 })();
 </script>
 
