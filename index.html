@@ -5491,8 +5491,7 @@ window.orderDirect = async function() {
   const addr = ((u.addr||'') + ' ' + (u.dong||'')).trim();
 
   // ⚠️ 최소 주문금액 2만원 미만이면 팝업 띄우고 접수 자체를 막음
-  // 🔓 2026-08-01 임시 해제 (사장님 요청 — 나중에 아래 if(total<20000) 되돌리면 복원됨)
-  if (false && total < 20000) {
+  if (total < 20000) {
     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
     alert('⚠️ 최소 주문금액은 2만원이에요.\n현재 담긴 금액: ' + total.toLocaleString() + '원\n\n2만원 이상 담아주셔야 주문이 가능해요.');
     return;
