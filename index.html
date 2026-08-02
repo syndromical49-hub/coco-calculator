@@ -553,6 +553,10 @@
   /* P1-1: 상품명 최대 2줄. 배지는 이름과 같은 줄에서 폭을 뺏지 않도록 아래로 내림 */
   .pcard-row .prow-mid{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;overflow:hidden;}
   .pcard-row .pname{font-size:12.5px;font-weight:700;color:var(--text);margin:0;line-height:1.3;white-space:normal;word-break:break-word;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  /* 상품명 안에서 규격만 한 덩어리로 묶어 흘림. 짧으면 한 줄, 길면 규격이 통째로 다음 줄로 내려감.
+     규격이 중간에서 쪼개지지 않도록 nowrap. 등급·품종은 main에 남으므로 12.5px를 유지한다. */
+  .pcard-row .pname-main{font-size:12.5px;font-weight:700;color:var(--text);}
+  .pcard-row .pname-spec{font-size:11px;font-weight:700;color:#8a8a8a;white-space:nowrap;}
   .pcard-row .pweight{margin:0;flex-shrink:0;}
   .pcard-row .pprice{font-size:14.5px;font-weight:900;color:var(--red);flex-shrink:0;}
   /* P1-2: 가격·스테퍼 고정 슬롯. 품절 카드도 step-slot을 빈 채로 유지해야 가격 오른쪽 끝이 정렬됨 */
@@ -2483,6 +2487,49 @@ function newCardStepper(id, price, max) {
       <button class="qbtn" onclick="event.stopPropagation();changeQty('${id}',1,${price},${max})" style="width:26px;height:26px;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:14px;font-weight:900;cursor:pointer;line-height:1;">+</button>
     </div>`;
 }
+// ── 상품명 표시 전용 분해 ──────────────────────────────────────────────
+// 화면에서만 "상품명 / 규격"으로 나눠 보여주기 위한 함수.
+// 반드시 표시에만 쓴다. item.name, itemMeta, 장바구니·주문 상품명, DB, 텔레그램 문자열에는
+// 절대 이 결과를 쓰지 않는다. (주문 데이터는 기존 item.name 그대로 흐른다)
+//
+// 판정 기준은 "괄호냐"가 아니라 "숫자+단위를 품은 규격 토큰이냐".
+//   규격으로 봄 : 2kg이상, 10개, 30구 1판, (400g이상), (4입), (9row-최대사이즈), (14브릭스이상)
+//   상품명으로 봄: (특), (밤+호박), (소과·게르마늄), (난각1번·무항생제)  ← 숫자+단위가 없음
+// 말미에서 역방향으로 스캔하다가 규격이 아닌 토큰을 만나면 즉시 멈춘다(안전측).
+// 잘라낸 위치(cut)만 기억했다가 원본을 slice 하므로, 원본의 공백/붙임이 그대로 보존된다.
+var NAME_UNITS = 'g|kg|ml|L|개|봉|팩|통|구|입|송이|장|포기|단|줄|판|알|마리|박스|세트|묶음|row|브릭스';
+var NAME_NUMUNIT = new RegExp('\\d[\\d.,]*\\s*(?:' + NAME_UNITS + ')');
+var NAME_PAREN_END = /(\([^()]*\))\s*$/;
+var NAME_PLAIN_END = new RegExp('(\\d[\\d.,]*\\s*(?:' + NAME_UNITS + ')(?:\\s*(?:이상|전후|내외|↑|±|미만))?)\\s*$');
+
+function splitDisplayName(name) {
+  var full = String(name == null ? '' : name);
+  var cut = full.length;               // 이 위치부터 뒤가 spec
+  var head = full.replace(/\s+$/, '');
+  var guard = 0;
+  while (guard++ < 8) {
+    var m = head.match(NAME_PAREN_END);
+    if (m && NAME_NUMUNIT.test(m[1])) {
+      cut = m.index;
+      head = head.slice(0, m.index).replace(/\s+$/, '');
+      continue;
+    }
+    m = head.match(NAME_PLAIN_END);
+    if (m) {
+      cut = m.index;
+      head = head.slice(0, m.index).replace(/\s+$/, '');
+      continue;
+    }
+    break;
+  }
+  var mainEnd = full.slice(0, cut).replace(/\s+$/, '').length;
+  var main = full.slice(0, mainEnd);
+  var gap  = full.slice(mainEnd, cut);   // main과 spec 사이 원본 공백. 없으면 빈 문자열 그대로.
+  var spec = full.slice(cut).trim();     // 원본 구간을 그대로 잘라내므로 내부 공백/붙임 보존
+  if (!main) { main = full.trim(); gap = ''; spec = ''; }   // 전부 규격이면 분해하지 않음
+  return { main: main, gap: gap, spec: spec };
+}
+
 function newCardRow(opts) {
   // opts: {id, name, desc, price, orig, badge, badgeColor, max, disabled, statusText, thumb, highlight, blur}
   const isDisabled = opts.disabled || opts.blur;
@@ -2490,9 +2537,13 @@ function newCardRow(opts) {
     ? `<div class="price-slot"><span class="pprice" style="color:#bbb;">${opts.statusText||'품절'}</span></div>`
     : `<div class="price-slot">${opts.orig ? `<span class="porig">${opts.orig.toLocaleString()}원</span>` : ''}<span class="pprice">${opts.price.toLocaleString()}원</span></div>`;
   const badgeHtml = opts.badge ? `<span class="pbadge" style="background:${opts.badgeColor||'#e63946'};flex-shrink:0;">${opts.badge}</span>` : '';
+  const _n = splitDisplayName(opts.name);   // 표시 전용. 주문 데이터에는 관여하지 않음
+  const nameInner = _n.spec
+    ? `<span class="pname-main">${_n.main}</span>${_n.gap}<span class="pname-spec">${_n.spec}</span>`
+    : `<span class="pname-main">${_n.main}</span>`;
   const nameHtml = opts.blur
-    ? `<div class="pname" style="filter:blur(3px);user-select:none;">${opts.name}</div>`
-    : `<div class="pname">${opts.name}</div>`;
+    ? `<div class="pname" style="filter:blur(3px);user-select:none;">${nameInner}</div>`
+    : `<div class="pname">${nameInner}</div>`;
   return `
     <div id="card-${opts.id}" class="pcard-row" style="${isDisabled?'opacity:0.45;pointer-events:none;':''}${opts.highlight?'border-color:#e57373;background:#fff5f5;':''}${opts.blur?'position:relative;':''}">
       <div class="pthumb"${opts.blur?' style="filter:blur(3px);"':''}>${opts.thumb||'🛒'}</div>
