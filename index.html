@@ -258,8 +258,7 @@
   .btn-order:disabled{opacity:0.5;cursor:not-allowed;}
   .sdiv{height:10px;background:#ebe8e0;}
   #pc-notice{display:none;background:#e8f4fd;border:1.5px solid #1a73e8;border-radius:8px;padding:8px 12px;font-size:0.78rem;color:#1a73e8;font-weight:700;text-align:center;margin-bottom:8px;}
-  .toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);background:#1b1b1b;color:white;padding:8px 18px;border-radius:20px;font-size:0.82rem;font-weight:600;opacity:0;pointer-events:none;transition:all .2s;z-index:999;white-space:pre-line;text-align:center;max-width:88vw;}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  /* .toast 규칙은 아래 두 번째 <style> 블록으로 일원화됨 (top/bottom 동시적용 충돌 제거) */
   /* 특가 그리드 */
   .promo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:14px;}
   .hook-section{margin-bottom:14px;}
@@ -403,8 +402,9 @@
 .jump-bar{top:60px !important;}
 
 
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
-        
+  /* @import 제거 — 다른 규칙 뒤에 위치해 브라우저가 무시하던 무효 구문.
+     Noto Sans KR은 첫 번째 <style> 블록 맨 위의 @import로 이미 로드됨 */
+
   /* ── 로고 스트립 (기존 유지, 높이만 압축) ── */
   .brand-strip{
     background:#1a0f00;
@@ -501,7 +501,7 @@
 
   /* ── 탭바 (기존 스타일 그대로, sticky top:0 고정) ── */
   .jump-bar{display:flex;background:#fff;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
-  .jbtn{flex:1;padding:12px 4px;border:none;background:none;font-family:"Noto Sans KR",sans-serif;font-size:0.85rem;font-weight:900;color:var(--muted);cursor:pointer;letter-spacing:-0.3px;border-bottom:3px solid transparent;}
+  .jbtn{flex:1;padding:12px 4px;border:none;background:none;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.85rem;font-weight:900;color:var(--muted);cursor:pointer;letter-spacing:-0.3px;border-bottom:3px solid transparent;}
   .jbtn.active{color:var(--green);border-bottom:3px solid var(--green);}
 
   /* ── 이 아래부터는 실제 tab-panel(JS 렌더링) 자리 — 목업에선 미리보기만 ── */
@@ -538,10 +538,22 @@
   }
   .pcard-row:active{transform:scale(0.98);}
   .pcard-row .pthumb{font-size:20px;margin:0;flex-shrink:0;}
-  .pcard-row .prow-mid{flex:1;display:flex;align-items:baseline;gap:7px;overflow:hidden;}
-  .pcard-row .pname{font-size:12.5px;font-weight:700;color:var(--text);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  /* P1-1: 상품명 최대 2줄. 배지는 이름과 같은 줄에서 폭을 뺏지 않도록 아래로 내림 */
+  .pcard-row .prow-mid{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;overflow:hidden;}
+  .pcard-row .pname{font-size:12.5px;font-weight:700;color:var(--text);margin:0;line-height:1.3;white-space:normal;word-break:break-word;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
   .pcard-row .pweight{margin:0;flex-shrink:0;}
   .pcard-row .pprice{font-size:14.5px;font-weight:900;color:var(--red);flex-shrink:0;}
+  /* P1-2: 가격·스테퍼 고정 슬롯. 품절 카드도 step-slot을 빈 채로 유지해야 가격 오른쪽 끝이 정렬됨 */
+  .pcard-row .price-slot{min-width:66px;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;line-height:1.15;text-align:right;}
+  .pcard-row .price-slot .porig{font-size:10px;color:#999;text-decoration:line-through;}
+  .pcard-row .step-slot{width:86px;flex-shrink:0;display:flex;justify-content:flex-end;align-items:center;}
+  /* 상품명이 2줄로도 안 들어가는 카드만 자동으로 이 레이아웃이 됨(applyStackedLayout이 판정).
+     이름이 카드 폭을 전부 쓰고, 가격·스테퍼가 아랫줄 오른쪽으로 내려감.
+     prow-mid를 calc(100% - 35px)로 두는 이유: 썸네일(25px)+gap(10px)과 같은 줄에 유지하기 위함.
+     100%로 하면 썸네일만 첫 줄에 남아 3단이 되면서 카드가 불필요하게 두꺼워짐. */
+  .pcard-row.stacked{flex-wrap:wrap;align-items:flex-start;row-gap:4px;}
+  .pcard-row.stacked .prow-mid{flex:1 1 calc(100% - 35px);}
+  .pcard-row.stacked .price-slot{margin-left:auto;}
 
   @keyframes jumpGlow{
     0%{outline:3px solid var(--gold);box-shadow:0 0 0 4px rgba(255,209,102,0.35);}
@@ -580,10 +592,16 @@
   .cd-row .cd-sub{font-size:13px;font-weight:900;color:var(--red);width:66px;text-align:right;}
   .cd-empty{padding:20px;text-align:center;font-size:12.5px;color:var(--muted);}
 
+  /* 토스트 — 단일 규칙. top은 지정하지 않음(top+bottom 동시 지정 시 세로로 늘어남).
+     z-index는 과일/채소 모달(500)·하단바(600)·각종 모달(9999)보다 위.
+     pointer-events:none 이므로 최상단이어도 아래 요소 조작을 막지 않음.
+     bottom:130px — 플로팅 장바구니 버튼(bottom:80px, 높이 약 38px) 영역을 피함. */
   .toast{
-    position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+    position:fixed;bottom:130px;left:50%;transform:translateX(-50%);
     background:#1b1b1b;color:#fff;padding:9px 16px;border-radius:20px;
-    font-size:12.5px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s;z-index:300;
+    font-size:12.5px;font-weight:700;line-height:1.5;
+    white-space:pre-line;text-align:center;max-width:88vw;
+    opacity:0;pointer-events:none;transition:opacity .2s;z-index:10001;
   }
   .toast.show{opacity:1;}
 
@@ -642,6 +660,19 @@
     background:rgba(255,255,255,0.15);border:none;color:#fff;
     width:34px;height:34px;border-radius:50%;font-size:1.15rem;cursor:pointer;flex-shrink:0;
   }
+  /* ── 수량 스테퍼: 터치 영역 확보 + 눌림 피드백 ──
+     보이는 크기(26~30px)는 그대로 두고 ::after로 히트영역만 44px 이상으로 확장.
+     ::after는 button의 의사요소라 여기를 눌러도 버튼의 onclick이 그대로 실행됨.
+     position:absolute 이므로 레이아웃(카드 높이·한 화면 노출 상품 수)에는 영향 없음.
+     인접 버튼과의 중심 간격은 최소 51px이라 44px 히트영역끼리 겹치지 않음. */
+  .qbtn{position:relative;transition:transform .08s ease-out,filter .08s ease-out;}
+  .qbtn::after{content:'';position:absolute;inset:-9px;}
+  .qbtn:active{transform:scale(0.88);filter:brightness(0.85);}
+
+  .flash-btn-sub,.flash-btn-add{position:relative;transition:transform .08s ease-out,filter .08s ease-out;}
+  .flash-btn-sub::after,.flash-btn-add::after{content:'';position:absolute;inset:-9px;}
+  .flash-btn-sub:active,.flash-btn-add:active{transform:scale(0.88);filter:brightness(0.85);}
+
   .modal-grid{grid-template-columns:1fr !important;padding:12px !important;gap:9px !important;}
   .modal-grid .pcard-row{padding:13px 15px;}
   .modal-grid .pcard-row .pthumb{font-size:24px;}
@@ -807,7 +838,7 @@
     <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(10,6,0,0.08) 0%,rgba(10,6,0,0.08) 30%,rgba(10,6,0,0.7) 60%,rgba(10,6,0,0.97) 100%);"></div>
     <div style="position:relative;z-index:10;padding:8px 20px 0;display:flex;justify-content:center;align-items:center;">
       <div style="text-align:center;">
-        <div style="font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:16px;color:#fff;letter-spacing:-0.3px;line-height:1.1;">코코바스켓 현관장보기</div>
+        <div style="font-family:'Pretendard','Noto Sans KR',sans-serif;font-weight:900;font-size:16px;color:#fff;letter-spacing:-0.3px;line-height:1.1;">코코바스켓 현관장보기</div>
         <div style="font-size:10.5px;color:#ffd166;font-weight:800;margin-top:2px;">🌅 당일 새벽 선별입고</div>
         <div style="font-size:10px;color:rgba(255,255,255,0.65);letter-spacing:0.12em;font-weight:700;margin-top:1px;">SINCE 2026.03</div>
       </div>
@@ -823,7 +854,7 @@
     <div style="width:100%;max-width:440px;position:relative;margin-bottom:10px;display:flex;gap:6px;">
       <div style="flex:1;min-width:0;position:relative;display:flex;align-items:center;background:#fff;border-radius:24px;">
         <span style="font-size:17px;padding-left:14px;flex-shrink:0;">🔍</span>
-        <input id="prod-search-input" type="text" placeholder="복숭아, 수박, 계란... 상품명을 검색하세요" oninput="runProductSearch(this.value)" style="flex:1;min-width:0;width:100%;box-sizing:border-box;padding:12px 16px 12px 8px;border:none;border-radius:24px;background:transparent;color:#1a0f00;font-size:13.5px;font-weight:700;font-family:'Noto Sans KR',sans-serif;">
+        <input id="prod-search-input" type="text" placeholder="복숭아, 수박, 계란... 상품명을 검색하세요" oninput="runProductSearch(this.value)" style="flex:1;min-width:0;width:100%;box-sizing:border-box;padding:12px 16px 12px 8px;border:none;border-radius:24px;background:transparent;color:#1a0f00;font-size:13.5px;font-weight:700;font-family:'Pretendard','Noto Sans KR',sans-serif;">
         <div id="prod-search-results" style="display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border-radius:14px;max-height:340px;overflow-y:auto;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,0.35);"></div>
       </div>
       <button onclick="goToCart()" style="flex-shrink:0;width:46px;background:#fff;border:none;border-radius:50%;font-size:18px;cursor:pointer;">🛒</button>
@@ -963,8 +994,8 @@
     </div>
     <!-- 하단 고정 버튼 -->
     <div style="position:fixed;bottom:0;left:0;right:0;background:white;border-top:1.5px solid var(--border);padding:14px 16px calc(24px + env(safe-area-inset-bottom));z-index:200;display:flex;flex-direction:column;gap:8px;">
-      <button id="cart-next-btn" onclick="goToInfo()" style="width:100%;padding:16px;background:#2d6a4f;color:white;border:none;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;">👤 주문자 정보 입력하기</button>
-      <button onclick="goScreen('s4')" style="width:100%;padding:12px;background:#f5f5f2;color:#666;border:1.5px solid var(--border);border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;">✏️ 품목 변경 및 추가하기</button>
+      <button id="cart-next-btn" onclick="goToInfo()" style="width:100%;padding:16px;background:#2d6a4f;color:white;border:none;border-radius:12px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;">👤 주문자 정보 입력하기</button>
+      <button onclick="goScreen('s4')" style="width:100%;padding:12px;background:#f5f5f2;color:#666;border:1.5px solid var(--border);border-radius:12px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;">✏️ 품목 변경 및 추가하기</button>
     </div>
   </div>
 </div>
@@ -1089,7 +1120,7 @@
           <div style="display:flex;gap:8px;">
             <input id="reorder-phone" class="fi" placeholder="010-0000-0000" type="tel" maxlength="13"
               style="flex:1;" oninput="formatReorderPhone(this)" onkeydown="if(event.key==='Enter')lookupReorder()">
-            <button onclick="lookupReorder()" style="background:#ffd166;color:#1a0f00;border:none;border-radius:10px;padding:0 16px;font-family:'Noto Sans KR',sans-serif;font-size:0.85rem;font-weight:900;cursor:pointer;white-space:nowrap;flex-shrink:0;">
+            <button onclick="lookupReorder()" style="background:#ffd166;color:#1a0f00;border:none;border-radius:10px;padding:0 16px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:0.85rem;font-weight:900;cursor:pointer;white-space:nowrap;flex-shrink:0;">
               불러오기
             </button>
           </div>
@@ -1377,7 +1408,7 @@
   <!-- 하단 고정 버튼 -->
   <div style="position:fixed;bottom:0;left:0;right:0;background:white;border-top:1.5px solid var(--border);padding:14px 16px calc(28px + env(safe-area-inset-bottom));z-index:200;">
     <div id="delivery-min-warn" style="display:none;background:#fff3cd;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:0.8rem;color:#856404;font-weight:600;text-align:center;"></div>
-    <button id="btn-delivery-submit" onclick="orderDirect()" style="width:100%;padding:16px;background:#c1121f;color:white;border:none;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;">✅ 확인했어요 · 주문 접수하기</button>
+    <button id="btn-delivery-submit" onclick="orderDirect()" style="width:100%;padding:16px;background:#c1121f;color:white;border:none;border-radius:12px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;">✅ 확인했어요 · 주문 접수하기</button>
   </div>
   <!-- 완료 오버레이 -->
   <div id="delivery-done" style="display:none;position:fixed;inset:0;background:#fff;z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;">
@@ -1424,7 +1455,7 @@
         <div style="display:flex;justify-content:space-between;padding:2px 0;"><span>이번 적립</span><span id="done-points-earned" style="font-weight:800;color:#2d6a4f;">확인 중...</span></div>
         <div style="display:flex;justify-content:space-between;padding:2px 0;"><span>현재 보유</span><span id="done-points-balance" style="font-weight:800;color:#1a0f00;">확인 중...</span></div>
       </div>
-      <button onclick="copyPaymentInfo()" style="width:100%;padding:14px;background:#2d6a4f;color:white;border:none;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:0.9rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;">
+      <button onclick="copyPaymentInfo()" style="width:100%;padding:14px;background:#2d6a4f;color:white;border:none;border-radius:12px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:0.9rem;font-weight:900;cursor:pointer;letter-spacing:-0.3px;">
         📋 계좌번호 복사
       </button>
       <div id="copy-done-msg" style="display:none;margin-top:6px;font-size:0.75rem;color:#2d6a4f;font-weight:700;">✅ 클립보드에 복사됐어요!</div>
@@ -2435,17 +2466,17 @@ function resetBundle(bid) {
 function newCardStepper(id, price, max) {
   return `
     <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-      <button onclick="event.stopPropagation();changeQty('${id}',-1,${price},${max})" style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--green);background:#fff;color:var(--green);font-size:14px;font-weight:900;cursor:pointer;line-height:1;">−</button>
-      <span id="qty-${id}" style="min-width:16px;text-align:center;font-size:13px;font-weight:900;color:var(--text);">0</span>
-      <button onclick="event.stopPropagation();changeQty('${id}',1,${price},${max})" style="width:26px;height:26px;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:14px;font-weight:900;cursor:pointer;line-height:1;">+</button>
+      <button class="qbtn" onclick="event.stopPropagation();changeQty('${id}',-1,${price},${max})" style="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--green);background:#fff;color:var(--green);font-size:14px;font-weight:900;cursor:pointer;line-height:1;">−</button>
+      <span id="qty-${id}" style="min-width:22px;text-align:center;font-size:13px;font-weight:900;color:var(--text);">0</span>
+      <button class="qbtn" onclick="event.stopPropagation();changeQty('${id}',1,${price},${max})" style="width:26px;height:26px;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:14px;font-weight:900;cursor:pointer;line-height:1;">+</button>
     </div>`;
 }
 function newCardRow(opts) {
   // opts: {id, name, desc, price, orig, badge, badgeColor, max, disabled, statusText, thumb, highlight, blur}
   const isDisabled = opts.disabled || opts.blur;
   const priceHtml = isDisabled
-    ? `<span class="pprice" style="color:#bbb;">${opts.statusText||'품절'}</span>`
-    : `${opts.orig ? `<span style="text-decoration:line-through;color:#999;font-size:10px;margin-right:4px;">${opts.orig.toLocaleString()}원</span>` : ''}<span class="pprice">${opts.price.toLocaleString()}원</span>`;
+    ? `<div class="price-slot"><span class="pprice" style="color:#bbb;">${opts.statusText||'품절'}</span></div>`
+    : `<div class="price-slot">${opts.orig ? `<span class="porig">${opts.orig.toLocaleString()}원</span>` : ''}<span class="pprice">${opts.price.toLocaleString()}원</span></div>`;
   const badgeHtml = opts.badge ? `<span class="pbadge" style="background:${opts.badgeColor||'#e63946'};flex-shrink:0;">${opts.badge}</span>` : '';
   const nameHtml = opts.blur
     ? `<div class="pname" style="filter:blur(3px);user-select:none;">${opts.name}</div>`
@@ -2457,7 +2488,7 @@ function newCardRow(opts) {
         ${nameHtml}${badgeHtml}
       </div>
       ${priceHtml}
-      ${isDisabled ? '' : newCardStepper(opts.id, opts.price, opts.max || 99)}
+      <div class="step-slot">${isDisabled ? '' : newCardStepper(opts.id, opts.price, opts.max || 99)}</div>
       ${opts.blur ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><span style="font-size:0.78rem;font-weight:900;color:#c1121f;background:rgba(255,255,255,0.9);padding:3px 10px;border-radius:8px;">${opts.statusText||'품절'}</span></div>` : ''}
     </div>`;
 }
@@ -2493,7 +2524,32 @@ function renderFruitNew() {
   comingSoonItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, statusText:'⏰ 입고예정' }); });
 
   grid.innerHTML = html;
+  applyStackedLayout();
 }
+
+// ── 상품명이 2줄로도 안 들어가는 카드만 스테퍼를 아랫줄로 내림 ──
+// 상품이 추가되거나 이름이 바뀌어도 자동으로 판정되도록, 렌더 직후·탭 전환·화면 회전 때마다 다시 계산한다.
+// 읽기 전용 판정이며 changeQty/qty-id/상품 데이터에는 관여하지 않는다.
+function applyStackedLayout() {
+  var cards = document.querySelectorAll('#fruit-grid .pcard-row, #veg-list .pcard-row');
+  for (var i = 0; i < cards.length; i++) {
+    var card = cards[i];
+    var nm = card.querySelector('.pname');
+    if (!nm) continue;
+    // 판정 전에 원래 레이아웃으로 되돌려야 함(펼친 상태로 재면 항상 "안 넘침"으로 나와 진동함)
+    card.classList.remove('stacked');
+    // 숨겨진 패널은 측정값이 0이라 판정 불가 -> 해당 탭이 열릴 때 다시 판정됨
+    if (!card.getBoundingClientRect().height) continue;
+    if (nm.scrollHeight > nm.clientHeight + 1) card.classList.add('stacked');
+  }
+}
+var _stackTimer = null;
+function scheduleStackedLayout() {
+  if (_stackTimer) clearTimeout(_stackTimer);
+  _stackTimer = setTimeout(applyStackedLayout, 60);
+}
+window.addEventListener('resize', scheduleStackedLayout);
+window.addEventListener('orientationchange', scheduleStackedLayout);
 
 function renderVegNew() {
   const list = document.getElementById('veg-list');
@@ -2519,6 +2575,7 @@ function renderVegNew() {
   soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, blur:(item.id==='v35'), statusText:'품절' }); });
 
   list.innerHTML = html;
+  applyStackedLayout();
 }
 
 // ══ 렌더: 과일 ════════════════════════════
@@ -3576,6 +3633,7 @@ function switchTab(tab) {
     document.getElementById('panel-vg').classList.toggle('cat-modal-open', tab==='vg');
   }
   window.scrollTo(0,0);
+  applyStackedLayout();
 }
 function closeCatModal() {
   switchTab('sp');
@@ -3663,7 +3721,7 @@ applySoldout();
   panel.style.cssText = `
     position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;
     background:#0f172a;color:#f1f5f9;overflow-y:auto;
-    font-family:'Noto Sans KR',sans-serif;padding:16px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif;padding:16px;
   `;
 
   function render() {
@@ -3734,7 +3792,7 @@ applySoldout();
               <input id="area-${d}" value="${schedAreas[d] !== undefined ? schedAreas[d] : DEFAULT_AREAS[d]}"
                 style="width:100%;background:#0f172a;border:1px solid ${d === effectiveDay ? '#4ade80' : '#334155'};
                 border-radius:8px;padding:8px 10px;color:#f1f5f9;font-size:0.8rem;
-                font-family:'Noto Sans KR',sans-serif;"
+                font-family:'Pretendard','Noto Sans KR',sans-serif;"
                 placeholder="${DEFAULT_AREAS[d]}">
             </div>
           `).join('')}
@@ -4635,10 +4693,12 @@ function renderFlashSection() {
             const oStepper = '<button class="flash-btn-sub" onclick="changeQty(\'' + opt.id + '\',-1,' + optMeta.price + ',' + (opt.maxQty||9999) + ')">－</button>' +
               '<span class="flash-qty" id="qty-' + opt.id + '" style="min-width:16px;font-size:0.95rem;">' + oQty + '</span>' +
               '<button class="flash-btn-add" onclick="changeQty(\'' + opt.id + '\',1,' + optMeta.price + ',' + (opt.maxQty||9999) + ')">＋</button>';
-            return '<div style="display:flex;align-items:center;justify-content:space-between;gap:4px;padding:3px 0;">' +
-                '<span style="font-size:0.82rem;font-weight:700;color:#555;white-space:nowrap;">' + opt.label + '</span>' +
-                '<span style="font-size:0.95rem;font-weight:800;color:var(--green);white-space:nowrap;">' + opt.flashPrice.toLocaleString() + '원</span>' +
-                '<div class="flash-stepper" style="gap:4px;">' + oStepper + '</div>' +
+            return '<div style="padding:5px 2px;">' +
+                '<div style="display:flex;align-items:baseline;justify-content:center;gap:5px;flex-wrap:wrap;">' +
+                  '<span style="font-size:0.82rem;font-weight:700;color:#555;">' + opt.label + '</span>' +
+                  '<span style="font-size:0.95rem;font-weight:800;color:var(--green);white-space:nowrap;">' + opt.flashPrice.toLocaleString() + '원</span>' +
+                '</div>' +
+                '<div class="flash-stepper" style="margin-top:4px;justify-content:center;gap:6px;">' + oStepper + '</div>' +
               '</div>';
           }).join('<div style="border-top:1px dashed #e0ddd5;"></div>');
           return '<div style="flex:1;min-width:0;text-align:center;padding:0 6px;box-sizing:border-box;">' +
@@ -4646,14 +4706,19 @@ function renderFlashSection() {
               optLines +
             '</div>';
         };
-        const colHtml = (name, price, stepper) =>
-          '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;">' +
+        // topName: 표시 전용 품종명 줄. 지정하면 "품종명 / 규격+가격" 2단으로 나눠 그림(허니듀 옵션과 동일 구조).
+        // fi.label 자체는 건드리지 않으므로 itemMeta.name(장바구니·텔레그램·DB 상품명)에는 아무 영향 없음.
+        const colHtml = (name, price, stepper, topName) => {
+          const rest = (topName && name.indexOf(topName) === 0) ? name.slice(topName.length).trim() : name;
+          return '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;">' +
+            (topName ? '<div style="font-size:0.86rem;font-weight:700;color:var(--text);margin-bottom:1px;">' + topName + '</div>' : '') +
             '<div style="display:flex;align-items:baseline;justify-content:center;gap:4px;flex-wrap:wrap;overflow:hidden;">' +
-              '<span style="font-size:0.86rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</span>' +
+              '<span style="font-size:0.86rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + rest + '</span>' +
               '<span style="font-size:1.08rem;font-weight:800;color:var(--green);white-space:nowrap;">' + price.toLocaleString() + '원</span>' +
             '</div>' +
             '<div class="flash-stepper" style="margin-top:3px;justify-content:center;gap:6px;">' + stepper + '</div>' +
           '</div>';
+        };
         const contactColHtml = (name, phone) =>
           '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;">' +
             '<div style="font-size:0.86rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
@@ -4678,10 +4743,10 @@ function renderFlashSection() {
           (fi.subLabel
             ? '<div style="font-size:19px;font-weight:900;color:#c1121f;text-align:center;margin:1px 0 4px;">' + fi.subLabel + '</div>'
             : '<div class="flash-name" style="text-align:center;font-size:0.9rem;margin-bottom:1px;">' + comboLabel + '</div>') +
-          '<div style="display:flex;align-items:center;">' +
+          '<div style="display:flex;align-items:flex-start;">' +
             (fi.soldOut
               ? soldColHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label))
-              : colHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label), fi.flashPrice || meta.price, stepperHtmlMain)) +
+              : colHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label), fi.flashPrice || meta.price, stepperHtmlMain, fi.nameTop)) +
             '<div style="width:1px;align-self:stretch;background:rgba(0,0,0,0.08);"></div>' +
             (pfi.soldOut
               ? soldColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label))
@@ -4689,7 +4754,7 @@ function renderFlashSection() {
               ? contactColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.contactPhone)
               : pfi.subOptions
               ? multiColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.subOptions)
-              : colHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.flashPrice || pmeta.price, pStepper)) +
+              : colHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.flashPrice || pmeta.price, pStepper, pfi.nameTop)) +
           '</div>';
         grid.appendChild(card);
         continue;
@@ -4752,7 +4817,7 @@ const MEMBER_PRICES = {
 const FLASH_ITEMS = [
   // ── 🍉 수박,멜론 특가 ──
   { id:'f51_super', label:'수박', max:9999, tbaOnly:'수박 선별중', blurred:true, section:'🍉 수박,멜론 특가', fullWidth:true },
-  { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew', fullWidth:true },
+  { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew', fullWidth:true },
   { id:'f_melon_honeydew',   label:'허니듀',           max:9999, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
     subOptions: [
       { id:'f_melon_honeydew', label:'1.5kg전후', flashPrice:9000, maxQty:9999 },
@@ -5867,7 +5932,7 @@ function copyPaymentInfo() {
   통신판매업신고번호: 제2026-고양일산서-0717호
 </footer>
   <!-- 플로팅 장바구니 버튼 -->
-  <div id="float-cart-btn" onclick="toggleFloatCart()" style="display:none;position:fixed;bottom:80px;right:16px;z-index:9999;background:#2e7d32;color:#fff;border-radius:50px;padding:10px 16px;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.35);display:flex;align-items:center;gap:6px;">
+  <div id="float-cart-btn" onclick="toggleFloatCart()" style="display:none;position:fixed;bottom:80px;right:16px;z-index:9999;background:#2e7d32;color:#fff;border-radius:50px;padding:10px 16px;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.35);align-items:center;gap:6px;">
     🛒 <span id="float-cart-label">담은 목록</span> <span id="float-cart-count" style="background:#ffd166;color:#1a0f00;border-radius:20px;padding:1px 8px;font-size:12px;font-weight:900;">0</span>
   </div>
 
