@@ -233,13 +233,25 @@
   .veg-btn{width:28px;height:28px;background:#f5f5f2;border:none;font-size:1rem;font-weight:700;color:var(--green);cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
   .veg-btn:active{background:var(--green-pale);}
   .veg-qval{width:28px;text-align:center;font-size:0.85rem;font-weight:700;border-left:1px solid var(--border);border-right:1px solid var(--border);height:28px;line-height:28px;background:white;}
-  .summary-bar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:2px solid var(--border);z-index:200;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding-bottom:env(safe-area-inset-bottom);}
-  .summary-tab{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-  .summary-tab-left{display:flex;align-items:center;gap:7px;}
+  /* P0-3a: 제철특가/과일/채소 공통 하단바. 과일·채소 모달(500)과 모달 내부바(600) 위로 올림.
+     toast(10001)와 각종 모달(9999)보다는 아래라 기존 우선순위는 유지됨. */
+  .summary-bar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:2px solid var(--border);z-index:700;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding-bottom:env(safe-area-inset-bottom);}
+  .summary-tab{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;-webkit-tap-highlight-color:transparent;}
+  .summary-tab-left{display:flex;flex-direction:column;align-items:flex-start;gap:1px;cursor:pointer;flex:1;min-width:0;}
+  .summary-order-btn{flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:10px;padding:13px 20px;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:0.95rem;font-weight:900;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+  .summary-order-btn:active{transform:scale(0.97);background:var(--green-light);}
+  /* 펼친 summary(약 237px) 뒤로 마지막 상품이 가려지지 않도록 여백 추가.
+     body 전역이 아니라 #s4와 그 안의 열린 패널에만 적용 — s1/s2/s3/s-cart/s-delivery는 영향 없음. */
+  #s4.summary-open{padding-bottom:calc(var(--sb-h, 250px) + 16px);}
+  #s4.summary-open #panel-fr.cat-modal-open,
+  #s4.summary-open #panel-vg.cat-modal-open{padding-bottom:calc(var(--sb-h, 250px) + 16px);}
+  /* P0-3a: 하단바가 담은 목록을 이미 제공하므로 플로팅 장바구니는 화면에서 감춤.
+     updateFloatCart()가 인라인 display를 지정하므로 !important 필요. JS 함수는 이번 단계에서 삭제하지 않음. */
+  #float-cart-btn{display:none !important;}
   .summary-tab-label{font-size:0.82rem;color:var(--muted);font-weight:700;}
   .summary-tab-amt{font-size:1.5rem;font-weight:900;color:var(--red);}
-  .summary-tab-arrow{font-size:1rem;color:var(--green);font-weight:900;transition:transform .25s;}
-  .summary-tab-arrow.open{transform:rotate(180deg);}
+  .summary-tab-arrow{font-size:0.72rem;color:var(--green);font-weight:800;}
+  .summary-tab-arrow.open{transform:none;}
   .summary-body{display:none;padding:0 16px 22px;}
   .summary-body.open{display:block;}
   .delivery-notice{background:#fff0f0;border:2px solid var(--red);border-radius:8px;padding:7px 10px;margin-bottom:8px;text-align:center;font-size:0.8rem;font-weight:900;color:var(--red);animation:pulse 1.8s ease-in-out infinite;}
@@ -643,7 +655,7 @@
   #panel-fr, #panel-vg{display:none;}
   #panel-fr.cat-modal-open, #panel-vg.cat-modal-open{
     display:block;position:fixed;inset:0;z-index:500;
-    background:var(--bg);overflow-y:auto;padding-bottom:62px;box-sizing:border-box;
+    background:var(--bg);overflow-y:auto;padding-bottom:90px;box-sizing:border-box;
     animation:modalUp .22s ease-out;
   }
   @keyframes modalUp{
@@ -1251,7 +1263,7 @@
     <div class="cat-modal-hd"><button class="cmh-back" onclick="closeCatModal()">←</button><div class="cmh-title">🍊 과일</div><div style="width:34px;"></div></div>
     <div class="suh"><div class="suh-icon">🍊</div><div><div class="suh-title">과일</div><div class="suh-sub">신선하게 경매 직송</div></div></div>
     <div class="card-grid" id="fruit-grid"></div>
-    <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);z-index:600;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;">
+    <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);z-index:600;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:none;align-items:center;justify-content:space-between;gap:10px;">
       <div style="font-size:0.82rem;color:#555;">총 주문금액 <b id="fruit-total-amt" style="color:#c1121f;font-size:1.05rem;">0원</b></div>
       <button onclick="goToCart()" style="background:var(--green);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:900;font-size:0.9rem;cursor:pointer;white-space:nowrap;">🛒 주문하기</button>
     </div>
@@ -1260,18 +1272,18 @@
     <div class="cat-modal-hd"><button class="cmh-back" onclick="closeCatModal()">←</button><div class="cmh-title">🥦 채소 · 버섯 · 두부 · 계란</div><div style="width:34px;"></div></div>
     <div class="suh"><div class="suh-icon">🥦</div><div><div class="suh-title">채소 · 버섯 · 두부 · 계란</div><div class="suh-sub">매일 아침 직접 경매</div></div></div>
     <div class="veg-list" id="veg-list"></div>
-    <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);z-index:600;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;">
+    <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--border);z-index:600;box-shadow:0 -4px 16px rgba(0,0,0,0.1);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:none;align-items:center;justify-content:space-between;gap:10px;">
       <div style="font-size:0.82rem;color:#555;">총 주문금액 <b id="veg-total-amt" style="color:#c1121f;font-size:1.05rem;">0원</b></div>
       <button onclick="goToCart()" style="background:var(--green);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:900;font-size:0.9rem;cursor:pointer;white-space:nowrap;">🛒 주문하기</button>
     </div>
   </div>
   <div class="summary-bar">
-    <div class="summary-tab" onclick="toggleSummary()">
-      <div class="summary-tab-left">
-        <span class="summary-tab-label">총 주문금액</span>
+    <div class="summary-tab">
+      <div class="summary-tab-left" onclick="toggleSummary()">
         <span class="summary-tab-amt" id="total-amt">0원</span>
+        <span class="summary-tab-arrow" id="summary-arrow">담은 목록 보기</span>
       </div>
-      <span class="summary-tab-arrow" id="summary-arrow">▲ 주문 계속하기</span>
+      <button class="summary-order-btn" onclick="goToCart()">🛒 주문하기</button>
     </div>
     <div class="summary-body" id="summary-body">
       <div id="inline-cart-list" style="max-height:38vh;overflow-y:auto;margin-bottom:8px;"></div>
@@ -3612,12 +3624,33 @@ function buildOrderText() {
   return '📦 코코바스켓 주문\n' + userLine + lines.join('\n') + '\n─────────────\n합계: ' + total.toLocaleString() + '원';
 }
 
+// 하단바 실제 높이를 --sb-h 로 반영. 담은 목록 개수가 바뀌면 바 높이도 바뀌므로 고정값 대신 실측을 쓴다.
+// #s4에만 적용되므로 s1/s2/s3/s-cart/s-delivery 여백에는 관여하지 않는다.
+function syncSummaryBarHeight() {
+  const bar = document.querySelector('.summary-bar');
+  const s4 = document.getElementById('s4');
+  if (!bar || !s4) return;
+  const h = Math.round(bar.getBoundingClientRect().height);
+  if (h > 0) s4.style.setProperty('--sb-h', h + 'px');
+}
+try {
+  if (window.ResizeObserver) {
+    const _sbBar = document.querySelector('.summary-bar');
+    if (_sbBar) new ResizeObserver(syncSummaryBarHeight).observe(_sbBar);
+  }
+} catch (e) {}
+
 function toggleSummary() {
   const body = document.getElementById('summary-body');
   const arrow = document.getElementById('summary-arrow');
   const isOpen = body.classList.toggle('open');
   arrow.classList.toggle('open', isOpen);
-  arrow.textContent = isOpen ? '▼ 닫기' : '▲ 주문 계속하기';
+  arrow.textContent = isOpen ? '담은 목록 닫기' : '담은 목록 보기';
+  // 펼친 높이만큼 상품 영역 여백을 늘림. body가 아니라 #s4에만 붙여
+  // s1/s2/s3/s-cart/s-delivery 등 다른 화면에는 구조적으로 영향이 갈 수 없게 함.
+  const s4 = document.getElementById('s4');
+  if (s4) s4.classList.toggle('summary-open', isOpen);
+  syncSummaryBarHeight();
 }
 
 function switchTab(tab) {
