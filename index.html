@@ -4901,10 +4901,9 @@ const MEMBER_PRICES = {
 const FLASH_ITEMS = [
   // ── 🍉 수박,멜론 특가 ──
   { id:'f51_super', label:'수박', max:9999, tbaOnly:'수박 선별중', blurred:true, section:'🍉 수박,멜론 특가', fullWidth:true },
-  { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew', fullWidth:true },
-  { id:'f_melon_honeydew',   label:'허니듀',           max:9999, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
+  { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew_25', fullWidth:true },
+  { id:'f_melon_honeydew_25',   label:'허니듀',           max:9999, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
     subOptions: [
-      { id:'f_melon_honeydew', label:'1.5kg전후', flashPrice:9000, maxQty:9999 },
       { id:'f_melon_honeydew_25', label:'2.5kg전후', flashPrice:11900, maxQty:9999 }
     ]
   },
@@ -6243,7 +6242,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['ts_grape_campbell', 'f_hwangdo_danhojang', 'f_baekdo_gyeongbong', 'f_jaju_1kg', 'v_paprika_2', 'gamjagoguma_set2', 'f_melon_honeydew', 'v21', 'ts_zucchini'];
+  const TODAY_SPECIAL_IDS = ['ts_grape_campbell', 'f_hwangdo_danhojang', 'f_baekdo_gyeongbong', 'f_jaju_1kg', 'v_paprika_2', 'gamjagoguma_set2', 'f_melon_honeydew_25', 'v21', 'ts_zucchini'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
