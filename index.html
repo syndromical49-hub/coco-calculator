@@ -2077,7 +2077,7 @@ const vegItems = [
   { id:'ts_gamja2', num:'🥔', name:'🥔 수미햇감자 2봉(2kg↑)', desc:'수미햇감자 2봉(2kg↑)', orig:8000, price:4900, highlight:true },
   { id:'v2b', num:'묶음', name:'🧅 양파 2kg이상', price:3900, orig:4000, badge:'묶음특가', badgeColor:'#c1121f', highlight:true },
   { id:'ts_goguma3kg', num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg이상', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg이상', price:8900, highlight:true },
-  { id:'v_oi5', num:'오이', name:'🥒 오이(특) 3개', desc:'오이(특) 3개 (쓰지않는 품종)', price:2000, highlight:true },
+  { id:'v_oi5', num:'오이', name:'🥒 오이(특) 5개', desc:'오이(특) 5개 (쓰지않는 품종)', price:2000, highlight:true },
   { id:'ts_oigaji10', num:'가지', name:'🍆 가지(특) 5개', desc:'가지(특) 5개', price:1000, highlight:true },
   { id:'v10', num:'10', name:'아삭이고추 1봉',          price:1500, highlight:true },
   { id:'v21', num:'21', name:'콩나물(400g이상)',         price:500, highlight:true },
@@ -4791,12 +4791,18 @@ function renderFlashSection() {
         };
         // topName: 표시 전용 품종명 줄. 지정하면 "품종명 / 규격+가격" 2단으로 나눠 그림(허니듀 옵션과 동일 구조).
         // fi.label 자체는 건드리지 않으므로 itemMeta.name(장바구니·텔레그램·DB 상품명)에는 아무 영향 없음.
-        const colHtml = (name, price, stepper, topName) => {
+        const colHtml = (name, price, stepper, topName, orig, colBadge) => {
           const rest = (topName && name.indexOf(topName) === 0) ? name.slice(topName.length).trim() : name;
           return '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;">' +
+            // 컬럼 배지: 콤보 카드에서 한쪽 상품에만 붙는 표시(카드 전체 badge와 구분됨)
+            (colBadge ? '<div style="display:inline-block;background:#c1121f;color:#fff;font-size:10px;font-weight:900;border-radius:100px;padding:2px 8px;margin-bottom:3px;white-space:nowrap;letter-spacing:-0.2px;">' + colBadge + '</div>' : '') +
             (topName ? '<div style="font-size:0.86rem;font-weight:700;color:var(--text);margin-bottom:1px;">' + topName + '</div>' : '') +
-            '<div style="display:flex;align-items:baseline;justify-content:center;gap:4px;flex-wrap:wrap;overflow:hidden;">' +
+            '<div style="display:flex;align-items:baseline;justify-content:center;gap:5px;flex-wrap:wrap;overflow:hidden;">' +
               '<span style="font-size:0.86rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + rest + '</span>' +
+              // 원가(취소선)는 상품명 바로 옆에 붙임. 콤보 카드는 origHtml 경로를 타지 않으므로 여기서 직접 그린다.
+              (orig ? '<span style="font-size:0.9rem;font-weight:800;color:#9a9a9a;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#c1121f;white-space:nowrap;">' + orig.toLocaleString() + '원</span>' : '') +
+            '</div>' +
+            '<div style="display:flex;align-items:baseline;justify-content:center;gap:4px;flex-wrap:wrap;overflow:hidden;">' +
               '<span style="font-size:1.08rem;font-weight:800;color:var(--green);white-space:nowrap;">' + price.toLocaleString() + '원</span>' +
             '</div>' +
             '<div class="flash-stepper" style="margin-top:3px;justify-content:center;gap:6px;">' + stepper + '</div>' +
@@ -4829,7 +4835,7 @@ function renderFlashSection() {
           '<div style="display:flex;align-items:flex-start;">' +
             (fi.soldOut
               ? soldColHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label))
-              : colHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label), fi.flashPrice || meta.price, stepperHtmlMain, fi.nameTop)) +
+              : colHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label), fi.flashPrice || meta.price, stepperHtmlMain, fi.nameTop, fi.origPrice || meta.orig, fi.colBadge)) +
             '<div style="width:1px;align-self:stretch;background:rgba(0,0,0,0.08);"></div>' +
             (pfi.soldOut
               ? soldColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label))
@@ -4837,7 +4843,7 @@ function renderFlashSection() {
               ? contactColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.contactPhone)
               : pfi.subOptions
               ? multiColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.subOptions)
-              : colHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.flashPrice || pmeta.price, pStepper, pfi.nameTop)) +
+              : colHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.flashPrice || pmeta.price, pStepper, pfi.nameTop, pfi.origPrice || pmeta.orig, pfi.colBadge)) +
           '</div>';
         grid.appendChild(card);
         continue;
@@ -4900,8 +4906,8 @@ const MEMBER_PRICES = {
 const FLASH_ITEMS = [
   // ── 🍑 복숭아 특가 ──
   { id:'f_hwangdo_danhojang', label:'황도(단호장) 4kg(14브릭스)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'단호장', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고' },
-  { id:'f_baekdo_abu', label:'아부백도 4kg', max:9999, flashPrice:36900, section:'🍑 복숭아 특가', subLabel:'백도(아부·경봉)', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_gyeongbong' },
-  { id:'f_baekdo_gyeongbong', label:'경봉(10수 이내) 4kg', max:9999, flashPrice:32900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
+  { id:'f_baekdo_abu', label:'아부백도 4kg', colBadge:'입고기념특가(선착순)', max:9999, flashPrice:34900, origPrice:38900, section:'🍑 복숭아 특가', subLabel:'백도(아부·경봉)', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_gyeongbong' },
+  { id:'f_baekdo_gyeongbong', label:'경봉(10수 이내) 4kg', colBadge:'시즌마감 특가', max:9999, flashPrice:30900, origPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
   // ── 🍇 포도 특가 ──
   { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:7900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3', varietyGroup:'캠벨' },
   { id:'ts_grape_campbell_3', label:'(특) 4송이', max:9999, flashPrice:14900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도', varietyGroup:'캠벨' },
@@ -6249,13 +6255,27 @@ setInterval(updateFloatCart, 500);
     const pools = [
       typeof vegItems !== 'undefined' ? vegItems : [],
       typeof fruitItems !== 'undefined' ? fruitItems : [],
-      typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.map(f => { const fLabel = f.subOptions ? (f.label + ' ' + f.subOptions[0].label) : f.label; return { id:f.id, name:(f.comboTitle ? (f.comboTitle + ' ' + fLabel) : fLabel), price:(f.subOptions ? f.subOptions[0].flashPrice : f.flashPrice), sold:(f.max===0 || !!f.soldOut), maxQty:f.max, tba:f.tbaOnly||null, comboPartner:f.comboPartner, comboTitle:f.comboTitle, rawLabel:fLabel, contactOnly:f.contactOnly, contactPhone:f.contactPhone, soldOut:f.soldOut, section:f.section, varietyGroup:f.varietyGroup, subOptions:f.subOptions }; }) : [],
+      typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.map(f => { const fLabel = f.subOptions ? (f.label + ' ' + f.subOptions[0].label) : f.label; return { id:f.id, name:(f.comboTitle ? (f.comboTitle + ' ' + fLabel) : fLabel), price:(f.subOptions ? f.subOptions[0].flashPrice : f.flashPrice), sold:(f.max===0 || !!f.soldOut), maxQty:f.max, tba:f.tbaOnly||null, comboPartner:f.comboPartner, comboTitle:f.comboTitle, rawLabel:fLabel, orig:(f.origPrice||null), colBadge:(f.colBadge||null), contactOnly:f.contactOnly, contactPhone:f.contactPhone, soldOut:f.soldOut, section:f.section, varietyGroup:f.varietyGroup, subOptions:f.subOptions }; }) : [],
     ];
     for (const pool of pools) {
       const found = pool.find(x => x.id === id);
       if (found) return found;
     }
     return null;
+  }
+
+  // 오늘의특가 원가(취소선). 제철특가 콤보 카드와 같은 표기를 쓴다.
+  // orig 값이 있는 상품에만 붙으므로 나머지 카드는 렌더가 그대로다.
+  function todayColBadge(it) {
+    const t = it && it.colBadge;
+    if (!t) return '';
+    return '<span style="display:inline-block;background:#c1121f;color:#fff;font-size:9.5px;font-weight:900;border-radius:100px;padding:2px 7px;white-space:nowrap;letter-spacing:-0.2px;">' + t + '</span>';
+  }
+
+  function todayOrigSpan(it) {
+    const o = it && (it.orig || it.origPrice);
+    if (!o) return '';
+    return '<span style="font-size:11px;font-weight:800;color:#9a9a9a;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#c1121f;white-space:nowrap;">' + o.toLocaleString() + '원</span>';
   }
 
   window.renderTodaySpecialBody = function(){
@@ -6302,14 +6322,14 @@ setInterval(updateFloatCart, 500);
             const pCat = findCatalogItem(activeCat.comboPartner);
             bodyHtml = `<div style="display:flex;gap:8px;">
                 <div onclick="openProductDetail('${activeFi.id}')" style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;cursor:pointer;">
-                  <div style="font-size:11px;color:#666;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${activeCat.rawLabel||activeCat.name}</div>
+                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${activeCat.rawLabel||activeCat.name}</span>${todayColBadge(activeCat)}${todayOrigSpan(activeCat)}</div>
                   <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;">
                     <span style="font-size:12.5px;font-weight:900;color:#c1121f;white-space:nowrap;">${activeCat.price.toLocaleString()}원</span>
                     <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${activeFi.id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;">+ 담기</button>
                   </div>
                 </div>
                 ${pCat ? `<div onclick="openProductDetail('${activeCat.comboPartner}')" style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;cursor:pointer;">
-                  <div style="font-size:11px;color:#666;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.rawLabel||pCat.name}</div>
+                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.rawLabel||pCat.name}</span>${todayColBadge(pCat)}${todayOrigSpan(pCat)}</div>
                   <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;">
                     <span style="font-size:12.5px;font-weight:900;color:#c1121f;white-space:nowrap;">${pCat.price.toLocaleString()}원</span>
                     <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${activeCat.comboPartner}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;">+ 담기</button>
@@ -6354,11 +6374,11 @@ setInterval(updateFloatCart, 500);
               <div style="font-size:12.5px;font-weight:800;color:#1a0f00;margin-bottom:8px;">${cat.comboTitle||cleanName}</div>
               <div style="display:flex;gap:8px;">
                 <div onclick="openProductDetail('${id}')" style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;cursor:pointer;${cat.soldOut?'opacity:0.5;':''}">
-                  <div style="font-size:11px;color:#666;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cat.rawLabel||cleanName}</div>
+                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cat.rawLabel||cleanName}</span>${todayColBadge(cat)}${todayOrigSpan(cat)}</div>
                   ${cat.soldOut ? mainSoldHtml : mainLiveHtml}
                 </div>
                 <div onclick="openProductDetail('${cat.comboPartner}')" style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;cursor:pointer;${pCat.soldOut?'opacity:0.5;':''}">
-                  <div style="font-size:11px;color:#666;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.rawLabel||pCat.name}</div>
+                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.rawLabel||pCat.name}</span>${todayColBadge(pCat)}${todayOrigSpan(pCat)}</div>
                   ${pCat.soldOut ? partnerSoldHtml : partnerLiveHtml}
                 </div>
               </div>
@@ -6382,7 +6402,7 @@ setInterval(updateFloatCart, 500);
         return peachBadgeHtml + `
           <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid #f0ede8;opacity:0.5;">
             <div style="flex:1;min-width:0;">
-              <div style="font-size:12.5px;font-weight:700;color:#1a0f00;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cleanName}</div>
+              <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;"><span style="font-size:12.5px;font-weight:700;color:#1a0f00;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cleanName}</span>${todayColBadge(cat)}${todayOrigSpan(cat)}</div>
               <div style="font-size:12px;font-weight:800;color:#999;">품절</div>
             </div>
             <button disabled style="flex-shrink:0;background:#eee;color:#aaa;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:not-allowed;">품절</button>
@@ -6391,7 +6411,7 @@ setInterval(updateFloatCart, 500);
       return peachBadgeHtml + `
         <div onclick="openProductDetail('${id}')" style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid #f0ede8;cursor:pointer;">
           <div style="flex:1;min-width:0;">
-            <div style="font-size:12.5px;font-weight:700;color:#1a0f00;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cleanName}</div>
+            <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;"><span style="font-size:12.5px;font-weight:700;color:#1a0f00;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cleanName}</span>${todayColBadge(cat)}${todayOrigSpan(cat)}</div>
             <div style="font-size:13.5px;font-weight:900;color:#c1121f;">${cat.price.toLocaleString()}원</div>
           </div>
           <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:pointer;min-width:64px;">+ 담기</button>
