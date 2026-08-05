@@ -2055,9 +2055,11 @@ function applySavedAddress(a, prof, phone) {
     pw:   (prof && prof.entry) || '',
     isReorder: true
   };
-  // 주문 저장 성공 후 order_stops 연결에 사용 (2차 작업에서 붙임)
-  window._selectedStopId = a.stop_id || null;
-  window._selectedUnit   = { dong_no: a.dong_no || null, ho_no: a.ho_no || null };
+  // 주문 저장 성공 후 order_stops 연결 / 배송지 확정(confirmed_at) 승격에 사용
+  window._selectedStopId    = a.stop_id || null;
+  window._selectedUnit      = { dong_no: a.dong_no || null, ho_no: a.ho_no || null };
+  window._selectedAddressId = a.address_id || null;
+  window._selectedDisplay   = a.display_address || null;
   const sub = document.getElementById('app-sub');
   if (sub) sub.textContent = (window._cocoUser.name || '') + '님 · ' + window._cocoUser.addr + ' ' + window._cocoUser.dong;
 }
@@ -3551,6 +3553,30 @@ function tgNotify(msg) {
   } catch (e) { console.error('[tgNotify]', msg, e); }
 }
 
+// 주문 저장 성공 후 부가 연결. 고객이 저장 배송지를 직접 고른 경우에만 실행한다.
+// 반드시 주문 저장이 끝난 뒤 호출하며, await 하지 않는다. 실패해도 주문 접수에는 영향이 없다.
+// fallback(customers.address 원본) 이나 새 주소 직접입력은 _selectedStopId 가 없어 호출되지 않는다.
+function linkOrderStopAfterSave(orderId, phone) {
+  try {
+    if (!orderId || !window._selectedStopId) return;
+    var u = window._selectedUnit || {};
+    callRpc('coco_link_order_stop', {
+      p_order_id: orderId, p_stop_id: window._selectedStopId,
+      p_dong: u.dong_no || null, p_ho: u.ho_no || null
+    }).then(function(r){
+      if (!r || !r.ok) tgNotify('[계산기] order_stops 연결 실패 / order=' + orderId + ' / ' + ((r && r.reason) || 'no_response'));
+    }).catch(function(){});
+    callRpc('coco_confirm_customer_address', {
+      p_phone: phone, p_address_id: window._selectedAddressId || null,
+      p_stop_id: window._selectedStopId,
+      p_dong: u.dong_no || null, p_ho: u.ho_no || null,
+      p_display: window._selectedDisplay || null
+    }).then(function(r){
+      if (!r || !r.ok) tgNotify('[계산기] 배송지 확정 실패 / ' + phone + ' / ' + ((r && r.reason) || 'no_response'));
+    }).catch(function(){});
+  } catch (e) { console.error('[linkOrderStopAfterSave]', e); }
+}
+
 // 회원 여부 조회. 기존 4곳의 동일한 직접조회를 이 함수 하나로 모은다.
 // 조회 실패도 기존과 동일하게 false 로 떨어진다(현행 동작 보존).
 async function fetchIsMember(phone) {
@@ -3705,6 +3731,7 @@ async function orderDirect() {
           body: JSON.stringify(row)
         }).catch(e => console.warn('order_item 저장 실패:', e));
       }
+      linkOrderStopAfterSave(savedOrder.id, (u.phone || '').replace(/\D/g,''));
     }
   } catch(e) { console.warn('Supabase 저장 실패', e); }
 
@@ -5398,17 +5425,16 @@ async function loadCashReceiptPhonePref() {
   try {
     const phone = (document.getElementById('inp-phone').value || '').replace(/\D/g, '');
     if (phone.length < 10) return;
-    const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + phone + '&select=cash_receipt_type,cash_receipt_number,cash_receipt_phone&limit=1', {
-      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-    });
-    if (!res.ok) return;
-    const data = await res.json();
-    const savedNumber = data && data[0] && (data[0].cash_receipt_number || data[0].cash_receipt_phone);
-    if (Array.isArray(data) && data.length && savedNumber) {
+    const j = await callRpc('coco_customer_profile', { p_phone: phone });
+    if (j === null) { tgNotify('[계산기] coco_customer_profile(현금영수증) 조회 실패: ' + phone); return; }
+    if (!j || !j.found) return;
+    // 기존 폴백 순서 유지: cash_receipt_number 우선, 없으면 옛 컬럼 cash_receipt_phone
+    const savedNumber = j.cash_receipt_number || j.cash_receipt_phone;
+    if (savedNumber) {
       const cb = document.getElementById('inp-cash-receipt');
       const wrap = document.getElementById('cr-phone-wrap');
       const inp = document.getElementById('inp-cash-receipt-phone');
-      const isBusiness = data[0].cash_receipt_type === 'business';
+      const isBusiness = j.cash_receipt_type === 'business';
       if (cb) cb.checked = true;
       if (wrap) wrap.style.display = 'block';
       if (inp) inp.value = savedNumber;
@@ -5437,25 +5463,23 @@ async function checkMembership() {
 async function saveCashReceiptPhonePref(mainPhone, crNumber, name, address, entry, payMethod, crType) {
   if (!mainPhone) return;
   try {
-    const body = { phone: mainPhone, is_member: true };
-    if (name) body.name = name;
-    if (address) body.address = address;
-    if (entry) body.entry = entry;
-    if (crNumber) {
-      body.cash_receipt_number = crNumber;
-      body.cash_receipt_type = crType || 'personal';
-      if ((crType || 'personal') === 'personal') body.cash_receipt_phone = crNumber; // 기존 개인용 필드도 계속 맞춰줌(하위호환)
-    }
-    if (payMethod) body.default_payment_method = payMethod;
-    await fetch(SB_URL + '/rest/v1/customers?on_conflict=phone', {
-      method: 'POST',
-      headers: {
-        apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY,
-        'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=minimal'
-      },
-      body: JSON.stringify(body)
+    // RPC 내부에서 is_member=true 설정, 빈 값은 기존 데이터 보존, 개인 현금영수증일 때만
+    // 레거시 cash_receipt_phone 동기화까지 처리한다(기존 동작과 동일).
+    const r = await callRpc('coco_save_customer_pref', {
+      p_phone: mainPhone,
+      p_name: name || null,
+      p_address: address || null,
+      p_entry: entry || null,
+      p_cash_receipt_number: crNumber || null,
+      p_cash_receipt_type: crNumber ? (crType || 'personal') : null,
+      p_default_payment_method: payMethod || null
     });
-  } catch (e) {}
+    if (!r || !r.ok) {
+      tgNotify('[계산기] 고객정보 저장 실패: ' + mainPhone + ' / ' + ((r && r.reason) || 'no_response'));
+    }
+  } catch (e) {
+    tgNotify('[계산기] 고객정보 저장 예외: ' + mainPhone);
+  }
 }
 
 // ── 결제수단 선택 ──
@@ -6023,6 +6047,7 @@ window.orderDirect = async function() {
           body: JSON.stringify(row)
         }).catch(function(e){ console.warn('item 저장 실패',e); });
       }
+      linkOrderStopAfterSave(savedOrder.id, phone);
     }
   } catch(e) {
     console.error('Supabase 실패', e);
