@@ -563,6 +563,12 @@
   .pcard-row .price-slot{min-width:66px;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;line-height:1.15;text-align:right;}
   .pcard-row .price-slot .porig{font-size:10px;color:#999;text-decoration:line-through;}
   .pcard-row .step-slot{width:86px;flex-shrink:0;display:flex;justify-content:flex-end;align-items:center;}
+  /* ── 배송지 선택 화면 ── */
+  .addr-opt{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid var(--border);border-radius:12px;padding:14px 14px;margin-bottom:9px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .addr-opt:has(input:checked){border-color:var(--green);background:#f2f9f4;}
+  .addr-opt input{width:20px;height:20px;flex-shrink:0;accent-color:var(--green);}
+  .addr-opt-txt{font-size:0.94rem;font-weight:800;color:var(--text);line-height:1.4;}
+  .addr-opt-new .addr-opt-txt{color:var(--green);}
   /* 상품명이 2줄로도 안 들어가는 카드만 자동으로 이 레이아웃이 됨(applyStackedLayout이 판정).
      이름이 카드 폭을 전부 쓰고, 가격·스테퍼가 아랫줄 오른쪽으로 내려감.
      prow-mid를 calc(100% - 35px)로 두는 이유: 썸네일(25px)+gap(10px)과 같은 줄에 유지하기 위함.
@@ -947,6 +953,25 @@
     <input class="reorder-input" type="tel" id="inp-reorder-phone" placeholder="010-0000-0000" maxlength="13" oninput="formatReorderPhone(this)">
     <button class="nbtn" onclick="goReorder()" style="width:100%">🛒 주문하러 가기</button>
     <div class="blink" onclick="goScreen('s1')">← 처음으로</div>
+  </div>
+</div>
+
+<!-- ── 배송지 선택 (저장된 배송지 재사용) ── -->
+<div class="screen" id="s-addr">
+  <div style="background:var(--bg);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;">
+    <div style="background:var(--green);color:white;padding:14px 16px 12px;display:flex;align-items:center;gap:8px;">
+      <button onclick="goScreen('s-return')" style="background:rgba(255,255,255,0.18);color:#fff;border:none;border-radius:8px;padding:7px 11px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Pretendard','Noto Sans KR',sans-serif;">← 이전</button>
+      <div style="font-size:1.02rem;font-weight:900;">배송지를 선택해주세요</div>
+    </div>
+    <div style="padding:16px;flex:1;">
+      <div style="font-size:0.84rem;color:#666;font-weight:700;margin-bottom:12px;line-height:1.5;">
+        이번 주문을 받으실 곳을 골라주세요.<br>다른 곳으로 받으시려면 아래 <b>＋ 다른 주소로 배송</b>을 눌러주세요.
+      </div>
+      <div id="addr-choice-list"></div>
+    </div>
+    <div style="position:sticky;bottom:0;background:#fff;border-top:2px solid var(--border);padding:12px 16px calc(12px + env(safe-area-inset-bottom));">
+      <button onclick="confirmAddrChoice()" style="width:100%;background:var(--green);color:#fff;border:none;border-radius:12px;padding:15px;font-size:1rem;font-weight:900;cursor:pointer;font-family:'Pretendard','Noto Sans KR',sans-serif;">이 주소로 배송</button>
+    </div>
   </div>
 </div>
 
@@ -1686,16 +1711,15 @@ async function goReorder() {
 
   // 1순위: customers 테이블 직접 조회
   try {
-    const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + inputClean + '&select=name,address,entry,default_payment_method,cash_receipt_type,cash_receipt_number&limit=1', {
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (data.length && data[0].name) {
-        found = { name: data[0].name, address: data[0].address || null, entry: data[0].entry || null };
+    const j = await callRpc('coco_customer_profile', { p_phone: inputClean });
+    if (j === null) tgNotify('[계산기] coco_customer_profile 조회 실패: ' + inputClean);
+    if (j && j.found) {
+      // 기존 조건 유지: 이름이 비어 있으면 found 를 만들지 않는다(이름 없는 고객 처리 동일)
+      if (j.name) {
+        found = { name: j.name, address: j.address || null, entry: j.entry || null };
         // 기본결제수단/현금영수증 정보도 같이 기억해뒀다가, 주문서 진입 시 자동선택에 사용
-        window._customerPrefs = { defaultPayMethod: data[0].default_payment_method, crType: data[0].cash_receipt_type, crNumber: data[0].cash_receipt_number };
-        if (data[0].default_payment_method && typeof selectPayMethod === 'function') selectPayMethod(data[0].default_payment_method);
+        window._customerPrefs = { defaultPayMethod: j.default_payment_method, crType: j.cash_receipt_type, crNumber: j.cash_receipt_number };
+        if (j.default_payment_method && typeof selectPayMethod === 'function') selectPayMethod(j.default_payment_method);
       }
     }
   } catch(e) {}
@@ -1730,6 +1754,23 @@ async function goReorder() {
   }
 
   if (btn) { btn.textContent = '🛒 주문하러 가기'; btn.disabled = false; }
+
+  // ── 저장된 배송지 목록 조회 (1개여도 선택 화면을 띄운다) ──
+  // 목적: 이번 주문을 어디로 받을지 고객이 매번 직접 결정하게 한다.
+  // 조회 실패/없음이면 아래 기존 분기로 그대로 떨어지므로 기존 동작이 보존된다.
+  try {
+    const ar = await callRpc('coco_customer_addresses', { p_phone: inputClean });
+    if (ar === null) tgNotify('[계산기] coco_customer_addresses 조회 실패: ' + inputClean);
+    const savedList = (ar && Array.isArray(ar.addresses)) ? ar.addresses : [];
+    if (savedList.length > 0) {
+      window._addrChoices = savedList;
+      window._addrProfile = { name: (found && found.name) || '', entry: (found && found.entry) || '' };
+      window._addrPhone   = inputClean;
+      renderAddrChoice();
+      goScreen('s-addr');
+      return;
+    }
+  } catch (e) { /* 조회 실패는 무시하고 기존 흐름으로 */ }
 
   const hasFullInfo = found && found.name && found.address;
 
@@ -1955,6 +1996,70 @@ function pickType(t) {
     else document.getElementById('ab-goyang-apt').classList.add('show');
     if (pwWrap) pwWrap.style.display = isGoyang ? 'none' : 'block';
   }
+}
+
+// ── 배송지 선택 (저장된 배송지 재사용) ──────────────────────────────
+// 저장 배송지를 고르면 stop_id/dong_no/ho_no 를 그대로 재사용한다.
+// 건물 유형(type)은 판정하지도 복원하지도 않는다. 현관정보는 customers.entry 를 그대로 쓴다.
+function renderAddrChoice() {
+  const list = window._addrChoices || [];
+  const box = document.getElementById('addr-choice-list');
+  if (!box) return;
+  let html = '';
+  list.forEach(function(a, i) {
+    const cnt = (a.use_count && a.use_count > 0) ? ('<span style="font-size:0.78rem;color:#888;font-weight:700;margin-left:6px;">' + a.use_count + '회</span>') : '';
+    html += '<label class="addr-opt" data-idx="' + i + '">'
+         +    '<input type="radio" name="addr-pick" value="' + i + '"' + (i === 0 ? ' checked' : '') + '>'
+         +    '<span class="addr-opt-txt">' + (a.display_address || '') + cnt + '</span>'
+         +  '</label>';
+  });
+  html += '<label class="addr-opt addr-opt-new" data-idx="new">'
+       +    '<input type="radio" name="addr-pick" value="new">'
+       +    '<span class="addr-opt-txt">＋ 다른 주소로 배송</span>'
+       +  '</label>';
+  box.innerHTML = html;
+}
+
+function confirmAddrChoice() {
+  const sel = document.querySelector('input[name="addr-pick"]:checked');
+  if (!sel) { showToast('배송지를 선택해주세요'); return; }
+  const phone = window._addrPhone || '';
+  const prof  = window._addrProfile || { name: '', entry: '' };
+
+  if (sel.value === 'new') {
+    // 기존 주소 입력 화면으로. 이름/전화번호만 채워서 재입력 부담을 줄인다.
+    window._selectedStopId = null;
+    window._cocoUser = { name: prof.name || '', nick: '', phone: phone, addr: '', dong: '', type: 'apt', pw: '', isReorder: true, isUnknown: true };
+    const phoneEl = document.getElementById('inp-phone');
+    if (phoneEl) phoneEl.value = formatPhone11(phone);
+    const nameEl = document.getElementById('inp-name');
+    if (nameEl && prof.name) nameEl.value = prof.name;
+    goScreen('s2');
+    return;
+  }
+
+  const a = (window._addrChoices || [])[parseInt(sel.value, 10)];
+  if (!a) { showToast('배송지를 선택해주세요'); return; }
+  applySavedAddress(a, prof, phone);
+  goScreen('s4');
+}
+
+function applySavedAddress(a, prof, phone) {
+  // addr = 단지/건물(배송포인트), dong = 동·호 상세. orders.customer_address 는 기존대로 addr + ' ' + dong 으로 조립된다.
+  window._cocoUser = {
+    name: (prof && prof.name) || '',
+    nick: '',
+    phone: phone,
+    addr: a.stop_name || a.display_address || '',
+    dong: a.unit_text || '',
+    pw:   (prof && prof.entry) || '',
+    isReorder: true
+  };
+  // 주문 저장 성공 후 order_stops 연결에 사용 (2차 작업에서 붙임)
+  window._selectedStopId = a.stop_id || null;
+  window._selectedUnit   = { dong_no: a.dong_no || null, ho_no: a.ho_no || null };
+  const sub = document.getElementById('app-sub');
+  if (sub) sub.textContent = (window._cocoUser.name || '') + '님 · ' + window._cocoUser.addr + ' ' + window._cocoUser.dong;
 }
 
 function goS3() {
@@ -3101,13 +3206,7 @@ async function changeQty(id, delta, price, max) {
         showToast('🔍 회원 확인 중...');
         let isMem = false;
         try {
-          const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + phone + '&select=is_member&limit=1', {
-            headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-          });
-          if (res.ok) {
-            const data = await res.json();
-            isMem = !!(Array.isArray(data) && data.length && data[0].is_member);
-          }
+          isMem = await fetchIsMember(phone);
         } catch (e) {}
         window._isMember = isMem;
         const phoneInput = document.getElementById('inp-phone');
@@ -3255,13 +3354,7 @@ async function tryAddPromo30k(id) {
     showToast('🔍 회원 확인 중...');
     let isMem = false;
     try {
-      const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + phone + '&select=is_member&limit=1', {
-        headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        isMem = !!(Array.isArray(data) && data.length && data[0].is_member);
-      }
+      isMem = await fetchIsMember(phone);
     } catch (e) {}
     window._isMember = isMem;
     // 나중에 주문서 작성할 때 다시 안 적어도 되게 연락처 칸에 미리 채워둠
@@ -3431,6 +3524,40 @@ function checkEggSoldout() {
 // ══ 설정 ══════════════════════════════════
 const TG_TOKEN = '8595937818:AAGQrGCozJ-mptImZT7PqfgnlQ-_qxK1quA';
 const TG_CHAT  = '8512575461';
+
+// ── RPC 전환 공통 헬퍼 (customers 직접 조회 → RPC) ─────────────────────
+// 목적: 브라우저의 customers 테이블 직접 SELECT 제거. 반환값/동작은 기존과 동일하게 유지한다.
+// 실패 시 null 을 돌려주고, 각 호출부는 기존과 똑같은 폴백(회원 아님 / 다음 순위 조회)으로 떨어진다.
+async function callRpc(fn, args) {
+  try {
+    const res = await fetch(SB_URL + '/rest/v1/rpc/' + fn, {
+      method: 'POST',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(args || {})
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (e) { return null; }
+}
+
+// 기존 TG_TOKEN/TG_CHAT 재사용. RPC 전환에서 생기는 오류 알림 전용.
+// 실패는 전부 삼킨다. 주문 흐름에 어떤 영향도 주지 않는다.
+function tgNotify(msg) {
+  try {
+    fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TG_CHAT, text: msg })
+    }).catch(function(){});
+  } catch (e) { console.error('[tgNotify]', msg, e); }
+}
+
+// 회원 여부 조회. 기존 4곳의 동일한 직접조회를 이 함수 하나로 모은다.
+// 조회 실패도 기존과 동일하게 false 로 떨어진다(현행 동작 보존).
+async function fetchIsMember(phone) {
+  const j = await callRpc('coco_is_member', { p_phone: phone });
+  if (j === null) { tgNotify('[계산기] coco_is_member 조회 실패: ' + phone); return false; }
+  return !!(j && j.is_member);
+}
 const SB_URL   = 'https://yylbsolexrzfyfvpgnow.supabase.co';
 const SB_KEY   = 'sb_publishable_nayRjlhkekbf4-BB_yJk5g_DtEgKZ6g';
 // 페이지 로드마다 고유 주문 키 생성 (중복 방지)
@@ -4905,9 +5032,9 @@ const MEMBER_PRICES = {
 
 const FLASH_ITEMS = [
   // ── 🍑 복숭아 특가 ──
-  { id:'f_hwangdo_danhojang', label:'황도(단호장) 4kg(14브릭스)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'단호장', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고' },
+  { id:'f_hwangdo_danhojang', label:'황도(단호장) 2.5kg(14브릭스)', max:9999, flashPrice:28900, section:'🍑 복숭아 특가', subLabel:'단호장', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고' },
   { id:'f_baekdo_abu', label:'아부백도 4kg', colBadge:'입고기념특가(선착순)', max:9999, flashPrice:34900, origPrice:38900, section:'🍑 복숭아 특가', subLabel:'백도(아부·경봉)', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_gyeongbong' },
-  { id:'f_baekdo_gyeongbong', label:'경봉(10수 이내) 4kg', colBadge:'시즌마감 특가', max:9999, flashPrice:30900, origPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
+  { id:'f_baekdo_gyeongbong', label:'경봉(10수 이내) 4kg', colBadge:'시즌마감 특가', max:9999, flashPrice:32900, origPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
   // ── 🍇 포도 특가 ──
   { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:7900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3', varietyGroup:'캠벨' },
   { id:'ts_grape_campbell_3', label:'(특) 4송이', max:9999, flashPrice:14900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도', varietyGroup:'캠벨' },
@@ -4998,13 +5125,7 @@ async function flashAdj(id, delta) {
         showToast('🔍 회원 확인 중...');
         let isMem = false;
         try {
-          const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + phone + '&select=is_member&limit=1', {
-            headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-          });
-          if (res.ok) {
-            const data = await res.json();
-            isMem = !!(Array.isArray(data) && data.length && data[0].is_member);
-          }
+          isMem = await fetchIsMember(phone);
         } catch (e) {}
         window._isMember = isMem;
         const phoneInput = document.getElementById('inp-phone');
@@ -5303,12 +5424,7 @@ async function checkMembership() {
   try {
     const phone = (document.getElementById('inp-phone').value || '').replace(/\D/g, '');
     if (phone.length < 10) { window._isMember = false; updateTotal(); return; }
-    const res = await fetch(SB_URL + '/rest/v1/customers?phone=eq.' + phone + '&select=is_member&limit=1', {
-      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-    });
-    if (!res.ok) { window._isMember = false; return; }
-    const data = await res.json();
-    window._isMember = !!(Array.isArray(data) && data.length && data[0].is_member);
+    window._isMember = await fetchIsMember(phone);
   } catch (e) {
     window._isMember = false;
   }
