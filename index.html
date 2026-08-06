@@ -2034,6 +2034,13 @@ function onPhoneInputForAddr(raw) {
   }
   if (phone === _s3AddrPhone) return;
   _s3AddrPhone = phone;
+  // 저장 배송지를 고르면 주소 입력 UI가 통째로 숨겨져 현관비밀번호 입력칸도 사라진다.
+  // 그때 쓸 현관정보를 여기서 미리 확보해 둔다(customers.entry).
+  // s-return 경로의 _addrProfile 은 orders.door_password 폴백까지 담고 있으므로 덮어쓰지 않는다.
+  window._s3Entry = '';
+  callRpc('coco_customer_profile', { p_phone: phone }).then(function (j) {
+    if (j && j.found && phone === _s3AddrPhone) window._s3Entry = j.entry || '';
+  }).catch(function () {});
   callRpc('coco_customer_addresses', { p_phone: phone }).then(function (ar) {
     if (ar === null) { tgNotify('[계산기] coco_customer_addresses 조회 실패: ' + phone); return; }
     var list = (ar && Array.isArray(ar.addresses)) ? ar.addresses : [];
@@ -4491,7 +4498,9 @@ function enterDelivery() {
     window._cocoUser = {
       name: name, nick: nick, phone: phone,
       dong: window._s3PickedUnit || '',
-      pw:   (document.getElementById('s3-inp-pw')?.value || '').trim(),
+      pw:   (document.getElementById('s3-inp-pw')?.value || '').trim()
+            || window._s3Entry
+            || (window._addrProfile && window._addrProfile.entry) || '',
       addr: window._s3PickedAddr || '',
       region: region || ST.region || '',
       type: ST.type || 'apt'
