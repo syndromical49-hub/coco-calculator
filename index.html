@@ -1193,6 +1193,7 @@
           <option value="ilsandong">🏙️ 일산동구</option>
           <option value="ilsanseo">🏢 일산서구</option>
           <option value="deogyang">🏠 덕양구</option>
+          <option value="parcel">📦 택배 (배송권역 밖)</option>
         </select>
       </div>
       <!-- 주거유형 -->
@@ -1233,6 +1234,14 @@
         <input class="fi" id="s3-inp-officetel-pw" placeholder="예) #1234* (없으면 '없음' 입력)" oninput="checkFormReady()" maxlength="20">
       </div>
       <!-- 빌라 -->
+      <!-- 택배(권역 외): 지역구·유형 선택 없이 전국 주소를 자유 입력 -->
+      <div class="ablock" id="s3-ab-parcel">
+        <div style="background:#fff8e1;color:#7a5c00;font-size:0.78rem;font-weight:700;padding:10px 12px;border-radius:8px;margin-bottom:8px;line-height:1.5;">
+          📦 고양·파주 배송권역 밖이라 <b>택배로 발송</b>됩니다.<br><b>익일배송(토요일 제외)</b>이며 배송비가 별도 안내됩니다.<br><b>품목에 따라 택배가 제한될 수 있으니 문의 후 주문해 주세요.</b>
+        </div>
+        <label class="fl">받는 주소 (전국)</label>
+        <input class="fi" id="s3-inp-parcel" placeholder="예) 인천 서구 마전동 1153-1, 1동 204호" oninput="checkFormReady()" maxlength="80">
+      </div>
       <div class="ablock" id="s3-ab-villa">
         <label class="fl">도로명 주소</label>
         <input class="fi" id="s3-inp-villa" placeholder="예) 운정로 123, 일산로 45" oninput="checkFormReady()" maxlength="40">
@@ -4335,6 +4344,15 @@ function onRegionChange(r) {
   document.getElementById('s3-pw-wrap').style.display = 'none';
 
   if (!r) { if (typeWrap) typeWrap.style.display = 'none'; return; }
+
+  // 택배(권역 외): 주거유형·지역구 선택 없이 전국 주소만 받는다.
+  if (r === 'parcel') {
+    if (typeWrap) typeWrap.style.display = 'none';
+    const pb = document.getElementById('s3-ab-parcel');
+    if (pb) pb.classList.add('show');
+    checkFormReady();
+    return;
+  }
   if (typeWrap) typeWrap.style.display = 'block';
 
   if (r !== 'unjeong') {
@@ -4431,6 +4449,9 @@ function checkFormReady() {
     const oa = (document.getElementById('s3-inp-officetel')?.value || '').trim();
     const op = (document.getElementById('s3-inp-officetel-pw')?.value || '').trim();
     addrOk = !!(oa && op);
+  } else if (region === 'parcel') {
+    // 택배: 전국 주소 한 줄만 필수. 동·호·현관비번은 받지 않는다.
+    addrOk = !!(document.getElementById('s3-inp-parcel')?.value || '').trim();
   } else if (region === 'unjeong') {
     const village = document.getElementById('s3-sel-village')?.value || '';
     const dong = (document.getElementById('s3-inp-dong')?.value || '').trim();
@@ -4488,6 +4509,24 @@ function enterDelivery() {
   }
 
   let addr = '', dong = '', pw = '';
+  // 택배(권역 외): [택배] 태그를 붙여 저장한다. 코코허브가 이 태그로 탭을 분리하고 최적경로에서 제외한다.
+  if (region === 'parcel') {
+    const pa = (document.getElementById('s3-inp-parcel')?.value || '').trim();
+    if (!pa) { showToast('받는 주소를 입력해주세요'); return; }
+    ST.addr = '[택배] ' + pa;
+    ST.region = 'parcel';
+    // 앞서 아파트/오피스텔을 골랐다가 택배로 바꾼 경우, 그때 입력한 현관비밀번호가
+    // door_password 로 딸려 들어가지 않도록 비운다.
+    ST.gaptPw = ''; ST.officetelPw = '';
+    window._cocoUser = {
+      name: name, nick: nick, phone: phone,
+      dong: '', pw: '', addr: '[택배] ' + pa, region: 'parcel', type: 'parcel'
+    };
+    localStorage.setItem('coco_user', JSON.stringify(window._cocoUser));
+    renderDeliveryScreen();
+    goScreen('s-delivery');
+    return;
+  }
   if (t === 'villa') {
     addr = (document.getElementById('s3-inp-villa')?.value || '').trim();
     pw   = (document.getElementById('s3-inp-villa-pw')?.value || '').trim();
