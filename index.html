@@ -4973,6 +4973,20 @@ function renderFlashSection() {
       itemsToRender = sectionMap[secName].filter(fi => !fi.varietyGroup || fi.varietyGroup === activeGroup);
     }
 
+    // 품종 탭으로 지금 화면에 안 그려지는 상품도 itemMeta 는 미리 등록해 둔다.
+    // 첫화면 오늘의특가에서 비활성 탭 상품(예: 샤인머스캣/거봉)을 담을 때 필요하다.
+    for (const fi of sectionMap[secName]) {
+      if (fi.comboChild || fi.tbaOnly) continue;
+      if (!itemMeta[fi.id]) {
+        itemMeta[fi.id] = { name: fi.comboTitle ? (fi.comboTitle + ' ' + fi.label) : fi.label, price: fi.flashPrice || 0 };
+      }
+      if (fi.subOptions) {
+        fi.subOptions.forEach(function(o){
+          if (!itemMeta[o.id]) itemMeta[o.id] = { name: (fi.comboTitle ? fi.comboTitle + ' ' : '') + fi.label + ' ' + o.label, price: o.flashPrice || 0 };
+        });
+      }
+    }
+
     const grid = document.createElement('div');
     grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;';
     wrap.appendChild(grid);
