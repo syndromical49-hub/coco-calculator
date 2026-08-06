@@ -2280,7 +2280,7 @@ const fruitItems = [
   { id:'ts_cherry_1kg', num:'🍒', name:'🍒 캐나다체리(9row-최대사이즈) 1kg', desc:'캐나다체리(9row-최대사이즈) 1kg', price:24900 },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
   { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'', orig:9800, price:8900 },
-  { id:'f_avocado', todaySpecial:false, num:'🥑', name:'🥑 아보카도 5개', desc:'아보카도 5개', price:5900 },
+  { id:'f_avocado', todaySpecial:false, num:'🥑', name:'🥑 아보카도 6개', desc:'아보카도 6개', price:4800, orig:5900, colBadge:'주말행사 · 선착순' },
   { id:'f54', num:'#54', name:'🍈 참외(소과·게르마늄) 1봉', desc:'성주 게르마늄 재배 참외 1봉 (소과)',             orig:null,  price:5000 },
   { id:'f55', num:'#55', name:'🍅 방울토마토 1팩',   desc:'',            orig:null,  price:4900  },
   { id:'v36', num:'36', name:'🍅 찰토마토 1봉',          desc:'달고 아삭한 찰토마토',  price:4000 },
@@ -5145,14 +5145,14 @@ function renderFlashSection() {
             '<div style="font-size:0.86rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
             '<a href="tel:' + phone + '" style="display:inline-block;margin-top:5px;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:6px 9px;font-size:0.78rem;font-weight:900;text-decoration:none;white-space:nowrap;">📞 ' + phone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3') + '</a>' +
           '</div>';
-        const soldColHtml = (name) =>
+        const soldColHtml = (name, tag) =>
           '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;position:relative;">' +
             '<div style="filter:blur(3px);pointer-events:none;user-select:none;">' +
               '<div style="font-size:0.86rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
               '<div style="margin-top:5px;font-size:0.9rem;font-weight:900;color:#999;">00,000원</div>' +
             '</div>' +
             '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">' +
-              '<span style="font-size:0.82rem;font-weight:900;color:#c1121f;background:rgba(255,255,255,0.9);padding:4px 10px;border-radius:8px;">품절</span>' +
+              '<span style="font-size:0.82rem;font-weight:900;color:#c1121f;background:rgba(255,255,255,0.9);padding:4px 10px;border-radius:8px;">' + (tag || '품절') + '</span>' +
             '</div>' +
           '</div>';
         const card = document.createElement('div');
@@ -5166,11 +5166,11 @@ function renderFlashSection() {
             : '<div class="flash-name" style="text-align:center;font-size:0.9rem;margin-bottom:1px;">' + comboLabel + '</div>') +
           '<div style="display:flex;align-items:flex-start;">' +
             (fi.soldOut
-              ? soldColHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label))
+              ? soldColHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label), fi.soldOut)
               : colHtml(fi.comboTitle ? fi.label : (fi.label.replace(comboLabel, '').trim() || fi.label), fi.flashPrice || meta.price, stepperHtmlMain, fi.nameTop, fi.origPrice || meta.orig, fi.colBadge)) +
             '<div style="width:1px;align-self:stretch;background:rgba(0,0,0,0.08);"></div>' +
             (pfi.soldOut
-              ? soldColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label))
+              ? soldColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.soldOut)
               : pfi.contactOnly
               ? contactColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.contactPhone)
               : pfi.subOptions
@@ -5237,18 +5237,19 @@ const MEMBER_PRICES = {
 
 const FLASH_ITEMS = [
   // ── 🍑 복숭아 특가 ──
-  { id:'f_hwangdo_danhojang_25', label:'2.5kg(14브릭스)', max:9999, flashPrice:28900, section:'🍑 복숭아 특가', subLabel:'단호장', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고', comboTitle:'황도(단호장)', comboPartner:'f_hwangdo_danhojang' },
+  { id:'f_hwangdo_danhojang_25', label:'2.5kg(14브릭스)', soldOut:'미입고', max:9999, flashPrice:28900, section:'🍑 복숭아 특가', subLabel:'단호장', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고', comboTitle:'황도(단호장)', comboPartner:'f_hwangdo_danhojang' },
   { id:'f_hwangdo_danhojang', label:'4kg(14브릭스)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'황도(단호장)' },
-  { id:'f_baekdo_abu', label:'아부백도 4kg', colBadge:'입고기념특가(선착순)', max:9999, flashPrice:36900, origPrice:38900, section:'🍑 복숭아 특가', subLabel:'백도(아부·경봉)', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_gyeongbong' },
+  { id:'f_baekdo_abu', label:'아부백도 4kg', colBadge:'입고 초특가행사', max:9999, flashPrice:31900, origPrice:38900, section:'🍑 복숭아 특가', subLabel:'백도(아부·경봉)', fullWidth:true, badge:'🔥 초특가 · 백도 · 선별 후 랜덤입고', comboTitle:'백도', comboPartner:'f_baekdo_gyeongbong' },
   { id:'f_baekdo_gyeongbong', label:'경봉(10수 이내) 4kg', colBadge:'시즌마감 특가', max:9999, flashPrice:32900, origPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
+  { id:'f_jungdo_yecheon', label:'예천중도(진한달콤-반말랑이) 2.5kg(12수)', max:9999, flashPrice:36900, section:'🍑 복숭아 특가', fullWidth:true },
   // ── 🍇 포도 특가 ──
   { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:7900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3', varietyGroup:'캠벨' },
   { id:'ts_grape_campbell_3', label:'(특) 4송이', max:9999, flashPrice:14900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도', varietyGroup:'캠벨' },
   { id:'ts_grape_campbell_3kg', label:'달콤 캠벨포도 3kg(9~10수) 1박스', max:9999, flashPrice:32900, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'캠벨' },
-  { id:'ts_grape_shine', label:'샤인머스캣 2kg(3수) 1박스', max:9999, flashPrice:22000, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'샤인머스캣' },
+  { id:'ts_grape_shine', label:'샤인머스캣 2kg(3수) 1박스', max:9999, flashPrice:19800, origPrice:22000, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'샤인머스캣', badge:'⚡ 입고행사 · 오늘 딱 하루' },
   { id:'ts_grape_geobong', label:'거봉 2kg(3수) 1박스', max:9999, flashPrice:21000, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'거봉' },
   // ── 🍉 수박,멜론 특가 ──
-  { id:'f_watermelon_jinan', label:'진안수박(특) 9kg', max:9999, flashPrice:25900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 당도선별' },
+  { id:'f_watermelon_jinan', label:'진안수박(특) 10kg', max:9999, flashPrice:25900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 당도선별' },
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew_25', fullWidth:true },
   { id:'f_melon_honeydew_25',   label:'허니듀',           max:9999, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
     subOptions: [
@@ -6569,7 +6570,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_watermelon_jinan', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'f_melon_honeydew_25', 'v21', 'ts_zucchini'];
+  const TODAY_SPECIAL_IDS = ['f_avocado', 'ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_watermelon_jinan', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'f_melon_honeydew_25', 'v21', 'ts_zucchini'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
@@ -6684,12 +6685,12 @@ setInterval(updateFloatCart, 500);
       if (cat.comboPartner) {
         const pCat = findCatalogItem(cat.comboPartner);
         if (pCat) {
-          const mainSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">품절</div>`;
+          const mainSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">${typeof cat.soldOut === 'string' ? cat.soldOut : '품절'}</div>`;
           const mainLiveHtml = `<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;">
                     <span style="font-size:12.5px;font-weight:900;color:#c1121f;white-space:nowrap;">${cat.price.toLocaleString()}원</span>
                     <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;">+ 담기</button>
                   </div>`;
-          const partnerSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">품절</div>`;
+          const partnerSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">${typeof pCat.soldOut === 'string' ? pCat.soldOut : '품절'}</div>`;
           const partnerLiveHtml = pCat.contactOnly
                     ? `<a href="tel:${pCat.contactPhone}" style="display:inline-block;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:5px 8px;font-size:10.5px;font-weight:900;text-decoration:none;white-space:nowrap;">📞 ${pCat.contactPhone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3')}</a>`
                     : `<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;">
