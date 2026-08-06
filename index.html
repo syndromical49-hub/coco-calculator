@@ -1168,6 +1168,21 @@
           <div id="reorder-result" style="margin-top:8px;font-size:0.78rem;color:rgba(255,209,102,0.7);min-height:18px;"></div>
         </div>
       </div>
+      <!-- ── 주문자 정보 (전화번호로 저장 배송지를 조회하므로 주소보다 먼저 받는다) ── -->
+      <div><label class="fl">이름</label><input class="fi" id="inp-name" placeholder="홍길동" maxlength="10" oninput="checkFormReady()"></div>
+      <div><label class="fl">닉네임 (선택)</label><input class="fi" id="inp-nick" placeholder="없으면 '없음' 입력" oninput="checkFormReady()" maxlength="15"></div>
+      <div><label class="fl">연락처</label><input class="fi" type="tel" id="inp-phone" placeholder="010-0000-0000" maxlength="13" oninput="checkFormReady();onPhoneInputForAddr(this.value);try{localStorage.setItem('ccb_phone',this.value)}catch(e){}" onblur="loadCashReceiptPhonePref();checkMembership()"></div>
+
+      <!-- ── 저장된 배송지 선택 (본인이 입력·확정한 주소만. 백필 주소는 노출하지 않음) ── -->
+      <div id="s3-addr-choice" style="display:none;">
+        <div style="height:1px;background:rgba(255,209,102,0.15);margin:8px 0;"></div>
+        <label class="fl">배송지를 확인해주세요</label>
+        <div id="s3-addr-list"></div>
+        <div style="height:1px;background:rgba(255,209,102,0.15);margin:8px 0;"></div>
+      </div>
+
+      <!-- ── 배송지 입력 (저장 배송지를 고르면 통째로 숨김) ── -->
+      <div id="s3-addr-input">
       <!-- ── 지역 선택 ── -->
 
       <div>
@@ -1234,11 +1249,8 @@
         <label class="fl">현관 비밀번호 <span style="font-size:0.65rem;opacity:0.55;">(없으면 '없음' 입력)</span></label>
         <input class="fi" id="s3-inp-pw" placeholder="예) #1234* 또는 없음" oninput="checkFormReady()" maxlength="20" oninput="checkFormReady()">
       </div>
-      <!-- ── 주문자 정보 ── -->
-      <div style="height:1px;background:rgba(255,209,102,0.15);margin:4px 0;"></div>
-      <div><label class="fl">이름</label><input class="fi" id="inp-name" placeholder="홍길동" maxlength="10" oninput="checkFormReady()"></div>
-      <div><label class="fl">닉네임 (선택)</label><input class="fi" id="inp-nick" placeholder="없으면 '없음' 입력" oninput="checkFormReady()" maxlength="15"></div>
-      <div><label class="fl">연락처</label><input class="fi" type="tel" id="inp-phone" placeholder="010-0000-0000" maxlength="13" oninput="checkFormReady();try{localStorage.setItem('ccb_phone',this.value)}catch(e){}" onblur="loadCashReceiptPhonePref();checkMembership()"></div>
+      </div><!-- /#s3-addr-input -->
+
       <div style="display:flex;align-items:center;gap:6px;margin:2px 0 6px 2px;">
         <input type="checkbox" id="inp-cash-receipt" style="width:16px;height:16px;" onchange="document.getElementById('cr-phone-wrap').style.display=this.checked?'block':'none';">
         <label for="inp-cash-receipt" style="font-size:0.8rem;color:#555;cursor:pointer;">현금영수증 발급 받기 (소득공제·지출증빙)</label>
@@ -2001,6 +2013,86 @@ function pickType(t) {
 // ── 배송지 선택 (저장된 배송지 재사용) ──────────────────────────────
 // 저장 배송지를 고르면 stop_id/dong_no/ho_no 를 그대로 재사용한다.
 // 건물 유형(type)은 판정하지도 복원하지도 않는다. 현관정보는 customers.entry 를 그대로 쓴다.
+// ── s3 주문정보 화면의 저장 배송지 선택 ─────────────────────────────
+// 전화번호 11자리가 채워지면 그 번호로 확정된 배송지만 조회해 보여준다.
+// 백필 주소는 RPC(coco_customer_addresses)가 이미 걸러낸다.
+var _s3AddrPhone = '';
+function onPhoneInputForAddr(raw) {
+  var phone = String(raw || '').replace(/\D/g, '');
+  if (phone.length < 11) {
+    if (phone.length < 10 && _s3AddrPhone) { _s3AddrPhone = ''; hideS3AddrChoice(); }
+    return;
+  }
+  if (phone === _s3AddrPhone) return;
+  _s3AddrPhone = phone;
+  callRpc('coco_customer_addresses', { p_phone: phone }).then(function (ar) {
+    if (ar === null) { tgNotify('[계산기] coco_customer_addresses 조회 실패: ' + phone); return; }
+    var list = (ar && Array.isArray(ar.addresses)) ? ar.addresses : [];
+    if (!list.length) { hideS3AddrChoice(); return; }
+    window._addrChoices = list;
+    window._addrPhone   = phone;
+    renderS3AddrChoice(list);
+  }).catch(function () {});
+}
+
+function hideS3AddrChoice() {
+  var box = document.getElementById('s3-addr-choice');
+  var inp = document.getElementById('s3-addr-input');
+  if (box) box.style.display = 'none';
+  if (inp) inp.style.display = '';
+  clearS3Selection();
+}
+
+function clearS3Selection() {
+  window._selectedStopId    = null;
+  window._selectedUnit      = null;
+  window._selectedAddressId = null;
+  window._selectedDisplay   = null;
+  window._s3PickedSaved     = false;
+}
+
+function renderS3AddrChoice(list) {
+  var box  = document.getElementById('s3-addr-choice');
+  var wrap = document.getElementById('s3-addr-list');
+  if (!box || !wrap) return;
+  var html = '';
+  list.forEach(function (a, i) {
+    html += '<label class="addr-opt">'
+         +    '<input type="radio" name="s3-addr-pick" value="' + i + '" onchange="pickS3Addr(' + i + ')">'
+         +    '<span class="addr-opt-txt">' + (a.display_address || '') + '</span>'
+         +  '</label>';
+  });
+  html += '<label class="addr-opt addr-opt-new">'
+       +    '<input type="radio" name="s3-addr-pick" value="new" onchange="pickS3Addr(\'new\')">'
+       +    '<span class="addr-opt-txt">＋ 다른 주소로 배송할게요</span>'
+       +  '</label>';
+  wrap.innerHTML = html;
+  box.style.display = 'block';
+  var first = wrap.querySelector('input[name="s3-addr-pick"]');
+  if (first) { first.checked = true; pickS3Addr(0); }
+}
+
+function pickS3Addr(idx) {
+  var inp = document.getElementById('s3-addr-input');
+  if (idx === 'new') {
+    clearS3Selection();
+    if (inp) inp.style.display = '';
+    if (typeof checkFormReady === 'function') checkFormReady();
+    return;
+  }
+  var a = (window._addrChoices || [])[idx];
+  if (!a) return;
+  window._s3PickedSaved     = true;
+  window._s3PickedAddr      = a.stop_name || a.display_address || '';
+  window._s3PickedUnit      = a.unit_text || '';
+  window._selectedStopId    = a.stop_id || null;
+  window._selectedUnit      = { dong_no: a.dong_no || null, ho_no: a.ho_no || null };
+  window._selectedAddressId = a.address_id || null;
+  window._selectedDisplay   = a.display_address || null;
+  if (inp) inp.style.display = 'none';
+  if (typeof checkFormReady === 'function') checkFormReady();
+}
+
 function renderAddrChoice() {
   const list = window._addrChoices || [];
   const box = document.getElementById('addr-choice-list');
@@ -2171,7 +2263,7 @@ const fruitItems = [
   // (델몬트 허니스틱 6/10개, 강원도 양구수박(특품)은 🔥제철특가 탭에 이미 있어 여기서는 제거함 / 허니스틱 1개는 제철특가와 안겹쳐서 여기 유지)
   { id:'ts_cherry_1kg', num:'🍒', name:'🍒 캐나다체리(9row-최대사이즈) 1kg', desc:'캐나다체리(9row-최대사이즈) 1kg', price:24900 },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
-  { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'', orig:9800, price:7900 },
+  { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'', orig:9800, price:8900 },
   { id:'f_avocado', todaySpecial:false, num:'🥑', name:'🥑 아보카도 5개', desc:'아보카도 5개', price:5900 },
   { id:'f54', num:'#54', name:'🍈 참외(소과·게르마늄) 1봉', desc:'성주 게르마늄 재배 참외 1봉 (소과)',             orig:null,  price:5000 },
   { id:'f55', num:'#55', name:'🍅 방울토마토 1팩',   desc:'',            orig:null,  price:4900  },
@@ -4365,6 +4457,30 @@ function enterDelivery() {
   const t = ST.type || 'apt';
   const warn = document.getElementById('form-warn');
 
+  // 저장 배송지를 고른 경우: 주소 입력 검증을 건너뛰고 그 값으로 진행한다.
+  if (window._s3PickedSaved) {
+    if (!name || phone.replace(/\D/g,'').length < 10) {
+      if (warn) warn.style.display = 'block';
+      showToast('이름과 연락처를 입력해주세요');
+      return;
+    }
+    // 원본 경로와 동일한 형태로 _cocoUser 를 구성한다(키·순서·저장키 모두 동일).
+    // addr = 단지/건물, dong = 동·호. type 은 판정하지 않고 기존 기본값 'apt' 를 쓴다.
+    ST.addr = window._s3PickedAddr || '';
+    window._cocoUser = {
+      name: name, nick: nick, phone: phone,
+      dong: window._s3PickedUnit || '',
+      pw:   (document.getElementById('s3-inp-pw')?.value || '').trim(),
+      addr: window._s3PickedAddr || '',
+      region: region || ST.region || '',
+      type: ST.type || 'apt'
+    };
+    localStorage.setItem('coco_user', JSON.stringify(window._cocoUser));
+    renderDeliveryScreen();
+    goScreen('s-delivery');
+    return;
+  }
+
   if (!name || phone.replace(/\D/g,'').length < 10 || !region) {
     if (warn) warn.style.display = 'block';
     showToast('필수 항목을 모두 입력해주세요');
@@ -5066,8 +5182,8 @@ const FLASH_ITEMS = [
   { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:7900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3', varietyGroup:'캠벨' },
   { id:'ts_grape_campbell_3', label:'(특) 4송이', max:9999, flashPrice:14900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도', varietyGroup:'캠벨' },
   { id:'ts_grape_campbell_3kg', label:'달콤 캠벨포도 3kg(9~10수) 1박스', max:9999, flashPrice:32900, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'캠벨' },
-  { id:'ts_grape_shine', label:'샤인머스캣', section:'🍇 포도 특가', fullWidth:true, varietyGroup:'샤인머스캣', tbaOnly:'입고예정' },
-  { id:'ts_grape_geobong', label:'거봉', section:'🍇 포도 특가', fullWidth:true, varietyGroup:'거봉', tbaOnly:'입고예정' },
+  { id:'ts_grape_shine', label:'샤인머스캣 2kg(3수) 1박스', max:9999, flashPrice:22000, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'샤인머스캣' },
+  { id:'ts_grape_geobong', label:'거봉 2kg(3수) 1박스', max:9999, flashPrice:21000, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'거봉' },
   // ── 🍉 수박,멜론 특가 ──
   { id:'f_watermelon_jinan', label:'진안수박(특) 9kg', max:9999, flashPrice:25900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 당도선별' },
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew_25', fullWidth:true },
@@ -5089,9 +5205,8 @@ const FLASH_ITEMS = [
   { id:'f_delmonte_banana',  label:'델몬트 하이랜드 허니바나나 1송이',        max:9999, flashPrice:3000,                   section:'🍈 델몬트 특가', comboPartner:'f_delmonte_banana2', fullWidth:true },
   { id:'f_delmonte_banana2', label:'델몬트 하이랜드 허니바나나 2송이',        max:9999, flashPrice:5500,                   section:'🍈 델몬트 특가', comboChild:true },
   // ── 🥬 채소 (전부 하나로 묶어서 맨 아래) ──
-  { id:'gamjagoguma_set2', label:'감자고구마세트 (수미햇감자 1kg + 베니하루카(밤+호박) 꿀 고구마 2kg)', max:9999, flashPrice:9900, section:'🥬 채소', badge:'🔥 특가', fullWidth:true },
-  { id:'v_paprika_1', label:'🫑 스위트 미니 파프리카 1팩(250g)', max:9999, flashPrice:3500, section:'🥬 채소', badge:'🔥 완전 강추!' },
-  { id:'v_paprika_2', label:'🫑 스위트 미니 파프리카 2팩(250g×2)', max:9999, flashPrice:6000, section:'🥬 채소', badge:'🔥 완전 강추!' },
+  { id:'v_paprika_1', label:'🫑 스위트 미니 파프리카 1팩(250g)', max:9999, flashPrice:4000, section:'🥬 채소', badge:'🔥 완전 강추!' },
+  { id:'v_paprika_2', label:'🫑 스위트 미니 파프리카 2팩(250g×2)', max:9999, flashPrice:7000, section:'🥬 채소', badge:'🔥 완전 강추!' },
   { id:'v_corn_eol10', label:'🌽 찰옥수수(대학찰,미백,얼룩이,흑찰 랜덤) 10개', max:9999, flashPrice:5500, section:'🥬 채소' },
   { id:'v36b',           label:'찰토마토 2봉',                               max:9999, flashPrice:6000,  origPrice:8000,  section:'🥬 채소' },
 ];
@@ -6391,7 +6506,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_watermelon_jinan', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'gamjagoguma_set2', 'f_melon_honeydew_25', 'v21', 'ts_zucchini'];
+  const TODAY_SPECIAL_IDS = ['ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_watermelon_jinan', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'f_melon_honeydew_25', 'v21', 'ts_zucchini'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
@@ -6480,9 +6595,15 @@ setInterval(updateFloatCart, 500);
                 </div>` : ''}
               </div>`;
           } else if (activeCat) {
-            bodyHtml = `<div onclick="openProductDetail('${activeFi.id}')" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
-                <span style="font-size:13.5px;font-weight:900;color:#c1121f;">${activeCat.price.toLocaleString()}원</span>
-                <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${activeFi.id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:pointer;">+ 담기</button>
+            bodyHtml = `<div onclick="openProductDetail('${activeFi.id}')" style="cursor:pointer;">
+                <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;">
+                  <span style="font-size:12.5px;font-weight:700;color:#1a0f00;">${activeCat.rawLabel || activeCat.name || ''}</span>
+                  ${todayOrigSpan(activeCat)}
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-size:13.5px;font-weight:900;color:#c1121f;">${activeCat.price.toLocaleString()}원</span>
+                  <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${activeFi.id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:pointer;">+ 담기</button>
+                </div>
               </div>`;
           }
           return peachBadgeHtml + `
