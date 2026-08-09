@@ -2291,7 +2291,7 @@ const vegItems = [
   // ── 🔥 맨 위 강조 (빨간 테두리) ──
   { id:'ts_gamja2', num:'🥔', name:'🥔 수미햇감자 2봉(2kg↑)', desc:'수미햇감자 2봉(2kg↑)', orig:8000, price:4900, highlight:true },
   { id:'v2b', num:'묶음', name:'🧅 양파 2kg이상', price:3900, orig:4000, badge:'묶음특가', badgeColor:'#c1121f', highlight:true },
-  { id:'ts_goguma3kg', num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg이상', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg이상', price:9900, highlight:true },
+  { id:'ts_goguma3kg', num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 3kg이상', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 3kg이상', price:9900, highlight:true },
   { id:'v_oi5', num:'오이', name:'🥒 오이(특) 5개', desc:'오이(특) 5개 (쓰지않는 품종)', price:2000, highlight:true },
   { id:'ts_oigaji10', num:'가지', name:'🍆 가지(특) 5개', desc:'가지(특) 5개', price:1000, highlight:true },
   { id:'v10', num:'10', name:'아삭이고추 1봉',          price:1500, highlight:true },
@@ -2319,9 +2319,9 @@ const vegItems = [
   { id:'v15', num:'16', name:'양상추 1봉',              price:2500 },
   { id:'v16', num:'17', name:'미나리 1봉', sold:true, price:3000 },
   { id:'v22', num:'22', name:'표고버섯 1봉',            price:3500 },
-  { id:'v23', num:'23', name:'새송이버섯 1봉',           price:1500 },
-  { id:'v24', num:'24', name:'느타리버섯 1봉',           price:1000 },
-  { id:'v25', num:'25', name:'팽이버섯 1봉(2입)',         price:1000 },
+  { id:'v23', num:'23', name:'새송이버섯 1봉',           price:690, todayLabel:'새송이', comboTitle:'🍄 버섯 3종', comboPartner:'v24', comboPartner2:'v25' },
+  { id:'v24', num:'24', name:'느타리버섯 1봉',           price:690, todayLabel:'느타리' },
+  { id:'v25', num:'25', name:'팽이버섯 1봉(2입)',         price:690, todayLabel:'팽이(2입)' },
   { id:'v26', num:'26', name:'깐마늘 1봉',              price:3000 },
 
   { id:'v27', num:'27', name:'상추 1봉',                price:1500 },
@@ -2331,8 +2331,10 @@ const vegItems = [
   { id:'v31', num:'31', name:'청경채 1봉',              price:1000 },
   { id:'v32', num:'32', name:'두부 1팩',               price:2000 },
   { id:'v33', num:'33', name:'순두부 2개',              price:1000 },
-  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7900, maxQty:1 },
-  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888' },
+  { id:'v_egg_malbok_30', num:'🥚', name:'🥚 특란 30구', price:5900, maxQty:1, todayLabel:'30구', comboTitle:'🥚 말복 초특가 특란', comboPartner:'v_egg_malbok_60' },
+  { id:'v_egg_malbok_60', num:'🥚', name:'🥚 특란 60구', price:12900, maxQty:1, todayLabel:'60구' },
+  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7900, maxQty:1, sold:true },
+  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, sold:true, badge:'추가특란 9,000원', badgeColor:'#888' },
   { id:'v34u',num:'34', name:'🥚 유정란 30구 (난각1번·무항생제)', price:17900, badge:'유정란 17,900원', badgeColor:'#4caf50' },
 
 ];
@@ -2849,7 +2851,7 @@ function renderVegNew() {
     }
     html += newCardRow({ id:item.id, name:item.name, price:item.price, orig:item.orig, badge:item.badge, badgeColor:item.badgeColor, max:max, highlight:item.highlight });
   });
-  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, blur:(item.id==='v35'), statusText:'품절' }); });
+  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, blur:(item.id==='v35'||item.id==='v34'), statusText:'품절' }); });
 
   list.innerHTML = html;
   applyStackedLayout();
@@ -3306,7 +3308,7 @@ async function changeQty(id, delta, price, max) {
   // 특란/수박 3만원 이상 프로모션 게이트 — 히어로카드, 전체목록, 제철특가탭 등 모든 경로가 이 함수를 거침
   if (delta > 0 && typeof EGG_PROMO_IDS !== 'undefined' && EGG_PROMO_IDS.includes(id)) {
     const sub = nonEggSubtotal();
-    const alreadyOk = sub >= EGG_PROMO_THRESHOLD || (window._isMember && id === 'f51_promo');
+    const alreadyOk = sub >= EGG_PROMO_THRESHOLD || window._isMember;
     if (!alreadyOk) {
       if (id === 'f51_promo') {
         const phoneRaw = prompt('전화번호를 입력하시면 단골 회원인지 바로 확인해드려요! (예: 01012345678)');
@@ -3330,7 +3332,7 @@ async function changeQty(id, delta, price, max) {
         showToast('✅ 단골 회원 확인됐어요! 23,900원 특가 담을게요');
       } else {
         const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-        showToast(`🥚 특란 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+        showToast(`🥚🍄 특란·버섯 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
         return;
       }
     }
@@ -3368,6 +3370,22 @@ async function changeQty(id, delta, price, max) {
       const vc = document.getElementById('card-v34');
       if (vc) vc.classList.remove('selected');
       showToast('세트에 특란 포함! 5,900원 취소됐어요 😊');
+    }
+  }
+  // 말복 초특가 특란 — 30구/60구 중 하나만. (수량 상한은 각 maxQty:1 로 별도 적용)
+  if ((id === 'v_egg_malbok_30' || id === 'v_egg_malbok_60') && delta > 0) {
+    const other = (id === 'v_egg_malbok_30') ? 'v_egg_malbok_60' : 'v_egg_malbok_30';
+    if ((qtys[other] || 0) > 0) {
+      showToast('특란은 30구·60구 중 하나만 담을 수 있어요 😊');
+      return;
+    }
+  }
+  // 버섯 3종 — 품목 구분 없이 합계 5개까지
+  if (typeof MUSHROOM_PROMO_IDS !== 'undefined' && MUSHROOM_PROMO_IDS.includes(id) && delta > 0) {
+    const total = MUSHROOM_PROMO_IDS.reduce((a, x) => a + (qtys[x] || 0), 0);
+    if (total >= MUSHROOM_PROMO_MAX) {
+      showToast('버섯은 품목 구분 없이 총 ' + MUSHROOM_PROMO_MAX + '개까지 담을 수 있어요 😊');
+      return;
     }
   }
   // 특가세트 담은 상태에서 특란 5900원 막기 + 7200원 안내
@@ -3417,7 +3435,9 @@ async function changeQty(id, delta, price, max) {
 
 // ══ 합계 ══════════════════════════════════
 // ── 특란/수박 등 3만원 이상 프로모션 (해당 품목 자체 금액은 빼고 계산 — 이것만 사서 조건 채우는 것 방지) ──
-const EGG_PROMO_IDS = ['f51_promo'];
+const EGG_PROMO_IDS = ['f51_promo', 'v_egg_malbok_30', 'v_egg_malbok_60', 'v23', 'v24', 'v25'];
+const MUSHROOM_PROMO_IDS = ['v23', 'v24', 'v25'];
+const MUSHROOM_PROMO_MAX = 5;
 const EGG_PROMO_THRESHOLD = 30000;
 function nonEggSubtotal() {
   let total = 0;
@@ -3443,16 +3463,16 @@ function nonEggSubtotal() {
 }
 function tryAddEggPromo(id) {
   const sub = nonEggSubtotal();
-  if (sub < EGG_PROMO_THRESHOLD && !(window._isMember && id === 'f51_promo')) {
+  if (sub < EGG_PROMO_THRESHOLD && !window._isMember) {
     const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-    showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+    showToast(`🥚🍄 특란·버섯 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
     return;
   }
   heroAddItem(id);
 }
 async function tryAddPromo30k(id) {
   const sub = nonEggSubtotal();
-  const alreadyOk = sub >= EGG_PROMO_THRESHOLD || (window._isMember && id === 'f51_promo');
+  const alreadyOk = sub >= EGG_PROMO_THRESHOLD || window._isMember;
   if (alreadyOk) { heroAddItem(id); return; }
 
   // 수박(f51_promo)만: 아직 3만원도 안 채웠고 회원여부도 모르는 상태라면, 그 자리에서 번호 물어보고 즉시 확인
@@ -3482,11 +3502,11 @@ async function tryAddPromo30k(id) {
   }
 
   const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-  showToast(`🥚🍉 특란·수박 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+  showToast(`🥚🍄 특란·버섯 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
 }
 function updateEggPromoLock() {
   const sub = nonEggSubtotal();
-  const eggUnlocked = sub >= EGG_PROMO_THRESHOLD; // 계란은 회원이어도 3만원 조건 그대로
+  const eggUnlocked = sub >= EGG_PROMO_THRESHOLD || !!window._isMember; // 회원은 금액 조건 면제(수량 제한은 동일)
   const bannerEl = document.getElementById('eggPromoBanner');
   if (bannerEl) {
     bannerEl.style.display = 'none'; // 수박 3만원특가 삭제로 더 이상 홍보할 상품 없음
@@ -3495,7 +3515,7 @@ function updateEggPromoLock() {
     const el = document.getElementById('eggpromo-' + id) || document.getElementById('promo-' + id);
     if (!el) return;
     // 수박(f51_promo)은 회원이면 조건 없이 항상 해제, 계란은 3만원 조건 그대로
-    const unlocked = (id === 'f51_promo' && window._isMember) ? true : eggUnlocked;
+    const unlocked = eggUnlocked; // 회원이면 금액 조건 면제 (eggUnlocked 에 반영됨)
     el.style.opacity = unlocked ? '1' : '0.4';
     el.style.filter = unlocked ? 'none' : 'grayscale(60%)';
   });
@@ -5252,9 +5272,9 @@ const FLASH_ITEMS = [
   // ── 🍉 수박,멜론 특가 ──
   { id:'f_watermelon_jinan', label:'진안수박(특) 7kg', colBadge:'진안 선별입고', max:9999, flashPrice:28900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 진안 선별 후 입고' },
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew_25', fullWidth:true },
-  { id:'f_melon_honeydew_25',   label:'허니듀',           max:9999, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
+  { id:'f_melon_honeydew_25',   label:'허니듀',           max:9999, origPrice:14900, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
     subOptions: [
-      { id:'f_melon_honeydew_25', label:'2.5kg전후', flashPrice:11900, maxQty:9999 }
+      { id:'f_melon_honeydew_25', label:'2.5kg전후', flashPrice:9900, origPrice:14900, maxQty:9999 }
     ]
   },
   // ── 🍏 사과 특가 ──
@@ -5324,7 +5344,7 @@ async function flashAdj(id, delta) {
   // 특란/수박 등 3만원 이상 프로모션 게이트 — 실제 주문은 이 탭에서 이뤄짐
   if (delta > 0 && typeof EGG_PROMO_IDS !== 'undefined' && EGG_PROMO_IDS.includes(id)) {
     const sub = nonEggSubtotal();
-    const alreadyOk = sub >= EGG_PROMO_THRESHOLD || (window._isMember && id === 'f51_promo');
+    const alreadyOk = sub >= EGG_PROMO_THRESHOLD || window._isMember;
     if (!alreadyOk) {
       if (id === 'f51_promo') {
         const phoneRaw = prompt('전화번호를 입력하시면 단골 회원인지 바로 확인해드려요! (예: 01012345678)');
@@ -5348,7 +5368,7 @@ async function flashAdj(id, delta) {
         showToast('✅ 단골 회원 확인됐어요! 23,900원 특가 담을게요');
       } else {
         const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
-        showToast(`🥚 특란 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
+        showToast(`🥚🍄 특란·버섯 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
         return;
       }
     }
@@ -5991,7 +6011,7 @@ window.orderDirect = async function() {
     EGG_PROMO_IDS.forEach(function(id){
       const inCart = (qtys[id] > 0) || (typeof flashQtys !== 'undefined' && flashQtys[id] > 0);
       if (!inCart) return;
-      const ok = sub >= EGG_PROMO_THRESHOLD || (window._isMember && id === 'f51_promo');
+      const ok = sub >= EGG_PROMO_THRESHOLD || window._isMember;
       if (!ok) {
         if (qtys[id] > 0) qtys[id] = 0;
         if (typeof flashQtys !== 'undefined' && flashQtys[id] > 0) flashQtys[id] = 0;
@@ -6571,7 +6591,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['f_avocado', 'ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_baekdo_banmal_4', 'f_watermelon_jinan', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'f_melon_honeydew_25', 'v21', 'ts_zucchini'];
+  const TODAY_SPECIAL_IDS = ['v_egg_malbok_30', 'f_melon_honeydew_25', 'ts_goguma3kg', 'v23', 'f_avocado', 'ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_baekdo_banmal_4', 'f_watermelon_jinan', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'ts_zucchini'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
@@ -6607,7 +6627,7 @@ setInterval(updateFloatCart, 500);
     const validItems = TODAY_SPECIAL_IDS
       .map(id => ({ id, cat: findCatalogItem(id) }))
       .filter(x => x.cat)
-      .slice(0, 12);
+      .slice(0, 15);
 
     if (!validItems.length) {
       body.innerHTML = `<div style="padding:16px;border-top:1px solid #f0ede8;text-align:center;font-size:12px;color:#999;">이번 주 특가를 준비하고 있습니다.<br>월요일 오전 공개됩니다.</div>`;
@@ -6685,12 +6705,24 @@ setInterval(updateFloatCart, 500);
       // 콤보상품(comboPartner 있음)은 한쪽만 품절이어도 다른쪽은 살릴 수 있어야 하므로 단독 품절처리보다 먼저 체크
       if (cat.comboPartner) {
         const pCat = findCatalogItem(cat.comboPartner);
+        const p2Cat = cat.comboPartner2 ? findCatalogItem(cat.comboPartner2) : null;
         if (pCat) {
           const mainSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">${typeof cat.soldOut === 'string' ? cat.soldOut : '품절'}</div>`;
           const mainLiveHtml = `<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;">
                     <span style="font-size:12.5px;font-weight:900;color:#c1121f;white-space:nowrap;">${cat.price.toLocaleString()}원</span>
                     <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;">+ 담기</button>
                   </div>`;
+          // 3칸 콤보(comboPartner2)는 옵션. 없으면 col3Html 이 빈 문자열이라 기존 2칸 그대로 동작한다.
+          const col3Html = p2Cat ? `
+                <div onclick="openProductDetail('${cat.comboPartner2}')" style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;cursor:pointer;${p2Cat.soldOut?'opacity:0.5;':''}">
+                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p2Cat.todayLabel||p2Cat.rawLabel||p2Cat.name}</span>${todayColBadge(p2Cat)}${todayOrigSpan(p2Cat)}</div>
+                  ${p2Cat.soldOut
+                    ? `<div style="font-size:12px;font-weight:800;color:#999;">${typeof p2Cat.soldOut === 'string' ? p2Cat.soldOut : '품절'}</div>`
+                    : `<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;">
+                    <span style="font-size:12.5px;font-weight:900;color:#c1121f;white-space:nowrap;">${p2Cat.price.toLocaleString()}원</span>
+                    <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${cat.comboPartner2}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;">+ 담기</button>
+                  </div>`}
+                </div>` : '';
           const partnerSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">${typeof pCat.soldOut === 'string' ? pCat.soldOut : '품절'}</div>`;
           const partnerLiveHtml = pCat.contactOnly
                     ? `<a href="tel:${pCat.contactPhone}" style="display:inline-block;background:#fff3cd;color:#7a5c00;border:1px solid #ffd166;border-radius:7px;padding:5px 8px;font-size:10.5px;font-weight:900;text-decoration:none;white-space:nowrap;">📞 ${pCat.contactPhone.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3')}</a>`
@@ -6703,13 +6735,14 @@ setInterval(updateFloatCart, 500);
               <div style="font-size:12.5px;font-weight:800;color:#1a0f00;margin-bottom:8px;">${cat.comboTitle||cleanName}</div>
               <div style="display:flex;gap:8px;">
                 <div onclick="openProductDetail('${id}')" style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;cursor:pointer;${cat.soldOut?'opacity:0.5;':''}">
-                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cat.rawLabel||cleanName}</span>${todayColBadge(cat)}${todayOrigSpan(cat)}</div>
+                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cat.todayLabel||cat.rawLabel||cleanName}</span>${todayColBadge(cat)}${todayOrigSpan(cat)}</div>
                   ${cat.soldOut ? mainSoldHtml : mainLiveHtml}
                 </div>
                 <div onclick="openProductDetail('${cat.comboPartner}')" style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;cursor:pointer;${pCat.soldOut?'opacity:0.5;':''}">
-                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.rawLabel||pCat.name}</span>${todayColBadge(pCat)}${todayOrigSpan(pCat)}</div>
+                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.todayLabel||pCat.rawLabel||pCat.name}</span>${todayColBadge(pCat)}${todayOrigSpan(pCat)}</div>
                   ${pCat.soldOut ? partnerSoldHtml : partnerLiveHtml}
                 </div>
+                ${col3Html}
               </div>
             </div>`;
         }
@@ -6746,7 +6779,16 @@ setInterval(updateFloatCart, 500);
           <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:pointer;min-width:64px;">+ 담기</button>
         </div>`;
     }).join('');
-    body.innerHTML = rows + `
+    const malbokBanner = `
+      <div onclick="openMalbokNotice()" style="margin:0;padding:11px 16px;border-top:1px solid #f0ede8;background:linear-gradient(90deg,#fff4e6 0%,#ffe9e9 100%);display:flex;align-items:center;gap:8px;cursor:pointer;">
+        <span style="font-size:15px;flex-shrink:0;">🎏</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12.5px;font-weight:900;color:#c1121f;">말복 초특가 안내</div>
+          <div style="font-size:10.5px;color:#8a6d3b;margin-top:1px;">신규 일반상품 3만원 이상 · 기존 회원 제한 없음</div>
+        </div>
+        <span style="font-size:13px;color:#c1121f;flex-shrink:0;">›</span>
+      </div>`;
+    body.innerHTML = malbokBanner + rows + `
       <div style="padding:12px 16px;border-top:1px solid #f0ede8;text-align:center;">
         <span onclick="goToTabScreen('sp')" style="font-size:12px;font-weight:700;color:var(--green);cursor:pointer;text-decoration:underline;">오늘 특가 전체보기 →</span>
       </div>`;
@@ -6757,6 +6799,37 @@ setInterval(updateFloatCart, 500);
     renderTodaySpecialBody();
   };
   renderTodaySpecialBody();
+
+  // 말복 초특가 안내 팝업 — 배너 탭으로만 열린다. 다른 화면에는 영향 없음.
+  window.openMalbokNotice = function(){
+    if (document.getElementById('malbok-notice')) return;
+    const wrap = document.createElement('div');
+    wrap.id = 'malbok-notice';
+    wrap.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;padding:24px;';
+    wrap.onclick = function(e){ if (e.target === wrap) closeMalbokNotice(); };
+    wrap.innerHTML = `
+      <div style="background:#fff;border-radius:16px;max-width:340px;width:100%;padding:22px 20px 18px;box-sizing:border-box;box-shadow:0 12px 40px rgba(0,0,0,0.3);">
+        <div style="text-align:center;font-size:16px;font-weight:900;color:#c1121f;margin-bottom:14px;">🎏 말복 초특가</div>
+        <div style="font-size:12.5px;line-height:1.7;color:#1a0f00;">
+          <div style="font-weight:900;">🥚 특란</div>
+          <div style="color:#555;margin-bottom:10px;">30구 5,900원 / 60구 12,900원<br>두 가지 중 <b>1개만</b> 구매 가능</div>
+          <div style="font-weight:900;">🍄 버섯 3종</div>
+          <div style="color:#555;margin-bottom:12px;">새송이 · 느타리 · 팽이 각 690원<br>품목 구분 없이 <b>최대 5개</b>까지</div>
+        </div>
+        <div style="border-top:1px solid #eee;padding-top:11px;font-size:11.5px;line-height:1.65;color:#777;">
+          ※ 신규 고객은 일반 상품 3만원 이상 구매 시 참여 가능<br>
+          <span style="padding-left:11px;">(특란 · 버섯 금액은 3만원에 포함되지 않습니다)</span><br>
+          ※ 기존 회원은 구매금액 제한 없이 참여 가능<br>
+          ※ 고구마 3kg · 허니듀 멜론은 수량 · 금액 제한 없음
+        </div>
+        <button onclick="closeMalbokNotice()" style="width:100%;margin-top:15px;padding:12px;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:13.5px;font-weight:900;cursor:pointer;">확인</button>
+      </div>`;
+    document.body.appendChild(wrap);
+  };
+  window.closeMalbokNotice = function(){
+    const el = document.getElementById('malbok-notice');
+    if (el) el.remove();
+  };
 
   // 담기 버튼 클릭 시 "+담기" → "✓담김"으로 1초간 바뀌는 피드백
   window.todaySpecialAddClick = function(btn, id){
