@@ -1748,18 +1748,14 @@ async function goReorder() {
   // 1.5순위: orders 최근 주문에서 조회 (customers에 이름만 있고 주소/비번이 비어있는 경우도 여기서 보완)
   if (!found || !found.address) {
     try {
-      const res = await fetch(SB_URL + '/rest/v1/orders?customer_phone=eq.' + inputClean + '&select=customer_name,customer_address,door_password&order=order_date.desc&limit=1', {
-        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.length && data[0].customer_name) {
-          if (found) { // 이름은 이미 있었으니 주소/현관비번만 보완
-            found.address = found.address || data[0].customer_address;
-            found.entry = found.entry || data[0].door_password;
-          } else {
-            found = { name: data[0].customer_name, address: data[0].customer_address, entry: data[0].door_password };
-          }
+      // coco_last_order 는 현관비번을 반환하지 않는다(비로그인 자동완성 제외 항목).
+      // entry 는 1순위 coco_customer_profile 에서만 채운다.
+      const lo = await callRpc('coco_last_order', { p_phone: inputClean });
+      if (lo && lo.found && lo.customer_name) {
+        if (found) { // 이름은 이미 있었으니 주소만 보완
+          found.address = found.address || lo.customer_address;
+        } else {
+          found = { name: lo.customer_name, address: lo.customer_address, entry: '' };
         }
       }
     } catch(e) {}
@@ -5381,36 +5377,12 @@ const flashQtys = {};
 async function loadFlashCounts() {
   const today = new Date().toISOString().slice(0,10);
   try {
-    // 1단계: 오늘 날짜 주문 ID 조회
-    const ordRes = await fetch(
-      SB_URL + '/rest/v1/orders?select=id&order_date=eq.' + today,
-      { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } }
-    );
-    if (!ordRes.ok) { FLASH_ITEMS.forEach(function(fi){ flashCounts[fi.id]=0; }); renderFlashSection(); return; }
-    const ordText = await ordRes.text();
-    const orders = ordText && ordText.trim() ? JSON.parse(ordText) : [];
-    const todayIds = Array.isArray(orders) ? orders.map(function(o){ return o.id; }) : [];
-
-    if (todayIds.length === 0) {
-      FLASH_ITEMS.forEach(function(fi){ flashCounts[fi.id] = 0; });
-      applyFlashSoldout();
-      renderFlashSection();
-      return;
-    }
-
-    // 2단계: 오늘 주문 안에서 품목별 카운트
-    const idList = '(' + todayIds.join(',') + ')';
+    // coco_today_item_count 로 품목별 당일 판매량만 받는다.
+    // 주문 ID 목록 조회(2단계)가 없어져 개인정보가 오가지 않는다.
     for (const fi of FLASH_ITEMS) {
       try {
-        const q = encodeURIComponent('%' + fi.label + '%');
-        const res = await fetch(
-          SB_URL + '/rest/v1/order_items?select=id&order_id=in.' + idList + '&item_name=ilike.' + q,
-          { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } }
-        );
-        if (!res.ok) { flashCounts[fi.id] = 0; continue; }
-        const text = await res.text();
-        const data = text && text.trim() ? JSON.parse(text) : [];
-        flashCounts[fi.id] = Array.isArray(data) ? data.length : 0;
+        const r = await callRpc('coco_today_item_count', { p_item_query: fi.label, p_date: today });
+        flashCounts[fi.id] = (r && typeof r.count === 'number') ? r.count : 0;
       } catch(e) { flashCounts[fi.id] = 0; }
     }
   } catch(e) {
@@ -5647,15 +5619,12 @@ async function lookupReorder() {
   resultEl.textContent = '⏳ 조회 중...';
   try {
     // orders 테이블에서 최근 주문 조회
-    const res = await fetch(SB_URL + '/rest/v1/orders?customer_phone=eq.' + phoneRaw + '&order=created_at.desc&limit=1', {
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
-    });
-    const data = await res.json();
-    if (!Array.isArray(data) || data.length === 0) {
+    const lo = await callRpc('coco_last_order', { p_phone: phoneRaw });
+    if (!lo || !lo.found) {
       resultEl.textContent = '❌ 주문 내역이 없어요. 직접 입력해주세요.';
       return;
     }
-    const order = data[0];
+    const order = { customer_name: lo.customer_name, customer_address: lo.customer_address };
     // 이름 채우기
     if (order.customer_name) {
       const nameEl = document.getElementById('inp-name');
@@ -6260,11 +6229,8 @@ window.orderDirect = async function() {
 
     // ── 오늘 동일 전화번호 주문 존재 여부 확인 → 추가주문 여부 물어보기 ──
     try {
-      const chkRes = await fetch(SB_URL + '/rest/v1/orders?customer_phone=eq.' + phone + '&order_date=eq.' + getDeliveryDate() + '&select=id&limit=1', {
-        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
-      });
-      const chkData = await chkRes.json();
-      if (Array.isArray(chkData) && chkData.length > 0) {
+      const chk = await callRpc('coco_has_order_today', { p_phone: phone, p_date: getDeliveryDate() });
+      if (chk && chk.has_order) {
         const goAhead = confirm('이미 오늘 주문이 있어요 😊\n추가 주문이신가요?');
         if (!goAhead) {
           if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
@@ -6388,11 +6354,8 @@ window.orderDirect = async function() {
   // tg 실패시 tg_sent=false 업데이트
   if (window._tgFailed && window._lastOrderId) {
     try {
-      await fetch(SB_URL + '/rest/v1/orders?id=eq.' + window._lastOrderId, {
-        method: 'PATCH',
-        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tg_sent: false })
-      });
+      // anon UPDATE 를 열지 않고 RPC 로 tg_sent 만 바꾼다. 24시간 이내 주문만 허용.
+      await callRpc('coco_mark_tg_failed', { p_order_id: window._lastOrderId });
     } catch(e) { console.warn('tg_sent 업데이트 실패', e); }
     window._tgFailed = false;
   }
