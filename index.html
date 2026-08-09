@@ -2099,6 +2099,42 @@ function askNameFixModal(oldName, newName) {
   else bind();
 })();
 
+// ── 전화번호가 "코드로" 채워지는 경로 보완 ──
+// inp-phone 은 oninput / onblur 로만 현금영수증 자동완성을 돌린다.
+// 그런데 goReorder · goToInfo · lookupReorder · 저장배송지 선택 등에서는
+// value 를 직접 대입하므로 두 이벤트가 모두 발생하지 않아 자동완성이 누락됐다.
+// 값 변화를 감시해 11자리가 채워지면 한 번만 조회한다.
+window._crSyncedPhone = '';
+function syncCustomerPrefsToForm(rawPhone) {
+  try {
+    var el = document.getElementById('inp-phone');
+    var phone = String(rawPhone || (el && el.value) || '').replace(/\D/g, '');
+    if (phone.length !== 11) return;
+    if (window._crSyncedPhone === phone) return;   // 같은 번호는 한 번만
+    window._crSyncedPhone = phone;
+    if (typeof loadCashReceiptPhonePref === 'function') loadCashReceiptPhonePref();
+  } catch (e) {}
+}
+
+(function watchPhoneField() {
+  function bind() {
+    var el = document.getElementById('inp-phone');
+    if (!el || el._crWatchBound) return;
+    el._crWatchBound = true;
+    var last = el.value;
+    // 사용자 입력 이벤트로는 잡히지 않는 프로그램적 대입까지 포착한다.
+    setInterval(function () {
+      try {
+        if (el.value === last) return;
+        last = el.value;
+        syncCustomerPrefsToForm(el.value);
+      } catch (e) {}
+    }, 400);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+
 function onPhoneInputForAddr(raw) {
   var phone = String(raw || '').replace(/\D/g, '');
   if (phone.length < 11) {
@@ -2122,6 +2158,7 @@ function onPhoneInputForAddr(raw) {
   // 다음 단계로 넘어가면 채워지지 않았다. 11자리 완성 시점에도 한 번 돌린다.
   // 함수 내부에 중복 실행 가드가 없으므로 같은 번호로 두 번 돌아도 결과는 동일하다.
   try { if (typeof loadCashReceiptPhonePref === 'function') loadCashReceiptPhonePref(); } catch (e) {}
+  try { if (typeof syncCustomerPrefsToForm === 'function') syncCustomerPrefsToForm(phone); } catch (e) {}
   callRpc('coco_customer_addresses', { p_phone: phone }).then(function (ar) {
     if (ar === null) { tgNotify('[계산기] coco_customer_addresses 조회 실패: ' + phone); return; }
     var list = (ar && Array.isArray(ar.addresses)) ? ar.addresses : [];
