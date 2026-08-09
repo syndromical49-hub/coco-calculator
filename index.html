@@ -3310,7 +3310,7 @@ async function changeQty(id, delta, price, max) {
     const sub = nonEggSubtotal();
     const alreadyOk = sub >= EGG_PROMO_THRESHOLD || window._isMember;
     if (!alreadyOk) {
-      if (id === 'f51_promo') {
+      if (true) { // 프로모션 품목 공통 — 회원 여부를 모르는 상태면 그 자리에서 번호를 물어 즉시 확인
         const phoneRaw = prompt('전화번호를 입력하시면 단골 회원인지 바로 확인해드려요! (예: 01012345678)');
         if (phoneRaw === null) return; // 취소
         const phone = phoneRaw.replace(/\D/g, '');
@@ -3329,7 +3329,7 @@ async function changeQty(id, delta, price, max) {
           showToast('처음 뵙는 번호예요 — 3만원 이상 담으시면 이 특가도 열려요!');
           return;
         }
-        showToast('✅ 단골 회원 확인됐어요! 23,900원 특가 담을게요');
+        showToast('✅ 단골 회원 확인됐어요! 특가 담을게요');
       } else {
         const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
         showToast(`🥚🍄 특란·버섯 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
@@ -3493,7 +3493,7 @@ async function tryAddPromo30k(id) {
       phoneInput.value = phone.length === 11 ? phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') : phone;
     }
     if (isMem) {
-      showToast('✅ 단골 회원 확인됐어요! 23,900원 특가 담을게요');
+      showToast('✅ 단골 회원 확인됐어요! 특가 담을게요');
       heroAddItem(id);
     } else {
       showToast('처음 뵙는 번호예요 — 3만원 이상 담으시면 이 특가도 열려요!');
@@ -5346,7 +5346,7 @@ async function flashAdj(id, delta) {
     const sub = nonEggSubtotal();
     const alreadyOk = sub >= EGG_PROMO_THRESHOLD || window._isMember;
     if (!alreadyOk) {
-      if (id === 'f51_promo') {
+      if (true) { // 프로모션 품목 공통 — 회원 여부를 모르는 상태면 그 자리에서 번호를 물어 즉시 확인
         const phoneRaw = prompt('전화번호를 입력하시면 단골 회원인지 바로 확인해드려요! (예: 01012345678)');
         if (phoneRaw === null) return; // 취소
         const phone = phoneRaw.replace(/\D/g, '');
@@ -5365,7 +5365,7 @@ async function flashAdj(id, delta) {
           showToast('처음 뵙는 번호예요 — 3만원 이상 담으시면 이 특가도 열려요!');
           return;
         }
-        showToast('✅ 단골 회원 확인됐어요! 23,900원 특가 담을게요');
+        showToast('✅ 단골 회원 확인됐어요! 특가 담을게요');
       } else {
         const need = (EGG_PROMO_THRESHOLD - sub).toLocaleString();
         showToast(`🥚🍄 특란·버섯 특가는 3만원 이상 담아야 열려요! (${need}원 더 담으면 열려요)`);
