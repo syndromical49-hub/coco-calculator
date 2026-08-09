@@ -2026,6 +2026,83 @@ function pickType(t) {
 // 전화번호 11자리가 채워지면 그 번호로 확정된 배송지만 조회해 보여준다.
 // 백필 주소는 RPC(coco_customer_addresses)가 이미 걸러낸다.
 var _s3AddrPhone = '';
+// ── 저장된 이름과 입력한 이름이 다를 때 고객 본인에게 확인받는다 ──
+// customers.name 에 오타가 고착되면 PIN 설정이 영구히 막히므로, 고객이 직접 정정하게 한다.
+// 실제 변경 가능 여부(주문 이력 대조)는 coco_update_customer_name 이 서버에서 판정한다.
+function normNameForCompare(v) {
+  // 서버(coco_update_customer_name / setup_or_verify_pin)와 동일 기준: 끝의 (닉네임) 제거 → 모든 공백 제거
+  return String(v || '').replace(/\s*\([^)]*\)\s*$/, '').replace(/\s+/g, '');
+}
+
+function maybeAskNameFix() {
+  try {
+    var phone = _s3AddrPhone;
+    if (!phone || phone.length !== 11) return;
+    var oldName = window._s3ProfileName || '';
+    var inputEl = document.getElementById('inp-name');
+    var newName = (inputEl && inputEl.value || '').trim();
+    if (!oldName || !newName) return;
+    if (normNameForCompare(oldName) === normNameForCompare(newName)) return;
+    var key = phone + '|' + newName;
+    if (window._nameFixAsked === key) return;   // 같은 조합은 한 번만 묻는다
+    window._nameFixAsked = key;
+    askNameFixModal(oldName, newName).then(function (yes) {
+      if (!yes) return;
+      callRpc('coco_update_customer_name', { p_phone: phone, p_name: newName }).then(function (r) {
+        if (r && r.ok) {
+          window._s3ProfileName = r.new_name || newName;
+          showToast('\u2705 이름을 ' + (r.new_name || newName) + ' 로 변경했어요');
+        } else {
+          // 실패 사유는 구분하지 않는다. 어떤 이름이 유효한지 탐색할 단서가 되기 때문.
+          showToast('이름을 확인할 수 없어요. 주문은 그대로 진행하셔도 됩니다');
+          tgNotify('[계산기] 이름 정정 실패 ' + phone + ' → ' + newName + ' / ' + JSON.stringify(r));
+        }
+      }).catch(function () {});
+    });
+  } catch (e) {}
+}
+
+function askNameFixModal(oldName, newName) {
+  return new Promise(function (resolve) {
+    var prev = document.getElementById('name-fix');
+    if (prev) prev.remove();
+    var wrap = document.createElement('div');
+    wrap.id = 'name-fix';
+    wrap.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;padding:24px;';
+    wrap.innerHTML = '<div style="background:#fff;border-radius:16px;max-width:330px;width:100%;padding:24px 20px 18px;box-sizing:border-box;box-shadow:0 12px 40px rgba(0,0,0,0.3);">'
+      + '<div style="text-align:center;font-size:15px;font-weight:900;color:#1a0f00;line-height:1.5;">이름을 바꿀까요?</div>'
+      + '<div style="text-align:center;font-size:12px;color:#888;margin-top:6px;line-height:1.55;">이전에 주문하신 이름과 달라요.</div>'
+      + '<div style="margin-top:14px;background:#f7f5f0;border-radius:10px;padding:12px 14px;text-align:center;">'
+      +   '<div style="font-size:12px;color:#999;text-decoration:line-through;">' + oldName + '</div>'
+      +   '<div style="font-size:13px;color:#c1121f;margin:3px 0;">\u2193</div>'
+      +   '<div style="font-size:15px;font-weight:900;color:#1a0f00;">' + newName + '</div>'
+      + '</div>'
+      + '<div style="display:flex;gap:8px;margin-top:14px;">'
+      +   '<button id="name-fix-no" style="flex:1;padding:12px;background:#f2efe9;color:#777;border:none;border-radius:10px;font-family:\'Pretendard\',\'Noto Sans KR\',sans-serif;font-size:13.5px;font-weight:800;cursor:pointer;">그대로 둘게요</button>'
+      +   '<button id="name-fix-yes" style="flex:1.2;padding:12px;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:\'Pretendard\',\'Noto Sans KR\',sans-serif;font-size:13.5px;font-weight:900;cursor:pointer;">바꿔주세요</button>'
+      + '</div></div>';
+    document.body.appendChild(wrap);
+    var done = false;
+    function finish(v) { if (done) return; done = true; wrap.remove(); resolve(v); }
+    document.getElementById('name-fix-yes').onclick = function () { finish(true); };
+    document.getElementById('name-fix-no').onclick  = function () { finish(false); };
+    wrap.onclick = function (e) { if (e.target === wrap) finish(false); };
+  });
+}
+
+// 전화번호를 먼저 치고 이름을 나중에 적는 순서도 있으므로 이름칸에서도 확인한다.
+// 인라인 oninput(checkFormReady)은 건드리지 않고 리스너만 덧붙인다.
+(function attachNameFixListener() {
+  function bind() {
+    var el = document.getElementById('inp-name');
+    if (!el || el._nameFixBound) return;
+    el._nameFixBound = true;
+    el.addEventListener('blur', function () { maybeAskNameFix(); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+
 function onPhoneInputForAddr(raw) {
   var phone = String(raw || '').replace(/\D/g, '');
   if (phone.length < 11) {
@@ -2039,7 +2116,11 @@ function onPhoneInputForAddr(raw) {
   // s-return 경로의 _addrProfile 은 orders.door_password 폴백까지 담고 있으므로 덮어쓰지 않는다.
   window._s3Entry = '';
   callRpc('coco_customer_profile', { p_phone: phone }).then(function (j) {
-    if (j && j.found && phone === _s3AddrPhone) window._s3Entry = j.entry || '';
+    if (j && j.found && phone === _s3AddrPhone) {
+      window._s3Entry       = j.entry || '';
+      window._s3ProfileName = j.name  || '';
+      maybeAskNameFix();
+    }
   }).catch(function () {});
   callRpc('coco_customer_addresses', { p_phone: phone }).then(function (ar) {
     if (ar === null) { tgNotify('[계산기] coco_customer_addresses 조회 실패: ' + phone); return; }
@@ -3311,7 +3392,7 @@ async function changeQty(id, delta, price, max) {
     const alreadyOk = sub >= EGG_PROMO_THRESHOLD || window._isMember;
     if (!alreadyOk) {
       if (true) { // 프로모션 품목 공통 — 회원 여부를 모르는 상태면 그 자리에서 번호를 물어 즉시 확인
-        const phoneRaw = prompt('전화번호를 입력하시면 단골 회원인지 바로 확인해드려요! (예: 01012345678)');
+        const phoneRaw = await askPhoneModal();
         if (phoneRaw === null) return; // 취소
         const phone = phoneRaw.replace(/\D/g, '');
         if (phone.length < 10) { showToast('전화번호를 정확히 입력해주세요'); return; }
@@ -3477,7 +3558,7 @@ async function tryAddPromo30k(id) {
 
   // 수박(f51_promo)만: 아직 3만원도 안 채웠고 회원여부도 모르는 상태라면, 그 자리에서 번호 물어보고 즉시 확인
   if (id === 'f51_promo') {
-    const phoneRaw = prompt('전화번호를 입력하시면 단골 회원인지 바로 확인해드려요! (예: 01012345678)');
+    const phoneRaw = await askPhoneModal();
     if (phoneRaw === null) return; // 취소
     const phone = phoneRaw.replace(/\D/g, '');
     if (phone.length < 10) { showToast('전화번호를 정확히 입력해주세요'); return; }
@@ -5347,7 +5428,7 @@ async function flashAdj(id, delta) {
     const alreadyOk = sub >= EGG_PROMO_THRESHOLD || window._isMember;
     if (!alreadyOk) {
       if (true) { // 프로모션 품목 공통 — 회원 여부를 모르는 상태면 그 자리에서 번호를 물어 즉시 확인
-        const phoneRaw = prompt('전화번호를 입력하시면 단골 회원인지 바로 확인해드려요! (예: 01012345678)');
+        const phoneRaw = await askPhoneModal();
         if (phoneRaw === null) return; // 취소
         const phone = phoneRaw.replace(/\D/g, '');
         if (phone.length < 10) { showToast('전화번호를 정확히 입력해주세요'); return; }
@@ -6799,6 +6880,44 @@ setInterval(updateFloatCart, 500);
     renderTodaySpecialBody();
   };
   renderTodaySpecialBody();
+
+  // 회원 확인용 전화번호 입력 모달. 브라우저 기본 입력창 대체.
+  // Promise<string|null> 를 돌려주며, 취소하면 null 이라 기존 prompt 와 반환 규약이 같다.
+  window.askPhoneModal = function(){
+    return new Promise(function(resolve){
+      const old = document.getElementById('phone-ask');
+      if (old) old.remove();
+      const wrap = document.createElement('div');
+      wrap.id = 'phone-ask';
+      wrap.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;padding:24px;';
+      wrap.innerHTML = `
+        <div style="background:#fff;border-radius:16px;max-width:330px;width:100%;padding:24px 20px 18px;box-sizing:border-box;box-shadow:0 12px 40px rgba(0,0,0,0.3);">
+          <div style="text-align:center;font-size:30px;line-height:1;margin-bottom:10px;">\u{1F4DE}</div>
+          <div style="text-align:center;font-size:15px;font-weight:900;color:#1a0f00;line-height:1.5;">단골 회원이신가요?</div>
+          <div style="text-align:center;font-size:12px;color:#888;margin-top:6px;line-height:1.55;">전화번호를 입력하시면 바로 확인해드려요.<br>회원이시면 금액 조건 없이 담으실 수 있어요.</div>
+          <input id="phone-ask-input" type="tel" inputmode="numeric" maxlength="13" placeholder="01012345678"
+            style="width:100%;margin-top:16px;padding:13px 14px;box-sizing:border-box;border:2px solid #e6e0d8;border-radius:10px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:16px;font-weight:700;text-align:center;letter-spacing:0.5px;outline:none;">
+          <div style="display:flex;gap:8px;margin-top:14px;">
+            <button id="phone-ask-cancel" style="flex:1;padding:12px;background:#f2efe9;color:#777;border:none;border-radius:10px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:13.5px;font-weight:800;cursor:pointer;">나중에</button>
+            <button id="phone-ask-ok" style="flex:1.4;padding:12px;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:13.5px;font-weight:900;cursor:pointer;">확인하기</button>
+          </div>
+        </div>`;
+      document.body.appendChild(wrap);
+      const inp = document.getElementById('phone-ask-input');
+      let done = false;
+      function finish(v){ if (done) return; done = true; wrap.remove(); resolve(v); }
+      inp.addEventListener('input', function(){
+        const d = inp.value.replace(/\D/g,'').slice(0,11);
+        inp.value = d.length > 7 ? d.replace(/(\d{3})(\d{4})(\d+)/,'$1-$2-$3')
+                  : d.length > 3 ? d.replace(/(\d{3})(\d+)/,'$1-$2') : d;
+      });
+      inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') finish(inp.value); });
+      document.getElementById('phone-ask-ok').onclick = function(){ finish(inp.value); };
+      document.getElementById('phone-ask-cancel').onclick = function(){ finish(null); };
+      wrap.onclick = function(e){ if (e.target === wrap) finish(null); };
+      setTimeout(function(){ try { inp.focus(); } catch(e){} }, 50);
+    });
+  };
 
   // 말복 초특가 안내 팝업 — 배너 탭으로만 열린다. 다른 화면에는 영향 없음.
   window.openMalbokNotice = function(){
