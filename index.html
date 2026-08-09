@@ -7045,8 +7045,44 @@ setInterval(updateFloatCart, 500);
     `;
   };
 
+  // ── 세션(mycc_me) 만료 공통 처리 ──
+  // sessionStorage 는 탭을 닫거나 모바일이 백그라운드에서 정리하면 사라진다.
+  // 기존에는 값이 없으면 조용히 return 해서 "버튼이 안 눌린다"로 보였다.
+  // 안내를 띄우고 로그인 화면으로 되돌린다.
+  function myccRequireSession() {
+    var me = null;
+    try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch (e) { me = null; }
+    if (me) return me;
+    try { showToast('로그인이 풀렸어요. 전화번호와 PIN을 다시 입력해주세요'); } catch (e) {}
+    try {
+      var panel = document.getElementById('acc-sub-panel');
+      if (panel) { panel.innerHTML = ''; panel.style.display = 'none'; }
+      if (typeof myccShowLogin === 'function') myccShowLogin();
+    } catch (e) {}
+    return null;
+  }
+
+  // 하위 패널(acc-sub-panel)은 목록 맨 아래에 하나만 있다.
+  // 그대로 두면 '주문내역'(2번째 행)을 눌러도 내용이 6행 아래에 그려져
+  // 모바일에서는 화면 밖이라 아무 반응이 없어 보인다. 누른 행 바로 아래로 옮긴다.
+  function accPlaceSubPanel(kind) {
+    try {
+      var panel = document.getElementById('acc-sub-panel');
+      if (!panel) return;
+      panel.style.display = '';
+      var rows = document.querySelectorAll('#mycc-accordion-body .acc-row');
+      var row = null;
+      for (var i = 0; i < rows.length; i++) {
+        var oc = rows[i].getAttribute('onclick') || '';
+        if (oc.indexOf("accShowSub('" + kind + "')") !== -1) { row = rows[i]; break; }
+      }
+      if (row && row.parentNode) row.parentNode.insertBefore(panel, row.nextSibling);
+      if (panel.scrollIntoView) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch (e) {}
+  }
+
   window.accShowSub = function(kind){
-    let me; try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) { return; }
+    var me = myccRequireSession();
     if (!me) return;
     const panel = document.getElementById('acc-sub-panel');
     const boxStyle = 'padding:14px 16px;background:#faf7f2;border-top:1px solid #f0ede8;font-size:12.5px;color:#333;';
@@ -7058,7 +7094,7 @@ setInterval(updateFloatCart, 500);
       </div>`;
     } else if (kind === 'orders' || kind === 'reorder') {
       const ro = me.recent_order;
-      if (!ro) { panel.innerHTML = `<div style="${boxStyle}">아직 주문 내역이 없어요</div>`; return; }
+      if (!ro) { panel.innerHTML = `<div style="${boxStyle}">아직 주문 내역이 없어요</div>`; accPlaceSubPanel(kind); return; }
       panel.innerHTML = `<div style="${boxStyle}">
         <div style="margin-bottom:8px;">📦 최근 주문 · ${ro.order_date||''} · <b>${(ro.total||0).toLocaleString()}원</b></div>
         ${kind === 'reorder' ? `<button onclick="myccReorder('${ro.id}')" style="width:100%;background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px;font-size:12.5px;font-weight:900;cursor:pointer;">🔁 이 주문 다시 담기</button>` : ''}
@@ -7075,6 +7111,7 @@ setInterval(updateFloatCart, 500);
       panel.innerHTML = `<div id="acc-edit-mount" style="${boxStyle}"></div>`;
       myccOpenEditInto('acc-edit-mount');
     }
+    accPlaceSubPanel(kind);
   };
 
   window.myccVerify = async function(){
@@ -7165,7 +7202,7 @@ setInterval(updateFloatCart, 500);
   };
 
   window.myccOpenEdit = function(){
-    let me; try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) { return; }
+    var me = myccRequireSession();
     if (!me) return;
     const panel = el('mycc-edit-panel');
     panel.style.display = 'block';
@@ -7190,7 +7227,7 @@ setInterval(updateFloatCart, 500);
   };
 
   window.myccOpenEditInto = function(mountId){
-    let me; try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) { return; }
+    var me = myccRequireSession();
     if (!me) return;
     const panel = document.getElementById(mountId);
     if (!panel) return;
@@ -7215,7 +7252,7 @@ setInterval(updateFloatCart, 500);
   };
 
   window.myccSaveEdit = async function(){
-    let me; try { me = JSON.parse(sessionStorage.getItem('mycc_me')); } catch(e) { return; }
+    var me = myccRequireSession();
     if (!me) return;
     const crType = document.querySelector('input[name="mycc-crtype"]:checked').value || null;
     const crNumber = el('mycc-edit-cr-number').value.trim() || null;
