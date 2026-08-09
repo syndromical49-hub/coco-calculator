@@ -6774,7 +6774,7 @@ setInterval(updateFloatCart, 500);
         <div onclick="openProductDetail('${id}')" style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid #f0ede8;cursor:pointer;">
           <div style="flex:1;min-width:0;">
             <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;"><span style="font-size:12.5px;font-weight:700;color:#1a0f00;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cleanName}</span>${todayColBadge(cat)}${todayOrigSpan(cat)}</div>
-            <div style="font-size:13.5px;font-weight:900;color:#c1121f;">${cat.price.toLocaleString()}원</div>
+            <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;">${todayOrigSpan(cat)}<span style="font-size:13.5px;font-weight:900;color:#c1121f;">${cat.price.toLocaleString()}원</span></div>
           </div>
           <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:pointer;min-width:64px;">+ 담기</button>
         </div>`;
