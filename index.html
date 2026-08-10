@@ -2113,6 +2113,8 @@ function syncCustomerPrefsToForm(rawPhone) {
     if (window._crSyncedPhone === phone) return;   // 같은 번호는 한 번만
     window._crSyncedPhone = phone;
     if (typeof loadCashReceiptPhonePref === 'function') loadCashReceiptPhonePref();
+    // 불러오기·재주문 조회로 번호가 채워지면 oninput 이 안 떠서 배송지 선택박스도 안 떴다.
+    if (typeof onPhoneInputForAddr === 'function') onPhoneInputForAddr(phone);
   } catch (e) {}
 }
 
@@ -2147,6 +2149,7 @@ function onPhoneInputForAddr(raw) {
   // 그때 쓸 현관정보를 여기서 미리 확보해 둔다(customers.entry).
   // s-return 경로의 _addrProfile 은 orders.door_password 폴백까지 담고 있으므로 덮어쓰지 않는다.
   window._s3Entry = '';
+  window._addrPickConfirmed = false;   // 번호가 바뀌면 주소 확인을 다시 받는다
   callRpc('coco_customer_profile', { p_phone: phone }).then(function (j) {
     if (j && j.found && phone === _s3AddrPhone) {
       window._s3Entry       = j.entry || '';
@@ -2161,7 +2164,9 @@ function onPhoneInputForAddr(raw) {
   try { if (typeof syncCustomerPrefsToForm === 'function') syncCustomerPrefsToForm(phone); } catch (e) {}
   callRpc('coco_customer_addresses', { p_phone: phone }).then(function (ar) {
     if (ar === null) { tgNotify('[계산기] coco_customer_addresses 조회 실패: ' + phone); return; }
+    // is_active=false 는 코코허브에서 통합·정리한 항목이라 고객에게 보여주지 않는다.
     var list = (ar && Array.isArray(ar.addresses)) ? ar.addresses : [];
+    list = list.filter(function (a) { return a && a.is_active !== false; });
     if (!list.length) { hideS3AddrChoice(); return; }
     window._addrChoices = list;
     window._addrPhone   = phone;
@@ -2325,7 +2330,7 @@ function goS3() {
 
 // ── 실시간 입력 검증 ──────────────────────────
 function checkFormReady() {
-  const name  = (document.getElementById('inp-name')?.value || '').trim();
+  const name  = cleanPersonName(document.getElementById('inp-name')?.value);
   const phone = (document.getElementById('inp-phone')?.value || '').replace(/\D/g,'');
   const dongWrap = document.getElementById('dong-wrap');
   const pwWrap   = document.getElementById('pw-wrap');
@@ -2344,7 +2349,7 @@ function setHint(){}
 
 // ── Step3 → Step4 ──
 function enterApp() {
-  const name  = document.getElementById('inp-name').value.trim();
+  const name  = cleanPersonName(document.getElementById('inp-name').value);
   const nick  = document.getElementById('inp-nick').value.trim();
   const phone = document.getElementById('inp-phone').value.trim();
   const dong  = document.getElementById('inp-dong').value.trim();
@@ -2485,6 +2490,23 @@ function reg(id, name, price) {
 }
 
 // 배송일 계산 (KST 기준) — 시간 컷오프 없음. "오늘 주문 = 무조건 다음 배송일" (일요일은 배송 없어서 건너뜀)
+// ── 이름 정제 ──
+// 과거 배포본에서 '👤' 같은 접두 이모지가 customer_name 에 섞여 들어간 이력이 있다.
+// 이모지·기호 문자만 제거하고 문장부호는 보존한다.
+// 'H.Y-박혜영' '스시(김혜진)' '니모킹님/덕이동' 같은 정상 이름이 깨지면 안 되므로
+// 마침표·하이픈·괄호·슬래시·숫자·공백은 건드리지 않는다.
+function cleanPersonName(v) {
+  try {
+    var t = String(v == null ? '' : v);
+    t = t.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{20E3}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}]/gu, '');
+    t = t.replace(/\u200D/g, '');       // ZWJ
+    t = t.replace(/\s+/g, ' ').trim();  // 이모지 제거 후 남는 연속 공백 정리
+    return t;
+  } catch (e) {
+    return String(v == null ? '' : v).trim();
+  }
+}
+
 function getDeliveryDate() {
   const now = new Date();
   const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
@@ -3940,7 +3962,7 @@ async function orderDirect() {
         'Prefer': 'return=representation'
       },
       body: JSON.stringify({
-        customer_name: u.name || '',
+        customer_name: cleanPersonName(u.name),
         customer_phone: (u.phone || '').replace(/\D/g,''),
         customer_address: address,
         door_password: (u.type === 'villa' ? null : (u.pw || ST.gaptPw || ST.officetelPw || null)) || null,
@@ -4578,7 +4600,7 @@ function s3PickGoyangArea(area) {
 // ── checkFormReady 업데이트 ──
 // (기존 함수 오버라이드)
 function checkFormReady() {
-  const name = (document.getElementById('inp-name')?.value || '').trim();
+  const name = cleanPersonName(document.getElementById('inp-name')?.value);
   const phone = (document.getElementById('inp-phone')?.value || '').replace(/\D/g,'');
   const region = document.getElementById('sel-region')?.value || ST.region || '';
   const t = ST.type || 'apt';
@@ -4614,9 +4636,75 @@ function checkFormReady() {
   if (warn) warn.style.display = 'none';
 }
 
+// ── 직접 입력한 주소가 저장 배송지와 다를 때 확인 ──
+// 같은 집인데 표기가 갈리면 정차점이 분산되고, 애매한 이름은 엉뚱한 좌표에 붙는다.
+// 이름 정정 UI 와 같은 패턴: 고객이 고를 때만 반영하고, 새 주소면 그대로 진행한다.
+function normAddrForCompare(v) {
+  return String(v || '').replace(/\[[^\]]*\]/g, '').replace(/[\s\-]/g, '');
+}
+
+function askAddrPickModal(typed, list) {
+  return new Promise(function (resolve) {
+    var prev = document.getElementById('addr-pick'); if (prev) prev.remove();
+    var wrap = document.createElement('div');
+    wrap.id = 'addr-pick';
+    wrap.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;padding:24px;';
+    var opts = '';
+    list.forEach(function (a, i) {
+      opts += '<button data-idx="' + i + '" class="addr-pick-opt" style="display:block;width:100%;margin-top:8px;padding:15px 14px;background:var(--green);border:none;border-radius:11px;font-family:\'Pretendard\',\'Noto Sans KR\',sans-serif;font-size:13.5px;font-weight:900;color:#fff;text-align:left;line-height:1.45;cursor:pointer;">'
+            + '기존 배송지로 보낼게요<br><span style="font-size:12px;font-weight:700;opacity:0.9;">' + (a.display_address || '') + '</span></button>';
+    });
+    wrap.innerHTML = '<div style="background:#fff;border-radius:16px;max-width:340px;width:100%;padding:22px 20px 18px;box-sizing:border-box;box-shadow:0 12px 40px rgba(0,0,0,0.3);">'
+      + '<div style="text-align:center;font-size:15px;font-weight:900;color:#c1121f;line-height:1.5;">이전에 배송받으신 주소와 달라요</div>'
+      + '<div style="text-align:center;font-size:12px;color:#888;margin-top:6px;line-height:1.55;">오타가 아닌지 한 번만 확인해주세요</div>'
+      + '<div style="margin-top:14px;background:#f7f5f0;border-radius:10px;padding:11px 13px;">'
+      +   '<div style="font-size:10.5px;color:#999;font-weight:800;">입력하신 주소</div>'
+      +   '<div style="font-size:13px;font-weight:800;color:#1a0f00;margin-top:2px;line-height:1.45;">' + (typed || '(입력 없음)') + '</div>'
+      + '</div>'
+      + opts
+      + '<button id="addr-pick-new" style="display:block;width:100%;margin-top:10px;padding:12px;background:#f2efe9;color:#777;border:none;border-radius:10px;font-family:\'Pretendard\',\'Noto Sans KR\',sans-serif;font-size:13px;font-weight:800;cursor:pointer;">입력한 주소가 맞아요 (다른 곳으로 배송)</button>'
+      + '</div>';
+    document.body.appendChild(wrap);
+    var done = false;
+    function finish(v) { if (done) return; done = true; wrap.remove(); resolve(v); }
+    wrap.querySelectorAll('.addr-pick-opt').forEach(function (btn) {
+      btn.onclick = function () { finish(parseInt(btn.getAttribute('data-idx'), 10)); };
+    });
+    document.getElementById('addr-pick-new').onclick = function () { finish('new'); };
+    wrap.onclick = function (e) { if (e.target === wrap) finish(null); };  // 배경 탭 = 판단 보류
+  });
+}
+
 // ── s3 → s-delivery ──
 function enterDelivery() {
-  const name  = (document.getElementById('inp-name')?.value || '').trim();
+  // 저장 배송지가 있는데 직접 입력했다면 한 번 확인한다. 확인 후에는 그대로 통과.
+  if (!window._s3PickedSaved && !window._addrPickConfirmed) {
+    var saved = (window._addrChoices || []).filter(function (a) { return a && a.is_active !== false; });
+    if (saved.length) {
+      // 지역·유형에 따라 주소 입력칸이 달라서, 보이는 칸 값을 모아 비교한다.
+      var typedNow = ['s3-sel-village', 's3-inp-dong', 's3-inp-gapt',
+                      's3-inp-officetel', 's3-inp-villa', 's3-inp-parcel']
+        .map(function (id) { var e = document.getElementById(id); return e ? (e.value || '') : ''; })
+        .filter(function (v) { return String(v).trim(); })
+        .join(' ').trim();
+      var hit = saved.some(function (a) {
+        return normAddrForCompare(a.display_address) === normAddrForCompare(typedNow);
+      });
+      if (!hit) {
+        askAddrPickModal(typedNow, saved).then(function (r) {
+          if (r === null) return;              // 배경 탭 — 아무것도 바꾸지 않고 주문서에 머문다
+          window._addrPickConfirmed = true;
+          if (r !== 'new') {                   // 기존 배송지 선택 → 그 주소로 확정
+            var gi = (window._addrChoices || []).indexOf(saved[r]);
+            pickS3Addr(gi >= 0 ? gi : r);
+          }
+          enterDelivery();                     // 'new' 면 입력한 주소 그대로 진행
+        });
+        return;
+      }
+    }
+  }
+  const name  = cleanPersonName(document.getElementById('inp-name')?.value);
   const nick  = (document.getElementById('inp-nick')?.value || '').trim();
   const phone = (document.getElementById('inp-phone')?.value || '').trim();
   const region = document.getElementById('sel-region')?.value || ST.region || '';
@@ -5830,7 +5918,7 @@ async function submitCardOrder(ctx) {
 
   const crTypeVal = (document.getElementById('cr-type-business')&&document.getElementById('cr-type-business').checked) ? 'business' : 'personal';
   const orderPayload = {
-    customer_name: u.name||'',
+    customer_name: cleanPersonName(u.name),
     customer_phone: phone,
     customer_address: addr,
     door_password: (u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null,
@@ -6291,7 +6379,7 @@ window.orderDirect = async function() {
     const ordRes = await fetch(SB_URL + '/rest/v1/orders', {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'},
-      body: JSON.stringify({ customer_name:u.name||'', customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked), cash_receipt_phone:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, cash_receipt_type:(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked)?((document.getElementById('cr-type-business')&&document.getElementById('cr-type-business').checked)?'business':'personal'):null, cash_receipt_number:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, applied_price_tier: (window._isMember ? 'member' : 'normal'), points_used: pointsUsedNow, pay_method: 'bank', card_amount: 0, bank_amount: total, customer_memo: (document.getElementById('confirm-memo')&&document.getElementById('confirm-memo').value.trim())||null })
+      body: JSON.stringify({ customer_name:cleanPersonName(u.name), customer_phone:phone, customer_address:addr, door_password:(u.type==='villa'?null:(u.pw||ST.gaptPw||ST.officetelPw||null))||null, order_date:getDeliveryDate(), total, idempotency_key:ORDER_KEY, referrer:(document.getElementById('inp-referrer')&&document.getElementById('inp-referrer').value.trim())||null, lookup_password:(document.getElementById('inp-lookup-pw')&&document.getElementById('inp-lookup-pw').value.trim())||null, cash_receipt_requested:!!(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked), cash_receipt_phone:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, cash_receipt_type:(document.getElementById('inp-cash-receipt')&&document.getElementById('inp-cash-receipt').checked)?((document.getElementById('cr-type-business')&&document.getElementById('cr-type-business').checked)?'business':'personal'):null, cash_receipt_number:(document.getElementById('inp-cash-receipt-phone')&&document.getElementById('inp-cash-receipt-phone').value.replace(/\D/g,''))||null, applied_price_tier: (window._isMember ? 'member' : 'normal'), points_used: pointsUsedNow, pay_method: 'bank', card_amount: 0, bank_amount: total, customer_memo: (document.getElementById('confirm-memo')&&document.getElementById('confirm-memo').value.trim())||null })
     });
 
     // 중복(409/23505)이면 이미 접수된 주문 → 완료 화면만 표시
@@ -7142,7 +7230,7 @@ setInterval(updateFloatCart, 500);
 
   window.myccDoSetup = async function(){
     const phone = el('mycc-setup-phone').value.trim();
-    const name = el('mycc-setup-name').value.trim();
+    const name = cleanPersonName(el('mycc-setup-name').value);
     const pin = el('mycc-setup-pin').value.trim();
     const errEl = el('mycc-setup-error'); errEl.style.display = 'none';
     if (!phone || !name || !/^[0-9]{6}$/.test(pin)) { errEl.textContent = '전화번호·이름·PIN(6자리 숫자)을 모두 입력해주세요'; errEl.style.display='block'; return; }
