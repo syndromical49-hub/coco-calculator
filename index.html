@@ -406,6 +406,7 @@
 .set-card .set-price { font-size:1.2rem;font-weight:800;color:var(--green);letter-spacing:-0.3px; }
 .set-card .set-stepper { display:flex;align-items:center;gap:7px;margin-top:6px;justify-content:flex-end; }
 
+@keyframes cocoShine { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://spay.kcp.co.kr/plugin/kcp_spay_hub.js"></script>
@@ -2403,7 +2404,7 @@ const fruitItems = [
   { id:'ts_cherry_1kg', num:'🍒', name:'🍒 캐나다체리(9row-최대사이즈) 1kg', desc:'캐나다체리(9row-최대사이즈) 1kg', price:24900 },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
   { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'', orig:9800, price:8900 },
-  { id:'f_avocado', todaySpecial:false, num:'🥑', name:'🥑 아보카도 6개', desc:'아보카도 6개', price:4800, orig:5900 },
+  { id:'f_avocado', todaySpecial:false, num:'🥑', name:'🥑 아보카도 5개', desc:'아보카도 5개', price:4500, orig:5900 },
   { id:'f54', num:'#54', name:'🍈 참외(소과·게르마늄) 1봉', desc:'성주 게르마늄 재배 참외 1봉 (소과)',             orig:null,  price:5000 },
   { id:'f55', num:'#55', name:'🍅 방울토마토 1팩',   desc:'',            orig:null,  price:4900  },
   { id:'v36', num:'36', name:'🍅 찰토마토 1봉',          desc:'달고 아삭한 찰토마토',  price:4000 },
@@ -2454,10 +2455,10 @@ const vegItems = [
   { id:'v31', num:'31', name:'청경채 1봉',              price:1000 },
   { id:'v32', num:'32', name:'두부 1팩',               price:2000 },
   { id:'v33', num:'33', name:'순두부 2개',              price:1000 },
-  { id:'v_egg_malbok_30', num:'🥚', name:'🥚 특란 30구', price:5900, maxQty:1, todayLabel:'30구', comboTitle:'🥚 말복 초특가 특란', comboPartner:'v_egg_malbok_60' },
-  { id:'v_egg_malbok_60', num:'🥚', name:'🥚 특란 60구', price:12900, maxQty:1, todayLabel:'60구' },
-  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7900, maxQty:1, sold:true },
-  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, sold:true, badge:'추가특란 9,000원', badgeColor:'#888' },
+  { id:'v_egg_malbok_30', num:'🥚', name:'🥚 특란 30구', price:5900, maxQty:1, sold:true, todayLabel:'30구', comboTitle:'🥚 말복 초특가 특란', comboPartner:'v_egg_malbok_60' },
+  { id:'v_egg_malbok_60', num:'🥚', name:'🥚 특란 60구', price:12900, maxQty:1, sold:true, todayLabel:'60구' },
+  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7900, maxQty:1 },
+  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888' },
   { id:'v34u',num:'34', name:'🥚 유정란 30구 (난각1번·무항생제)', price:17900, badge:'유정란 17,900원', badgeColor:'#4caf50' },
 
 ];
@@ -2991,7 +2992,7 @@ function renderVegNew() {
     }
     html += newCardRow({ id:item.id, name:item.name, price:item.price, orig:item.orig, badge:item.badge, badgeColor:item.badgeColor, max:max, highlight:item.highlight });
   });
-  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, blur:(item.id==='v35'||item.id==='v34'), statusText:'품절' }); });
+  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, blur:false, statusText:'품절' }); });
 
   list.innerHTML = html;
   applyStackedLayout();
@@ -3575,7 +3576,7 @@ async function changeQty(id, delta, price, max) {
 
 // ══ 합계 ══════════════════════════════════
 // ── 특란/수박 등 3만원 이상 프로모션 (해당 품목 자체 금액은 빼고 계산 — 이것만 사서 조건 채우는 것 방지) ──
-const EGG_PROMO_IDS = ['f51_promo', 'v_egg_malbok_60', 'v23', 'v24', 'v25'];
+const EGG_PROMO_IDS = ['f51_promo', 'v23', 'v24', 'v25'];
 const MUSHROOM_PROMO_IDS = ['v23', 'v24', 'v25'];
 const MUSHROOM_PROMO_MAX = 5;
 const EGG_PROMO_THRESHOLD = 30000;
@@ -3903,9 +3904,10 @@ function showOrderConfirm() {
   document.getElementById('confirm-total').textContent = total.toLocaleString() + '원';
 
   const warn = document.getElementById('confirm-warn');
-  if (total > 0 && total < 20000) {
+  const _minA = getMinOrderAmount();
+  if (total > 0 && total < _minA) {
     warn.style.display = 'block';
-    warn.textContent = `⚠️ 최소 주문금액 2만원 미만(${total.toLocaleString()}원)이에요. 현관 배송이 어려울 수 있어요.`;
+    warn.textContent = `⚠️ 최소 주문금액 ${_minA.toLocaleString()}원 미만(${total.toLocaleString()}원)이에요. 현관 배송이 어려울 수 있어요.`;
   } else {
     warn.style.display = 'none';
   }
@@ -4452,9 +4454,10 @@ function goToCart() {
   if (nextBtn) nextBtn.disabled = false;
 
   if (warnEl) {
-    if (total > 0 && total < 20000) {
+    const _minB = getMinOrderAmount();
+    if (total > 0 && total < _minB) {
       warnEl.style.display = 'block';
-      warnEl.textContent = '⚠️ 최소 주문금액 2만원 미만(' + total.toLocaleString() + '원)이에요.';
+      warnEl.textContent = '⚠️ 최소 주문금액 ' + _minB.toLocaleString() + '원 미만(' + total.toLocaleString() + '원)이에요.';
     } else {
       warnEl.style.display = 'none';
     }
@@ -5037,9 +5040,10 @@ function renderDeliveryScreen() {
   // ── 최소주문 경고 ──
   const warnEl = document.getElementById('delivery-min-warn');
   if (warnEl) {
-    if (total > 0 && total < 20000) {
+    const _minB = getMinOrderAmount();
+    if (total > 0 && total < _minB) {
       warnEl.style.display = 'block';
-      warnEl.textContent = '⚠️ 최소 주문금액 2만원 미만(' + total.toLocaleString() + '원)이에요.';
+      warnEl.textContent = '⚠️ 최소 주문금액 ' + _minB.toLocaleString() + '원 미만(' + total.toLocaleString() + '원)이에요.';
     } else {
       warnEl.style.display = 'none';
     }
@@ -5402,7 +5406,36 @@ function renderFlashSection() {
               : pfi.subOptions
               ? multiColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.subOptions)
               : colHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.flashPrice || pmeta.price, pStepper, pfi.nameTop, pfi.origPrice || pmeta.orig, pfi.colBadge)) +
-          '</div>';
+          '</div>' +
+          // 카드 하단 전폭 행(comboFull). 없으면 빈 문자열이라 기존 콤보 카드는 그대로다.
+          (function(){
+            if (!fi.comboFull) return '';
+            const sfi = FLASH_ITEMS.find(x => x.id === fi.comboFull);
+            if (!sfi) return '';
+            let smeta = itemMeta[sfi.id];
+            if (!smeta) {
+              smeta = { name: sfi.comboTitle ? (sfi.comboTitle + ' ' + sfi.label) : sfi.label, price: sfi.flashPrice || 0 };
+              itemMeta[sfi.id] = smeta;
+            }
+            qtys[sfi.id] = qtys[sfi.id] || 0;
+            const sStepper = '<button class="flash-btn-sub" onclick="changeQty(\'' + sfi.id + '\',-1,' + smeta.price + ',' + (sfi.maxQty||9999) + ')">－</button>' +
+              '<span class="flash-qty" id="qty-' + sfi.id + '">' + qtys[sfi.id] + '</span>' +
+              '<button class="flash-btn-add" onclick="changeQty(\'' + sfi.id + '\',1,' + smeta.price + ',' + (sfi.maxQty||9999) + ')">＋</button>';
+            return '<div style="margin-top:8px;background:linear-gradient(100deg,#fff4e6 0%,#ffe3e3 50%,#fff4e6 100%);background-size:200% 100%;animation:cocoShine 2.4s linear infinite;border:2px solid #c1121f;border-radius:10px;padding:9px 12px;">' +
+              '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">' +
+                '<div style="min-width:0;">' +
+                  (sfi.colBadge ? '<div style="display:inline-block;background:#c1121f;color:#fff;font-size:10px;font-weight:900;border-radius:100px;padding:2px 8px;margin-bottom:3px;">' + sfi.colBadge + '</div>' : '') +
+                  '<div style="font-size:0.9rem;font-weight:900;color:#c1121f;">' + (sfi.todayLabel || sfi.label) + '</div>' +
+                  (sfi.subNote ? '<div style="font-size:0.72rem;color:#8a6d3b;margin-top:1px;">' + sfi.subNote + '</div>' : '') +
+                '</div>' +
+                '<div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">' +
+                  (sfi.origPrice ? '<span style="font-size:0.85rem;font-weight:800;color:#9a9a9a;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#c1121f;">' + sfi.origPrice.toLocaleString() + '원</span>' : '') +
+                  '<span style="font-size:1.08rem;font-weight:900;color:#c1121f;white-space:nowrap;">' + (sfi.flashPrice||0).toLocaleString() + '원</span>' +
+                  '<div class="flash-stepper" style="gap:6px;">' + sStepper + '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+          })();
         grid.appendChild(card);
         continue;
       }
@@ -5464,11 +5497,18 @@ const MEMBER_PRICES = {
 const FLASH_ITEMS = [
   // ── 🍑 복숭아 특가 ──
   { id:'f_hwangdo_danhojang_25', label:'2.5kg(14브릭스)', soldOut:'미입고', max:9999, flashPrice:28900, section:'🍑 복숭아 특가', subLabel:'단호장', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고', comboTitle:'황도(단호장)', comboPartner:'f_hwangdo_danhojang' },
-  { id:'f_hwangdo_danhojang', label:'4kg(14브릭스)', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'황도(단호장)' },
+  { id:'f_hwangdo_danhojang', label:'4kg(14브릭스)', max:9999, flashPrice:36900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'황도(단호장)' },
   { id:'f_baekdo_abu', label:'4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'딱딱이', fullWidth:true, badge:'🔥 선별 후 가장 맛있는 복숭아 입고', comboTitle:'백도 딱딱이' },
   { id:'f_baekdo_gyeongbong', label:'경봉(10수 이내) 4kg', colBadge:'시즌마감 특가', soldOut:true, max:9999, flashPrice:32900, origPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
   { id:'f_baekdo_banmal_4', label:'4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'반말랑이', fullWidth:true, badge:'🔥 선별 후 가장 맛있는 복숭아 입고', comboTitle:'백도 반말랑이', comboPartner:'f_jungdo_yecheon_4p' },
-  { id:'f_jungdo_yecheon_4p', label:'애천중도 1팩(4입)', max:9999, flashPrice:12900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도 반말랑이' },
+  { id:'f_jungdo_yecheon_4p', label:'애천중도 1팩(4입)', max:9999, flashPrice:10000, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도 반말랑이' },
+  { id:'f_danhojang_4p', label:'단호장 4입', colBadge:'14브릭스+', max:9999, flashPrice:12900, section:'🍑 복숭아 특가', subLabel:'🔥 말복대비 실속특가', fullWidth:true, badge:'🍑 프리미엄 · 받으셔서 바로 드세요',
+    comboTitle:'프리미엄', comboPartner:'f_madoka_4p', comboFull:'f_peach_set_8p',
+    todayLabel:'단호장 4입 1팩(1.2kg전후)' },
+  { id:'f_madoka_4p', label:'마도카 백도 4입', colBadge:'13브릭스+', max:9999, flashPrice:10000, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'프리미엄',
+    todayLabel:'마도카 백도 4입 1팩(1kg전후)' },
+  { id:'f_peach_set_8p', label:'🔥 2종 8입 세트 (단호장4 + 마도카4)', colBadge:'말복 초특가', max:9999, flashPrice:19900, origPrice:22900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'프리미엄',
+    todayLabel:'🔥 2종 8입 세트 · 무료배송', subNote:'단호장 4입 + 마도카 백도 4입' },
   // ── 🍇 포도 특가 ──
   { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:7900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3', varietyGroup:'캠벨' },
   { id:'ts_grape_campbell_3', label:'(특) 4송이', max:9999, flashPrice:14900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도', varietyGroup:'캠벨' },
@@ -5476,11 +5516,11 @@ const FLASH_ITEMS = [
   { id:'ts_grape_shine', label:'샤인머스캣 2kg(3수) 1박스', max:9999, flashPrice:21900, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'샤인머스캣' },
   { id:'ts_grape_geobong', label:'거봉 2kg(3수) 1박스', max:9999, flashPrice:20900, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'거봉' },
   // ── 🍉 수박,멜론 특가 ──
-  { id:'f_watermelon_jinan', label:'진안수박(특) 7kg', colBadge:'진안 선별입고', max:9999, flashPrice:28900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 진안 선별 후 입고' },
+  { id:'f_watermelon_jinan', label:'양구 고랭지 수박 10kg', colBadge:'양구 고랭지', max:9999, flashPrice:31900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 양구 고랭지 · 선별 후 입고' },
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew_25', fullWidth:true },
-  { id:'f_melon_honeydew_25',   label:'허니듀',           max:9999, origPrice:14900, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
+  { id:'f_melon_honeydew_25',   label:'허니듀',           max:9999, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
     subOptions: [
-      { id:'f_melon_honeydew_25', label:'2.5kg전후', flashPrice:9900, origPrice:14900, maxQty:9999 }
+      { id:'f_melon_honeydew_25', label:'2.5kg전후', flashPrice:12900, maxQty:9999 }
     ]
   },
   // ── 🍏 사과 특가 ──
@@ -6277,9 +6317,10 @@ window.orderDirect = async function() {
   const addr = ((u.addr||'') + ' ' + (u.dong||'')).trim();
 
   // ⚠️ 최소 주문금액 2만원 미만이면 팝업 띄우고 접수 자체를 막음
-  if (total < 20000) {
+  const _minC = getMinOrderAmount();
+  if (total < _minC) {
     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '주문하기'; }
-    alert('⚠️ 최소 주문금액은 2만원이에요.\n현재 담긴 금액: ' + total.toLocaleString() + '원\n\n2만원 이상 담아주셔야 주문이 가능해요.');
+    alert('⚠️ 최소 주문금액은 ' + _minC.toLocaleString() + '원이에요.\n현재 담긴 금액: ' + total.toLocaleString() + '원\n\n' + _minC.toLocaleString() + '원 이상 담아주셔야 주문이 가능해요.');
     return;
   }
 
@@ -6768,14 +6809,14 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['v_egg_malbok_30', 'f_melon_honeydew_25', 'ts_goguma3kg', 'v23', 'f_avocado', 'ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_baekdo_banmal_4', 'f_watermelon_jinan', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'ts_zucchini'];
+  const TODAY_SPECIAL_IDS = ['f_danhojang_4p', 'f_melon_honeydew_25', 'ts_goguma3kg', 'v23', 'f_avocado', 'ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_baekdo_banmal_4', 'f_watermelon_jinan', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'ts_zucchini'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
     const pools = [
       typeof vegItems !== 'undefined' ? vegItems : [],
       typeof fruitItems !== 'undefined' ? fruitItems : [],
-      typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.map(f => { const fLabel = f.subOptions ? (f.label + ' ' + f.subOptions[0].label) : f.label; return { id:f.id, name:(f.comboTitle ? (f.comboTitle + ' ' + fLabel) : fLabel), price:(f.subOptions ? f.subOptions[0].flashPrice : f.flashPrice), sold:(f.max===0 || !!f.soldOut), maxQty:f.max, tba:f.tbaOnly||null, comboPartner:f.comboPartner, comboTitle:f.comboTitle, rawLabel:fLabel, orig:(f.origPrice||null), colBadge:(f.colBadge||null), contactOnly:f.contactOnly, contactPhone:f.contactPhone, soldOut:f.soldOut, section:f.section, varietyGroup:f.varietyGroup, subOptions:f.subOptions }; }) : [],
+      typeof FLASH_ITEMS !== 'undefined' ? FLASH_ITEMS.map(f => { const fLabel = f.subOptions ? (f.label + ' ' + f.subOptions[0].label) : f.label; return { id:f.id, name:(f.comboTitle ? (f.comboTitle + ' ' + fLabel) : fLabel), price:(f.subOptions ? f.subOptions[0].flashPrice : f.flashPrice), sold:(f.max===0 || !!f.soldOut), maxQty:f.max, tba:f.tbaOnly||null, comboPartner:f.comboPartner, comboPartner2:f.comboPartner2, comboFull:f.comboFull, todayLabel:f.todayLabel, subNote:f.subNote, comboTitle:f.comboTitle, rawLabel:fLabel, orig:(f.origPrice||null), colBadge:(f.colBadge||null), contactOnly:f.contactOnly, contactPhone:f.contactPhone, soldOut:f.soldOut, section:f.section, varietyGroup:f.varietyGroup, subOptions:f.subOptions }; }) : [],
     ];
     for (const pool of pools) {
       const found = pool.find(x => x.id === id);
@@ -6883,6 +6924,7 @@ setInterval(updateFloatCart, 500);
       if (cat.comboPartner) {
         const pCat = findCatalogItem(cat.comboPartner);
         const p2Cat = cat.comboPartner2 ? findCatalogItem(cat.comboPartner2) : null;
+        const fCat  = cat.comboFull ? findCatalogItem(cat.comboFull) : null;
         if (pCat) {
           const mainSoldHtml = `<div style="font-size:12px;font-weight:800;color:#999;">${typeof cat.soldOut === 'string' ? cat.soldOut : '품절'}</div>`;
           const mainLiveHtml = `<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;">
@@ -6890,6 +6932,19 @@ setInterval(updateFloatCart, 500);
                     <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;">+ 담기</button>
                   </div>`;
           // 3칸 콤보(comboPartner2)는 옵션. 없으면 col3Html 이 빈 문자열이라 기존 2칸 그대로 동작한다.
+          // 카드 하단 전폭 행(comboFull). 없으면 빈 문자열이라 기존 카드는 그대로다.
+          const fullRowHtml = fCat ? `
+              <div onclick="openProductDetail('${cat.comboFull}')" style="margin-top:7px;background:linear-gradient(100deg,#fff4e6 0%,#ffe3e3 50%,#fff4e6 100%);background-size:200% 100%;animation:cocoShine 2.4s linear infinite;border:2px solid #c1121f;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;">
+                <div style="flex:1;min-width:0;">
+                  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">${todayColBadge(fCat)}<span style="font-size:12.5px;font-weight:900;color:#c1121f;line-height:1.35;">${fCat.todayLabel || fCat.rawLabel || fCat.name}</span></div>
+                  ${fCat.subNote ? `<div style="font-size:10.5px;color:#8a6d3b;margin-top:2px;">${fCat.subNote}</div>` : ''}
+                </div>
+                <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">
+                  ${todayOrigSpan(fCat)}
+                  <span style="font-size:14px;font-weight:900;color:#c1121f;white-space:nowrap;">${fCat.price.toLocaleString()}원</span>
+                  <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${cat.comboFull}')" style="flex-shrink:0;background:#c1121f;color:#fff;border:none;border-radius:7px;padding:7px 10px;font-size:11.5px;font-weight:900;cursor:pointer;white-space:nowrap;">+ 담기</button>
+                </div>
+              </div>` : '';
           const col3Html = p2Cat ? `
                 <div onclick="openProductDetail('${cat.comboPartner2}')" style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;cursor:pointer;${p2Cat.soldOut?'opacity:0.5;':''}">
                   <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p2Cat.todayLabel||p2Cat.rawLabel||p2Cat.name}</span>${todayColBadge(p2Cat)}${todayOrigSpan(p2Cat)}</div>
@@ -6921,6 +6976,7 @@ setInterval(updateFloatCart, 500);
                 </div>
                 ${col3Html}
               </div>
+              ${fullRowHtml}
             </div>`;
         }
       }
@@ -6965,7 +7021,7 @@ setInterval(updateFloatCart, 500);
         </div>
         <span style="font-size:13px;color:#c1121f;flex-shrink:0;">›</span>
       </div>`;
-    body.innerHTML = malbokBanner + rows + `
+    body.innerHTML = rows + `
       <div style="padding:12px 16px;border-top:1px solid #f0ede8;text-align:center;">
         <span onclick="goToTabScreen('sp')" style="font-size:12px;font-weight:700;color:var(--green);cursor:pointer;text-decoration:underline;">오늘 특가 전체보기 →</span>
       </div>`;
