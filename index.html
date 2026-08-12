@@ -2508,6 +2508,21 @@ function cleanPersonName(v) {
   }
 }
 
+// ── 말복 실속특가 최소주문 예외 ──
+// 기본 최소주문은 2만원. 2종 8입 세트가 19,900원이라 세트만 담으면 막히므로,
+// 해당 품목이 담긴 주문에 한해 19,900원부터 허용한다.
+var MALBOK_PEACH_IDS = ['f_danhojang_4p', 'f_madoka_4p', 'f_peach_set_8p'];
+function getMinOrderAmount() {
+  try {
+    var q = (typeof qtys !== 'undefined') ? qtys : null;
+    if (!q) return 20000;
+    for (var i = 0; i < MALBOK_PEACH_IDS.length; i++) {
+      if ((q[MALBOK_PEACH_IDS[i]] || 0) > 0) return 19900;
+    }
+    return 20000;
+  } catch (e) { return 20000; }
+}
+
 function getDeliveryDate() {
   const now = new Date();
   const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
