@@ -5524,6 +5524,11 @@ const FLASH_ITEMS = [
     todayLabel:'마도카 백도 4입 1팩(1kg전후)' },
   { id:'f_peach_set_8p', label:'🔥 2종 8입 세트 (단호장4 + 마도카4)', colBadge:'말복 초특가', max:9999, flashPrice:19900, origPrice:22900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'프리미엄',
     todayLabel:'🔥 2종 8입 세트 · 무료배송', subNote:'단호장 4입 + 마도카 백도 4입' },
+  { id:'ts_shine_malbok_1', label:'1박스', colBadge:'17브릭스+', max:9999, flashPrice:16900, origPrice:21900, section:'🍑 복숭아 특가', subLabel:'🍇 샤인머스캣 2kg', fullWidth:true, badge:'🍇 17브릭스 이상 · 선착순 조기 마감 예상',
+    comboTitle:'샤인머스캣 2kg', comboPartner:'ts_shine_malbok_2',
+    todayLabel:'샤인머스캣 2kg 1박스' },
+  { id:'ts_shine_malbok_2', label:'2박스', colBadge:'17브릭스+', max:9999, flashPrice:31900, origPrice:43800, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'샤인머스캣 2kg',
+    todayLabel:'샤인머스캣 2kg 2박스' },
   // ── 🍇 포도 특가 ──
   { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:7900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3', varietyGroup:'캠벨' },
   { id:'ts_grape_campbell_3', label:'(특) 4송이', max:9999, flashPrice:14900, section:'🍇 포도 특가', comboChild:true, comboTitle:'달콤 캠벨포도', varietyGroup:'캠벨' },
@@ -5531,7 +5536,7 @@ const FLASH_ITEMS = [
   { id:'ts_grape_shine', label:'샤인머스캣 2kg(3수) 1박스', max:9999, flashPrice:21900, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'샤인머스캣' },
   { id:'ts_grape_geobong', label:'거봉 2kg(3수) 1박스', max:9999, flashPrice:20900, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'거봉' },
   // ── 🍉 수박,멜론 특가 ──
-  { id:'f_watermelon_jinan', label:'양구 고랭지 수박 10kg', colBadge:'양구 고랭지', max:9999, flashPrice:31900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 양구 고랭지 · 선별 후 입고' },
+  { id:'f_watermelon_yanggu', label:'양구 고랭지 수박 10kg', colBadge:'양구 고랭지', max:9999, flashPrice:31900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 양구 고랭지 · 선별 후 입고' },
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew_25', fullWidth:true },
   { id:'f_melon_honeydew_25',   label:'허니듀',           max:9999, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
     subOptions: [
@@ -6824,7 +6829,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['f_danhojang_4p', 'f_melon_honeydew_25', 'ts_goguma3kg', 'v23', 'f_avocado', 'ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_baekdo_banmal_4', 'f_watermelon_jinan', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'ts_zucchini'];
+  const TODAY_SPECIAL_IDS = ['f_danhojang_4p', 'ts_shine_malbok_1', 'f_melon_honeydew_25', 'ts_goguma3kg', 'v23', 'f_avocado', 'ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_baekdo_banmal_4', 'f_watermelon_yanggu', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'ts_zucchini'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
@@ -6860,7 +6865,7 @@ setInterval(updateFloatCart, 500);
     const validItems = TODAY_SPECIAL_IDS
       .map(id => ({ id, cat: findCatalogItem(id) }))
       .filter(x => x.cat)
-      .slice(0, 15);
+      .slice(0, 16);
 
     if (!validItems.length) {
       body.innerHTML = `<div style="padding:16px;border-top:1px solid #f0ede8;text-align:center;font-size:12px;color:#999;">이번 주 특가를 준비하고 있습니다.<br>월요일 오전 공개됩니다.</div>`;
