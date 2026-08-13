@@ -2457,9 +2457,8 @@ const vegItems = [
   { id:'v33', num:'33', name:'순두부 2개',              price:1000 },
   { id:'v_egg_malbok_30', num:'🥚', name:'🥚 특란 30구', price:5900, maxQty:1, sold:true, todayLabel:'30구', comboTitle:'🥚 말복 초특가 특란', comboPartner:'v_egg_malbok_60' },
   { id:'v_egg_malbok_60', num:'🥚', name:'🥚 특란 60구', price:12900, maxQty:1, sold:true, todayLabel:'60구' },
-  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7900, maxQty:1 },
-  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888' },
-  { id:'v34u',num:'34', name:'🥚 유정란 30구 (난각1번·무항생제)', price:17900, badge:'유정란 17,900원', badgeColor:'#4caf50' },
+  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7900, maxQty:1, sold:true },
+  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, sold:true, badge:'추가특란 9,000원', badgeColor:'#888' },
 
 ];
 
@@ -3007,7 +3006,7 @@ function renderVegNew() {
     }
     html += newCardRow({ id:item.id, name:item.name, price:item.price, orig:item.orig, badge:item.badge, badgeColor:item.badgeColor, max:max, highlight:item.highlight });
   });
-  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, blur:false, statusText:'품절' }); });
+  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, blur:(item.id==='v34'||item.id==='v35'), statusText:((item.id==='v34'||item.id==='v35') ? '소진' : '품절') }); });
 
   list.innerHTML = html;
   applyStackedLayout();
