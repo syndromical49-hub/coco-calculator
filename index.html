@@ -1712,7 +1712,7 @@ function formatPhone11(digits) {
 
 function formatReorderPhone(el) {
   let v = el.value.replace(/[^0-9]/g, '');
-  if (v.length > 11) v = v.slice(0, 11);
+  if (v.length > 11) v = v.slice(0, 13);
   if (v.length >= 8) v = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7);
   else if (v.length >= 4) v = v.slice(0,3) + '-' + v.slice(3);
   el.value = v;
@@ -2443,9 +2443,9 @@ const vegItems = [
   { id:'v15', num:'16', name:'양상추 1봉',              price:2500 },
   { id:'v16', num:'17', name:'미나리 1봉', sold:true, price:3000 },
   { id:'v22', num:'22', name:'표고버섯 1봉',            price:3500 },
-  { id:'v23', num:'23', name:'새송이버섯 1봉',           price:690, todayLabel:'새송이', comboTitle:'🍄 버섯 3종', comboPartner:'v24', comboPartner2:'v25' },
-  { id:'v24', num:'24', name:'느타리버섯 1봉',           price:690, todayLabel:'느타리' },
-  { id:'v25', num:'25', name:'팽이버섯 1봉(2입)',         price:690, todayLabel:'팽이(2입)' },
+  { id:'v23', num:'23', name:'새송이버섯 1봉',           price:1500 },
+  { id:'v24', num:'24', name:'느타리버섯 1봉',           price:1000 },
+  { id:'v25', num:'25', name:'팽이버섯 1봉(2입)',         price:1000 },
   { id:'v26', num:'26', name:'깐마늘 1봉',              price:3000 },
 
   { id:'v27', num:'27', name:'상추 1봉',                price:1500 },
@@ -2511,7 +2511,7 @@ function cleanPersonName(v) {
 // ── 말복 실속특가 최소주문 예외 ──
 // 기본 최소주문은 2만원. 2종 8입 세트가 19,900원이라 세트만 담으면 막히므로,
 // 해당 품목이 담긴 주문에 한해 19,900원부터 허용한다.
-var MALBOK_PEACH_IDS = ['f_danhojang_4p', 'f_madoka_4p', 'f_peach_set_8p'];
+var MALBOK_PEACH_IDS = [];
 function getMinOrderAmount() {
   try {
     var q = (typeof qtys !== 'undefined') ? qtys : null;
@@ -3536,14 +3536,6 @@ async function changeQty(id, delta, price, max) {
       return;
     }
   }
-  // 버섯 3종 — 품목 구분 없이 합계 5개까지
-  if (typeof MUSHROOM_PROMO_IDS !== 'undefined' && MUSHROOM_PROMO_IDS.includes(id) && delta > 0) {
-    const total = MUSHROOM_PROMO_IDS.reduce((a, x) => a + (qtys[x] || 0), 0);
-    if (total >= MUSHROOM_PROMO_MAX) {
-      showToast('버섯은 품목 구분 없이 총 ' + MUSHROOM_PROMO_MAX + '개까지 담을 수 있어요 😊');
-      return;
-    }
-  }
   // 특가세트 담은 상태에서 특란 5900원 막기 + 7200원 안내
   if (id === 'v34' && delta > 0) {
     const eggSet = specialItems.find(s => (qtys[s.id] || 0) > 0 && s.hasEgg !== false);
@@ -3591,9 +3583,7 @@ async function changeQty(id, delta, price, max) {
 
 // ══ 합계 ══════════════════════════════════
 // ── 특란/수박 등 3만원 이상 프로모션 (해당 품목 자체 금액은 빼고 계산 — 이것만 사서 조건 채우는 것 방지) ──
-const EGG_PROMO_IDS = ['f51_promo', 'v23', 'v24', 'v25'];
-const MUSHROOM_PROMO_IDS = ['v23', 'v24', 'v25'];
-const MUSHROOM_PROMO_MAX = 5;
+const EGG_PROMO_IDS = ['f51_promo'];
 const EGG_PROMO_THRESHOLD = 30000;
 function nonEggSubtotal() {
   let total = 0;
@@ -5513,17 +5503,10 @@ const FLASH_ITEMS = [
   // ── 🍑 복숭아 특가 ──
   { id:'f_hwangdo_danhojang_25', label:'2.5kg(14브릭스)', soldOut:'미입고', max:9999, flashPrice:28900, section:'🍑 복숭아 특가', subLabel:'단호장', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고', comboTitle:'황도(단호장)', comboPartner:'f_hwangdo_danhojang' },
   { id:'f_hwangdo_danhojang', label:'4kg(14브릭스)', max:9999, flashPrice:36900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'황도(단호장)' },
-  { id:'f_baekdo_abu', label:'4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'딱딱이', fullWidth:true, badge:'🔥 선별 후 가장 맛있는 복숭아 입고', comboTitle:'백도 딱딱이' },
+  { id:'f_baekdo_abu', label:'딱딱이 4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'백도', fullWidth:true, badge:'🔥 선별 후 가장 맛있는 복숭아 입고',
+    comboTitle:'백도', comboPartner:'f_baekdo_banmal_4' },
+  { id:'f_baekdo_banmal_4', label:'반말랑이 4kg', soldOut:'입고예정', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
   { id:'f_baekdo_gyeongbong', label:'경봉(10수 이내) 4kg', colBadge:'시즌마감 특가', soldOut:true, max:9999, flashPrice:32900, origPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
-  { id:'f_baekdo_banmal_4', label:'4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'반말랑이', fullWidth:true, badge:'🔥 선별 후 가장 맛있는 복숭아 입고', comboTitle:'백도 반말랑이', comboPartner:'f_jungdo_yecheon_4p' },
-  { id:'f_jungdo_yecheon_4p', label:'애천중도 1팩(4입)', max:9999, flashPrice:10000, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도 반말랑이' },
-  { id:'f_danhojang_4p', label:'단호장 4입', colBadge:'14브릭스+', max:9999, flashPrice:12900, section:'🍑 복숭아 특가', subLabel:'🔥 말복대비 실속특가', fullWidth:true, badge:'🍑 프리미엄 · 받으셔서 바로 드세요',
-    comboTitle:'프리미엄', comboPartner:'f_madoka_4p', comboFull:'f_peach_set_8p',
-    todayLabel:'단호장 4입 1팩(1.2kg전후)' },
-  { id:'f_madoka_4p', label:'마도카 백도 4입', colBadge:'13브릭스+', max:9999, flashPrice:10000, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'프리미엄',
-    todayLabel:'마도카 백도 4입 1팩(1kg전후)' },
-  { id:'f_peach_set_8p', label:'🔥 2종 8입 세트 (단호장4 + 마도카4)', colBadge:'말복 초특가', max:9999, flashPrice:19900, origPrice:22900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'프리미엄',
-    todayLabel:'🔥 2종 8입 세트 · 무료배송', subNote:'단호장 4입 + 마도카 4입\n※ 마도카는 애천중도 및 말랑이 백도 랜덤(13브릭스 이상 선별)' },
   { id:'ts_shine_malbok_1', label:'1박스', colBadge:'17브릭스+', max:9999, flashPrice:16900, origPrice:21900, section:'🍑 복숭아 특가', subLabel:'🍇 샤인머스캣 2kg', fullWidth:true, badge:'🍇 17브릭스 이상 · 선착순 조기 마감 예상',
     comboTitle:'샤인머스캣 2kg', comboPartner:'ts_shine_malbok_2',
     todayLabel:'샤인머스캣 2kg 1박스' },
@@ -6829,7 +6812,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['f_danhojang_4p', 'ts_shine_malbok_1', 'f_melon_honeydew_25', 'ts_goguma3kg', 'v23', 'f_avocado', 'ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_baekdo_banmal_4', 'f_watermelon_yanggu', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'ts_zucchini'];
+  const TODAY_SPECIAL_IDS = ['ts_shine_malbok_1', 'f_melon_honeydew_25', 'ts_goguma3kg', 'f_avocado', 'ts_grape_campbell', 'f_hwangdo_danhojang_25', 'f_baekdo_abu', 'f_watermelon_yanggu', 'f_apple_aori', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'ts_zucchini'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
