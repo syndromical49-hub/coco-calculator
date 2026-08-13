@@ -5441,7 +5441,7 @@ function renderFlashSection() {
                 '<div style="min-width:0;">' +
                   (sfi.colBadge ? '<div style="display:inline-block;background:#c1121f;color:#fff;font-size:10px;font-weight:900;border-radius:100px;padding:2px 8px;margin-bottom:3px;">' + sfi.colBadge + '</div>' : '') +
                   '<div style="font-size:0.9rem;font-weight:900;color:#c1121f;">' + (sfi.todayLabel || sfi.label) + '</div>' +
-                  (sfi.subNote ? '<div style="font-size:0.72rem;color:#8a6d3b;margin-top:1px;">' + sfi.subNote + '</div>' : '') +
+                  (sfi.subNote ? '<div style="font-size:0.72rem;color:#8a6d3b;margin-top:1px;white-space:pre-line;line-height:1.5;">' + sfi.subNote + '</div>' : '') +
                 '</div>' +
                 '<div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">' +
                   (sfi.origPrice ? '<span style="font-size:0.85rem;font-weight:800;color:#9a9a9a;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#c1121f;">' + sfi.origPrice.toLocaleString() + '원</span>' : '') +
@@ -5523,7 +5523,7 @@ const FLASH_ITEMS = [
   { id:'f_madoka_4p', label:'마도카 백도 4입', colBadge:'13브릭스+', max:9999, flashPrice:10000, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'프리미엄',
     todayLabel:'마도카 백도 4입 1팩(1kg전후)' },
   { id:'f_peach_set_8p', label:'🔥 2종 8입 세트 (단호장4 + 마도카4)', colBadge:'말복 초특가', max:9999, flashPrice:19900, origPrice:22900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'프리미엄',
-    todayLabel:'🔥 2종 8입 세트 · 무료배송', subNote:'단호장 4입 + 마도카 백도 4입' },
+    todayLabel:'🔥 2종 8입 세트 · 무료배송', subNote:'단호장 4입 + 마도카 4입\n※ 마도카는 애천중도 및 말랑이 백도 랜덤(13브릭스 이상 선별)' },
   { id:'ts_shine_malbok_1', label:'1박스', colBadge:'17브릭스+', max:9999, flashPrice:16900, origPrice:21900, section:'🍑 복숭아 특가', subLabel:'🍇 샤인머스캣 2kg', fullWidth:true, badge:'🍇 17브릭스 이상 · 선착순 조기 마감 예상',
     comboTitle:'샤인머스캣 2kg', comboPartner:'ts_shine_malbok_2',
     todayLabel:'샤인머스캣 2kg 1박스' },
@@ -6957,7 +6957,7 @@ setInterval(updateFloatCart, 500);
               <div onclick="openProductDetail('${cat.comboFull}')" style="margin-top:7px;background:linear-gradient(100deg,#fff4e6 0%,#ffe3e3 50%,#fff4e6 100%);background-size:200% 100%;animation:cocoShine 2.4s linear infinite;border:2px solid #c1121f;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;">
                 <div style="flex:1;min-width:0;">
                   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">${todayColBadge(fCat)}<span style="font-size:12.5px;font-weight:900;color:#c1121f;line-height:1.35;">${fCat.todayLabel || fCat.rawLabel || fCat.name}</span></div>
-                  ${fCat.subNote ? `<div style="font-size:10.5px;color:#8a6d3b;margin-top:2px;">${fCat.subNote}</div>` : ''}
+                  ${fCat.subNote ? `<div style="font-size:10.5px;color:#8a6d3b;margin-top:2px;white-space:pre-line;line-height:1.5;">${fCat.subNote}</div>` : ''}
                 </div>
                 <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">
                   ${todayOrigSpan(fCat)}
