@@ -2457,8 +2457,8 @@ const vegItems = [
   { id:'v33', num:'33', name:'순두부 2개',              price:1000 },
   { id:'v_egg_malbok_30', num:'🥚', name:'🥚 특란 30구', price:5900, maxQty:1, sold:true, todayLabel:'30구', comboTitle:'🥚 말복 초특가 특란', comboPartner:'v_egg_malbok_60' },
   { id:'v_egg_malbok_60', num:'🥚', name:'🥚 특란 60구', price:12900, maxQty:1, sold:true, todayLabel:'60구' },
-  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7900, maxQty:1, sold:true },
-  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, sold:true, badge:'추가특란 9,000원', badgeColor:'#888' },
+  { id:'v34', num:'34', name:'🥚 특란 30구 1판',        price:7900, maxQty:1 },
+  { id:'v35', num:'35', name:'🥚 추가특란 30구 1판',     price:9000, badge:'추가특란 9,000원', badgeColor:'#888' },
 
 ];
 
@@ -3006,7 +3006,7 @@ function renderVegNew() {
     }
     html += newCardRow({ id:item.id, name:item.name, price:item.price, orig:item.orig, badge:item.badge, badgeColor:item.badgeColor, max:max, highlight:item.highlight });
   });
-  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, blur:(item.id==='v34'||item.id==='v35'), statusText:((item.id==='v34'||item.id==='v35') ? '소진' : '품절') }); });
+  soldItems.forEach(item => { html += newCardRow({ id:item.id, name:item.name, disabled:true, statusText:'품절' }); });
 
   list.innerHTML = html;
   applyStackedLayout();
@@ -5357,7 +5357,7 @@ function renderFlashSection() {
         };
         // topName: 표시 전용 품종명 줄. 지정하면 "품종명 / 규격+가격" 2단으로 나눠 그림(허니듀 옵션과 동일 구조).
         // fi.label 자체는 건드리지 않으므로 itemMeta.name(장바구니·텔레그램·DB 상품명)에는 아무 영향 없음.
-        const colHtml = (name, price, stepper, topName, orig, colBadge) => {
+        const colHtml = (name, price, stepper, topName, orig, colBadge, subNote) => {
           const rest = (topName && name.indexOf(topName) === 0) ? name.slice(topName.length).trim() : name;
           return '<div style="flex:1;min-width:0;text-align:center;padding:0 4px;box-sizing:border-box;">' +
             // 컬럼 배지: 콤보 카드에서 한쪽 상품에만 붙는 표시(카드 전체 badge와 구분됨)
@@ -5371,6 +5371,7 @@ function renderFlashSection() {
             '<div style="display:flex;align-items:baseline;justify-content:center;gap:4px;flex-wrap:wrap;overflow:hidden;">' +
               '<span style="font-size:1.08rem;font-weight:800;color:var(--green);white-space:nowrap;">' + price.toLocaleString() + '원</span>' +
             '</div>' +
+            (subNote ? '<div style="font-size:0.68rem;color:#8a8a8a;line-height:1.35;margin-top:1px;">' + subNote + '</div>' : '') +
             '<div class="flash-stepper" style="margin-top:3px;justify-content:center;gap:6px;">' + stepper + '</div>' +
           '</div>';
         };
@@ -5409,7 +5410,7 @@ function renderFlashSection() {
               ? contactColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.contactPhone)
               : pfi.subOptions
               ? multiColHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.subOptions)
-              : colHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.flashPrice || pmeta.price, pStepper, pfi.nameTop, pfi.origPrice || pmeta.orig, pfi.colBadge)) +
+              : colHtml(pfi.comboTitle ? pfi.label : (pfi.label.replace(comboLabel, '').trim() || pfi.label), pfi.flashPrice || pmeta.price, pStepper, pfi.nameTop, pfi.origPrice || pmeta.orig, pfi.colBadge, pfi.subNote)) +
           '</div>' +
           // 카드 하단 전폭 행(comboFull). 없으면 빈 문자열이라 기존 콤보 카드는 그대로다.
           (function(){
@@ -5504,7 +5505,7 @@ const FLASH_ITEMS = [
   { id:'f_hwangdo_danhojang', label:'4kg(14브릭스)', max:9999, flashPrice:36900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'단호장 골드' },
   { id:'f_baekdo_abu', label:'딱딱이 4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'백도', fullWidth:true, badge:'🔥 선별 후 가장 맛있는 복숭아 입고',
     comboTitle:'백도', comboPartner:'f_baekdo_banmal_4' },
-  { id:'f_baekdo_banmal_4', label:'반말랑이 4kg', soldOut:'입고예정', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
+  { id:'f_baekdo_banmal_4', label:'반말랑이 4kg', colBadge:'13브릭스+', max:9999, flashPrice:32900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도', subNote:'천중도 · 애천 · 마도카 중 랜덤입고' },
   { id:'f_baekdo_gyeongbong', label:'경봉(10수 이내) 4kg', colBadge:'시즌마감 특가', soldOut:true, max:9999, flashPrice:32900, origPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
   // ── 🍇 포도 특가 ──
   { id:'ts_grape_campbell', label:'(특) 2송이', max:9999, flashPrice:7900, section:'🍇 포도 특가', comboTitle:'달콤 캠벨포도', comboPartner:'ts_grape_campbell_3', varietyGroup:'캠벨' },
@@ -6971,7 +6972,7 @@ setInterval(updateFloatCart, 500);
                   ${cat.soldOut ? mainSoldHtml : mainLiveHtml}
                 </div>
                 <div onclick="openProductDetail('${cat.comboPartner}')" style="flex:1;min-width:0;background:#f9f7f2;border-radius:8px;padding:8px 10px;box-sizing:border-box;cursor:pointer;${pCat.soldOut?'opacity:0.5;':''}">
-                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.todayLabel||pCat.rawLabel||pCat.name}</span>${todayColBadge(pCat)}${todayOrigSpan(pCat)}</div>
+                  <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:2px;"><span style="font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${pCat.todayLabel||pCat.rawLabel||pCat.name}</span>${todayColBadge(pCat)}${todayOrigSpan(pCat)}</div>${pCat.subNote ? `<div style="font-size:9.5px;color:#8a8a8a;line-height:1.4;margin-bottom:2px;">${pCat.subNote}</div>` : ''}
                   ${pCat.soldOut ? partnerSoldHtml : partnerLiveHtml}
                 </div>
                 ${col3Html}
