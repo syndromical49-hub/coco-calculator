@@ -5445,6 +5445,32 @@ function renderFlashSection() {
         continue;
       }
     }
+    // 단독 카드 soldOut:'문자열' — 이름·가격을 블러 처리하고 문구만 노출한다.
+    // (콤보 카드는 위쪽 soldColHtml 경로에서 이미 처리된다.)
+    if (fi.soldOut && !fi.chatOrder) {
+      const sCard = document.createElement('div');
+      sCard.id = 'card-' + fi.id;
+      sCard.className = 'flash-card';
+      sCard.style.cursor = 'default';
+      sCard.style.position = 'relative';
+      if (fi.fullWidth) sCard.style.gridColumn = '1 / -1';
+      if (fi.gridCol) sCard.style.gridColumn = fi.gridCol;
+      if (fi.gridRow) sCard.style.gridRow = fi.gridRow;
+      sCard.innerHTML =
+        '<div style="filter:blur(3px);pointer-events:none;user-select:none;">' +
+          (fi.badge ? '<div style="background:linear-gradient(90deg,#c1121f,#ff4d4d);color:#fff;font-size:0.82rem;font-weight:900;padding:4px 6px;margin:-4px -6px 6px;border-radius:6px 6px 0 0;text-align:center;letter-spacing:-0.2px;">' + fi.badge + '</div>' : '') +
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:4px;margin-bottom:2px;">' +
+            '<div class="flash-name" style="flex:1;">' + meta.name + '</div>' +
+            '<div style="text-align:right;white-space:nowrap;flex-shrink:0;"><span class="flash-price">' + (fi.flashPrice || meta.price).toLocaleString() + '원</span></div>' +
+          '</div>' +
+          '<div class="flash-counter"><div class="flash-stepper"><button class="flash-btn-add" disabled>＋</button></div></div>' +
+        '</div>' +
+        '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">' +
+          '<span style="font-size:0.92rem;font-weight:900;color:#c1121f;background:rgba(255,255,255,0.92);padding:5px 13px;border-radius:8px;">' + (typeof fi.soldOut === 'string' ? fi.soldOut : '품절') + '</span>' +
+        '</div>';
+      grid.appendChild(sCard);
+      continue;
+    }
     const stepperHtml = sold
       ? '<button class="flash-btn-add" disabled style="opacity:0.3;cursor:not-allowed;">마감</button>'
       : '<button class="flash-btn-sub" onclick="event.stopPropagation();changeQty(\'' + fid + '\',-1,' + meta.price + ',' + (fi.maxQty||9999) + ')">－</button>' +
@@ -5517,11 +5543,11 @@ const FLASH_ITEMS = [
     todayLabel:'샤인머스캣 4kg(6수)' },
   { id:'ts_grape_geobong', label:'거봉 2kg(3수) 1박스', max:9999, flashPrice:20900, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'거봉' },
   // ── 🍉 수박,멜론 특가 ──
-  { id:'f_watermelon_yanggu', label:'양구 고랭지 수박 10kg', colBadge:'선별 후 입고', max:9999, flashPrice:31900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 양구 고랭지 · 선별 후 입고' },
+  { id:'f_watermelon_yanggu', label:'양구 고랭지 수박 10kg', colBadge:'선별 후 입고', soldOut:'선별 후 입고', max:9999, flashPrice:31900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 양구 고랭지 · 선별 후 입고' },
   { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew_25', fullWidth:true },
   { id:'f_melon_honeydew_25',   label:'허니듀',           max:9999, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
     subOptions: [
-      { id:'f_melon_honeydew_25', label:'2.5kg전후', flashPrice:12900, maxQty:9999 }
+      { id:'f_melon_honeydew_25', label:'2.5kg전후', flashPrice:10900, maxQty:9999 }
     ]
   },
   // ── 🍏 사과 특가 ──
@@ -6812,7 +6838,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['ts_cherry_1kg', 'ts_grape_shine', 'f_danhojang_1p', 'f_baekdo_abu', 'f_apple_aori', 'f_melon_honeydew_25', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'ts_zucchini'];
+  const TODAY_SPECIAL_IDS = ['ts_cherry_1kg', 'f_melon_honeydew_25', 'ts_grape_shine', 'f_danhojang_1p', 'f_baekdo_abu', 'f_apple_aori', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'ts_zucchini'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
