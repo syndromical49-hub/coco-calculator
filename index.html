@@ -2416,11 +2416,11 @@ const vegItems = [
   { id:'ts_gamja2', num:'🥔', name:'🥔 수미햇감자 2봉(2kg↑)', desc:'수미햇감자 2봉(2kg↑)', orig:8000, price:4900, highlight:true },
   { id:'v2b', num:'묶음', name:'🧅 양파 2kg이상', price:3900, orig:4000, badge:'묶음특가', badgeColor:'#c1121f', highlight:true },
   { id:'ts_goguma2kg', num:'🍠', name:'🍠 베니하루카(밤+호박) 꿀 고구마 2kg', desc:'베니하루카(밤+호박) 꿀 고구마(당도최고조) 2kg', price:9900, highlight:true },
-  { id:'v_oi5', num:'오이', name:'🥒 오이(특) 5개', desc:'오이(특) 5개 (쓰지않는 품종)', price:2000, highlight:true },
-  { id:'ts_oigaji10', num:'가지', name:'🍆 가지(특) 5개', desc:'가지(특) 5개', price:1000, highlight:true },
+  { id:'v_oi4', num:'오이', name:'🥒 오이(특) 4개', desc:'오이(특) 4개 (쓰지않는 품종)', price:2000, highlight:true },
+  { id:'v_gaji3', num:'가지', name:'🍆 가지(특) 3개', desc:'가지(특) 3개', price:1000, highlight:true },
   { id:'v10', num:'10', name:'아삭이고추 1봉',          price:1500, highlight:true },
   { id:'v21', num:'21', name:'콩나물(400g이상)',         price:500, highlight:true },
-  { id:'ts_zucchini', num:'13', name:'🥒 애호박 3개',              price:2000, highlight:true },
+  { id:'v_zucchini_2', num:'13', name:'🥒 애호박 2개',              price:1500, highlight:true },
 
   // ── 🔥 오늘의 채소 특가 (900원 묶음 맨위 → 나머지 가격 내림차순) ──
   { id:'v7',  num:'7',  name:'양배추 1통',             price:3000 },
@@ -6838,7 +6838,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['ts_cherry_1kg', 'f_melon_honeydew_25', 'ts_grape_shine', 'f_danhojang_1p', 'f_baekdo_abu', 'f_apple_aori', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'ts_zucchini'];
+  const TODAY_SPECIAL_IDS = ['ts_cherry_1kg', 'f_melon_honeydew_25', 'ts_grape_shine', 'f_danhojang_1p', 'f_baekdo_abu', 'f_apple_aori', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'v_zucchini_2'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
