@@ -6706,15 +6706,34 @@ setInterval(updateFloatCart, 500);
     </div>
 
     <div id="mycc-setup-form" style="display:none;background:#fffdf5;border:1.5px solid #ffd166;border-radius:12px;padding:16px;">
-      <div style="font-size:12.5px;color:#777;margin-bottom:10px;">주문하실 때 사용하신 <b>전화번호</b>와 <b>이름</b>을 입력하시면, 앞으로 쓰실 PIN을 만들어드려요</div>
-      <input id="mycc-setup-phone" type="tel" placeholder="전화번호" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;margin-bottom:7px;">
-      <input id="mycc-setup-name" type="text" placeholder="이름 (주문 시 입력한 이름)" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;margin-bottom:7px;">
-      <input id="mycc-setup-pin" type="password" inputmode="numeric" maxlength="6" placeholder="새로 만들 PIN 6자리" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;margin-bottom:10px;letter-spacing:4px;">
-      <div id="mycc-setup-error" style="display:none;color:#c1121f;font-size:12px;font-weight:700;margin-bottom:8px;"></div>
-      <button onclick="myccDoSetup()" style="width:100%;background:#ffd166;color:#5a4400;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:900;cursor:pointer;">PIN 만들기</button>
+      <div style="font-size:12.5px;color:#777;margin-bottom:10px;">주문하실 때 사용하신 <b>전화번호</b>로 휴대폰 인증을 하시면, 앞으로 쓰실 PIN을 만들어드려요</div>
+
+      <div style="display:flex;gap:6px;margin-bottom:7px;">
+        <input id="mycc-setup-phone" type="tel" inputmode="numeric" placeholder="전화번호" style="flex:1;min-width:0;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;">
+        <button id="mycc-otp-send-btn" onclick="myccSendOtp()" style="flex-shrink:0;background:#5a4400;color:#fff;border:none;border-radius:8px;padding:0 13px;font-size:12.5px;font-weight:900;cursor:pointer;white-space:nowrap;">인증번호 받기</button>
+      </div>
+
+      <div id="mycc-otp-box" style="display:none;margin-bottom:7px;">
+        <div style="display:flex;gap:6px;">
+          <input id="mycc-otp-code" type="tel" inputmode="numeric" maxlength="6" placeholder="인증번호 6자리" style="flex:1;min-width:0;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;letter-spacing:3px;">
+          <button id="mycc-otp-verify-btn" onclick="myccVerifyOtp()" style="flex-shrink:0;background:#5a4400;color:#fff;border:none;border-radius:8px;padding:0 16px;font-size:12.5px;font-weight:900;cursor:pointer;white-space:nowrap;">인증하기</button>
+        </div>
+        <div id="mycc-otp-timer" style="font-size:11.5px;color:#888;margin-top:5px;"></div>
+      </div>
+
+      <div id="mycc-otp-error" style="display:none;color:#c1121f;font-size:12px;font-weight:700;margin-bottom:8px;"></div>
+
+      <div id="mycc-otp-ok" style="display:none;background:#eaf7ea;border:1px solid #b6dfb6;border-radius:8px;padding:9px 11px;font-size:12px;font-weight:800;color:#2d6a2d;margin-bottom:9px;">✅ 인증 완료 · 30분 이내 PIN을 설정해주세요</div>
+
+      <div id="mycc-setup-step2" style="display:none;">
+        <input id="mycc-setup-name" type="text" placeholder="이름 (주문 시 입력한 이름)" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;margin-bottom:7px;">
+        <input id="mycc-setup-pin" type="password" inputmode="numeric" maxlength="6" placeholder="새로 만들 PIN 6자리" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13.5px;margin-bottom:10px;letter-spacing:4px;">
+        <div id="mycc-setup-error" style="display:none;color:#c1121f;font-size:12px;font-weight:700;margin-bottom:8px;"></div>
+        <button onclick="myccDoSetup()" style="width:100%;background:#ffd166;color:#5a4400;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:900;cursor:pointer;">PIN 만들기</button>
+      </div>
+
       <div style="text-align:center;font-size:11.5px;color:#777;margin-top:10px;cursor:pointer;text-decoration:underline;" onclick="myccShowLogin()">이미 PIN이 있어요</div>
     </div>
-
     <div id="mycc-result" style="display:none;"></div>
   </div>
 </div>
@@ -6730,8 +6749,126 @@ setInterval(updateFloatCart, 500);
     } catch(e) {}
     myccShowLogin();
   };
-  window.myccShowSetup = function(){ el('mycc-form').style.display='none'; el('mycc-setup-form').style.display='block'; el('mycc-result').style.display='none'; };
+  window.myccShowSetup = function(){ el('mycc-form').style.display='none'; el('mycc-setup-form').style.display='block'; el('mycc-result').style.display='none'; if (typeof myccResetOtp === 'function') myccResetOtp(); };
   window.myccShowLogin = function(){ el('mycc-setup-form').style.display='none'; el('mycc-result').style.display='none'; el('mycc-form').style.display='block'; };
+
+  // ── 휴대폰 SMS 인증 (신규 PIN 설정 전용 게이트) ──────────────────
+  // ⚠ 아래 인증 상태는 UX용일 뿐이다. 실제 차단은 setup_or_verify_pin 서버 게이트가 한다.
+  //    (SMS 미인증 시 서버가 SMS_NOT_VERIFIED 반환)
+  const SBPROXY_URL = 'https://cocobasket-danji.vercel.app/api/sbproxy';
+  let _otpTimer = null;
+
+  function otpErr(msg){ const e = el('mycc-otp-error'); e.textContent = msg; e.style.display = msg ? 'block' : 'none'; }
+
+  function otpStartCooldown(sec){
+    if (_otpTimer) { clearInterval(_otpTimer); _otpTimer = null; }
+    let left = Math.max(0, parseInt(sec, 10) || 0);
+    const btn = el('mycc-otp-send-btn'), lab = el('mycc-otp-timer');
+    function tick(){
+      // 모달이 닫혔으면 타이머를 정리한다 (알리고 과금과 무관하나 누수 방지)
+      const modal = document.getElementById('mycc-modal');
+      if (!modal || modal.style.display === 'none') { clearInterval(_otpTimer); _otpTimer = null; return; }
+      if (left <= 0) {
+        clearInterval(_otpTimer); _otpTimer = null;
+        if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.textContent = '인증번호 다시 받기'; }
+        if (lab) lab.textContent = '';
+        return;
+      }
+      if (btn) { btn.disabled = true; btn.style.opacity = '0.45'; btn.textContent = '재전송 ' + left + '초'; }
+      if (lab) lab.textContent = '문자가 오지 않으면 ' + left + '초 후 다시 받으실 수 있어요';
+      left--;
+    }
+    tick();
+    _otpTimer = setInterval(tick, 1000);
+  }
+
+  window.myccResetOtp = function(){
+    if (_otpTimer) { clearInterval(_otpTimer); _otpTimer = null; }
+    const ids = ['mycc-otp-box','mycc-otp-ok','mycc-setup-step2','mycc-otp-error'];
+    ids.forEach(function(i){ const n = el(i); if (n) n.style.display = 'none'; });
+    const c = el('mycc-otp-code'); if (c) c.value = '';
+    const t = el('mycc-otp-timer'); if (t) t.textContent = '';
+    const b = el('mycc-otp-send-btn'); if (b) { b.disabled = false; b.style.opacity = '1'; b.textContent = '인증번호 받기'; }
+    const se = el('mycc-setup-error'); if (se) se.style.display = 'none';
+  };
+
+  window.myccSendOtp = async function(){
+    const phone = el('mycc-setup-phone').value.trim();
+    otpErr('');
+    if (!phone) { otpErr('전화번호를 입력해주세요'); return; }
+    const btn = el('mycc-otp-send-btn');
+    btn.disabled = true; btn.style.opacity = '0.45'; btn.textContent = '발송 중...';
+    try {
+      const res = await fetch(SBPROXY_URL + '?path=sms-send', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phone })
+      });
+      const data = await res.json().catch(function(){ return {}; });
+      // ⚠ sent:false 도 HTTP 200 으로 온다. res.ok 로 판단하면 안 된다.
+      if (data.sent === true) {
+        el('mycc-otp-box').style.display = 'block';
+        const c = el('mycc-otp-code'); if (c) c.focus();
+        otpStartCooldown(60);
+        showToast('📩 인증번호를 보냈어요 (5분 이내 입력)');
+        return;
+      }
+      const msgs = {
+        INVALID_PHONE: '휴대폰 번호를 확인해주세요',
+        TOO_SOON: (data.retry_after || 60) + '초 후 다시 시도해주세요',
+        RATE_LIMITED_PHONE_HOUR: '잠시 후 다시 시도해주세요',
+        RATE_LIMITED_PHONE_DAY: '내일 다시 시도해주세요',
+        RATE_LIMITED_IP: '잠시 후 다시 시도해주세요'
+      };
+      if (data.error === 'TOO_SOON') { otpStartCooldown(data.retry_after || 60); }
+      else { btn.disabled = false; btn.style.opacity = '1'; btn.textContent = '인증번호 받기'; }
+      if (data.error && !msgs[data.error]) console.error('[sms-send]', data);
+      otpErr(msgs[data.error] || '문자 발송에 실패했어요. 잠시 후 다시 시도해주세요');
+    } catch(e) {
+      console.error('[sms-send]', e);
+      btn.disabled = false; btn.style.opacity = '1'; btn.textContent = '인증번호 받기';
+      otpErr('문자 발송에 실패했어요. 잠시 후 다시 시도해주세요');
+    }
+  };
+
+  window.myccVerifyOtp = async function(){
+    const phone = el('mycc-setup-phone').value.trim();
+    const code = el('mycc-otp-code').value.trim();
+    otpErr('');
+    if (!/^[0-9]{6}$/.test(code)) { otpErr('6자리 숫자를 입력해주세요'); return; }
+    const btn = el('mycc-otp-verify-btn');
+    btn.disabled = true; btn.style.opacity = '0.45'; btn.textContent = '확인 중...';
+    try {
+      const res = await fetch(SBPROXY_URL + '?path=sms-verify', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phone, code: code })
+      });
+      const data = await res.json().catch(function(){ return {}; });
+      if (data.success === true) {
+        // verified_at 은 서버로 되돌려 보내지 않는다. 저장하지도 않는다.
+        if (_otpTimer) { clearInterval(_otpTimer); _otpTimer = null; }
+        el('mycc-otp-box').style.display = 'none';
+        el('mycc-otp-ok').style.display = 'block';
+        el('mycc-setup-step2').style.display = 'block';
+        const n = el('mycc-setup-name'); if (n) n.focus();
+        return;
+      }
+      const msgs = {
+        INVALID_CODE_FORMAT: '6자리 숫자를 입력해주세요',
+        NO_REQUEST: '인증번호를 먼저 요청해주세요',
+        EXPIRED: '인증번호가 만료됐어요. 다시 받아주세요',
+        ALREADY_USED: '인증번호를 다시 받아주세요',
+        WRONG_CODE: '인증번호가 맞지 않아요' + (data.fail_count ? ' (' + data.fail_count + '/5)' : ''),
+        TOO_MANY_ATTEMPTS: '인증번호를 다시 받아주세요'
+      };
+      if (data.error && !msgs[data.error]) console.error('[sms-verify]', data);
+      otpErr(msgs[data.error] || '인증에 실패했어요. 다시 시도해주세요');
+    } catch(e) {
+      console.error('[sms-verify]', e);
+      otpErr('인증에 실패했어요. 잠시 후 다시 시도해주세요');
+    } finally {
+      btn.disabled = false; btn.style.opacity = '1'; btn.textContent = '인증하기';
+    }
+  };
 
   // 🔁 첫화면 "최근주문 다시담기" 버튼 — 로그인 돼있으면 바로 재주문, 아니면 나의코코바스켓 열어서 로그인 유도
   window.quickReorder = function(){
@@ -7406,7 +7543,7 @@ setInterval(updateFloatCart, 500);
       });
       const data = await res.json();
       if (!data.success) {
-        const msgs = { NOT_FOUND:'가입된 주문 내역을 찾을 수 없어요. 먼저 주문을 한 번 진행해주세요', NAME_MISMATCH:'주문하신 이름과 달라요. 다시 확인해주세요', INVALID_PIN_FORMAT:'PIN은 숫자 6자리여야 해요' };
+        const msgs = { NOT_FOUND:'가입된 주문 내역을 찾을 수 없어요. 먼저 주문을 한 번 진행해주세요', NAME_MISMATCH:'주문하신 이름과 달라요. 다시 확인해주세요', INVALID_PIN_FORMAT:'PIN은 숫자 6자리여야 해요', SMS_NOT_VERIFIED:'휴대폰 인증을 먼저 완료해주세요.' };
         errEl.textContent = msgs[data.error] || '설정에 실패했어요'; errEl.style.display='block'; return;
       }
       myccShowLogin();
