@@ -2420,7 +2420,6 @@ const vegItems = [
   { id:'v_gaji3', num:'가지', name:'🍆 가지(특) 3개', desc:'가지(특) 3개', price:1000, highlight:true },
   { id:'v10', num:'10', name:'아삭이고추 1봉',          price:1500, highlight:true },
   { id:'v21', num:'21', name:'콩나물(400g이상)',         price:500, highlight:true },
-  { id:'v_zucchini_2', num:'13', name:'🥒 애호박 2개',              price:1500, highlight:true },
 
   // ── 🔥 오늘의 채소 특가 (900원 묶음 맨위 → 나머지 가격 내림차순) ──
   { id:'v7',  num:'7',  name:'양배추 1통',             price:3000 },
@@ -5527,6 +5526,7 @@ const MEMBER_PRICES = {
 
 const FLASH_ITEMS = [
   // ── 🍑 복숭아 특가 ──
+  { id:'f_goldroman_1p', label:'1팩(4입)', colBadge:'딱복 · 13브릭스', max:9999, flashPrice:13900, origPrice:15900, section:'🍑 복숭아 특가', subLabel:'골드로망', todayLabel:'골드로망(딱복) 1팩 4입', fullWidth:true, badge:'🔥 선착순 초특가 · 딱복 골드로망 13브릭스' },
   { id:'f_danhojang_1p', label:'1팩(4~5입 랜덤)', max:9999, flashPrice:12900, section:'🍑 복숭아 특가', subLabel:'단호장', fullWidth:true, badge:'🔥 초특가 · 황도 · 선별 후 랜덤입고', comboTitle:'단호장', comboPartner:'f_hwangdo_danhojang' },
   { id:'f_hwangdo_danhojang', label:'4kg(14브릭스)', max:9999, flashPrice:36900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'단호장' },
   { id:'f_baekdo_abu', label:'딱딱이 4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'백도', fullWidth:true, badge:'🔥 선별 후 가장 맛있는 복숭아 입고',
@@ -5565,8 +5565,10 @@ const FLASH_ITEMS = [
   { id:'f_delmonte_banana',  label:'델몬트 하이랜드 허니바나나 1송이',        max:9999, flashPrice:3500,                   section:'🍈 델몬트 특가', comboPartner:'f_delmonte_banana2', fullWidth:true },
   { id:'f_delmonte_banana2', label:'델몬트 하이랜드 허니바나나 2송이',        max:9999, flashPrice:6000,                   section:'🍈 델몬트 특가', comboChild:true },
   // ── 🥬 채소 (전부 하나로 묶어서 맨 아래) ──
-  { id:'v_paprika_1', label:'🫑 스위트 미니 파프리카 250g×1팩', max:9999, flashPrice:4000, section:'🥬 채소', badge:'🔥 완전 강추!' },
-  { id:'v_paprika_2', label:'🫑 스위트 미니 파프리카 250g×2팩', max:9999, flashPrice:7000, section:'🥬 채소', badge:'🔥 완전 강추!' },
+  { id:'v_paprika_1', label:'🫑 스위트 미니 파프리카 250g×1팩', soldOut:'미입고', max:9999, flashPrice:4000, section:'🥬 채소', badge:'🔥 완전 강추!' },
+  { id:'v_paprika_2', label:'🫑 스위트 미니 파프리카 250g×2팩', soldOut:'미입고', max:9999, flashPrice:7000, section:'🥬 채소', badge:'🔥 완전 강추!' },
+  { id:'v_zucchini_2', label:'2개', max:9999, flashPrice:1500, section:'🥬 채소', comboTitle:'🥒 애호박', comboPartner:'v_zucchini_5', fullWidth:true, todayLabel:'애호박 2개' },
+  { id:'v_zucchini_5', label:'5개', max:9999, flashPrice:2900, section:'🥬 채소', comboChild:true, comboTitle:'🥒 애호박', todayLabel:'애호박 5개' },
   { id:'v_corn_eol10', label:'🌽 찰옥수수(대학찰,미백,얼룩이,흑찰 랜덤) 10개', max:9999, flashPrice:5500, section:'🥬 채소' },
   { id:'v36b',           label:'찰토마토 2봉',                               max:9999, flashPrice:6000,  origPrice:8000,  section:'🥬 채소' },
 ];
@@ -6752,6 +6754,17 @@ setInterval(updateFloatCart, 500);
   window.myccShowSetup = function(){ el('mycc-form').style.display='none'; el('mycc-setup-form').style.display='block'; el('mycc-result').style.display='none'; if (typeof myccResetOtp === 'function') myccResetOtp(); };
   window.myccShowLogin = function(){ el('mycc-setup-form').style.display='none'; el('mycc-result').style.display='none'; el('mycc-form').style.display='block'; };
 
+  // PIN 미설정 고객: 안내문만 띄우고 버튼을 찾게 하지 않는다.
+  // 개인정보(주문내역·주소) 조회 전에 SMS 본인인증 → PIN 설정으로 즉시 보낸다.
+  window.myccGotoSetup = function(phone){
+    const modal = document.getElementById('mycc-modal');
+    if (modal) modal.style.display = 'block';
+    myccShowSetup();
+    const p = el('mycc-setup-phone');
+    if (p && phone) p.value = phone;
+    showToast('📱 처음이시네요! 휴대폰 인증 후 PIN을 만들어드릴게요');
+  };
+
   // ── 휴대폰 SMS 인증 (신규 PIN 설정 전용 게이트) ──────────────────
   // ⚠ 아래 인증 상태는 UX용일 뿐이다. 실제 차단은 setup_or_verify_pin 서버 게이트가 한다.
   //    (SMS 미인증 시 서버가 SMS_NOT_VERIFIED 반환)
@@ -6975,7 +6988,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['ts_cherry_1kg', 'f_melon_honeydew_25', 'ts_grape_shine', 'f_danhojang_1p', 'f_baekdo_abu', 'f_apple_aori', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v_paprika_2', 'v21', 'v_zucchini_2'];
+  const TODAY_SPECIAL_IDS = ['ts_cherry_1kg', 'f_melon_honeydew_25', 'ts_grape_shine', 'f_goldroman_1p', 'f_danhojang_1p', 'f_baekdo_abu', 'f_apple_aori', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v21', 'v_zucchini_2'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
@@ -7163,7 +7176,7 @@ setInterval(updateFloatCart, 500);
         return peachBadgeHtml + `
           <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid #f0ede8;opacity:0.5;">
             <div style="flex:1;min-width:0;">
-              <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;"><span style="font-size:12.5px;font-weight:700;color:#1a0f00;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cleanName}</span>${todayColBadge(cat)}${todayOrigSpan(cat)}</div>
+              <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;"><span style="font-size:12.5px;font-weight:700;color:#1a0f00;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cat.todayLabel||cleanName}</span>${todayColBadge(cat)}${todayOrigSpan(cat)}</div>
               <div style="font-size:12px;font-weight:800;color:#999;">품절</div>
             </div>
             <button disabled style="flex-shrink:0;background:#eee;color:#aaa;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:not-allowed;">품절</button>
@@ -7172,7 +7185,7 @@ setInterval(updateFloatCart, 500);
       return peachBadgeHtml + `
         <div onclick="openProductDetail('${id}')" style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid #f0ede8;cursor:pointer;">
           <div style="flex:1;min-width:0;">
-            <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;"><span style="font-size:12.5px;font-weight:700;color:#1a0f00;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cleanName}</span>${todayColBadge(cat)}</div>
+            <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;"><span style="font-size:12.5px;font-weight:700;color:#1a0f00;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cat.todayLabel||cleanName}</span>${todayColBadge(cat)}</div>
             <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;">${todayOrigSpan(cat)}<span style="font-size:13.5px;font-weight:900;color:#c1121f;">${cat.price.toLocaleString()}원</span></div>
           </div>
           <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:pointer;min-width:64px;">+ 담기</button>
@@ -7326,6 +7339,7 @@ setInterval(updateFloatCart, 500);
       });
       const data = await res.json();
       if (!data.success) {
+        if (data.error === 'PIN_NOT_SET') { myccGotoSetup(phone); return; }
         const msgs = { NOT_FOUND:'가입된 회원 정보가 없어요', PIN_NOT_SET:'PIN이 아직 없으세요. 아래에서 만들어주세요', WRONG_PIN:'PIN이 일치하지 않아요' };
         errEl.textContent = msgs[data.error] || '조회에 실패했어요'; errEl.style.display='block'; return;
       }
@@ -7518,6 +7532,7 @@ setInterval(updateFloatCart, 500);
       });
       const data = await res.json();
       if (!data.success) {
+        if (data.error === 'PIN_NOT_SET') { myccGotoSetup(phone); return; }
         const msgs = { NOT_FOUND:'가입된 회원 정보가 없어요', PIN_NOT_SET:'PIN이 아직 없으세요. 아래 "PIN 처음 만들기"를 눌러주세요', WRONG_PIN:'PIN이 일치하지 않아요' };
         errEl.textContent = msgs[data.error] || '조회에 실패했어요'; errEl.style.display='block'; return;
       }
@@ -7537,18 +7552,32 @@ setInterval(updateFloatCart, 500);
     const errEl = el('mycc-setup-error'); errEl.style.display = 'none';
     if (!phone || !name || !/^[0-9]{6}$/.test(pin)) { errEl.textContent = '전화번호·이름·PIN(6자리 숫자)을 모두 입력해주세요'; errEl.style.display='block'; return; }
     try {
-      const res = await fetch(SB_URL + '/rest/v1/rpc/setup_or_verify_pin', {
+      // 가입은 register_with_sms (SMS 인증 필수). setup_or_verify_pin 은 로그인 전용으로 분리됨.
+      // p_address 는 선택이며 계산기 가입 폼에서는 받지 않는다 (주문 시 입력한 주소를 쓴다).
+      const res = await fetch(SB_URL + '/rest/v1/rpc/register_with_sms', {
         method: 'POST', headers: { 'Content-Type':'application/json', apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY },
-        body: JSON.stringify({ p_phone: phone, p_name: name, p_pin: pin })
+        body: JSON.stringify({ p_phone: phone, p_pin: pin, p_name: name })
       });
       const data = await res.json();
       if (!data.success) {
-        const msgs = { NOT_FOUND:'가입된 주문 내역을 찾을 수 없어요. 먼저 주문을 한 번 진행해주세요', NAME_MISMATCH:'주문하신 이름과 달라요. 다시 확인해주세요', INVALID_PIN_FORMAT:'PIN은 숫자 6자리여야 해요', SMS_NOT_VERIFIED:'휴대폰 인증을 먼저 완료해주세요.' };
-        errEl.textContent = msgs[data.error] || '설정에 실패했어요'; errEl.style.display='block'; return;
+        const msgs = { SMS_NOT_VERIFIED:'휴대폰 인증을 먼저 완료해주세요.', ALREADY_REGISTERED:'이미 PIN이 있는 번호예요. 아래에서 로그인해주세요', NAME_REQUIRED:'이름을 입력해주세요', INVALID_PHONE:'휴대폰 번호를 확인해주세요', INVALID_PIN_FORMAT:'PIN은 숫자 6자리여야 해요' };
+        errEl.textContent = msgs[data.error] || '가입에 실패했어요'; errEl.style.display='block';
+        if (data.error === 'ALREADY_REGISTERED') { myccShowLogin(); el('mycc-phone').value = phone; }
+        // 인증 만료(30분 초과)/이미 소비됨 → 이름·PIN 칸을 닫고 휴대폰 인증부터 다시 받게 한다.
+        // (인증 성공 시 인증번호 입력칸을 숨기므로, 되돌리지 않으면 재인증할 자리가 없다)
+        if (data.error === 'SMS_NOT_VERIFIED') {
+          myccResetOtp();
+          const oe = el('mycc-otp-error');
+          oe.textContent = '인증이 만료됐어요. 휴대폰 인증을 다시 해주세요'; oe.style.display = 'block';
+        }
+        return;
       }
+      // 가입 성공 → 방금 만든 PIN 으로 바로 로그인시켜 내 정보를 보여준다.
       myccShowLogin();
       el('mycc-phone').value = phone;
-      showToast('✅ PIN이 설정됐어요! 이제 조회해보세요');
+      el('mycc-pin').value = pin;
+      showToast('✅ 가입 완료! 내 정보를 불러올게요');
+      if (typeof myccVerify === 'function') myccVerify();
     } catch(e) { errEl.textContent = '오류가 발생했어요'; errEl.style.display='block'; }
   };
 
