@@ -2181,9 +2181,10 @@ function onPhoneInputForAddr(raw) {
     }
   }).catch(function () {});
   // 현금영수증 자동완성은 원래 inp-phone 의 onblur 에만 걸려 있어, 모바일에서 blur 없이
-  // 다음 단계로 넘어가면 채워지지 않았다. 11자리 완성 시점에도 한 번 돌린다.
-  // 함수 내부에 중복 실행 가드가 없으므로 같은 번호로 두 번 돌아도 결과는 동일하다.
-  try { if (typeof loadCashReceiptPhonePref === 'function') loadCashReceiptPhonePref(); } catch (e) {}
+  // 다음 단계로 넘어가면 채워지지 않았다. 11자리 완성 시점에도 돌려준다.
+  // ⚠ loadCashReceiptPhonePref 를 여기서 직접 부르지 않는다.
+  //    syncCustomerPrefsToForm 이 내부에서 이미 호출하며 _crSyncedPhone 가드까지 갖고 있다.
+  //    직접 호출을 함께 두면 같은 번호로 coco_customer_profile 이 2회 나간다.
   try { if (typeof syncCustomerPrefsToForm === 'function') syncCustomerPrefsToForm(phone); } catch (e) {}
   let _e3 = '';
   callRpc('coco_customer_addresses', { p_phone: phone }, function(m){ _e3 = m; }).then(function (ar) {
