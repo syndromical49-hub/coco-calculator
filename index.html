@@ -5259,7 +5259,8 @@ function renderFlashSection() {
     for (const fi of sectionMap[secName]) {
       if (fi.comboChild || fi.tbaOnly) continue;
       if (!itemMeta[fi.id]) {
-        itemMeta[fi.id] = { name: fi.comboTitle ? (fi.comboTitle + ' ' + fi.label) : fi.label, price: fi.flashPrice || 0 };
+        const _pfx1 = fi.comboTitle || ((fi.subLabel && fi.label.indexOf(fi.subLabel) < 0) ? fi.subLabel : '');
+        itemMeta[fi.id] = { name: _pfx1 ? (_pfx1 + ' ' + fi.label) : fi.label, price: fi.flashPrice || 0 };
       }
       if (fi.subOptions) {
         fi.subOptions.forEach(function(o){
@@ -5306,7 +5307,8 @@ function renderFlashSection() {
     let meta = itemMeta[fi.id];
     if (!meta) {
       // itemMeta 아직 없으면 기본값 (comboTitle 있으면 풀네임으로 저장 — 장바구니/텔레그램 표시용)
-      meta = { name: fi.comboTitle ? (fi.comboTitle + ' ' + fi.label) : fi.label, price: fi.flashPrice || 0 };
+      const _pfx2 = fi.comboTitle || ((fi.subLabel && fi.label.indexOf(fi.subLabel) < 0) ? fi.subLabel : '');
+      meta = { name: _pfx2 ? (_pfx2 + ' ' + fi.label) : fi.label, price: fi.flashPrice || 0 };
       itemMeta[fi.id] = meta;
     }
     qtys[fi.id] = qtys[fi.id] || 0;
