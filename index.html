@@ -5398,6 +5398,7 @@ function renderFlashSection() {
             return '<div style="padding:5px 2px;">' +
                 '<div style="display:flex;align-items:baseline;justify-content:center;gap:5px;flex-wrap:wrap;">' +
                   '<span style="font-size:0.82rem;font-weight:700;color:#555;">' + opt.label + '</span>' +
+                  (opt.origPrice ? '<span style="font-size:0.8rem;font-weight:700;color:#9a9a9a;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#c1121f;white-space:nowrap;margin-right:4px;">' + opt.origPrice.toLocaleString() + '원</span>' : '') +
                   '<span style="font-size:0.95rem;font-weight:800;color:var(--green);white-space:nowrap;">' + opt.flashPrice.toLocaleString() + '원</span>' +
                 '</div>' +
                 '<div class="flash-stepper" style="margin-top:4px;justify-content:center;gap:6px;">' + oStepper + '</div>' +
@@ -5598,12 +5599,13 @@ const FLASH_ITEMS = [
   { id:'ts_grape_geobong', label:'거봉 2kg(3수) 1박스', max:9999, flashPrice:20900, section:'🍇 포도 특가', fullWidth:true, varietyGroup:'거봉' },
   // ── 🍉 수박,멜론 특가 ──
   { id:'f_watermelon_yanggu', label:'양구 고랭지 수박 10kg', colBadge:'선별 후 입고', soldOut:'선별 후 입고', max:9999, flashPrice:31900, section:'🍉 수박,멜론 특가', fullWidth:true, badge:'🍉 양구 고랭지 · 선별 후 입고' },
-  { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew_25', fullWidth:true },
-  { id:'f_melon_honeydew_25',   label:'허니듀',           max:9999, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론',
+  { id:'f_melon',            label:'머스크(고창) 2.5kg전후',           nameTop:'머스크(고창)', max:9999, flashPrice:12900, section:'🍉 수박,멜론 특가', badge:'🍈 강력추천!', comboTitle:'고당도 괴물멜론', comboPartner:'f_melon_honeydew_25', comboFull:'f_melon_honeydew_2', fullWidth:true },
+  { id:'f_melon_honeydew_25',   label:'허니듀',           max:9999, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론', comboFull:'f_melon_honeydew_2',
     subOptions: [
-      { id:'f_melon_honeydew_25', label:'2.5kg전후', flashPrice:10900, maxQty:9999 }
+      { id:'f_melon_honeydew_25', label:'2.5kg전후', flashPrice:10900, origPrice:12900, maxQty:9999 }
     ]
   },
+  { id:'f_melon_honeydew_2', label:'허니듀 2통', colBadge:'묶음 할인', max:9999, flashPrice:19900, origPrice:25800, section:'🍉 수박,멜론 특가', comboChild:true, comboTitle:'고당도 괴물멜론', subNote:'2.5kg전후 × 2통 · 정가보다 5,900원 저렴', todayLabel:'허니듀 2통' },
   // ── 🍏 사과 특가 ──
   { id:'f_apple_aori', label:'아오리 6개', colBadge:'첫물', max:9999, flashPrice:14900, section:'🍏 사과 특가', subLabel:'프리미엄 대과', fullWidth:true, badge:'🍏 첫물 아오리',
     comboTitle:'사과', comboPartner:'f_apple_hongro', todayLabel:'아오리사과(프리미엄 대과) 6개' },
@@ -7214,18 +7216,33 @@ setInterval(updateFloatCart, 500);
             </div>`;
         }
       }
+      // 단독 카드에도 comboFull 전폭 행을 지원한다. (기존엔 comboPartner 카드에만 있었다)
+      // comboFull 이 없으면 soloFullRow 가 빈 문자열이라 다른 카드 렌더는 그대로다.
+      const sfCat = cat.comboFull ? findCatalogItem(cat.comboFull) : null;
+      const soloFullRow = sfCat ? `
+        <div onclick="openProductDetail('${cat.comboFull}')" style="margin:0 16px 11px;background:linear-gradient(100deg,#fff4e6 0%,#ffe3e3 50%,#fff4e6 100%);background-size:200% 100%;animation:cocoShine 2.4s linear infinite;border:2px solid #c1121f;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">${todayColBadge(sfCat)}<span style="font-size:13px;font-weight:900;color:#c1121f;">${sfCat.todayLabel || sfCat.rawLabel || sfCat.name}</span></div>
+            ${sfCat.subNote ? `<div style="font-size:11px;color:#8a6d3b;margin-top:2px;line-height:1.4;">${sfCat.subNote}</div>` : ''}
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+            ${todayOrigSpan(sfCat)}
+            <span style="font-size:14px;font-weight:900;color:#c1121f;white-space:nowrap;">${sfCat.price.toLocaleString()}원</span>
+            <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${cat.comboFull}')" style="flex-shrink:0;background:#c1121f;color:#fff;border:none;border-radius:7px;padding:7px 10px;font-size:11.5px;font-weight:900;cursor:pointer;white-space:nowrap;">+ 담기</button>
+          </div>
+        </div>` : '';
       if (cat.subOptions) {
         const optRows = cat.subOptions.map(opt => `
           <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;">
             <span style="font-size:12px;color:#666;flex-shrink:0;">${opt.label}</span>
-            <span style="font-size:13px;font-weight:900;color:#c1121f;flex:1;text-align:right;">${opt.flashPrice.toLocaleString()}원</span>
+            <span style="flex:1;text-align:right;white-space:nowrap;">${opt.origPrice ? `<span style="font-size:11.5px;font-weight:700;color:#9a9a9a;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#c1121f;margin-right:5px;">${opt.origPrice.toLocaleString()}원</span>` : ''}<span style="font-size:13px;font-weight:900;color:#c1121f;">${opt.flashPrice.toLocaleString()}원</span></span>
             <button onclick="todaySpecialAddClick(this,'${opt.id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:11.5px;font-weight:900;cursor:pointer;">+ 담기</button>
           </div>`).join('');
         return peachBadgeHtml + `
           <div style="padding:11px 16px;border-top:1px solid #f0ede8;">
             <div onclick="openProductDetail('${id}')" style="font-size:12.5px;font-weight:700;color:#1a0f00;margin-bottom:2px;cursor:pointer;">${cleanName}</div>
             ${optRows}
-          </div>`;
+          </div>` + soloFullRow;
       }
       if (isSoldOut) {
         return peachBadgeHtml + `
@@ -7244,7 +7261,7 @@ setInterval(updateFloatCart, 500);
             <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;">${todayOrigSpan(cat)}<span style="font-size:13.5px;font-weight:900;color:#c1121f;">${cat.price.toLocaleString()}원</span></div>
           </div>
           <button onclick="event.stopPropagation();todaySpecialAddClick(this,'${id}')" style="flex-shrink:0;background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:900;cursor:pointer;min-width:64px;">+ 담기</button>
-        </div>`;
+        </div>` + soloFullRow;
     }).join('');
     const malbokBanner = `
       <div onclick="openMalbokNotice()" style="margin:0;padding:11px 16px;border-top:1px solid #f0ede8;background:linear-gradient(90deg,#fff4e6 0%,#ffe9e9 100%);display:flex;align-items:center;gap:8px;cursor:pointer;">
