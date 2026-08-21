@@ -2425,7 +2425,7 @@ const specialItems = [
 const fruitItems = [
   // ── 🔥 오늘의 과일 특가 ──
   // (델몬트 허니스틱 6/10개, 강원도 양구수박(특품)은 🔥제철특가 탭에 이미 있어 여기서는 제거함 / 허니스틱 1개는 제철특가와 안겹쳐서 여기 유지)
-  { id:'ts_cherry_1kg', num:'🍒', name:'🍒 캐나다체리(9row-최대사이즈) 1kg', desc:'캐나다체리(9row-최대사이즈) 1kg', price:19900, orig:24900, colBadge:'선착순 특가' },
+  { id:'ts_cherry_1kg', num:'🍒', name:'🍒 캐나다체리(9row-최대사이즈) 1kg', desc:'캐나다체리(9row-최대사이즈) 1kg', price:24900 },
   { id:'f54b', num:'#54b', todaySpecial:false, name:'🍈 참외(소과·게르마늄) 2봉', desc:'성주 게르마늄 재배 참외 2봉', orig:10000, price:8900 },
   { id:'f55b', num:'#55', todaySpecial:false, name:'🍅 방울토마토 2팩', desc:'', orig:9800, price:8900 },
   { id:'f_avocado_3', todaySpecial:false, num:'🥑', name:'🥑 아보카도(델몬트) 3개', desc:'아보카도(델몬트) 3개', price:3900 },
@@ -5580,16 +5580,20 @@ const MEMBER_PRICES = {
 };
 
 const FLASH_ITEMS = [
+  // ── 🍏 사과 특가 ──
+  { id:'f_apple_hongro', label:'꿀박힌 홍로 6개', colBadge:'<span style="text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#fff;opacity:0.75;">5개</span> <span style="font-size:12px;">1개 더!</span>', max:9999, flashPrice:14900, section:'🍏 사과 특가', subLabel:'꿀박힌 홍로', fullWidth:true, badge:'🍎 입고행사 · 15브릭스 이상 · 1개 더 드려요!',
+    comboTitle:'사과', comboPartner:'f_apple_aori', todayLabel:'꿀박힌 홍로사과 6개' },
+  { id:'f_apple_aori', label:'아오리 6개', colBadge:'첫물', max:9999, flashPrice:9900, origPrice:14900, section:'🍏 사과 특가', comboChild:true, comboTitle:'사과', todayLabel:'아오리사과 6개' },
   // ── 🍑 복숭아 특가 ──
   { id:'f_goldroman_1p', label:'1팩(4입)', colBadge:'딱복 · 13브릭스', max:9999, flashPrice:13900, origPrice:15900, section:'🍑 복숭아 특가', subLabel:'골드로망', todayLabel:'골드로망(딱복) 1팩 4입', fullWidth:true, badge:'🔥 선착순 초특가 · 딱복 골드로망 13브릭스' },
   { id:'f_baekcheon_1p', label:'1팩(4입)', colBadge:'14~15브릭스', max:9999, flashPrice:12900, section:'🍑 복숭아 특가', subLabel:'백천황도', fullWidth:true, badge:'🔥 초특가 · 백천황도 · 단단한데 쫀득', subNote:'백천황도 — 단단하면서 쫀득한 식감 · 14~15브릭스 선별', comboTitle:'백천황도', comboPartner:'f_hwangdo_danhojang' },
-  { id:'f_hwangdo_danhojang', label:'4kg 1박스', colBadge:'14~15브릭스', max:9999, flashPrice:36900, origPrice:39900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백천황도' },
+  { id:'f_hwangdo_danhojang', label:'4kg 1박스', colBadge:'🔥 주말행사', max:9999, flashPrice:31900, origPrice:36900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백천황도' },
   { id:'f_baekdo_abu', label:'딱딱이 4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'백도', fullWidth:true, badge:'🔥 선별 후 가장 맛있는 복숭아 입고',
     comboTitle:'백도', comboPartner:'f_cheonjungdo_1p' },
   { id:'f_cheonjungdo_1p', label:'천중도 1팩(4입)', colBadge:'13~14브릭스', max:9999, flashPrice:11900, origPrice:14900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도', subNote:'반말랑이 · <b style=\'color:#c1121f;\'>천중도</b> · 애천 · 마도카 중 랜덤입고' },
   { id:'f_baekdo_gyeongbong', label:'경봉(10수 이내) 4kg', colBadge:'시즌마감 특가', soldOut:true, max:9999, flashPrice:32900, origPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도' },
   // ── 🍇 포도 특가 ──
-  { id:'ts_grape_shine', label:'2kg(3수) 1박스', colBadge:'18브릭스+', max:9999, flashPrice:16900, origPrice:21900, section:'🍇 포도 특가', subLabel:'샤인머스캣', fullWidth:true, varietyGroup:'샤인머스캣', badge:'✨ 18브릭스 이상 선별 · 초특가', sparkle:true,
+  { id:'ts_grape_shine', label:'2kg(3수) 1박스', colBadge:'<span style="font-size:14px;">18</span>브릭스 이상', max:9999, flashPrice:16900, origPrice:21900, section:'🍇 포도 특가', subLabel:'샤인머스캣', fullWidth:true, varietyGroup:'샤인머스캣', badge:'✨ 18브릭스 이상 선별 · 초특가', sparkle:true,
     comboTitle:'샤인머스캣', comboPartner:'ts_shine_2kg_2box', todayLabel:'샤인머스캣 2kg(3수) 1박스' },
   { id:'ts_shine_2kg_2box', label:'2kg 2박스', colBadge:'🔥 최대할인', max:9999, flashPrice:32000, origPrice:33800, section:'🍇 포도 특가', comboChild:true, comboTitle:'샤인머스캣', varietyGroup:'샤인머스캣', sparkle:true,
     todayLabel:'샤인머스캣 2kg 2박스' },
@@ -5605,10 +5609,6 @@ const FLASH_ITEMS = [
       { id:'f_melon_honeydew_25', label:'2.5kg전후', flashPrice:12900, origPrice:14900, maxQty:9999 }
     ]
   },
-  // ── 🍏 사과 특가 ──
-  { id:'f_apple_aori', label:'아오리 6개', colBadge:'첫물', max:9999, flashPrice:9900, origPrice:14900, section:'🍏 사과 특가', subLabel:'프리미엄 대과', fullWidth:true, badge:'🍏 첫물 아오리',
-    comboTitle:'사과', comboPartner:'f_apple_hongro', todayLabel:'아오리사과(프리미엄 대과) 6개' },
-  { id:'f_apple_hongro', label:'꿀박힌 홍로 6개', colBadge:'15브릭스+', max:9999, flashPrice:14900, section:'🍏 사과 특가', comboChild:true, comboTitle:'사과', todayLabel:'꿀박힌 홍로사과 6개' },
   // ── 🍒 체리 특가 ──
   { id:'ts_cherry',      label:'캐나다체리(9row-최대사이즈) 500g',           max:20, flashPrice:13900,                  section:'🍒 체리 특가' },
   { id:'jeju_gamgyul_9', label:'제주하우스감귤 1팩(9입)',           max:9999, flashPrice:5500,                  section:'🍒 체리 특가', badge:'🍊 엄청달콤해요' },
@@ -7044,7 +7044,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['ts_cherry_1kg', 'f_melon_honeydew_25', 'ts_grape_shine', 'f_goldroman_1p', 'f_baekcheon_1p', 'f_baekdo_abu', 'f_apple_aori', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v21', 'v_zucchini_2'];
+  const TODAY_SPECIAL_IDS = ['f_apple_hongro', 'f_goldroman_1p', 'f_baekcheon_1p', 'f_baekdo_abu', 'ts_grape_shine', 'f_melon_honeydew_25', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v21', 'v_zucchini_2'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
