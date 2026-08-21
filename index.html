@@ -5585,7 +5585,6 @@ const FLASH_ITEMS = [
     comboTitle:'사과', comboPartner:'f_apple_aori', todayLabel:'꿀박힌 홍로사과 6개' },
   { id:'f_apple_aori', label:'아오리 6개', colBadge:'첫물', max:9999, flashPrice:9900, origPrice:14900, section:'🍏 사과 특가', comboChild:true, comboTitle:'사과', todayLabel:'아오리사과 6개' },
   // ── 🍑 복숭아 특가 ──
-  { id:'f_goldroman_1p', label:'1팩(4입)', colBadge:'딱복 · 13브릭스', max:9999, flashPrice:13900, origPrice:15900, section:'🍑 복숭아 특가', subLabel:'골드로망', todayLabel:'골드로망(딱복) 1팩 4입', fullWidth:true, badge:'🔥 선착순 초특가 · 딱복 골드로망 13브릭스' },
   { id:'f_baekcheon_1p', label:'1팩(4입)', colBadge:'14~15브릭스', max:9999, flashPrice:12900, section:'🍑 복숭아 특가', subLabel:'백천황도', fullWidth:true, badge:'🔥 초특가 · 백천황도 · 단단한데 쫀득', subNote:'백천황도 — 단단하면서 쫀득한 식감 · 14~15브릭스 선별', comboTitle:'백천황도', comboPartner:'f_hwangdo_danhojang' },
   { id:'f_hwangdo_danhojang', label:'4kg 1박스', colBadge:'🔥 주말행사', max:9999, flashPrice:31900, origPrice:36900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백천황도' },
   { id:'f_baekdo_abu', label:'딱딱이 4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'백도', fullWidth:true, badge:'🔥 선별 후 가장 맛있는 복숭아 입고',
@@ -7044,7 +7043,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['f_apple_hongro', 'f_goldroman_1p', 'f_baekcheon_1p', 'f_baekdo_abu', 'ts_grape_shine', 'f_melon_honeydew_25', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v21', 'v_zucchini_2'];
+  const TODAY_SPECIAL_IDS = ['f_apple_hongro', 'f_baekcheon_1p', 'f_baekdo_abu', 'ts_grape_shine', 'f_melon_honeydew_25', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v21', 'v_zucchini_2'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
