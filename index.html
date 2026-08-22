@@ -1754,7 +1754,7 @@ async function goReorder() {
   // 1순위: customers 테이블 직접 조회
   try {
     let _e1 = '';
-    const j = await callRpc('coco_customer_profile', { p_phone: inputClean }, function(m){ _e1 = m; });
+    const j = await callRpcRetry('coco_customer_profile', { p_phone: inputClean }, function(m){ _e1 = m; });
     if (j === null) tgNotify('[계산기] coco_customer_profile 조회 실패: ' + maskPhone(inputClean) + (_e1 ? ' | ' + _e1 : ''));
     if (j && j.found) {
       // 기존 조건 유지: 이름이 비어 있으면 found 를 만들지 않는다(이름 없는 고객 처리 동일)
@@ -1772,7 +1772,7 @@ async function goReorder() {
     try {
       // coco_last_order 는 현관비번을 반환하지 않는다(비로그인 자동완성 제외 항목).
       // entry 는 1순위 coco_customer_profile 에서만 채운다.
-      const lo = await callRpc('coco_last_order', { p_phone: inputClean });
+      const lo = await callRpcRetry('coco_last_order', { p_phone: inputClean });
       if (lo && lo.found && lo.customer_name) {
         if (found) { // 이름은 이미 있었으니 주소만 보완
           found.address = found.address || lo.customer_address;
@@ -1799,7 +1799,7 @@ async function goReorder() {
   // 조회 실패/없음이면 아래 기존 분기로 그대로 떨어지므로 기존 동작이 보존된다.
   try {
     let _e2 = '';
-    const ar = await callRpc('coco_customer_addresses', { p_phone: inputClean }, function(m){ _e2 = m; });
+    const ar = await callRpcRetry('coco_customer_addresses', { p_phone: inputClean }, function(m){ _e2 = m; });
     if (ar === null) tgNotify('[계산기] coco_customer_addresses 조회 실패: ' + maskPhone(inputClean) + (_e2 ? ' | ' + _e2 : ''));
     const savedList = (ar && Array.isArray(ar.addresses)) ? ar.addresses : [];
     if (savedList.length > 0) {
@@ -2173,7 +2173,7 @@ function onPhoneInputForAddr(raw) {
   // s-return 경로의 _addrProfile 은 orders.door_password 폴백까지 담고 있으므로 덮어쓰지 않는다.
   window._s3Entry = '';
   window._addrPickConfirmed = false;   // 번호가 바뀌면 주소 확인을 다시 받는다
-  callRpc('coco_customer_profile', { p_phone: phone }).then(function (j) {
+  callRpcRetry('coco_customer_profile', { p_phone: phone }).then(function (j) {
     if (j && j.found && phone === _s3AddrPhone) {
       window._s3Entry       = j.entry || '';
       window._s3ProfileName = j.name  || '';
@@ -2187,7 +2187,7 @@ function onPhoneInputForAddr(raw) {
   //    직접 호출을 함께 두면 같은 번호로 coco_customer_profile 이 2회 나간다.
   try { if (typeof syncCustomerPrefsToForm === 'function') syncCustomerPrefsToForm(phone); } catch (e) {}
   let _e3 = '';
-  callRpc('coco_customer_addresses', { p_phone: phone }, function(m){ _e3 = m; }).then(function (ar) {
+  callRpcRetry('coco_customer_addresses', { p_phone: phone }, function(m){ _e3 = m; }).then(function (ar) {
     if (ar === null) { tgNotify('[계산기] coco_customer_addresses 조회 실패: ' + maskPhone(phone) + (_e3 ? ' | ' + _e3 : '')); return; }
     // is_active=false 는 코코허브에서 통합·정리한 항목이라 고객에게 보여주지 않는다.
     var list = (ar && Array.isArray(ar.addresses)) ? ar.addresses : [];
@@ -3858,6 +3858,31 @@ async function callRpc(fn, args, onError) {
   }
 }
 
+// 조회 전용 RPC 4종에만 쓰는 1회 재시도 래퍼.
+// ⚠ 원인 해결이 아니라 일시적 통신 실패(iOS Safari 의 Load failed 등)에 대한 안전장치다.
+// ⚠ NETWORK 계열(fetch 예외)일 때만 재시도한다.
+//    HTTP 4xx/5xx 는 서버가 이미 응답한 것이라 반복해도 결과가 같다.
+// ⚠ 쓰기/상태변경 RPC 에는 절대 쓰지 않는다. 중복 실행 위험.
+//    use_points / coco_link_order_stop / coco_confirm_customer_address / coco_save_customer_pref
+const RPC_RETRY_OK = ['coco_customer_profile','coco_customer_addresses','coco_is_member','coco_last_order'];
+async function callRpcRetry(fn, args, onError) {
+  if (RPC_RETRY_OK.indexOf(fn) < 0) return callRpc(fn, args, onError);
+  let first = '';
+  const r1 = await callRpc(fn, args, function(m){ first = m; });
+  if (r1 !== null) return r1;
+  if (String(first).indexOf('NETWORK') !== 0) {
+    if (typeof onError === 'function') { try { onError(first); } catch(_) {} }
+    return null;
+  }
+  await new Promise(function(res){ setTimeout(res, 400); });
+  let second = '';
+  const r2 = await callRpc(fn, args, function(m){ second = m; });
+  if (r2 === null && typeof onError === 'function') {
+    try { onError((second || first) + ' (재시도 1회 실패)'); } catch(_) {}
+  }
+  return r2;
+}
+
 // 오류 알림에 전화번호 전체를 남기지 않는다. 앞 3자리 + 뒤 4자리만.
 function maskPhone(p) {
   const d = String(p || '').replace(/[^0-9]/g, '');
@@ -3933,7 +3958,7 @@ function linkOrderStopAfterSave(orderId, phone) {
 // 조회 실패도 기존과 동일하게 false 로 떨어진다(현행 동작 보존).
 async function fetchIsMember(phone) {
   let _e4 = '';
-  const j = await callRpc('coco_is_member', { p_phone: phone }, function(m){ _e4 = m; });
+  const j = await callRpcRetry('coco_is_member', { p_phone: phone }, function(m){ _e4 = m; });
   if (j === null) { tgNotify('[계산기] coco_is_member 조회 실패: ' + maskPhone(phone) + (_e4 ? ' | ' + _e4 : '')); return false; }
   return !!(j && j.is_member);
 }
@@ -5140,7 +5165,7 @@ function renderDeliveryScreen() {
 const PRODUCT_DETAILS = {
   f_baekcheon_1p: {
     photos: [],
-    desc: '단단하면서도 쫀득한 식감이 특징인 백천황도입니다.\n당도 14~15브릭스로 선별해서 입고됩니다.\n산지 상황에 따라 사이즈가 조금씩 다를 수 있어요.'
+    desc: '단단하면서도 쫀득한 식감의 황도입니다.\n당도 14~15브릭스로 선별해서 랜덤으로 입고됩니다.\n산지 상황에 따라 품종과 사이즈가 조금씩 다를 수 있어요.'
   },
 };
 function openProductDetail(id) {
@@ -5614,9 +5639,8 @@ const FLASH_ITEMS = [
     comboTitle:'사과', comboPartner:'f_apple_aori', todayLabel:'꿀박힌 홍로사과 5개' },
   { id:'f_apple_aori', label:'아오리 6개', colBadge:'첫물', max:9999, flashPrice:9900, origPrice:14900, section:'🍏 사과 특가', comboChild:true, comboTitle:'사과', todayLabel:'아오리사과 6개' },
   // ── 🍑 복숭아 특가 ──
-  { id:'f_sungold_2p', label:'4입 2팩(8수)', colBadge:'<span style="font-size:12px;">⏰ 토요일 타임특가</span> · 14브릭스', max:9999, flashPrice:18900, section:'🍑 복숭아 특가', subLabel:'황도(썬골드)', fullWidth:true, badge:'⏰ 토요일 타임특가 · 황도 썬골드 14브릭스', sparkle:true, subNote:'썬골드 황도 4입 × 2팩 (총 8수) · 토요일 한정', todayLabel:'황도(썬골드) 4입 2팩 8수' },
-  { id:'f_baekcheon_1p', label:'1팩(4입)', colBadge:'14~15브릭스', max:9999, flashPrice:12900, section:'🍑 복숭아 특가', subLabel:'백천황도·단호장', fullWidth:true, badge:'🔥 초특가 · 백천황도 · 단단한데 쫀득', subNote:'백천황도(단단한데 쫀득) · 단호장 랜덤 · 14~15브릭스 선별', comboTitle:'백천황도·단호장', comboPartner:'f_hwangdo_danhojang' },
-  { id:'f_hwangdo_danhojang', label:'4kg 1박스', colBadge:'🔥 주말행사', max:9999, flashPrice:31900, origPrice:36900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백천황도·단호장' },
+  { id:'f_baekcheon_1p', label:'1팩(4수)', colBadge:'14~15브릭스', max:9999, flashPrice:13900, section:'🍑 복숭아 특가', subLabel:'선별된 황도', fullWidth:true, comboTitle:'선별된 황도(백천, 단호장 랜덤)', comboPartner:'f_hwangdo_danhojang' },
+  { id:'f_hwangdo_danhojang', label:'4kg 1박스', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'선별된 황도(백천, 단호장 랜덤)' },
   { id:'f_baekdo_abu', label:'딱딱이 4kg', max:9999, flashPrice:35900, section:'🍑 복숭아 특가', subLabel:'백도', fullWidth:true, badge:'🔥 선별 후 가장 맛있는 복숭아 입고',
     comboTitle:'백도', comboPartner:'f_cheonjungdo_1p' },
   { id:'f_cheonjungdo_1p', label:'천중도 1팩(4입)', colBadge:'13~14브릭스', max:9999, flashPrice:11900, origPrice:14900, section:'🍑 복숭아 특가', comboChild:true, comboTitle:'백도', subNote:'반말랑이 · <b style=\'color:#c1121f;\'>천중도</b> · 애천 · 마도카 중 랜덤입고' },
@@ -5644,7 +5668,6 @@ const FLASH_ITEMS = [
   // ── 🟣 자두 특가 ──
   { id:'f_jaju_1kg',     label:'1kg', subLabel:'도담자두(왕특)',                                    max:9999, flashPrice:13900,                  section:'🟣 자두 특가', badge:'🟣 아삭하고 산미없어요!', comboTitle:'도담자두(왕특)', comboPartner:'f_jaju_2kg' },
   { id:'f_jaju_2kg',     label:'2kg',                                    max:9999, flashPrice:23900,                  section:'🟣 자두 특가', comboChild:true, comboTitle:'도담자두(왕특)' },
-  { id:'f_jaju_5kg',     label:'도담자두(왕특) 5kg 1박스', subLabel:'도담자두(왕특)',                    max:9999, flashPrice:56900,                  section:'🟣 자두 특가', fullWidth:true, badge:'🟣 아삭하고 산미없어요!' },
   // ── 🍈 델몬트 특가 ──
   { id:'f_delmonte_banana',  label:'델몬트 하이랜드 허니바나나 1송이',        max:9999, flashPrice:3500,                   section:'🍈 델몬트 특가', comboPartner:'f_delmonte_banana2', fullWidth:true },
   { id:'f_delmonte_banana2', label:'델몬트 하이랜드 허니바나나 2송이',        max:9999, flashPrice:6000,                   section:'🍈 델몬트 특가', comboChild:true },
@@ -5905,7 +5928,7 @@ async function lookupReorder() {
   resultEl.textContent = '⏳ 조회 중...';
   try {
     // orders 테이블에서 최근 주문 조회
-    const lo = await callRpc('coco_last_order', { p_phone: phoneRaw });
+    const lo = await callRpcRetry('coco_last_order', { p_phone: phoneRaw });
     if (!lo || !lo.found) {
       resultEl.textContent = '❌ 주문 내역이 없어요. 직접 입력해주세요.';
       return;
@@ -5962,7 +5985,7 @@ async function loadCashReceiptPhonePref() {
     const phone = (document.getElementById('inp-phone').value || '').replace(/\D/g, '');
     if (phone.length < 10) return;
     let _e5 = '';
-    const j = await callRpc('coco_customer_profile', { p_phone: phone }, function(m){ _e5 = m; });
+    const j = await callRpcRetry('coco_customer_profile', { p_phone: phone }, function(m){ _e5 = m; });
     if (j === null) { tgNotify('[계산기] coco_customer_profile(현금영수증) 조회 실패: ' + maskPhone(phone) + (_e5 ? ' | ' + _e5 : '')); return; }
     if (!j || !j.found) return;
     // 기존 폴백 순서 유지: cash_receipt_number 우선, 없으면 옛 컬럼 cash_receipt_phone
@@ -7077,7 +7100,7 @@ setInterval(updateFloatCart, 500);
   // 🔥 오늘의 특가 아코디언 — 지금은 비어있음. 나중에 TODAY_SPECIAL_IDS에 상품 id만 채우면 자동으로 보임.
   // (id는 vegItems/fruitItems/FLASH_ITEMS에 있는 실제 id를 그대로 쓰면 됨)
   // ══════════════════════════════════════════════
-  const TODAY_SPECIAL_IDS = ['f_apple_hongro', 'f_sungold_2p', 'f_baekcheon_1p', 'f_baekdo_abu', 'ts_grape_shine', 'f_melon_honeydew_25', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v21', 'v_zucchini_2'];
+  const TODAY_SPECIAL_IDS = ['f_apple_hongro', 'f_baekcheon_1p', 'f_baekdo_abu', 'ts_grape_shine', 'f_melon_honeydew_25', 'f_avocado_3', 'ts_goguma2kg', 'f_jaju_1kg', 'v21', 'v_zucchini_2'];
 
   // id로 실제 카탈로그 원본(품절여부 포함)을 찾는 헬퍼
   function findCatalogItem(id) {
