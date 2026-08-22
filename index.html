@@ -3879,6 +3879,35 @@ function tgNotify(msg) {
 // 주문 저장 성공 후 부가 연결. 고객이 저장 배송지를 직접 고른 경우에만 실행한다.
 // 반드시 주문 저장이 끝난 뒤 호출하며, await 하지 않는다. 실패해도 주문 접수에는 영향이 없다.
 // fallback(customers.address 원본) 이나 새 주소 직접입력은 _selectedStopId 가 없어 호출되지 않는다.
+// 포인트 차감. 주문 저장(orders INSERT)이 성공한 뒤에만 호출한다.
+// ⚠ 계좌이체 경로 전용. 카드(KCP)는 승인 서버가 이미 차감하므로 붙이지 않는다 — 붙이면 이중 차감.
+// ⚠ p_order_total 은 포인트 차감 '전' 금액(품목합). 차감 후를 넘기면 50% 상한(EXCEEDS_MAX_USABLE)에 걸린다.
+// ⚠ order_id 가 없거나 UUID 형식이 아니면 호출하지 않는다.
+//    서버 멱등 보호가 order_id 기준이라 NULL 이면 재시도마다 중복 차감된다.
+// 실패해도 주문을 되돌리지 않는다. 텔레그램에 수동 차감 안내만 남긴다.
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+async function usePointsAfterSave(orderId, phone, rawTotal, useAmount) {
+  try {
+    if (!(useAmount > 0)) return;
+    if (!orderId || !UUID_RE.test(String(orderId))) {
+      tgNotify('\ud83d\udea8 [\uacc4\uc0b0\uae30] use_points \ubbf8\ud638\ucd9c \u2014 order_id \ube44\uc815\uc0c1\n' + maskPhone(phone) + ' / ' + useAmount.toLocaleString() + 'P \uc218\ub3d9 \ucc28\uac10 \ud544\uc694');
+      return;
+    }
+    if (!phone || !(rawTotal > 0)) return;
+    let _pe = '';
+    const r = await callRpc('use_points', {
+      p_phone: phone, p_order_id: orderId,
+      p_order_total: rawTotal, p_use_amount: useAmount
+    }, function(m){ _pe = m; });
+    if (r === null || (r && r.success === false)) {
+      const why = (r && r.error) ? String(r.error) : (_pe || 'unknown');
+      tgNotify('\ud83d\udea8 [\uacc4\uc0b0\uae30] use_points \uc2e4\ud328 \u2014 \uc218\ub3d9 \ucc28\uac10 \ud544\uc694\n\uc8fc\ubb38 ' + String(orderId).slice(0,8).toUpperCase() + ' / ' + maskPhone(phone) + ' / ' + useAmount.toLocaleString() + 'P\n\uc0ac\uc720: ' + why);
+    }
+  } catch (e) {
+    try { tgNotify('\ud83d\udea8 [\uacc4\uc0b0\uae30] use_points \uc608\uc678 \u2014 \uc218\ub3d9 \ucc28\uac10 \ud544\uc694\n' + maskPhone(phone) + ' / ' + useAmount.toLocaleString() + 'P'); } catch(_) {}
+  }
+}
+
 function linkOrderStopAfterSave(orderId, phone) {
   try {
     if (!orderId || !window._selectedStopId) return;
@@ -6472,6 +6501,9 @@ window.orderDirect = async function() {
   // ── 🎁 포인트 사용 반영: 원래금액(rawTotal) 보관 후 total을 할인된 실결제액으로 교체 ──
   // 이 아래부터는 total = 실제 결제(청구)될 금액. 카드결제 KCP 청구액도 자동으로 이 값이 됨.
   const rawTotalBeforePoints = total;
+  // ⚠ use_points 의 p_order_total 은 포인트 차감 '전' 금액이어야 한다.
+  //    아래에서 total 이 차감 후 금액으로 덮어써지므로 여기서 원본을 보존한다.
+  const rawTotalForPoints = total;
   const pointsUsedNow = Math.max(0, Math.min(window._pointsUsed || 0, Math.floor(total * 0.5)));
   total = Math.max(0, total - pointsUsedNow);
   let oldPointsBalance = null;
@@ -6556,6 +6588,7 @@ window.orderDirect = async function() {
         }).catch(function(e){ console.warn('item 저장 실패',e); });
       }
       linkOrderStopAfterSave(savedOrder.id, phone);
+        usePointsAfterSave(savedOrder.id, phone, rawTotalForPoints, pointsUsedNow);
     }
   } catch(e) {
     console.error('Supabase 실패', e);
